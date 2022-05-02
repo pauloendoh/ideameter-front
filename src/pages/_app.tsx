@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import createEmotionCache from "../createEmotionCache";
 import theme from "../theme";
 import "./global.css";
@@ -21,16 +21,10 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  const checkAuthOrLogout = useCheckAuthOrLogout();
+  const { checkAuthOrLogout, loading } = useCheckAuthOrLogout();
 
   useEffect(() => {
     checkAuthOrLogout();
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
   }, []);
 
   return (
@@ -42,7 +36,7 @@ export default function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
 
-        {isLoading ? <LoadingPage /> : <Component {...pageProps} />}
+        {loading ? <LoadingPage /> : <Component {...pageProps} />}
 
         <SnackbarWrapper />
       </ThemeProvider>

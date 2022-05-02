@@ -5,11 +5,14 @@ import myAxios from "@/utils/axios/myAxios";
 import urls from "@/utils/urls";
 import { useRouter } from "next/router";
 import nookies from "nookies";
+import { useState } from "react";
 import { useLogout } from "./useLogout";
 
 const useCheckAuthOrLogout = () => {
   const logout = useLogout();
   const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
 
   const routerQuery = router.query as {
     oauthToken?: string;
@@ -38,11 +41,14 @@ const useCheckAuthOrLogout = () => {
       //     });
       // }
 
-      return;
+      return setLoading(false);
     } else {
       // Regular login
       const user: AuthUserGetDto = JSON.parse(userCookieStr);
-      if (new Date(user.expiresAt) <= new Date()) return logout();
+      if (new Date(user.expiresAt) <= new Date()) {
+        logout();
+        return setLoading(false);
+      }
 
       myAxios
         .get<AuthUserGetDto>(urls.api.me)
@@ -51,11 +57,12 @@ const useCheckAuthOrLogout = () => {
         })
         .catch(() => {
           logout();
-        });
+        })
+        .finally(() => setLoading(false));
     }
   };
 
-  return checkAuthOrLogout;
+  return { checkAuthOrLogout, loading };
 };
 
 export default useCheckAuthOrLogout;
