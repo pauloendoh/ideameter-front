@@ -1,9 +1,13 @@
-import Container from "@mui/material/Container";
+import HomePage from "@/components/HomePage/HomePage";
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import type { NextPage } from "next";
 import * as React from "react";
+import LandingPage from "../components/LandingPage/LandingPage";
 
 const Home: NextPage = () => {
-  return <Container maxWidth="lg">Bazzoingers</Container>;
+  const { authUser } = useAuthStore();
+  if (authUser) return <HomePage />;
+  return <LandingPage />;
 };
 
 export default Home;
