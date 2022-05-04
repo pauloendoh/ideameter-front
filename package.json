@@ -19,15 +19,16 @@
     "axios": "^0.27.2",
     "next": "latest",
     "nookies": "^2.5.2",
-    "react": "latest",
+    "react": "^18.1.0",
     "react-dom": "latest",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
+    "react-query": "^3.38.1",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/node": "latest",
-    "@types/react": "latest",
+    "@types/react": "^18.0.8",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "typescript": "latest"

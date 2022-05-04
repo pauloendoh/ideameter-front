@@ -9,7 +9,11 @@ const Navbar = () => {
   const { authUser } = useAuthStore();
   const logout = useLogout();
   return (
-    <S.AppBarRoot position="fixed" elevation={0}>
+    <S.AppBarRoot
+      position="fixed"
+      elevation={0}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <S.NavbarToolbar>
         <FlexVCenter>
           <Typography>Ideameter</Typography>

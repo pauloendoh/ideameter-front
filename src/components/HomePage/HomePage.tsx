@@ -1,19 +1,10 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import React from "react";
-import Navbar from "../layout/Navbar/Navbar";
+import HomeLayout from "../layout/HomeLayout/HomeLayout";
 
-interface Props {
-  test?: string;
-}
-
-const HomePage = (props: Props) => {
+const HomePage = () => {
   const { authUser } = useAuthStore();
-  return (
-    <div>
-      <Navbar />
-      {JSON.stringify(authUser)}
-    </div>
-  );
+  return <HomeLayout />;
 };
 
 export default HomePage;

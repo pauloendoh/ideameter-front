@@ -16,7 +16,9 @@ const useAuthStore = create<IAuthStore>(
 
       nookies.set(null, "user", JSON.stringify(authUser), {
         secure: true,
+
         path: "/",
+        maxAge: 365 * 24 * 60 * 60, // 1 year
       });
       // localStorage.setItem("user", JSON.stringify(authUser));
 
@@ -31,7 +33,6 @@ const useAuthStore = create<IAuthStore>(
 );
 const initialState = useAuthStore.getState();
 export const resetAuthStore = () => {
-  // localStorage.removeItem("user");
   nookies.destroy(null, "user");
   useAuthStore.setState(initialState, true);
 };
