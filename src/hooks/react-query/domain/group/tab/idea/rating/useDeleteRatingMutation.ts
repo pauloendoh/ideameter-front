@@ -1,35 +1,33 @@
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto";
-import pushOrReplace from "@/utils/array/pushOrReplace";
+import { pushOrRemove } from "@/utils/array/pushOrRemove";
 import myAxios from "@/utils/axios/myAxios";
 import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
 import { useMutation, useQueryClient } from "react-query";
 
-const useSaveRatingMutation = () => {
+const useDeleteRatingMutation = () => {
   const queryClient = useQueryClient();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
 
   return useMutation(
-    ({ payload }: { payload: RatingDto; groupId: string }) =>
+    ({ ideaId }: { ideaId: string; groupId: string }) =>
       myAxios
-        .request<RatingDto>({
-          url: urls.api.ideaRating(payload.ideaId),
-          data: payload,
-          method: payload.id ? "PUT" : "POST",
-        })
+        .delete<RatingDto>(urls.api.ideaRating(ideaId))
         .then((res) => res.data),
     {
-      onSuccess: (savedRating, variables) => {
+      onSuccess: (savedRating, { groupId }) => {
         const groupRatings = queryClient.getQueryData<RatingDto[]>(
-          queryKeys.ratingsByGroup(variables.groupId)
+          queryKeys.ratingsByGroup(groupId)
         );
 
-        const newGroupRatinsg = pushOrReplace(groupRatings, savedRating, "id");
+        if (!groupRatings) return;
+
+        const newGroupRatings = pushOrRemove(groupRatings, savedRating, "id");
 
         queryClient.setQueryData(
-          queryKeys.ratingsByGroup(variables.groupId),
-          newGroupRatinsg
+          queryKeys.ratingsByGroup(groupId),
+          newGroupRatings
         );
       },
       onError: (err) => {
@@ -39,4 +37,4 @@ const useSaveRatingMutation = () => {
   );
 };
 
-export default useSaveRatingMutation;
+export default useDeleteRatingMutation;

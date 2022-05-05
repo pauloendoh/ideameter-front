@@ -33,21 +33,47 @@ const IdeaTable = (props: Props) => {
     [groupRatings]
   );
 
+  const getAvgIdeaRating = useCallback(
+    (ideaId: string) => {
+      if (!groupRatings) return null;
+      const ideaRatings = groupRatings.filter((r) => r.ideaId === ideaId);
+      if (ideaRatings.length === 0) return null;
+
+      const validRatings = ideaRatings.filter((r) => r.rating !== null);
+      const sum = validRatings.reduce(
+        (partialSum, r) => partialSum + (r.rating || 0),
+        0
+      );
+
+      if (sum === 0) return null;
+      return sum / validRatings.length;
+    },
+    [groupRatings]
+  );
+
   return (
     <TableContainer sx={{ maxHeight: 440 }}>
       <S.Table stickyHeader>
         <S.TableHead>
           <TableRow>
-            <TableCell align="center" sx={{ width: 64 }}>
+            <TableCell align="center" width="64px">
               #
             </TableCell>
-            <TableCell sx={{ minWidth: 200 }}>Idea</TableCell>
-            <TableCell align="center">You</TableCell>
+            <TableCell width="200px">Idea</TableCell>
+            <TableCell align="center" width="64px">
+              Avg
+            </TableCell>
+            <TableCell align="center" width="64px">
+              You
+            </TableCell>
             {otherMembers.map((member) => (
-              <TableCell key={member.userId} align="center">
+              <TableCell key={member.userId} align="center" width="100px">
                 {member.user.username}
               </TableCell>
             ))}
+
+            {/* Empty cell to avoid bigger width on the last cell */}
+            <TableCell></TableCell>
           </TableRow>
         </S.TableHead>
 
@@ -56,6 +82,17 @@ const IdeaTable = (props: Props) => {
             <TableRow key={index}>
               <TableCell align="center">{index + 1}</TableCell>
               <TableCell>{idea.name}</TableCell>
+              <TableCell
+                align="center"
+                sx={{
+                  background:
+                    Number(getAvgIdeaRating(idea.id)) >= 2.5
+                      ? "#232323"
+                      : undefined,
+                }}
+              >
+                {getAvgIdeaRating(idea.id)}
+              </TableCell>
               <TableCell align="center">
                 <RatingInput idea={idea} groupId={query.groupId} />
               </TableCell>
@@ -64,6 +101,7 @@ const IdeaTable = (props: Props) => {
                   {getUserRatingString(member.userId, idea.id)}
                 </TableCell>
               ))}
+              <TableCell></TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,3 +1,4 @@
+import useDeleteRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useDeleteRatingMutation";
 import useRatingsByGroupQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsByGroupQuery";
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
@@ -13,8 +14,9 @@ interface Props {
 
 const RatingInput = (props: Props) => {
   const { authUser } = useAuthStore();
-  const { data: groupRatings } = useRatingsByGroupQuery(props.groupId);
   const saveRatingMutation = useSaveRatingMutation();
+  const deleteRatingMutation = useDeleteRatingMutation();
+  const { data: groupRatings } = useRatingsByGroupQuery(props.groupId);
 
   const currentRating = useMemo(() => {
     if (!groupRatings) return -1;
@@ -29,7 +31,14 @@ const RatingInput = (props: Props) => {
   }, [props.idea, groupRatings]);
 
   const handleChange = (newValue: number) => {
-    if (newValue === -1) return;
+    if (newValue === -1) {
+      deleteRatingMutation.mutate({
+        ideaId: props.idea.id,
+        groupId: props.groupId,
+      });
+      return;
+    }
+
     const valueToSave = newValue === 0 ? null : newValue;
 
     saveRatingMutation.mutate({
@@ -47,7 +56,6 @@ const RatingInput = (props: Props) => {
     >
       {/* invisible character to avoid small height */}
       <MenuItem value={-1}>⠀</MenuItem>
-
       <MenuItem value={0}>-</MenuItem>
       <MenuItem value={3}>3</MenuItem>
       <MenuItem value={2}>2</MenuItem>
