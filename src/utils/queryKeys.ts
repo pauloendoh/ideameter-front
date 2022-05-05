@@ -5,6 +5,8 @@ const queryKeys = {
 
   groupTabs: (groupId: string) => `/group/${groupId}/tabs`,
   tabIdeas: (tabId: string) => `/tab/${tabId}/ideas`,
+
+  ratingsByGroup: (groupId: string) => `/idea-rating?groupId=${groupId}`,
 };
 
 export default queryKeys;

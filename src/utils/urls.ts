@@ -18,6 +18,9 @@ const urls = {
     groupTab: (groupId: string) => `/group/${groupId}/tab`,
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
 
+    ideaRating: `/idea-rating`,
+    ratingsByGroup: (groupId: string) => `/idea-rating?groupId=${groupId}`,
+
     userSearch: (query: string) => `/user/search?q=${query}`,
   },
 };
