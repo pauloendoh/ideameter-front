@@ -6,10 +6,10 @@ import urls from "@/utils/urls";
 import { useRouter } from "next/router";
 import nookies from "nookies";
 import { useState } from "react";
-import { useLogout } from "./useLogout";
+import { useLogoutAndPushIndex } from "./useLogout";
 
 const useCheckAuthOrLogout = () => {
-  const logout = useLogout();
+  const logout = useLogoutAndPushIndex();
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);

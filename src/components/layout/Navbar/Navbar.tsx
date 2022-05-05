@@ -1,5 +1,5 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import { useLogout } from "@/hooks/domain/auth/useLogout";
+import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogout";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import { Button, Typography } from "@mui/material";
 import React from "react";
@@ -7,7 +7,7 @@ import S from "./Navbar.styles";
 
 const Navbar = () => {
   const { authUser } = useAuthStore();
-  const logout = useLogout();
+  const logout = useLogoutAndPushIndex();
   return (
     <S.AppBarRoot
       position="fixed"

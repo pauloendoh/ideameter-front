@@ -1,5 +1,6 @@
 const urls = {
   pages: {
+    index: "/",
     groupdId: (groupId: string) => `/group/${groupId}`,
     groupTab: (groupId: string, tabId: string) =>
       `/group/${groupId}?tabId=${tabId}`,
