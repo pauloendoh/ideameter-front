@@ -5,21 +5,23 @@ import { newGroupDto } from "@/types/domain/group/GroupDto";
 import urls from "@/utils/urls";
 import { Avatar, Drawer, IconButton, Toolbar, Tooltip } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import { MdAdd } from "react-icons/md";
+import S from "./Sidebar.styles";
 
 const Sidebar = () => {
   const { data: groups } = useGroupsQuery();
+  const router = useRouter();
+  const query = router.query as { groupId?: string };
 
   const { openDialog } = useGroupDialogStore();
 
+  // newest first
   const sortedGroups = useMemo(() => {
     if (!groups) return [];
-    return groups.sort(
-      (
-        a,
-        b // newest first
-      ) => ((a.createdAt || "") > (b.createdAt || "") ? -1 : 1)
+    return groups.sort((a, b) =>
+      (a.createdAt || "") > (b.createdAt || "") ? -1 : 1
     );
   }, [groups]);
 
@@ -40,10 +42,11 @@ const Sidebar = () => {
     >
       <Toolbar />
       <FlexCol sx={{ pt: 2, px: 2.5, gap: 2 }}>
-        {groups?.map((group) => (
+        {sortedGroups.map((group) => (
           <Tooltip key={group.id} title={group.name} placement="right">
             <Link href={urls.pages.groupdId(String(group.id))}>
-              <a>
+              <a style={{ position: "relative" }}>
+                {query.groupId === group.id && <S.SelectedGroupLittleBar />}
                 <IconButton sx={{ width: 64, height: 64 }}>
                   <Avatar sx={{ width: 64, height: 64 }}>
                     {group.name.substring(0, 2)}

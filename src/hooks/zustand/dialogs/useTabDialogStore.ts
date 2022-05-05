@@ -8,9 +8,8 @@ interface ITabDialogStore {
   closeDialog: () => void;
 }
 
-const useConfirmDialogStore = create<ITabDialogStore>((set, get) => ({
+const useTabDialogStore = create<ITabDialogStore>((set, get) => ({
   initialValue: newTabDto(),
-  confirmDialogValue: { title: "", onConfirm: () => {} },
   dialogIsOpen: false,
   openDialog: (initialValue) => {
     set({ dialogIsOpen: true, initialValue });
@@ -18,11 +17,4 @@ const useConfirmDialogStore = create<ITabDialogStore>((set, get) => ({
   closeDialog: () => set({ dialogIsOpen: false }),
 }));
 
-interface IConfirmDialog {
-  title: string;
-  description?: string;
-  confirmText?: string;
-  onConfirm: () => void;
-}
-
-export default useConfirmDialogStore;
+export default useTabDialogStore;

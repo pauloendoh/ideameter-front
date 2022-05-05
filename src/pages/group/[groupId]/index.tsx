@@ -1,3 +1,4 @@
+import GroupTabContent from "@/components/GroupPage/GroupTabContent/GroupTabContent";
 import GroupTabs from "@/components/GroupPage/GroupTabs/GroupTabs";
 import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon";
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout";
@@ -13,7 +14,7 @@ import { useMemo } from "react";
 import { MdAdd } from "react-icons/md";
 
 const GroupId: NextPage = () => {
-  const query = useRouter().query as { groupId: string };
+  const query = useRouter().query as { groupId: string; tabId?: string };
   const { openDialog } = useTabDialogStore();
   const { data: groups } = useGroupsQuery();
 
@@ -33,7 +34,7 @@ const GroupId: NextPage = () => {
   return (
     <HomeLayout>
       <Container>
-        <Paper sx={{ mt: 5, width: "100%" }}>
+        <Paper sx={{ mt: 5, width: "100%", background: "#2B2B2B" }}>
           <FlexVCenter
             sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
           >
@@ -59,6 +60,7 @@ const GroupId: NextPage = () => {
               />
             )}
           </FlexVCenter>
+          {query.tabId && <GroupTabContent tabId={query.tabId} />}
         </Paper>
       </Container>
     </HomeLayout>

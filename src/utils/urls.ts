@@ -2,7 +2,7 @@ const urls = {
   pages: {
     groupdId: (groupId: string) => `/group/${groupId}`,
     groupTab: (groupId: string, tabId: string) =>
-      `/group/${groupId}?tab=${tabId}`,
+      `/group/${groupId}?tabId=${tabId}`,
   },
   api: {
     register: "/auth/register",
@@ -15,6 +15,7 @@ const urls = {
     groupMemberId: (groupdId: string, memberId: string) =>
       `/group/${groupdId}/members/${memberId}`,
     groupTab: (groupId: string) => `/group/${groupId}/tab`,
+    tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
 
     userSearch: (query: string) => `/user/search?q=${query}`,
   },

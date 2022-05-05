@@ -4,6 +4,7 @@ const queryKeys = {
   userSearchResults: "userSearchResults",
 
   groupTabs: (groupId: string) => `/group/${groupId}/tabs`,
+  tabIdeas: (tabId: string) => `/tab/${tabId}/ideas`,
 };
 
 export default queryKeys;
