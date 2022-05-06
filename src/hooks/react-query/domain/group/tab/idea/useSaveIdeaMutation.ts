@@ -4,6 +4,7 @@ import pushOrReplace from "@/utils/array/pushOrReplace";
 import myAxios from "@/utils/axios/myAxios";
 import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
+import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 const useSaveIdeaMutation = () => {
@@ -36,8 +37,8 @@ const useSaveIdeaMutation = () => {
 
         setSuccessMessage("Idea saved!");
       },
-      onError: (err) => {
-        setErrorMessage(JSON.stringify(err));
+      onError: (err: AxiosError<string>) => {
+        setErrorMessage(err?.response?.statusText || "Error saving idea");
       },
     }
   );

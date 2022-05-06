@@ -1,9 +1,10 @@
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import TabDto from "@/types/domain/group/tab/TabDto";
 import urls from "@/utils/urls";
-import { Box, Tab, Tooltip, Typography } from "@mui/material";
-import Link from "next/link";
+import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import GroupTabItem from "./GroupTabItem/GroupTabItem";
 import S from "./styles";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const GroupTabs = (props: Props) => {
+  const { authUser } = useAuthStore();
   const [tabIndex, setTabIndex] = useState<number>();
 
   const router = useRouter();
@@ -49,28 +51,8 @@ const GroupTabs = (props: Props) => {
         variant="scrollable"
         scrollButtons="auto"
       >
-        {props.tabs.map((tab, index) => (
-          <Link href={urls.pages.groupTab(props.groupId, tab.id)}>
-            <a style={{ color: "inherit" }}>
-              <Tooltip title={tab.name}>
-                <Tab
-                  key={tab.id}
-                  sx={{
-                    maxWidth: {
-                      xs: 100,
-                      md: 150,
-                      lg: 200,
-                    },
-                  }}
-                  label={
-                    <Typography noWrap sx={{ maxWidth: "100%" }}>
-                      {tab.name}
-                    </Typography>
-                  }
-                />
-              </Tooltip>
-            </a>
-          </Link>
+        {props.tabs.map((tab) => (
+          <GroupTabItem key={tab.id} groupId={props.groupId} tab={tab} />
         ))}
       </S.Tabs>
     </Box>

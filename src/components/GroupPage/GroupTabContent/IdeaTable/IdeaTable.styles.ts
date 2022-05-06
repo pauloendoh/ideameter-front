@@ -4,7 +4,7 @@ const S = {
   Table: styled(Table)`
     td,
     th {
-      padding: 12px;
+      padding: 8px;
     }
   `,
   TableHead: styled(TableHead)`

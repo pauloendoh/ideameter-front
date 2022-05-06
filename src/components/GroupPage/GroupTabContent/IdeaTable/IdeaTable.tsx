@@ -1,11 +1,11 @@
 import useOtherMembersQueryUtils from "@/hooks/react-query/domain/group-members/useOtherMembersQueryUtils";
-import useRatingsByGroupQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsByGroupQuery";
+import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import S from "./IdeaTable.styles";
-import RatingInput from "./RatingInput/RatingInput";
+import IdeaTableRow from "./IdeaTableRow/IdeaTableRow";
 
 interface Props {
   ideas: IdeaDto[];
@@ -17,39 +17,11 @@ const IdeaTable = (props: Props) => {
 
   const otherMembers = useOtherMembersQueryUtils(query.groupId);
 
-  const { data: groupRatings } = useRatingsByGroupQuery(query.groupId);
+  const { data: groupRatings } = useGroupRatingsQuery(query.groupId);
 
-  const getUserRatingString = useCallback(
-    (userId: string, ideaId: string) => {
-      if (!groupRatings) return "";
-      const userRating = groupRatings.find(
-        (r) => r.ideaId === ideaId && r.userId === userId
-      );
-
-      if (!userRating) return "";
-      if (userRating.rating === null) return "-";
-      return userRating.rating.toString();
-    },
-    [groupRatings]
-  );
-
-  const getAvgIdeaRating = useCallback(
-    (ideaId: string) => {
-      if (!groupRatings) return null;
-      const ideaRatings = groupRatings.filter((r) => r.ideaId === ideaId);
-      if (ideaRatings.length === 0) return null;
-
-      const validRatings = ideaRatings.filter((r) => r.rating !== null);
-      const sum = validRatings.reduce(
-        (partialSum, r) => partialSum + (r.rating || 0),
-        0
-      );
-
-      if (sum === 0) return null;
-      return sum / validRatings.length;
-    },
-    [groupRatings]
-  );
+  const sortedIdeas = useMemo(() => {
+    return props.ideas.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  }, [props.ideas]);
 
   return (
     <TableContainer sx={{ maxHeight: 440 }}>
@@ -78,31 +50,8 @@ const IdeaTable = (props: Props) => {
         </S.TableHead>
 
         <TableBody>
-          {props.ideas.map((idea, index) => (
-            <TableRow key={index}>
-              <TableCell align="center">{index + 1}</TableCell>
-              <TableCell>{idea.name}</TableCell>
-              <TableCell
-                align="center"
-                sx={{
-                  background:
-                    Number(getAvgIdeaRating(idea.id)) >= 2.5
-                      ? "#232323"
-                      : undefined,
-                }}
-              >
-                {getAvgIdeaRating(idea.id)}
-              </TableCell>
-              <TableCell align="center">
-                <RatingInput idea={idea} groupId={query.groupId} />
-              </TableCell>
-              {otherMembers.map((member) => (
-                <TableCell key={member.userId} align="center">
-                  {getUserRatingString(member.userId, idea.id)}
-                </TableCell>
-              ))}
-              <TableCell></TableCell>
-            </TableRow>
+          {sortedIdeas.map((idea, index) => (
+            <IdeaTableRow idea={idea} rowNumber={index + 1} />
           ))}
         </TableBody>
       </S.Table>

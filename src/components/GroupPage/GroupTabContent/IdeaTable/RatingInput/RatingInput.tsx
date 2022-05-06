@@ -1,10 +1,10 @@
 import useDeleteRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useDeleteRatingMutation";
-import useRatingsByGroupQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsByGroupQuery";
+import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { newRatingDto } from "@/types/domain/group/tab/idea/rating/RatingDto";
-import { MenuItem, Select } from "@mui/material";
+import { Badge, MenuItem, Select } from "@mui/material";
 import React, { useMemo } from "react";
 
 interface Props {
@@ -16,7 +16,10 @@ const RatingInput = (props: Props) => {
   const { authUser } = useAuthStore();
   const saveRatingMutation = useSaveRatingMutation();
   const deleteRatingMutation = useDeleteRatingMutation();
-  const { data: groupRatings } = useRatingsByGroupQuery(props.groupId);
+  const { data: groupRatings } = useGroupRatingsQuery(props.groupId);
+
+  const isLoading =
+    saveRatingMutation.isLoading || deleteRatingMutation.isLoading;
 
   const currentRating = useMemo(() => {
     if (!groupRatings) return -1;
@@ -48,19 +51,28 @@ const RatingInput = (props: Props) => {
   };
 
   return (
-    <Select
-      size="small"
-      value={currentRating}
-      sx={{ width: 50 }}
-      onChange={(e) => handleChange(e.target.value as number)}
-    >
-      {/* invisible character to avoid small height */}
-      <MenuItem value={-1}>⠀</MenuItem>
-      <MenuItem value={0}>-</MenuItem>
-      <MenuItem value={3}>3</MenuItem>
-      <MenuItem value={2}>2</MenuItem>
-      <MenuItem value={1}>1</MenuItem>
-    </Select>
+    <Badge color="error" variant={currentRating === -1 ? "dot" : "standard"}>
+      <Select
+        disabled={isLoading}
+        size="small"
+        value={currentRating}
+        sx={{ width: 50 }}
+        onChange={(e) => {
+          e.stopPropagation();
+          handleChange(e.target.value as number);
+        }}
+        MenuProps={{
+          onClick: (e) => e.stopPropagation(),
+        }}
+      >
+        {/* invisible character to avoid small height */}
+        <MenuItem value={-1}>⠀</MenuItem>
+        <MenuItem value={0}>-</MenuItem>
+        <MenuItem value={3}>3</MenuItem>
+        <MenuItem value={2}>2</MenuItem>
+        <MenuItem value={1}>1</MenuItem>
+      </Select>
+    </Badge>
   );
 };
 
