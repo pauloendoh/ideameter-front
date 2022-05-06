@@ -9,7 +9,7 @@ const S = {
   `,
   TableHead: styled(TableHead)`
     th {
-      background-color: unset;
+      background-color: #2b2b2b;
       font-weight: bold;
     }
   `,
