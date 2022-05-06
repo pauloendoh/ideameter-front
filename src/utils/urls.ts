@@ -16,10 +16,14 @@ const urls = {
     groupMemberId: (groupdId: string, memberId: string) =>
       `/group/${groupdId}/members/${memberId}`,
     groupTab: (groupId: string) => `/group/${groupId}/tab`,
+    groupRatings: (groupId: string) => `/group/${groupId}/ratings`,
+    groupLabels: (groupId: string) => `/group/${groupId}/labels`,
+
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
 
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
-    ratingsByGroup: (groupId: string) => `/group/${groupId}/ratings`,
+
+    labelId: (labelId: string) => `/labels/${labelId}`,
 
     userSearch: (query: string) => `/user/search?q=${query}`,
   },

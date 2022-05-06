@@ -1,3 +1,5 @@
+import LabelDto from "@/types/domain/label/LabelDto";
+
 export default interface IdeaDto {
   id: string;
   createdAt: string;
@@ -6,6 +8,8 @@ export default interface IdeaDto {
   tabId: string | null;
   name: string;
   description: string;
+
+  labels: LabelDto[];
 }
 
 export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
@@ -16,5 +20,6 @@ export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   tabId: "",
   name: "",
   description: "",
+  labels: [],
   ...partial,
 });

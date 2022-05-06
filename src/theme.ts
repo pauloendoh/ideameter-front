@@ -53,9 +53,9 @@ const theme = createTheme({
     },
     MuiTooltip: {
       styleOverrides: {
-        arrow: { color: "#292929" },
+        arrow: { color: "#151515" },
         tooltip: {
-          backgroundColor: "#292929",
+          backgroundColor: "#151515",
         },
       },
     },

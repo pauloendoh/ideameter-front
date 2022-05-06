@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 const useGroupRatingsQuery = (groupId: string) => {
   const query = useQuery(queryKeys.ratingsByGroup(groupId), () =>
     myAxios
-      .get<RatingDto[]>(urls.api.ratingsByGroup(groupId))
+      .get<RatingDto[]>(urls.api.groupRatings(groupId))
       .then((res) => res.data)
   );
   return query;

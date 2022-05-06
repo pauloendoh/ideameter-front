@@ -16,6 +16,7 @@ import {
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
+import IdeaDialogSelectedLabels from "./IdeaDialogSelectedLabels/IdeaDialogSelectedLabels";
 
 const ariaLabel = "idea-dialog";
 
@@ -25,9 +26,10 @@ const IdeaDialog = () => {
   const saveIdeaMutation = useSaveIdeaMutation();
   const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore();
 
-  const { watch, control, register, handleSubmit, reset } = useForm<IdeaDto>({
-    defaultValues: initialValue,
-  });
+  const { watch, control, setValue, register, handleSubmit, reset } =
+    useForm<IdeaDto>({
+      defaultValues: initialValue,
+    });
 
   useEffect(() => {
     if (dialogIsOpen) {
@@ -79,6 +81,13 @@ const IdeaDialog = () => {
                     size="small"
                     label="Idea"
                     fullWidth
+                    multiline
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        onSubmit(watch());
+                      }
+                    }}
                     required
                     {...field}
                     inputRef={inputRef}
@@ -86,10 +95,24 @@ const IdeaDialog = () => {
                 )}
               />
 
+              <IdeaDialogSelectedLabels
+                idea={watch()}
+                onChangeSelectedLabels={(labels) => {
+                  setValue("labels", labels);
+                }}
+              />
+
               <MyTextField
                 id="description"
                 size="small"
                 label="Description"
+                multiline
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    onSubmit(watch());
+                  }
+                }}
                 fullWidth
                 {...register("description")}
               />

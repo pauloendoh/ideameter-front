@@ -8,7 +8,7 @@ interface IGroupDialogStore {
   close: () => void;
 }
 
-const useConfirmDialogStore = create<IGroupDialogStore>((set, get) => ({
+const useGroupDialogStore = create<IGroupDialogStore>((set, get) => ({
   initialValue: newGroupDto(),
   isOpen: false,
   openDialog: (initialValue) => {
@@ -17,4 +17,4 @@ const useConfirmDialogStore = create<IGroupDialogStore>((set, get) => ({
   close: () => set({ isOpen: false }),
 }));
 
-export default useConfirmDialogStore;
+export default useGroupDialogStore;

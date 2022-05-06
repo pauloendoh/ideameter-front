@@ -1,10 +1,13 @@
+import Flex from "@/components/_common/flexboxes/Flex";
+import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import useOtherMembersQueryUtils from "@/hooks/react-query/domain/group-members/useOtherMembersQueryUtils";
 import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import { TableCell, TableRow } from "@mui/material";
+import { Box, TableCell, TableRow, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
+import { MdDescription } from "react-icons/md";
 import RatingInput from "../RatingInput/RatingInput";
 
 interface Props {
@@ -58,7 +61,43 @@ const IdeaTableRow = (props: Props) => {
       onClick={() => openDialog(props.idea)}
     >
       <TableCell align="center">{props.rowNumber}</TableCell>
-      <TableCell>{props.idea.name}</TableCell>
+      <TableCell>
+        <FlexCol style={{ gap: 8 }}>
+          {props.idea?.labels?.length > 0 && (
+            <Flex style={{ flexWrap: "wrap", gap: 4 }}>
+              {props.idea.labels.map((label) => (
+                <div
+                  key={label.id}
+                  style={{
+                    background: label.bgColor,
+                    padding: "2px 4px",
+                    borderRadius: 4,
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {label.name}
+                </div>
+              ))}
+            </Flex>
+          )}
+          <Box style={{ display: "inline-flex" }}>
+            <span>
+              {props.idea.name}
+
+              {props.idea.description.length > 0 && (
+                <Tooltip title={props.idea.description}>
+                  <span>
+                    <MdDescription
+                      style={{ position: "relative", top: 2, left: 8 }}
+                    />
+                  </span>
+                </Tooltip>
+              )}
+            </span>
+          </Box>
+        </FlexCol>
+      </TableCell>
       <TableCell
         align="center"
         sx={{

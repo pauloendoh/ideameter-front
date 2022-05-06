@@ -56,7 +56,7 @@ const GroupTabItem = (props: Props) => {
               badgeContent={notRatedCount}
               componentsProps={{
                 badge: {
-                  style: { right: -8 },
+                  style: { right: -4 },
                   title: `You have ${notRatedCount} ideas to rate`,
                 },
               }}
