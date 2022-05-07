@@ -113,7 +113,6 @@ const IdeaDialog = () => {
                     size="small"
                     label="Description"
                     multiline
-                    minRows={4}
                     onKeyDown={(e) => {
                       if (e.shiftKey && e.key === "Enter") {
                         return;
