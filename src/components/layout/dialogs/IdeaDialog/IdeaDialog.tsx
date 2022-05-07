@@ -34,7 +34,6 @@ const IdeaDialog = () => {
   useEffect(() => {
     if (dialogIsOpen) {
       reset(initialValue);
-
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
@@ -74,8 +73,8 @@ const IdeaDialog = () => {
           <DialogContent>
             <FlexCol pt={1} sx={{ gap: 2 }}>
               <Controller
-                control={control}
                 name="name"
+                control={control}
                 render={({ field }) => (
                   <MyTextField
                     size="small"
@@ -83,6 +82,9 @@ const IdeaDialog = () => {
                     fullWidth
                     multiline
                     onKeyDown={(e) => {
+                      if (e.shiftKey && e.key === "Enter") {
+                        return;
+                      }
                       if (e.key === "Enter") {
                         e.preventDefault();
                         onSubmit(watch());
@@ -102,19 +104,30 @@ const IdeaDialog = () => {
                 }}
               />
 
-              <MyTextField
-                id="description"
-                size="small"
-                label="Description"
-                multiline
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    onSubmit(watch());
-                  }
-                }}
-                fullWidth
-                {...register("description")}
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <MyTextField
+                    id="description"
+                    size="small"
+                    label="Description"
+                    multiline
+                    minRows={4}
+                    onKeyDown={(e) => {
+                      if (e.shiftKey && e.key === "Enter") {
+                        return;
+                      }
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        onSubmit(watch());
+                        return;
+                      }
+                    }}
+                    {...field}
+                    fullWidth
+                  />
+                )}
               />
             </FlexCol>
           </DialogContent>

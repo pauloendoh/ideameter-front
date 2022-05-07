@@ -1,9 +1,8 @@
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import useOtherMembersQueryUtils from "@/hooks/react-query/domain/group-members/useOtherMembersQueryUtils";
 import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
+import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { Box, TableCell, TableRow, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
@@ -11,7 +10,7 @@ import { MdDescription } from "react-icons/md";
 import RatingInput from "../RatingInput/RatingInput";
 
 interface Props {
-  idea: IdeaDto;
+  ideaRating: IdeaRating;
   rowNumber: number;
 }
 
@@ -19,7 +18,6 @@ const IdeaTableRow = (props: Props) => {
   const router = useRouter();
   const { openDialog } = useIdeaDialogStore();
   const query = router.query as { groupId: string };
-  const otherMembers = useOtherMembersQueryUtils(query.groupId);
   const { data: groupRatings } = useGroupRatingsQuery(query.groupId);
 
   const getUserRatingString = useCallback(
@@ -58,14 +56,14 @@ const IdeaTableRow = (props: Props) => {
     <TableRow
       hover
       sx={{ ":hover": { cursor: "pointer" } }}
-      onClick={() => openDialog(props.idea)}
+      onClick={() => openDialog(props.ideaRating.idea)}
     >
       <TableCell align="center">{props.rowNumber}</TableCell>
       <TableCell>
         <FlexCol style={{ gap: 8 }}>
-          {props.idea?.labels?.length > 0 && (
+          {props.ideaRating.idea.labels?.length > 0 && (
             <Flex style={{ flexWrap: "wrap", gap: 4 }}>
-              {props.idea.labels.map((label) => (
+              {props.ideaRating.idea.labels.map((label) => (
                 <div
                   key={label.id}
                   style={{
@@ -83,10 +81,10 @@ const IdeaTableRow = (props: Props) => {
           )}
           <Box style={{ display: "inline-flex" }}>
             <span>
-              {props.idea.name}
+              {props.ideaRating.idea.name}
 
-              {props.idea.description.length > 0 && (
-                <Tooltip title={props.idea.description}>
+              {props.ideaRating.idea.description.length > 0 && (
+                <Tooltip title={props.ideaRating.idea.description}>
                   <span>
                     <MdDescription
                       style={{ position: "relative", top: 2, left: 8 }}
@@ -102,21 +100,20 @@ const IdeaTableRow = (props: Props) => {
         align="center"
         sx={{
           background:
-            Number(getAvgIdeaRating(props.idea.id)) >= 2.5
-              ? "#232323"
-              : undefined,
+            Number(props.ideaRating.avgRating) >= 2.5 ? "#232323" : undefined,
         }}
       >
-        {getAvgIdeaRating(props.idea.id)}
+        {props.ideaRating.avgRating}
       </TableCell>
       <TableCell align="center">
-        <RatingInput idea={props.idea} groupId={query.groupId} />
+        <RatingInput idea={props.ideaRating.idea} groupId={query.groupId} />
       </TableCell>
-      {otherMembers.map((member) => (
-        <TableCell key={member.userId} align="center">
-          {getUserRatingString(member.userId, props.idea.id)}
+      {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
+        <TableCell key={JSON.stringify(userGroupRating)} align="center">
+          {userGroupRating.rating}
         </TableCell>
       ))}
+
       <TableCell></TableCell>
     </TableRow>
   );

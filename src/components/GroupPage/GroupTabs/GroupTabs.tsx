@@ -14,14 +14,15 @@ interface Props {
 
 const GroupTabs = (props: Props) => {
   const { authUser } = useAuthStore();
-  const [tabIndex, setTabIndex] = useState<number>();
+  const [tabIndex, setTabIndex] = useState(0);
 
   const router = useRouter();
   const query = router.query as { tabId?: string };
 
   useEffect(() => {
     if (query.tabId) {
-      setTabIndex(props.tabs.findIndex((tab) => tab.id === query.tabId));
+      const index = props.tabs.findIndex((tab) => tab.id === query.tabId);
+      if (index !== -1) setTabIndex(index);
       return;
     }
 

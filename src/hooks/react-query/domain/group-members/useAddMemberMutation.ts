@@ -1,9 +1,9 @@
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import GroupMemberDto from "@/types/domain/group/GroupMemberDto";
-import pushOrReplace from "@/utils/array/pushOrReplace";
+import UserGroupDto from "@/types/domain/group/UserGroupDto";
 import myAxios from "@/utils/axios/myAxios";
 import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
+import { produce } from "immer";
 import { useMutation, useQueryClient } from "react-query";
 
 const useAddMemberMutation = () => {
@@ -14,21 +14,27 @@ const useAddMemberMutation = () => {
   return useMutation(
     (params: { groupId: string; memberId: string }) =>
       myAxios
-        .post<GroupMemberDto>(
+        .post<UserGroupDto>(
           urls.api.groupMemberId(params.groupId, params.memberId)
         )
         .then((res) => res.data),
     {
       onSuccess: (newMember, params) => {
-        const groupMembers = queryClient.getQueryData<GroupMemberDto[]>(
+        const groupUsers = queryClient.getQueryData<UserGroupDto[]>(
           queryKeys.groupMembers(params.groupId)
         );
 
-        const newGroupMembers = pushOrReplace(groupMembers, newMember, "id");
+        const newGroupUsers = produce(groupUsers, (draft) => {
+          if (!draft) draft = [newMember];
+          const index = draft.findIndex((ug) => ug.userId === newMember.userId);
+          if (index === -1) draft.push(newMember);
+          else draft[index] = newMember;
+          return draft;
+        });
 
         queryClient.setQueryData(
           queryKeys.groupMembers(params.groupId),
-          newGroupMembers
+          newGroupUsers
         );
         setSuccessMessage("Member added!");
       },

@@ -1,3 +1,4 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
 import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
@@ -6,6 +7,7 @@ import urls from "@/utils/urls";
 import { Badge, Tab, Typography } from "@mui/material";
 import Link from "next/link";
 import React, { useMemo } from "react";
+import TabMenuOptions from "./TabMenuOptions/TabMenuOptions";
 
 interface Props {
   groupId: string;
@@ -56,14 +58,25 @@ const GroupTabItem = (props: Props) => {
               badgeContent={notRatedCount}
               componentsProps={{
                 badge: {
-                  style: { right: -4 },
                   title: `You have ${notRatedCount} ideas to rate`,
                 },
               }}
             >
-              <Typography noWrap sx={{ maxWidth: "100%" }}>
-                {props.tab.name}
-              </Typography>
+              <FlexVCenter>
+                <TabMenuOptions tab={props.tab} />
+                <Typography
+                  noWrap
+                  sx={{
+                    maxWidth: {
+                      xs: 100 - 48,
+                      md: 150 - 48,
+                      lg: 200 - 48,
+                    },
+                  }}
+                >
+                  {props.tab.name}
+                </Typography>
+              </FlexVCenter>
             </Badge>
           }
         />

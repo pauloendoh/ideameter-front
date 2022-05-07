@@ -7,7 +7,14 @@ import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabs
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery";
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore";
 import { newTabDto } from "@/types/domain/group/tab/TabDto";
-import { Container, IconButton, Paper, Tooltip } from "@mui/material";
+import {
+  Box,
+  Container,
+  IconButton,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -34,34 +41,37 @@ const GroupId: NextPage = () => {
   return (
     <HomeLayout>
       <Container>
-        <Paper sx={{ mt: 5, width: "100%", background: "#2B2B2B" }}>
-          <FlexVCenter
-            sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
-          >
-            <FlexVCenter>
-              <Tooltip title="Add tab">
-                <IconButton
-                  onClick={() =>
-                    openDialog(newTabDto({ groupId: query.groupId }))
-                  }
-                >
-                  <MdAdd />
-                </IconButton>
-              </Tooltip>
+        {selectedGroup && (
+          <Box sx={{ mt: 5 }}>
+            <Typography variant="h5">{selectedGroup.name}</Typography>
+            <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
+              <FlexVCenter
+                sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
+              >
+                <FlexVCenter>
+                  <Tooltip title="Add tab">
+                    <IconButton
+                      onClick={() =>
+                        openDialog(newTabDto({ groupId: query.groupId }))
+                      }
+                    >
+                      <MdAdd />
+                    </IconButton>
+                  </Tooltip>
 
-              <GroupTabs groupId={query.groupId} tabs={sortedGroupTabs} />
-            </FlexVCenter>
+                  <GroupTabs groupId={query.groupId} tabs={sortedGroupTabs} />
+                </FlexVCenter>
 
-            {selectedGroup && (
-              <GroupMoreIcon
-                group={selectedGroup}
-                onAfterDelete={() => {}}
-                canEdit
-              />
-            )}
-          </FlexVCenter>
-          {query.tabId && <GroupTabContent tabId={query.tabId} />}
-        </Paper>
+                <GroupMoreIcon
+                  group={selectedGroup}
+                  onAfterDelete={() => {}}
+                  canEdit
+                />
+              </FlexVCenter>
+              {query.tabId && <GroupTabContent tabId={query.tabId} />}
+            </Paper>
+          </Box>
+        )}
       </Container>
     </HomeLayout>
   );

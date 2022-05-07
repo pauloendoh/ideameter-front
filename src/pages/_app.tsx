@@ -35,8 +35,8 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <EmotionCacheProvider value={emotionCache}>
+    <EmotionCacheProvider value={emotionCache}>
+      <QueryClientProvider client={queryClient}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
@@ -50,7 +50,7 @@ export default function MyApp(props: MyAppProps) {
 
           <SnackbarWrapper />
         </ThemeProvider>
-      </EmotionCacheProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </EmotionCacheProvider>
   );
 }

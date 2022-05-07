@@ -1,5 +1,4 @@
-export default interface GroupMemberDto {
-  id: string;
+export default interface UserGroupDto {
   userId: string;
   groupId: string;
   createdAt: string;
