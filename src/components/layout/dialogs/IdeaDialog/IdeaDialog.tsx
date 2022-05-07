@@ -81,15 +81,8 @@ const IdeaDialog = () => {
                     label="Idea"
                     fullWidth
                     multiline
-                    onKeyDown={(e) => {
-                      if (e.shiftKey && e.key === "Enter") {
-                        return;
-                      }
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        onSubmit(watch());
-                      }
-                    }}
+                    minRows={2}
+                    onCtrlEnter={() => onSubmit(watch())}
                     required
                     {...field}
                     inputRef={inputRef}
@@ -113,16 +106,8 @@ const IdeaDialog = () => {
                     size="small"
                     label="Description"
                     multiline
-                    onKeyDown={(e) => {
-                      if (e.shiftKey && e.key === "Enter") {
-                        return;
-                      }
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        onSubmit(watch());
-                        return;
-                      }
-                    }}
+                    minRows={3}
+                    onCtrlEnter={() => onSubmit(watch())}
                     {...field}
                     fullWidth
                   />

@@ -7,7 +7,8 @@ import TabDto from "@/types/domain/group/tab/TabDto";
 import { Menu, MenuItem, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
-import { MdArrowDropDown, MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
+import S from "./TabMenuOptions.styles";
 
 interface Props {
   tab: TabDto;
@@ -50,7 +51,7 @@ const TabMenuOptions = (props: Props) => {
 
   return (
     <div>
-      <MdArrowDropDown
+      <S.MdArrowDropDown
         onClick={(e) => handleClick(e)}
         style={{ width: 24, height: 24 }}
       />

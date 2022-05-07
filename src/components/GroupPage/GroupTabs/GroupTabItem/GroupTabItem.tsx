@@ -62,7 +62,7 @@ const GroupTabItem = (props: Props) => {
                 },
               }}
             >
-              <FlexVCenter>
+              <FlexVCenter gap={0.5}>
                 <TabMenuOptions tab={props.tab} />
                 <Typography
                   noWrap

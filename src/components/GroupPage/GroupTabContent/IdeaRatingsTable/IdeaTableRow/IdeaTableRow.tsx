@@ -80,7 +80,7 @@ const IdeaTableRow = (props: Props) => {
             </Flex>
           )}
           <Box style={{ display: "inline-flex" }}>
-            <span>
+            <span style={{ whiteSpace: "break-spaces" }}>
               {props.ideaRating.idea.name}
 
               {props.ideaRating.idea.description.length > 0 && (
