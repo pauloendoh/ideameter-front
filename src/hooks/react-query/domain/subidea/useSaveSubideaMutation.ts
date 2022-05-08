@@ -1,18 +1,23 @@
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import pushOrReplace from "@/utils/array/pushOrReplace";
+import upsert from "@/utils/array/upsert";
 import myAxios from "@/utils/axios/myAxios";
 import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
+interface Variables {
+  subidea: IdeaDto;
+  groupId: string;
+}
+
 const useSaveSubideaMutation = () => {
   const queryClient = useQueryClient();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
 
   return useMutation(
-    (payload: IdeaDto) =>
+    ({ subidea: payload, groupId }: Variables) =>
       myAxios
         .request<IdeaDto>({
           url: urls.api.subideas(payload.parentId as string),
@@ -21,18 +26,19 @@ const useSaveSubideaMutation = () => {
         })
         .then((res) => res.data),
     {
-      onSuccess: (savedIdea) => {
-        if (savedIdea.parentId) {
-          const subideas = queryClient.getQueryData<IdeaDto[]>(
-            queryKeys.subideas(savedIdea.parentId)
+      onSuccess: (saved, { groupId }) => {
+        if (saved.parentId) {
+          const currentData = queryClient.getQueryData<IdeaDto[]>(
+            queryKeys.subideas(groupId)
           );
 
-          const newSubideas = pushOrReplace(subideas, savedIdea, "id");
-
-          queryClient.setQueryData(
-            queryKeys.subideas(savedIdea.parentId),
-            newSubideas
+          const newSubideas = upsert(
+            currentData,
+            saved,
+            (oldItem) => oldItem.id === saved.id
           );
+
+          queryClient.setQueryData(queryKeys.subideas(groupId), newSubideas);
         }
 
         setSuccessMessage("Subidea saved!");

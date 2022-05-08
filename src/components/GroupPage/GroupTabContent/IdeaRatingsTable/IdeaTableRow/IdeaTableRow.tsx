@@ -1,12 +1,12 @@
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import { Box, TableCell, TableRow, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import { MdDescription } from "react-icons/md";
+import HighestSubideaInfo from "../HighestSubideaInfo/HighestSubideaInfo";
 import RatingInput from "../RatingInput/RatingInput";
 
 interface Props {
@@ -18,38 +18,10 @@ const IdeaTableRow = (props: Props) => {
   const router = useRouter();
   const { openDialog } = useIdeaDialogStore();
   const query = router.query as { groupId: string };
-  const { data: groupRatings } = useRatingsQuery(query.groupId);
 
-  const getUserRatingString = useCallback(
-    (userId: string, ideaId: string) => {
-      if (!groupRatings) return "";
-      const userRating = groupRatings.find(
-        (r) => r.ideaId === ideaId && r.userId === userId
-      );
-
-      if (!userRating) return "";
-      if (userRating.rating === null) return "-";
-      return userRating.rating.toString();
-    },
-    [groupRatings]
-  );
-
-  const getAvgIdeaRating = useCallback(
-    (ideaId: string) => {
-      if (!groupRatings) return null;
-      const ideaRatings = groupRatings.filter((r) => r.ideaId === ideaId);
-      if (ideaRatings.length === 0) return null;
-
-      const validRatings = ideaRatings.filter((r) => r.rating !== null);
-      const sum = validRatings.reduce(
-        (partialSum, r) => partialSum + (r.rating || 0),
-        0
-      );
-
-      if (sum === 0) return null;
-      return sum / validRatings.length;
-    },
-    [groupRatings]
+  const hasSubideas = useMemo(
+    () => props.ideaRating.subideas.length > 0,
+    [props.ideaRating.subideas]
   );
 
   return (
@@ -80,7 +52,12 @@ const IdeaTableRow = (props: Props) => {
             </Flex>
           )}
           <Box style={{ display: "inline-flex" }}>
-            <span style={{ whiteSpace: "break-spaces" }}>
+            <span
+              style={{
+                whiteSpace: "break-spaces",
+                fontWeight: hasSubideas ? "bold" : undefined,
+              }}
+            >
               {props.ideaRating.idea.name}
 
               {props.ideaRating.idea.description.length > 0 && (
@@ -94,6 +71,10 @@ const IdeaTableRow = (props: Props) => {
               )}
             </span>
           </Box>
+
+          {hasSubideas && (
+            <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
+          )}
         </FlexCol>
       </TableCell>
       <TableCell

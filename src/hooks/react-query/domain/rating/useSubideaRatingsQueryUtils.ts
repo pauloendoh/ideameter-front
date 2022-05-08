@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils";
 import useRatingsQuery from "../group/tab/idea/rating/useRatingsQuery";
 import { IdeaRating } from "../group/useIdeaRatingsQueryUtils";
-import useSubideasQuery from "../subidea/useSubideasQuery";
+import useSubideasQueryUtils from "../subidea/useSubideasQueryUtils";
 
 const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
   const { authUser } = useAuthStore();
@@ -14,8 +14,10 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
 
   const otherMembers = useOtherMembersQueryUtils(groupId);
 
-  const { data: subideas, isLoading: loadingSubideas } =
-    useSubideasQuery(parentId);
+  const { data: subideas, isLoading: loadingSubideas } = useSubideasQueryUtils(
+    groupId,
+    { ideaId: parentId }
+  );
 
   const isLoading = loadingSubideas || loadingRatings;
 
@@ -42,6 +44,7 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
 
     const results: IdeaRating[] = subideas.map((idea) => ({
       idea,
+      subideas: [],
       yourRating:
         ratings.find((r) => r.userId === authUser.id && r.ideaId === idea.id)
           ?.rating || null,

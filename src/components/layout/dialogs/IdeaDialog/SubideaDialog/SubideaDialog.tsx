@@ -12,6 +12,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
@@ -26,6 +27,7 @@ interface Props {
 
 const SubideaDialog = (props: Props) => {
   const inputRef = useRef<HTMLDivElement>(null);
+  const query = useRouter().query as { groupId: string };
 
   const saveMutation = useSaveSubideaMutation();
 
@@ -43,11 +45,14 @@ const SubideaDialog = (props: Props) => {
   }, [props.open]);
 
   const onSubmit = (values: IdeaDto) => {
-    saveMutation.mutate(values, {
-      onSuccess: (savedTab) => {
-        props.onClose();
-      },
-    });
+    saveMutation.mutate(
+      { subidea: values, groupId: query.groupId },
+      {
+        onSuccess: (savedTab) => {
+          props.onClose();
+        },
+      }
+    );
   };
 
   return (

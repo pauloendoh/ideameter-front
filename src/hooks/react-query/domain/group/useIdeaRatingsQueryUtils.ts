@@ -3,11 +3,13 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import UserGroupDto from "@/types/domain/group/UserGroupDto";
 import { useCallback, useMemo } from "react";
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils";
+import useSubideasQuery from "../subidea/useSubideasQuery";
 import useRatingsQuery from "./tab/idea/rating/useRatingsQuery";
 import useTabIdeasQuery from "./tab/idea/useTabIdeasQuery";
 
 export interface IdeaRating {
   idea: IdeaDto;
+  subideas: IdeaDto[];
   avgRating: number | null;
   yourRating: number | null;
   otherUserGroupRatings: { userGroup: UserGroupDto; rating: number | null }[];
@@ -18,6 +20,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { data: tabIdeas } = useTabIdeasQuery(tabId);
   const otherMembers = useOtherMembersQueryUtils(groupId);
   const { data: groupRatings } = useRatingsQuery(groupId);
+  const { data: subideas } = useSubideasQuery(groupId);
 
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {
@@ -42,6 +45,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
 
     const results: IdeaRating[] = tabIdeas.map((idea) => ({
       idea,
+      subideas: subideas?.filter((s) => s.parentId === idea.id) || [],
       yourRating:
         groupRatings.find(
           (gr) => gr.userId === authUser.id && gr.ideaId === idea.id
@@ -58,7 +62,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
     }));
 
     return results;
-  }, [authUser, tabIdeas, otherMembers, groupRatings]);
+  }, [authUser, tabIdeas, subideas, otherMembers, groupRatings]);
 
   return ideaRatings;
 };

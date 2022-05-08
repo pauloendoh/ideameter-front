@@ -4,11 +4,10 @@ import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
 import { useQuery } from "react-query";
 
-const useSubideasQuery = (parentId: string) => {
-  const query = useQuery(queryKeys.subideas(parentId), () =>
-    myAxios.get<IdeaDto[]>(urls.api.subideas(parentId)).then((res) => res.data)
+const useSubideasQuery = (groupId: string) => {
+  return useQuery(queryKeys.subideas(groupId), () =>
+    myAxios.get<IdeaDto[]>(urls.api.subideas(groupId)).then((res) => res.data)
   );
-  return query;
 };
 
 export default useSubideasQuery;
