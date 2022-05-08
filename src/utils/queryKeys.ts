@@ -8,7 +8,13 @@ const queryKeys = {
 
   ratingsByGroup: (groupId: string) => `/idea-rating?groupId=${groupId}`,
 
-  subideas: (parentId: string) => ["idea", parentId, "subideas"],
+  subideas: (parentId: string) => ["ideas", parentId, "subideas"],
+  subideaRatings: (parentId: string) => [
+    "ideas",
+    parentId,
+    "subideas",
+    "ratings",
+  ],
 };
 
 export default queryKeys;

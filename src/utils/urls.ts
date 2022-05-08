@@ -23,6 +23,7 @@ const urls = {
     subideas: (parentId: string) => `/subideas?parentId=${parentId}`,
 
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
+    subideaRatings: (parentId: string) => `/ratings?parentId=${parentId}`,
 
     labelId: (labelId: string) => `/labels/${labelId}`,
 

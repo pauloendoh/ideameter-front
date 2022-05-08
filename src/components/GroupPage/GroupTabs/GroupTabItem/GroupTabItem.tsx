@@ -1,5 +1,5 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
+import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery";
 import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import TabDto from "@/types/domain/group/tab/TabDto";
@@ -16,7 +16,7 @@ interface Props {
 
 const GroupTabItem = (props: Props) => {
   const { authUser } = useAuthStore();
-  const { data: groupRatings } = useGroupRatingsQuery(props.groupId);
+  const { data: groupRatings } = useRatingsQuery(props.groupId);
   const { data: tabIdeas } = useTabIdeasQuery(props.tab.id);
 
   const notRatedCount = useMemo(() => {

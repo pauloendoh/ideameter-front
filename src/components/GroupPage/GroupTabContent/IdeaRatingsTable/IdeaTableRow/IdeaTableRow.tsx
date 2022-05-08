@@ -1,6 +1,6 @@
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
+import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import { Box, TableCell, TableRow, Tooltip } from "@mui/material";
@@ -18,7 +18,7 @@ const IdeaTableRow = (props: Props) => {
   const router = useRouter();
   const { openDialog } = useIdeaDialogStore();
   const query = router.query as { groupId: string };
-  const { data: groupRatings } = useGroupRatingsQuery(query.groupId);
+  const { data: groupRatings } = useRatingsQuery(query.groupId);
 
   const getUserRatingString = useCallback(
     (userId: string, ideaId: string) => {
@@ -106,7 +106,11 @@ const IdeaTableRow = (props: Props) => {
         {props.ideaRating.avgRating}
       </TableCell>
       <TableCell align="center">
-        <RatingInput idea={props.ideaRating.idea} groupId={query.groupId} />
+        <RatingInput
+          idea={props.ideaRating.idea}
+          groupId={query.groupId}
+          parentId={props.ideaRating.idea.parentId}
+        />
       </TableCell>
       {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
         <TableCell key={JSON.stringify(userGroupRating)} align="center">

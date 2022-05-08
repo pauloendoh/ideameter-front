@@ -3,7 +3,7 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import UserGroupDto from "@/types/domain/group/UserGroupDto";
 import { useCallback, useMemo } from "react";
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils";
-import useGroupRatingsQuery from "./tab/idea/rating/useGroupRatingsQuery";
+import useRatingsQuery from "./tab/idea/rating/useRatingsQuery";
 import useTabIdeasQuery from "./tab/idea/useTabIdeasQuery";
 
 export interface IdeaRating {
@@ -17,7 +17,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { authUser } = useAuthStore();
   const { data: tabIdeas } = useTabIdeasQuery(tabId);
   const otherMembers = useOtherMembersQueryUtils(groupId);
-  const { data: groupRatings } = useGroupRatingsQuery(groupId);
+  const { data: groupRatings } = useRatingsQuery(groupId);
 
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {

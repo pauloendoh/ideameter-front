@@ -11,7 +11,13 @@ const useSaveRatingMutation = () => {
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
 
   return useMutation(
-    ({ payload }: { payload: RatingDto; groupId: string }) =>
+    ({
+      payload,
+    }: {
+      payload: RatingDto;
+      groupId: string;
+      parentIdeaId?: string;
+    }) =>
       myAxios
         .request<RatingDto>({
           url: urls.api.ideaRating(payload.ideaId),
@@ -20,15 +26,18 @@ const useSaveRatingMutation = () => {
         })
         .then((res) => res.data),
     {
-      onSuccess: (savedRating, variables) => {
+      onSuccess: (savedRating, { groupId, parentIdeaId }) => {
+        if (parentIdeaId) {
+          queryClient.invalidateQueries(queryKeys.subideaRatings(parentIdeaId));
+          return;
+        }
+
         const groupRatings = queryClient.getQueryData<RatingDto[]>(
-          queryKeys.ratingsByGroup(variables.groupId)
+          queryKeys.ratingsByGroup(groupId)
         );
-
         const newGroupRatinsg = pushOrReplace(groupRatings, savedRating, "id");
-
         queryClient.setQueryData(
-          queryKeys.ratingsByGroup(variables.groupId),
+          queryKeys.ratingsByGroup(groupId),
           newGroupRatinsg
         );
       },

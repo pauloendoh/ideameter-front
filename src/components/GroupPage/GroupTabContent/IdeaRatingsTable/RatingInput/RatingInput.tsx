@@ -1,5 +1,5 @@
 import useDeleteRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useDeleteRatingMutation";
-import useGroupRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useGroupRatingsQuery";
+import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery";
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
@@ -10,13 +10,14 @@ import React, { useMemo } from "react";
 interface Props {
   idea: IdeaDto;
   groupId: string;
+  parentId?: string;
 }
 
 const RatingInput = (props: Props) => {
   const { authUser } = useAuthStore();
   const saveRatingMutation = useSaveRatingMutation();
   const deleteRatingMutation = useDeleteRatingMutation();
-  const { data: groupRatings } = useGroupRatingsQuery(props.groupId);
+  const { data: groupRatings } = useRatingsQuery(props.groupId, props.parentId);
 
   const isLoading =
     saveRatingMutation.isLoading || deleteRatingMutation.isLoading;
@@ -47,6 +48,7 @@ const RatingInput = (props: Props) => {
     saveRatingMutation.mutate({
       payload: newRatingDto(props.idea.id, valueToSave),
       groupId: props.groupId,
+      parentIdeaId: props.idea.parentId,
     });
   };
 
