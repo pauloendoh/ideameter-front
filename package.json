@@ -16,6 +16,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@types/react-linkify": "^1.0.1",
     "axios": "^0.27.2",
     "immer": "^9.0.12",
     "next": "latest",
@@ -24,6 +25,7 @@
     "react-dom": "latest",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
+    "react-linkify": "^1.0.0-alpha",
     "react-query": "^3.38.1",
     "usehooks-ts": "^2.5.2",
     "zustand": "^4.0.0-rc.1"

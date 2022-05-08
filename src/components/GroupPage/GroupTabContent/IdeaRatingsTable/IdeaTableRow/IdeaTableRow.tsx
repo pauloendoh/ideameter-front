@@ -1,5 +1,6 @@
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
+import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import { Box, TableCell, TableRow, Tooltip } from "@mui/material";
@@ -58,7 +59,9 @@ const IdeaTableRow = (props: Props) => {
                 fontWeight: hasSubideas ? "bold" : undefined,
               }}
             >
-              {props.ideaRating.idea.name}
+              <MyReactLinkify openNewTab stopPropagation>
+                {props.ideaRating.idea.name}
+              </MyReactLinkify>
 
               {props.ideaRating.idea.description.length > 0 && (
                 <Tooltip title={props.ideaRating.idea.description}>
