@@ -5,6 +5,10 @@ const S = {
     & .MuiTab-root {
       opacity: 100%;
     }
+
+    button {
+      padding: 12px 16px 12px 0px;
+    }
   `,
 };
 
