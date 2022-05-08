@@ -20,7 +20,8 @@ const HighestSubideaInfo = (props: Props) => {
     return sorted[0];
   }, [data]);
 
-  if (data.length === 0) return null;
+  if (data.length === 0 || highestSubideaRating?.avgRating === null)
+    return null;
 
   return (
     <Box sx={{ fontStyle: "italic" }}>

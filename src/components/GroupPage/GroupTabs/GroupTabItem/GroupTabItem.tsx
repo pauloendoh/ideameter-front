@@ -72,6 +72,7 @@ const GroupTabItem = (props: Props) => {
                       md: 150 - 48,
                       lg: 200 - 48,
                     },
+                    fontSize: 14,
                   }}
                 >
                   {props.tab.name}
