@@ -42,7 +42,6 @@ const TabDialog = () => {
   }, [dialogIsOpen]);
 
   const onSubmit = (values: TabDto) => {
-    console.log(values);
     saveTabMutation.mutate(values, {
       onSuccess: (savedTab) => {
         closeDialog();

@@ -6,6 +6,8 @@ export default interface IdeaDto {
   updatedAt: string;
   creatorId: string;
   tabId: string | null;
+
+  parentId?: string;
   name: string;
   description: string;
 

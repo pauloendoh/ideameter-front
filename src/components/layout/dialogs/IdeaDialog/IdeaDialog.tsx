@@ -1,10 +1,11 @@
+import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import MyTextField from "@/components/_common/inputs/MyTextField";
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
+import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto";
 import {
   Box,
   Dialog,
@@ -13,10 +14,12 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
 import IdeaDialogSelectedLabels from "./IdeaDialogSelectedLabels/IdeaDialogSelectedLabels";
+import SubideaDialog from "./SubideaDialog/SubideaDialog";
+import SubideasTable from "./SubideasTable/SubideasTable";
 
 const ariaLabel = "idea-dialog";
 
@@ -26,6 +29,11 @@ const IdeaDialog = () => {
   const saveIdeaMutation = useSaveIdeaMutation();
   const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore();
 
+  const [subideaDialogOpen, setSubideaDialogOpen] = useState(false);
+  const [subideaDialogInitialValue, setSubideaDialogInitialValue] = useState(
+    newIdeaDto({ id: initialValue.id as string })
+  );
+
   const { watch, control, setValue, register, handleSubmit, reset } =
     useForm<IdeaDto>({
       defaultValues: initialValue,
@@ -33,6 +41,7 @@ const IdeaDialog = () => {
 
   useEffect(() => {
     if (dialogIsOpen) {
+      setSubideaDialogOpen(false);
       reset(initialValue);
       setTimeout(() => {
         inputRef.current?.focus();
@@ -114,6 +123,28 @@ const IdeaDialog = () => {
                 )}
               />
             </FlexCol>
+
+            {watch("id") && (
+              <FlexCol mt={2}>
+                <DarkButton
+                  sx={{ width: 150 }}
+                  onClick={() => {
+                    setSubideaDialogOpen(true);
+                    setSubideaDialogInitialValue(
+                      newIdeaDto({ parentId: watch("id") })
+                    );
+                  }}
+                >
+                  Create subideas
+                </DarkButton>
+                <SubideaDialog
+                  initialValue={subideaDialogInitialValue}
+                  open={subideaDialogOpen}
+                  onClose={() => setSubideaDialogOpen(false)}
+                />
+                <SubideasTable parentId={watch("id")} />
+              </FlexCol>
+            )}
           </DialogContent>
 
           <DialogTitle>

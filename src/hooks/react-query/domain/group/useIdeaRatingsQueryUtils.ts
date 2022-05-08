@@ -60,7 +60,6 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
     return results;
   }, [authUser, tabIdeas, otherMembers, groupRatings]);
 
-  console.log(ideaRatings);
   return ideaRatings;
 };
 

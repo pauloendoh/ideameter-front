@@ -7,6 +7,8 @@ const queryKeys = {
   tabIdeas: (tabId: string) => `/tab/${tabId}/ideas`,
 
   ratingsByGroup: (groupId: string) => `/idea-rating?groupId=${groupId}`,
+
+  subideas: (parentId: string) => ["idea", parentId, "subideas"],
 };
 
 export default queryKeys;

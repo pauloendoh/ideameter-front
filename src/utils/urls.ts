@@ -20,6 +20,7 @@ const urls = {
     groupLabels: (groupId: string) => `/group/${groupId}/labels`,
 
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
+    subideas: (parentId: string) => `/subideas?parentId=${parentId}`,
 
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
 

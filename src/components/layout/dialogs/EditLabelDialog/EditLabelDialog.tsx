@@ -53,7 +53,6 @@ const EditLabelDialog = () => {
   }, [dialogIsOpen]);
 
   const onSubmit = (values: LabelDto) => {
-    console.log(values);
     saveTabMutation.mutate(values, {
       onSuccess: (saved) => {
         closeDialog();
