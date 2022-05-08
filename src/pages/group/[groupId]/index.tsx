@@ -21,9 +21,10 @@ import { useMemo } from "react";
 import { MdAdd } from "react-icons/md";
 
 const GroupId: NextPage = () => {
-  const query = useRouter().query as { groupId: string; tabId?: string };
-  const { openDialog } = useTabDialogStore();
   const { data: groups } = useGroupsQuery();
+  const { openDialog } = useTabDialogStore();
+
+  const query = useRouter().query as { groupId: string; tabId?: string };
 
   const selectedGroup = useMemo(() => {
     if (!groups) return undefined;
@@ -48,7 +49,7 @@ const GroupId: NextPage = () => {
               <FlexVCenter
                 sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
               >
-                <FlexVCenter>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="Add tab">
                     <IconButton
                       onClick={() =>
@@ -60,7 +61,7 @@ const GroupId: NextPage = () => {
                   </Tooltip>
 
                   <GroupTabs groupId={query.groupId} tabs={sortedGroupTabs} />
-                </FlexVCenter>
+                </div>
 
                 <GroupMoreIcon
                   group={selectedGroup}

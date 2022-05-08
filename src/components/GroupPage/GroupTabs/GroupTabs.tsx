@@ -38,10 +38,11 @@ const GroupTabs = (props: Props) => {
     <Box
       sx={{
         maxWidth: {
+          // https://mui.com/material-ui/customization/breakpoints/
           xs: 320,
-          md: 400,
-          lg: 500,
-          xl: 600,
+          sm: 400,
+          md: 700,
+          lg: 1000,
         },
       }}
     >
