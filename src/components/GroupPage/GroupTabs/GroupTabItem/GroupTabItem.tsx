@@ -6,7 +6,7 @@ import TabDto from "@/types/domain/group/tab/TabDto";
 import urls from "@/utils/urls";
 import { Badge, Tab, Typography } from "@mui/material";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import TabMenuOptions from "./TabMenuOptions/TabMenuOptions";
 
 interface Props {
@@ -40,7 +40,7 @@ const GroupTabItem = (props: Props) => {
 
   return (
     <Link href={urls.pages.groupTab(props.groupId, props.tab.id)}>
-      <a style={{ color: "inherit" }}>
+      <a style={{ color: "inherit", textDecoration: "none" }}>
         <Tab
           key={props.tab.id}
           title={props.tab.name}
