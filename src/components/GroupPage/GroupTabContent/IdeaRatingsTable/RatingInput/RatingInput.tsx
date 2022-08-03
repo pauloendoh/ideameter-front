@@ -5,7 +5,7 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { newRatingDto } from "@/types/domain/group/tab/idea/rating/RatingDto";
 import { Badge, MenuItem, Select } from "@mui/material";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 interface Props {
   idea: IdeaDto;
@@ -58,7 +58,7 @@ const RatingInput = (props: Props) => {
         disabled={isLoading}
         size="small"
         value={currentRating}
-        sx={{ width: 50 }}
+        sx={{ width: 56 }}
         onChange={(e) => {
           e.stopPropagation();
           handleChange(e.target.value as number);
