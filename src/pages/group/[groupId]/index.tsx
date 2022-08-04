@@ -1,11 +1,13 @@
 import GroupTabContent from "@/components/GroupPage/GroupTabContent/GroupTabContent";
 import GroupTabs from "@/components/GroupPage/GroupTabs/GroupTabs";
+import SearchRow from "@/components/GroupPage/SearchRow/SearchRow";
 import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon";
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery";
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery";
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore";
+import { resetGroupFilterStore } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import { newTabDto } from "@/types/domain/group/tab/TabDto";
 import {
   Box,
@@ -17,7 +19,7 @@ import {
 } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { MdAdd } from "react-icons/md";
 
 const GroupId: NextPage = () => {
@@ -38,6 +40,10 @@ const GroupId: NextPage = () => {
     () => groupTabs?.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1)) || [],
     [groupTabs]
   );
+
+  useEffect(() => {
+    resetGroupFilterStore();
+  }, [query.groupId]);
 
   return (
     <HomeLayout>
@@ -69,6 +75,8 @@ const GroupId: NextPage = () => {
                   canEdit
                 />
               </FlexVCenter>
+
+              <SearchRow />
               {query.tabId && <GroupTabContent tabId={query.tabId} />}
             </Paper>
           </Box>

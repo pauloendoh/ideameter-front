@@ -1,3 +1,4 @@
+import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import UserGroupDto from "@/types/domain/group/UserGroupDto";
@@ -22,6 +23,10 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { data: groupRatings } = useRatingsQuery(groupId);
   const { data: subideas } = useSubideasQuery(groupId);
 
+  const selectedLabelIds = useGroupFilterStore(
+    (state) => state.filter.labelIds
+  );
+
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {
       if (!groupRatings) return null;
@@ -43,7 +48,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const ideaRatings = useMemo(() => {
     if (!tabIdeas || !groupRatings || !authUser) return [];
 
-    const results: IdeaRating[] = tabIdeas.map((idea) => ({
+    let results: IdeaRating[] = tabIdeas.map((idea) => ({
       idea,
       subideas: subideas?.filter((s) => s.parentId === idea.id) || [],
       yourRating:
@@ -61,8 +66,21 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       })),
     }));
 
+    if (selectedLabelIds.length > 0)
+      results = results.filter((r) => {
+        const labelIds = r.idea.labels.map((l) => l.id);
+        return selectedLabelIds.every((id) => labelIds.includes(id));
+      });
+
     return results;
-  }, [authUser, tabIdeas, subideas, otherMembers, groupRatings]);
+  }, [
+    authUser,
+    tabIdeas,
+    subideas,
+    otherMembers,
+    groupRatings,
+    selectedLabelIds,
+  ]);
 
   return ideaRatings;
 };
