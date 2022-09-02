@@ -4,7 +4,7 @@ import MyTextField from "@/components/_common/inputs/MyTextField";
 import useAddMemberMutation from "@/hooks/react-query/domain/group-members/useAddMemberMutation";
 import useSearchUsersQuery from "@/hooks/react-query/domain/user/useSearchUsersQuery";
 import useDebounce from "@/hooks/utils/useDebounce";
-import UserSearchResultDto from "@/types/domain/user/UserSearchResultDto";
+import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
 import {
   Autocomplete,
   Dialog,
@@ -28,15 +28,14 @@ const AddMemberDialog = (props: Props) => {
   const MIN_LENGTH = 3;
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [value, setValue] = useState<UserSearchResultDto | null>(null);
+  const [value, setValue] = useState<SimpleUserDto | null>(null);
 
   const addMemberMutation = useAddMemberMutation();
   const debouncedSearchQuery = useDebounce(searchQuery, 200);
-  const {
-    data: userResults,
-    refetch,
-    isFetching,
-  } = useSearchUsersQuery(debouncedSearchQuery, MIN_LENGTH);
+  const { data: userResults, refetch, isFetching } = useSearchUsersQuery(
+    debouncedSearchQuery,
+    MIN_LENGTH
+  );
 
   useEffect(() => {
     if (searchQuery === debouncedSearchQuery) refetch();

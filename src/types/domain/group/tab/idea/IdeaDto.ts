@@ -13,6 +13,11 @@ export default interface IdeaDto {
   isDone: boolean;
 
   labels: LabelDto[];
+  assignedUsers: {
+    id: string;
+    username: string;
+    email: string;
+  }[];
 }
 
 export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
@@ -25,5 +30,6 @@ export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   description: "",
   isDone: false,
   labels: [],
+  assignedUsers: [],
   ...partial,
 });

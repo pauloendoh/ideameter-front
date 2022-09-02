@@ -22,7 +22,10 @@ const IdeaRatingsTable = (props: Props) => {
   const router = useRouter();
   const query = router.query as { groupId: string };
 
-  const hidingDone = useGroupFilterStore((s) => s.filter.hidingDone);
+  const [hidingDone, filteringUsers] = useGroupFilterStore((s) => [
+    s.filter.hidingDone,
+    s.filter.users,
+  ]);
 
   const visibleIdeaRatings = useMemo(() => {
     let result = [...props.ideaRatings];
@@ -30,10 +33,25 @@ const IdeaRatingsTable = (props: Props) => {
       Number(a.avgRating) > Number(b.avgRating) ? -1 : 1
     );
 
-    if (hidingDone) result = result.filter((r) => !r.idea.isDone);
+    result = result.filter((r) => {
+      if (hidingDone && r.idea.isDone) return false;
+
+      if (filteringUsers.length > 0) {
+        const filteringIds = filteringUsers.map((u) => u.id);
+        const currentUserIds = r.idea.assignedUsers.map((u) => u.id);
+        if (
+          !filteringIds.every((filteringId) =>
+            currentUserIds.includes(filteringId)
+          )
+        )
+          return false;
+      }
+
+      return true;
+    });
 
     return result;
-  }, [props.ideaRatings, hidingDone]);
+  }, [props.ideaRatings, hidingDone, filteringUsers]);
 
   if (props.ideaRatings.length === 0) return <div></div>;
 

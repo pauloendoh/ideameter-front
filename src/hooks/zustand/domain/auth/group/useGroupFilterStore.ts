@@ -1,3 +1,4 @@
+import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
 import { pushOrRemove } from "utils/array/pushOrRemove";
 import create from "zustand";
 
@@ -7,6 +8,7 @@ interface IGroupFilterStore {
     byText: string;
     labelIds: string[];
     hidingDone: boolean;
+    users: SimpleUserDto[];
   };
 
   getFilterCount: () => number;
@@ -16,6 +18,8 @@ interface IGroupFilterStore {
 
   setFilterByText: (text: string) => void;
   toggleHidingDone: () => void;
+
+  changeFilterUsers: (users: SimpleUserDto[]) => void;
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
@@ -23,6 +27,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     hidingDone: false,
     byText: "",
     labelIds: [],
+    users: [],
   },
 
   getFilterCount: () => {
@@ -75,6 +80,14 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
         hidingDone: !filter.hidingDone,
       },
     });
+  },
+  changeFilterUsers: (userIds) => {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        users: userIds,
+      },
+    }));
   },
 }));
 

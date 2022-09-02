@@ -4,7 +4,14 @@ import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLink
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import { Box, Checkbox, TableCell, TableRow, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Checkbox,
+  TableCell,
+  TableRow,
+  Tooltip,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { MdDescription } from "react-icons/md";
@@ -54,9 +61,10 @@ const IdeaTableRow = (props: Props) => {
               ))}
             </Flex>
           )}
-          <Box style={{ display: "inline-flex" }}>
+          <Box>
             <span
               style={{
+                display: "inline-flex",
                 whiteSpace: "break-spaces",
                 fontWeight: hasSubideas ? "bold" : undefined,
               }}
@@ -79,6 +87,19 @@ const IdeaTableRow = (props: Props) => {
 
           {hasSubideas && (
             <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
+          )}
+
+          {props.ideaRating.idea.assignedUsers?.length > 0 && (
+            <Flex gap={0.5} flexWrap="wrap">
+              {props.ideaRating.idea.assignedUsers.map((user) => (
+                <Avatar
+                  key={user.id}
+                  sx={{ width: 24, height: 24, fontSize: 14 }}
+                >
+                  {user.username[0].toUpperCase()}
+                </Avatar>
+              ))}
+            </Flex>
           )}
         </FlexCol>
       </TableCell>

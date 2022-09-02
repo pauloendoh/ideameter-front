@@ -1,4 +1,4 @@
-import UserSearchResultDto from "@/types/domain/user/UserSearchResultDto";
+import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
 import myAxios from "@/utils/axios/myAxios";
 import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
@@ -9,12 +9,12 @@ const useSearchUsersQuery = (query: string, minLength = 1) => {
     queryKeys.userSearchResults,
     async () => {
       if (query.length < minLength) {
-        return new Promise<UserSearchResultDto[]>((resolve) => {
+        return new Promise<SimpleUserDto[]>((resolve) => {
           resolve([]);
         });
       }
       return myAxios
-        .get<UserSearchResultDto[]>(urls.api.userSearch(query))
+        .get<SimpleUserDto[]>(urls.api.userSearch(query))
         .then((res) => res.data);
     },
 

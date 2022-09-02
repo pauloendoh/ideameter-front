@@ -1,7 +1,7 @@
-import React from "react";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import EditLabelDialog from "../EditLabelDialog/EditLabelDialog";
 import GroupDialog from "../GroupDialog/GroupDialog";
+import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog";
 import IdeaDialog from "../IdeaDialog/IdeaDialog";
 import TabDialog from "../TabDialog/TabDialog";
 
@@ -14,6 +14,8 @@ const GlobalDialogs = () => {
       <GroupDialog />
       <IdeaDialog />
       <EditLabelDialog />
+
+      <IdeaAssignDialog />
     </>
   );
 };
