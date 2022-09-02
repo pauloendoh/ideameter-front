@@ -5,8 +5,9 @@ const S = {
     position: absolute;
     height: 100%;
     width: 8px;
-    border-radius: 4px 0px 0px 4px;
-    right: -20px;
+
+    border-radius: 0px 4px 4px 0px;
+    left: -20px;
     background: ${({ theme }) => theme.palette.primary.main};
   `,
 };

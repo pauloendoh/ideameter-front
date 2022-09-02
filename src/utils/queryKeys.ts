@@ -3,6 +3,7 @@ const queryKeys = {
   groupMembers: (groupId: string) => `/group/${groupId}/members`,
   userSearchResults: "userSearchResults",
 
+  groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
   groupTabs: (groupId: string) => `/group/${groupId}/tabs`,
   tabIdeas: (tabId: string) => `/tab/${tabId}/ideas`,
 

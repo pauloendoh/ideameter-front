@@ -1,6 +1,6 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import { Box } from "@mui/material";
 import FilterButton from "./FilterButton/FilterButton";
+import GroupSearchBar from "./GroupSearchBar/GroupSearchBar";
 
 interface Props {
   test?: string;
@@ -9,7 +9,7 @@ interface Props {
 const SearchRow = (props: Props) => {
   return (
     <FlexVCenter sx={{ justifyContent: "space-between", mx: 2, pb: 1 }}>
-      <Box> </Box>
+      <GroupSearchBar />
       <FilterButton />
     </FlexVCenter>
   );

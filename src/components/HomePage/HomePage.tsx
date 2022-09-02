@@ -1,9 +1,17 @@
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import React from "react";
+import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup";
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
+import { useEffect } from "react";
 import HomeLayout from "../layout/HomeLayout/HomeLayout";
 
 const HomePage = () => {
-  const { authUser } = useAuthStore();
+  const query = useRouterQueryString();
+
+  const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup();
+
+  useEffect(() => {
+    if (!query.groupId) checkAndRedirectLastOpenedGroup();
+  }, []);
+
   return <HomeLayout />;
 };
 

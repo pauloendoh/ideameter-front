@@ -5,6 +5,7 @@ export default interface GroupDto {
   name: string;
   description: string;
 
+  lastOpenedAt?: string;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -4,11 +4,16 @@ import SearchRow from "@/components/GroupPage/SearchRow/SearchRow";
 import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon";
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
+import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup";
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery";
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery";
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore";
 import { resetGroupFilterStore } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import { newTabDto } from "@/types/domain/group/tab/TabDto";
+import myAxios from "@/utils/axios/myAxios";
+import urls from "@/utils/urls";
 import {
   Box,
   Container,
@@ -18,7 +23,6 @@ import {
   Typography,
 } from "@mui/material";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { MdAdd } from "react-icons/md";
 
@@ -26,14 +30,25 @@ const GroupId: NextPage = () => {
   const { data: groups } = useGroupsQuery();
   const { openDialog } = useTabDialogStore();
 
-  const query = useRouter().query as { groupId: string; tabId?: string };
+  const query = useRouterQueryString();
+
+  const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage);
+  const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup();
 
   const selectedGroup = useMemo(() => {
     if (!groups) return undefined;
-    return groups.find((group) => group.id === query.groupId);
+
+    const foundGroup = groups.find((group) => group.id === query.groupId);
+    if (!foundGroup) {
+      setErrorMessage("Group not found. Redirecting to last opened group...");
+      checkAndRedirectLastOpenedGroup();
+      return undefined;
+    }
+
+    return foundGroup;
   }, [groups, query.groupId]);
 
-  const { data: groupTabs } = useGroupTabsQuery(query.groupId);
+  const { data: groupTabs } = useGroupTabsQuery(query.groupId!);
 
   // oldest first
   const sortedGroupTabs = useMemo(
@@ -41,8 +56,14 @@ const GroupId: NextPage = () => {
     [groupTabs]
   );
 
+  const updateLastOpenedGroupId = (groupId: string) => {
+    myAxios.put(urls.api.lastOpenedGroupId, { groupId });
+  };
+
   useEffect(() => {
     resetGroupFilterStore();
+
+    if (query.groupId) updateLastOpenedGroupId(query.groupId);
   }, [query.groupId]);
 
   return (
@@ -66,7 +87,7 @@ const GroupId: NextPage = () => {
                     </IconButton>
                   </Tooltip>
 
-                  <GroupTabs groupId={query.groupId} tabs={sortedGroupTabs} />
+                  <GroupTabs groupId={query.groupId!} tabs={sortedGroupTabs} />
                 </div>
 
                 <GroupMoreIcon

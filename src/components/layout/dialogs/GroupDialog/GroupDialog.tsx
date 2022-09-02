@@ -25,16 +25,17 @@ const GroupDialog = () => {
   const inputRef = useRef<HTMLDivElement>(null);
   const { mutate } = useSaveGroupMutation();
 
-  const { register, control, handleSubmit, reset, watch, setValue } =
-    useForm<GroupDto>({
-      defaultValues: initialValue,
-    });
+  const { register, control, handleSubmit, reset, watch, setValue } = useForm<
+    GroupDto
+  >({
+    defaultValues: initialValue,
+  });
 
   const onSubmit = (values: GroupDto) => {
     mutate(values, {
       onSuccess: (savedGroup) => {
         close();
-        router.push(urls.pages.groupdId(String(savedGroup.id)));
+        router.push(urls.pages.groupId(String(savedGroup.id)));
       },
     });
   };

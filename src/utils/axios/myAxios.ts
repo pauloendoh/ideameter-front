@@ -1,5 +1,6 @@
 import axios from "axios";
 import nookies from "nookies";
+import urls from "../urls";
 
 const myAxios = axios.create();
 myAxios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -18,7 +19,8 @@ myAxios.interceptors.response.use(
   },
   (error) => {
     // unauthenticated -> go to "/"
-    if (error?.response?.status === 401) window.location.reload();
+    if (error?.response?.status === 401)
+      window.location.href = urls.pages.index;
     return Promise.reject(error);
   }
 );

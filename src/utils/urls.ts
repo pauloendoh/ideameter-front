@@ -1,7 +1,7 @@
 const urls = {
   pages: {
     index: "/",
-    groupdId: (groupId: string) => `/group/${groupId}`,
+    groupId: (groupId: string) => `/group/${groupId}`,
     groupTab: (groupId: string, tabId: string) =>
       `/group/${groupId}?tabId=${tabId}`,
   },
@@ -19,6 +19,7 @@ const urls = {
     groupRatings: (groupId: string) => `/group/${groupId}/ratings`,
     groupLabels: (groupId: string) => `/group/${groupId}/labels`,
 
+    groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
     subideas: (groupId: string) => `/subideas?groupId=${groupId}`,
 
@@ -28,6 +29,8 @@ const urls = {
     labelId: (labelId: string) => `/labels/${labelId}`,
 
     userSearch: (query: string) => `/user/search?q=${query}`,
+
+    lastOpenedGroupId: `/me/lastOpenedGroupId`,
   },
 };
 

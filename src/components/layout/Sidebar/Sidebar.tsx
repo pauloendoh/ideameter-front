@@ -6,7 +6,7 @@ import urls from "@/utils/urls";
 import { Avatar, Drawer, IconButton, Toolbar, Tooltip } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { MdAdd } from "react-icons/md";
 import S from "./Sidebar.styles";
 
@@ -43,7 +43,7 @@ const Sidebar = () => {
       <Toolbar />
       <FlexCol sx={{ pt: 2, px: 2.5, gap: 2 }}>
         {sortedGroups.map((group) => (
-          <Link key={group.id} href={urls.pages.groupdId(String(group.id))}>
+          <Link key={group.id} href={urls.pages.groupId(String(group.id))}>
             <Tooltip title={group.name} placement="right">
               <a style={{ position: "relative" }}>
                 {query.groupId === group.id && <S.SelectedGroupLittleBar />}
