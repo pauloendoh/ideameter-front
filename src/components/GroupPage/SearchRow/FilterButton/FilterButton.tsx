@@ -1,7 +1,7 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery";
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
-import { Checkbox, Menu } from "@mui/material";
+import { Checkbox, Divider, Menu } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
@@ -24,7 +24,6 @@ const FilterButton = (props: Props) => {
     getFilterCount,
     labelIdIsInFilter,
     toggleFilterLabelId,
-    toggleFilterCurrentGoal,
     toggleHidingDone,
   } = useGroupFilterStore();
 
@@ -80,16 +79,17 @@ const FilterButton = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {/* <S.MenuItem onClick={toggleHidingDone}>
+        <S.MenuItem onClick={toggleHidingDone}>
           <Checkbox checked={filter.hidingDone} name="hiding-done" />
           <S.CheckboxLabel>Hide done</S.CheckboxLabel>
         </S.MenuItem>
+        {/*
         <S.MenuItem onClick={toggleFilterCurrentGoal}>
           <Checkbox checked={filter.currentGoal} name="current-goal" />
           <S.CheckboxLabel>With current goal</S.CheckboxLabel>
         </S.MenuItem> */}
 
-        {/* {sortedLabelsById.length > 0 && <Divider />} */}
+        {sortedLabelsById.length > 0 && <Divider />}
 
         {sortedLabelsById.map((label) => (
           <S.MenuItem

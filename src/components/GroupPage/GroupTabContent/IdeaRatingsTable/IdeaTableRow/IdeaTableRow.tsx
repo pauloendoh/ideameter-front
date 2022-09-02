@@ -1,11 +1,12 @@
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify";
+import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import { Box, TableCell, TableRow, Tooltip } from "@mui/material";
+import { Box, Checkbox, TableCell, TableRow, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { MdDescription } from "react-icons/md";
 import HighestSubideaInfo from "../HighestSubideaInfo/HighestSubideaInfo";
 import RatingInput from "../RatingInput/RatingInput";
@@ -20,10 +21,11 @@ const IdeaTableRow = (props: Props) => {
   const { openDialog } = useIdeaDialogStore();
   const query = router.query as { groupId: string };
 
-  const hasSubideas = useMemo(
-    () => props.ideaRating.subideas.length > 0,
-    [props.ideaRating.subideas]
-  );
+  const { mutate: submitSaveIdea } = useSaveIdeaMutation();
+
+  const hasSubideas = useMemo(() => props.ideaRating.subideas.length > 0, [
+    props.ideaRating.subideas,
+  ]);
 
   return (
     <TableRow
@@ -79,6 +81,19 @@ const IdeaTableRow = (props: Props) => {
             <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
           )}
         </FlexCol>
+      </TableCell>
+      <TableCell>
+        <Checkbox
+          checked={props.ideaRating.idea.isDone}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => {
+            submitSaveIdea({
+              ...props.ideaRating.idea,
+              isDone: e.target.checked,
+            });
+          }}
+          inputProps={{ "aria-label": "controlled" }}
+        />
       </TableCell>
       <TableCell
         align="center"

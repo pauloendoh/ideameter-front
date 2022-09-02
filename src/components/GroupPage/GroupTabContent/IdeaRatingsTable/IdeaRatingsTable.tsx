@@ -1,4 +1,5 @@
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
+import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import {
   Box,
   TableBody,
@@ -9,7 +10,7 @@ import {
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import S from "./IdeaTable.styles";
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow";
 
@@ -21,11 +22,18 @@ const IdeaRatingsTable = (props: Props) => {
   const router = useRouter();
   const query = router.query as { groupId: string };
 
-  const sortedIdeaRatings = useMemo(() => {
-    return props.ideaRatings.sort((a, b) =>
+  const hidingDone = useGroupFilterStore((s) => s.filter.hidingDone);
+
+  const visibleIdeaRatings = useMemo(() => {
+    let result = [...props.ideaRatings];
+    result = result.sort((a, b) =>
       Number(a.avgRating) > Number(b.avgRating) ? -1 : 1
     );
-  }, [props.ideaRatings]);
+
+    if (hidingDone) result = result.filter((r) => !r.idea.isDone);
+
+    return result;
+  }, [props.ideaRatings, hidingDone]);
 
   if (props.ideaRatings.length === 0) return <div></div>;
 
@@ -38,6 +46,7 @@ const IdeaRatingsTable = (props: Props) => {
               #
             </TableCell>
             <TableCell width="250px">Idea</TableCell>
+            <TableCell width="64px">Done</TableCell>
             <TableCell align="center" width="64px" sortDirection="desc">
               <TableSortLabel active direction="desc">
                 Avg
@@ -65,7 +74,7 @@ const IdeaRatingsTable = (props: Props) => {
         </S.TableHead>
 
         <TableBody>
-          {sortedIdeaRatings.map((ideaRating, index) => (
+          {visibleIdeaRatings.map((ideaRating, index) => (
             <IdeaTableRow
               key={ideaRating.idea.id}
               ideaRating={ideaRating}

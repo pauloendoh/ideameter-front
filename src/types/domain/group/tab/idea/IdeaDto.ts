@@ -10,6 +10,7 @@ export default interface IdeaDto {
   parentId?: string;
   name: string;
   description: string;
+  isDone: boolean;
 
   labels: LabelDto[];
 }
@@ -22,6 +23,7 @@ export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   tabId: "",
   name: "",
   description: "",
+  isDone: false,
   labels: [],
   ...partial,
 });

@@ -7,7 +7,6 @@ interface IGroupFilterStore {
     byText: string;
     labelIds: string[];
     hidingDone: boolean;
-    currentGoal: boolean;
   };
 
   getFilterCount: () => number;
@@ -17,7 +16,6 @@ interface IGroupFilterStore {
 
   setFilterByText: (text: string) => void;
   toggleHidingDone: () => void;
-  toggleFilterCurrentGoal: () => void;
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
@@ -25,14 +23,12 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     hidingDone: false,
     byText: "",
     labelIds: [],
-    currentGoal: false,
   },
 
   getFilterCount: () => {
-    const { labelIds, hidingDone, currentGoal } = get().filter;
+    const { labelIds, hidingDone } = get().filter;
     let count = labelIds.length;
     if (hidingDone) count++;
-    if (currentGoal) count++;
 
     return count;
   },
@@ -77,16 +73,6 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       filter: {
         ...filter,
         hidingDone: !filter.hidingDone,
-      },
-    });
-  },
-  toggleFilterCurrentGoal: () => {
-    const { filter } = get();
-
-    set({
-      filter: {
-        ...filter,
-        currentGoal: !filter.currentGoal,
       },
     });
   },
