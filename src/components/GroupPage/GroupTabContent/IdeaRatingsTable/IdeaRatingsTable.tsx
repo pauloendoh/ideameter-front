@@ -45,7 +45,7 @@ const IdeaRatingsTable = (props: Props) => {
             <TableCell align="center" width="64px">
               #
             </TableCell>
-            <TableCell width="250px">Idea</TableCell>
+            <TableCell width="360px">Idea</TableCell>
             <TableCell width="64px">Done</TableCell>
             <TableCell align="center" width="64px" sortDirection="desc">
               <TableSortLabel active direction="desc">
