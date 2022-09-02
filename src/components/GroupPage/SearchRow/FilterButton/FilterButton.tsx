@@ -1,4 +1,5 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery";
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import { Checkbox, Divider, Menu } from "@mui/material";
@@ -54,7 +55,7 @@ const FilterButton = (props: Props) => {
         // disabled={isDisabled}
       >
         Filter
-        {/* {getFilterCount() > 0 && (
+        {getFilterCount() > 0 && (
           <FlexVCenter
             style={{
               padding: "2px 8px",
@@ -64,9 +65,10 @@ const FilterButton = (props: Props) => {
               minHeight: 25,
             }}
           >
-            {isDisabled ? <MdClose /> : getFilterCount()}
+            {getFilterCount()}
+            {/* {isDisabled ? <MdClose /> : getFilterCount()} */}
           </FlexVCenter>
-        )} */}
+        )}
       </DarkButton>
 
       <Menu
