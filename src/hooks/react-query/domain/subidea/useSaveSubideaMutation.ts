@@ -17,12 +17,12 @@ const useSaveSubideaMutation = () => {
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
 
   return useMutation(
-    ({ subidea: payload, groupId }: Variables) =>
+    ({ subidea }: Variables) =>
       myAxios
         .request<IdeaDto>({
-          url: urls.api.subideas(payload.parentId as string),
-          data: payload,
-          method: payload.id ? "PUT" : "POST",
+          url: urls.api.subideas(subidea.parentId as string),
+          data: subidea,
+          method: subidea.id ? "PUT" : "POST",
         })
         .then((res) => res.data),
     {

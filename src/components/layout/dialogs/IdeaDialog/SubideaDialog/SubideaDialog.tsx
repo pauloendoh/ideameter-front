@@ -3,6 +3,7 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import MyTextField from "@/components/_common/inputs/MyTextField";
 import useSaveSubideaMutation from "@/hooks/react-query/domain/subidea/useSaveSubideaMutation";
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import {
   Box,
@@ -16,40 +17,37 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
+import SubideaMenu from "./SubideaMenu/SubideaMenu";
 
 const ariaLabel = "subidea-dialog";
 
-interface Props {
-  initialValue: IdeaDto;
-  open: boolean;
-  onClose: () => void;
-}
-
-const SubideaDialog = (props: Props) => {
+const SubideaDialog = () => {
   const inputRef = useRef<HTMLDivElement>(null);
   const query = useRouter().query as { groupId: string };
 
   const saveMutation = useSaveSubideaMutation();
 
+  const { initialValue, dialogIsOpen, closeDialog } = useSubideaDialogStore();
+
   const { watch, control, setValue, handleSubmit, reset } = useForm<IdeaDto>({
-    defaultValues: props.initialValue,
+    defaultValues: initialValue,
   });
 
   useEffect(() => {
-    if (props.open) {
-      reset(props.initialValue);
+    if (dialogIsOpen) {
+      reset(initialValue);
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
     }
-  }, [props.open]);
+  }, [dialogIsOpen]);
 
   const onSubmit = (values: IdeaDto) => {
     saveMutation.mutate(
       { subidea: values, groupId: query.groupId },
       {
         onSuccess: (savedTab) => {
-          props.onClose();
+          closeDialog();
         },
       }
     );
@@ -57,8 +55,8 @@ const SubideaDialog = (props: Props) => {
 
   return (
     <Dialog
-      open={props.open}
-      onClose={props.onClose}
+      open={dialogIsOpen}
+      onClose={closeDialog}
       fullWidth
       aria-labelledby={ariaLabel}
       PaperProps={{
@@ -75,9 +73,14 @@ const SubideaDialog = (props: Props) => {
                 {watch("id") ? "Edit Subidea" : "New Subidea"}
               </Typography>
 
-              <IconButton onClick={props.onClose}>
-                <MdClose />
-              </IconButton>
+              <FlexVCenter>
+                {watch("id") && (
+                  <SubideaMenu subidea={watch()} afterDelete={closeDialog} />
+                )}
+                <IconButton onClick={closeDialog}>
+                  <MdClose />
+                </IconButton>
+              </FlexVCenter>
             </FlexVCenter>
           </DialogTitle>
 
@@ -123,7 +126,7 @@ const SubideaDialog = (props: Props) => {
           <DialogTitle>
             <SaveCancelButtons
               disabled={saveMutation.isLoading}
-              onCancel={props.onClose}
+              onCancel={closeDialog}
             />
           </DialogTitle>
         </form>

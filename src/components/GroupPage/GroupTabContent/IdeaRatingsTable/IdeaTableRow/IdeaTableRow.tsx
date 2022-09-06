@@ -4,6 +4,7 @@ import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLink
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
 import {
   Avatar,
   Box,
@@ -25,7 +26,8 @@ interface Props {
 
 const IdeaTableRow = (props: Props) => {
   const router = useRouter();
-  const { openDialog } = useIdeaDialogStore();
+  const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog);
+  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog);
   const query = router.query as { groupId: string };
 
   const { mutate: submitSaveIdea } = useSaveIdeaMutation();
@@ -38,7 +40,14 @@ const IdeaTableRow = (props: Props) => {
     <TableRow
       hover
       sx={{ ":hover": { cursor: "pointer" } }}
-      onClick={() => openDialog(props.ideaRating.idea)}
+      onClick={() => {
+        if (props.ideaRating.idea.parentId) {
+          openSubideaDialog(props.ideaRating.idea);
+          return;
+        }
+
+        openIdeaDialog(props.ideaRating.idea);
+      }}
     >
       <TableCell align="center">{props.rowNumber}</TableCell>
       <TableCell>

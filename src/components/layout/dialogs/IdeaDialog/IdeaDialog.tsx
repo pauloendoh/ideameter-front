@@ -7,6 +7,7 @@ import MyTextField from "@/components/_common/inputs/MyTextField";
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
 import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
 import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto";
 import {
   Avatar,
@@ -18,12 +19,12 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdClose, MdOutlineAdd } from "react-icons/md";
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol";
 import IdeaDialogSelectedLabels from "./IdeaDialogSelectedLabels/IdeaDialogSelectedLabels";
-import SubideaDialog from "./SubideaDialog/SubideaDialog";
+import IdeaMenu from "./IdeaMenu/IdeaMenu";
 import SubideasTable from "./SubideasTable/SubideasTable";
 
 const ariaLabel = "idea-dialog";
@@ -37,10 +38,7 @@ const IdeaDialog = () => {
 
   const openAssignDialog = useIdeaAssignmentStore((s) => s.openDialog);
 
-  const [subideaDialogOpen, setSubideaDialogOpen] = useState(false);
-  const [subideaDialogInitialValue, setSubideaDialogInitialValue] = useState(
-    newIdeaDto({ id: initialValue.id as string })
-  );
+  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog);
 
   const { watch, control, setValue, register, handleSubmit, reset } = useForm<
     IdeaDto
@@ -50,7 +48,6 @@ const IdeaDialog = () => {
 
   useEffect(() => {
     if (dialogIsOpen) {
-      setSubideaDialogOpen(false);
       reset(initialValue);
       setTimeout(() => {
         inputRef.current?.focus();
@@ -82,9 +79,12 @@ const IdeaDialog = () => {
                 {watch("id") ? "Edit Idea" : "New Idea"}
               </Typography>
 
-              <IconButton onClick={closeDialog}>
-                <MdClose />
-              </IconButton>
+              <FlexVCenter>
+                <IdeaMenu idea={watch()} afterDelete={closeDialog} />
+                <IconButton onClick={closeDialog}>
+                  <MdClose />
+                </IconButton>
+              </FlexVCenter>
             </FlexVCenter>
           </DialogTitle>
 
@@ -165,19 +165,12 @@ const IdeaDialog = () => {
                 <DarkButton
                   sx={{ width: 150 }}
                   onClick={() => {
-                    setSubideaDialogOpen(true);
-                    setSubideaDialogInitialValue(
-                      newIdeaDto({ parentId: watch("id") })
-                    );
+                    openSubideaDialog(newIdeaDto({ parentId: watch("id") }));
                   }}
                 >
                   Create subideas
                 </DarkButton>
-                <SubideaDialog
-                  initialValue={subideaDialogInitialValue}
-                  open={subideaDialogOpen}
-                  onClose={() => setSubideaDialogOpen(false)}
-                />
+
                 <SubideasTable parentId={watch("id")} />
               </FlexCol>
             )}

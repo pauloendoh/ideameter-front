@@ -22,7 +22,9 @@ const urls = {
     groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
     subideas: (groupId: string) => `/subideas?groupId=${groupId}`,
+    subideaId: (id: string) => `/subideas/${id}`,
 
+    ideaId: (ideaId: string) => `/idea/${ideaId}`,
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
     subideaRatings: (parentId: string) => `/ratings?parentId=${parentId}`,
 
