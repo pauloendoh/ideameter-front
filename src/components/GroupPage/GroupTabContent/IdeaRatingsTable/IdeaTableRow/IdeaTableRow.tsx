@@ -18,6 +18,7 @@ import { useMemo } from "react";
 import { MdDescription } from "react-icons/md";
 import HighestSubideaInfo from "../HighestSubideaInfo/HighestSubideaInfo";
 import RatingInput from "../RatingInput/RatingInput";
+import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell";
 
 interface Props {
   ideaRating: IdeaRating;
@@ -125,15 +126,7 @@ const IdeaTableRow = (props: Props) => {
           inputProps={{ "aria-label": "controlled" }}
         />
       </TableCell>
-      <TableCell
-        align="center"
-        sx={{
-          background:
-            Number(props.ideaRating.avgRating) >= 2.5 ? "#232323" : undefined,
-        }}
-      >
-        {props.ideaRating.avgRating}
-      </TableCell>
+      <AvgRatingTableCell ideaRating={props.ideaRating} />
       <TableCell align="center">
         <RatingInput
           idea={props.ideaRating.idea}

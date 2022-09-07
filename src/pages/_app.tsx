@@ -2,12 +2,15 @@ import GlobalDialogs from "@/components/layout/dialogs/GlobalDialogs/GlobalDialo
 import LoadingPage from "@/components/layout/LoadingPage/LoadingPage";
 import SnackbarWrapper from "@/components/layout/SnackbarWrapper/SnackbarWrapper";
 import useCheckAuthOrLogout from "@/hooks/domain/auth/useCheckAuthOrLogout";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+
 import {
   CacheProvider as EmotionCacheProvider,
   EmotionCache,
 } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -41,13 +44,14 @@ export default function MyApp(props: MyAppProps) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
+          <LocalizationProvider dateAdapter={AdapterLuxon}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
 
-          {loading ? <LoadingPage /> : <Component {...pageProps} />}
-          <GlobalDialogs />
-          <ReactQueryDevtools initialIsOpen={false} />
-
+            {loading ? <LoadingPage /> : <Component {...pageProps} />}
+            <GlobalDialogs />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </LocalizationProvider>
           <SnackbarWrapper />
         </ThemeProvider>
       </QueryClientProvider>

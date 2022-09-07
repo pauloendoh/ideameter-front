@@ -1,5 +1,4 @@
 import useDeleteIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useDeleteIdeaMutation";
-import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { IconButton, Menu, MenuItem } from "@mui/material";
@@ -20,7 +19,6 @@ const IdeaMenu = (props: Props) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const { groupId } = useRouterQueryString();
   const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog);
   const { mutate: submitDeleteIdea } = useDeleteIdeaMutation();
 

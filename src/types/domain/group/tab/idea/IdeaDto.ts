@@ -11,6 +11,7 @@ export default interface IdeaDto {
   name: string;
   description: string;
   isDone: boolean;
+  onFireSince: string | null;
 
   labels: LabelDto[];
   assignedUsers: {
@@ -29,6 +30,8 @@ export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   name: "",
   description: "",
   isDone: false,
+  onFireSince: null,
+
   labels: [],
   assignedUsers: [],
   ...partial,

@@ -10,15 +10,18 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "dependencies": {
+    "@date-io/luxon": "^2.15.0",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@mui/x-date-pickers": "^5.0.0",
     "@types/react-linkify": "^1.0.1",
     "axios": "^0.27.2",
     "immer": "^9.0.12",
+    "luxon": "^3.0.3",
     "next": "latest",
     "nookies": "^2.5.2",
     "react": "^18.1.0",
@@ -31,6 +34,7 @@
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
+    "@types/luxon": "^3.0.1",
     "@types/node": "latest",
     "@types/react": "^18.0.8",
     "eslint": "latest",

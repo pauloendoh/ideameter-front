@@ -1,3 +1,5 @@
+import type {} from "@mui/x-date-pickers/themeAugmentation";
+
 import { createTheme } from "@mui/material/styles";
 
 // Create a theme instance.
