@@ -7,6 +7,7 @@ export const getOnFireSinceFormat = (onFireSince: string | null) => {
     const diffObj = dtOnFireSince.diffNow("days").toObject();
     if (diffObj.days && diffObj.days < 0) {
       const days = Math.floor(Math.abs(diffObj.days));
+      if (days === 0) return "'Today'";
       return `'${days}d ago'`;
     }
   }
