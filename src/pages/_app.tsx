@@ -1,4 +1,3 @@
-import GlobalDialogs from "@/components/layout/dialogs/GlobalDialogs/GlobalDialogs";
 import LoadingPage from "@/components/layout/LoadingPage/LoadingPage";
 import SnackbarWrapper from "@/components/layout/SnackbarWrapper/SnackbarWrapper";
 import useCheckAuthOrLogout from "@/hooks/domain/auth/useCheckAuthOrLogout";
@@ -49,7 +48,6 @@ export default function MyApp(props: MyAppProps) {
             <CssBaseline />
 
             {loading ? <LoadingPage /> : <Component {...pageProps} />}
-            <GlobalDialogs />
             <ReactQueryDevtools initialIsOpen={false} />
           </LocalizationProvider>
           <SnackbarWrapper />
