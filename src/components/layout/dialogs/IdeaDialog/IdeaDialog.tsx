@@ -88,7 +88,7 @@ const IdeaDialog = () => {
                     }}
                     InputProps={{
                       sx: {
-                        fontSize: 24,
+                        fontSize: 18,
                       },
                     }}
                     {...field}
