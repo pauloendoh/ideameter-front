@@ -1,9 +1,10 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
 import Flex from "@/components/_common/flexboxes/Flex";
-import UserAvatar from "@/components/_common/UserAvatar/UserAvatar";
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import { CgChevronDown } from "react-icons/cg";
+import UserGroupAvatar from "../../GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
 
 interface Props {
   test?: string;
@@ -11,7 +12,7 @@ interface Props {
 
 const FilterByUsersButton = (props: Props) => {
   const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog);
-
+  const { groupId } = useRouterQueryString();
   const [filter, changeUserIds] = useGroupFilterStore((s) => [
     s.filter,
     s.changeFilterUsers,
@@ -28,7 +29,17 @@ const FilterByUsersButton = (props: Props) => {
         Assigned to{" "}
         {filter.users.length > 0 &&
           filter.users.map((user) => (
-            <UserAvatar user={user} widthHeight={24} fontSize={14} />
+            <UserGroupAvatar
+              userId={user.id}
+              groupId={groupId!}
+              avatarProps={{
+                sx: {
+                  width: 24,
+                  height: 24,
+                  fontSize: 14,
+                },
+              }}
+            />
           ))}
       </Flex>
     </DarkButton>
