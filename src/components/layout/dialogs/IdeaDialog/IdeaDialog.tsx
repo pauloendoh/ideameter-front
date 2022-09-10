@@ -14,7 +14,6 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  Typography,
 } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -72,9 +71,31 @@ const IdeaDialog = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id={`${ariaLabel}-title`}>
             <FlexVCenter justifyContent="space-between">
-              <Typography variant="h5">
-                {watch("id") ? "Edit Idea" : "New Idea"}
-              </Typography>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <MyTextField
+                    size="small"
+                    fullWidth
+                    multiline
+                    placeholder="Idea Title"
+                    variant="standard"
+                    onCtrlEnter={() => onSubmit(watch())}
+                    required
+                    sx={{
+                      background: "transparent",
+                    }}
+                    InputProps={{
+                      sx: {
+                        fontSize: 24,
+                      },
+                    }}
+                    {...field}
+                    inputRef={inputRef}
+                  />
+                )}
+              />
 
               <FlexVCenter>
                 <IdeaMenu idea={watch()} afterDelete={closeDialog} />
@@ -105,24 +126,6 @@ const IdeaDialog = () => {
                       )}
                     </Grid>
                   </Grid>
-
-                  <Controller
-                    name="name"
-                    control={control}
-                    render={({ field }) => (
-                      <MyTextField
-                        size="small"
-                        label="Idea"
-                        fullWidth
-                        multiline
-                        minRows={2}
-                        onCtrlEnter={() => onSubmit(watch())}
-                        required
-                        {...field}
-                        inputRef={inputRef}
-                      />
-                    )}
-                  />
 
                   <IdeaDialogSelectedLabels
                     idea={watch()}
