@@ -18,7 +18,7 @@ const UserGroupAvatar = (props: Props) => {
   return (
     <Tooltip title={user?.username || ""}>
       <Avatar
-        src={user?.profile.pictureUrl}
+        src={user?.profile?.pictureUrl}
         alt={user?.username}
         {...props.avatarProps}
       >

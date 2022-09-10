@@ -4,5 +4,5 @@ export default interface UserWithProfileDto {
   id: string;
   email: string;
   username: string;
-  profile: ProfileDto;
+  profile: ProfileDto | null;
 }
