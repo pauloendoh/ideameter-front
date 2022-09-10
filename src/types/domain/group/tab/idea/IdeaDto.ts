@@ -1,4 +1,6 @@
+import { HighImpactVoteDto } from "@/types/domain/high-impact-votes/HighImpactVoteDto";
 import LabelDto from "@/types/domain/label/LabelDto";
+import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
 
 export default interface IdeaDto {
   id: string;
@@ -14,11 +16,8 @@ export default interface IdeaDto {
   onFireSince: string | null;
 
   labels: LabelDto[];
-  assignedUsers: {
-    id: string;
-    username: string;
-    email: string;
-  }[];
+  assignedUsers: SimpleUserDto[];
+  highImpactVotes: HighImpactVoteDto[];
 }
 
 export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
@@ -34,5 +33,6 @@ export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
 
   labels: [],
   assignedUsers: [],
+  highImpactVotes: [],
   ...partial,
 });

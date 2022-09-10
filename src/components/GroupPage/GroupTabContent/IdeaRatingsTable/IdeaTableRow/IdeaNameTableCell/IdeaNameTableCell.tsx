@@ -1,0 +1,134 @@
+import Flex from "@/components/_common/flexboxes/Flex";
+import FlexCol from "@/components/_common/flexboxes/FlexCol";
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
+import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify";
+import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
+import {
+  Avatar,
+  Box,
+  TableCell,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { useMemo } from "react";
+import { MdDescription, MdOfflineBolt } from "react-icons/md";
+import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo";
+
+interface Props {
+  ideaRating: IdeaRating;
+}
+
+const IdeaNameTableCell = (props: Props) => {
+  const theme = useTheme();
+  const hasSubideas = useMemo(() => props.ideaRating.subideas.length > 0, [
+    props.ideaRating.subideas,
+  ]);
+
+  const authUser = useAuthStore((s) => s.authUser);
+
+  const youVotedHighImpact = useMemo(
+    () =>
+      Boolean(
+        props.ideaRating.idea.highImpactVotes?.find(
+          (v) => v.userId === authUser!.id
+        )
+      ),
+    [props.ideaRating.idea.highImpactVotes, authUser]
+  );
+
+  return (
+    <TableCell>
+      <FlexCol style={{ gap: 8 }}>
+        {props.ideaRating.idea.labels?.length > 0 && (
+          <Flex style={{ flexWrap: "wrap", gap: 4 }}>
+            {props.ideaRating.idea.labels.map((label) => (
+              <div
+                key={label.id}
+                style={{
+                  background: label.bgColor,
+                  padding: "2px 4px",
+                  borderRadius: 4,
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {label.name}
+              </div>
+            ))}
+          </Flex>
+        )}
+        <Box>
+          <span
+            style={{
+              display: "inline-flex",
+              whiteSpace: "break-spaces",
+              fontWeight: hasSubideas ? "bold" : undefined,
+            }}
+          >
+            <MyReactLinkify openNewTab stopPropagation>
+              {props.ideaRating.idea.name}
+            </MyReactLinkify>
+
+            {props.ideaRating.idea.description.length > 0 && (
+              <Tooltip title={props.ideaRating.idea.description}>
+                <span>
+                  <MdDescription
+                    style={{ position: "relative", top: 2, left: 8 }}
+                  />
+                </span>
+              </Tooltip>
+            )}
+          </span>
+        </Box>
+
+        {hasSubideas && (
+          <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
+        )}
+
+        <FlexVCenter justifyContent="space-between">
+          <Flex gap={0.5} flexWrap="wrap">
+            {props.ideaRating.idea.assignedUsers?.map((user) => (
+              <Avatar
+                key={user.id}
+                sx={{ width: 24, height: 24, fontSize: 14 }}
+              >
+                {user.username[0].toUpperCase()}
+              </Avatar>
+            ))}
+          </Flex>
+
+          {props.ideaRating.idea.highImpactVotes?.length > 0 && (
+            <Tooltip
+              title={youVotedHighImpact ? "You voted as high impact" : "sadfa"}
+            >
+              {/* had to use div instead of FlexVCenter due to tooltip */}
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <MdOfflineBolt
+                  fontSize={18}
+                  style={{
+                    color: youVotedHighImpact
+                      ? theme.palette.secondary.main
+                      : undefined,
+                  }}
+                />
+                <Typography
+                  style={{
+                    color: youVotedHighImpact
+                      ? theme.palette.secondary.main
+                      : undefined,
+                  }}
+                >
+                  {props.ideaRating.idea.highImpactVotes.length}
+                </Typography>
+              </div>
+            </Tooltip>
+          )}
+        </FlexVCenter>
+      </FlexCol>
+    </TableCell>
+  );
+};
+
+export default IdeaNameTableCell;

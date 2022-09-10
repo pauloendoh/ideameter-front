@@ -1,16 +1,13 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import MyTextField from "@/components/_common/inputs/MyTextField";
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
-import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
 import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto";
 import {
-  Avatar,
   Box,
   Dialog,
   DialogContent,
@@ -21,9 +18,11 @@ import {
 } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { MdClose, MdOutlineAdd } from "react-icons/md";
+import { MdClose } from "react-icons/md";
+import IdeaDialogAssignedUsers from "./IdeaDialogAssignedUsers/IdeaDialogAssignedUsers";
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol";
 import IdeaDialogSelectedLabels from "./IdeaDialogSelectedLabels/IdeaDialogSelectedLabels";
+import IdeaDialogUsersVotedHighImpact from "./IdeaDialogUsersVotedHighImpact/IdeaDialogUsersVotedHighImpact";
 import IdeaMenu from "./IdeaMenu/IdeaMenu";
 import SubideasTable from "./SubideasTable/SubideasTable";
 
@@ -35,8 +34,6 @@ const IdeaDialog = () => {
   const saveIdeaMutation = useSaveIdeaMutation();
 
   const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore();
-
-  const openAssignDialog = useIdeaAssignmentStore((s) => s.openDialog);
 
   const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog);
 
@@ -91,27 +88,23 @@ const IdeaDialog = () => {
           <DialogContent>
             <Grid container pt={1} spacing={2}>
               <Grid item xs={8}>
-                <FlexCol sx={{ gap: 2 }}>
-                  {watch("assignedUsers")?.length > 0 && (
-                    <Flex gap={1}>
-                      {watch("assignedUsers").map((user) => (
-                        <Avatar key={user.id}>
-                          {user.username[0].toUpperCase()}
-                        </Avatar>
-                      ))}
-                      <Avatar
-                        sx={{ cursor: "pointer", background: "LightGray" }}
-                        onClick={() =>
-                          openAssignDialog(
-                            watch("assignedUsers"),
-                            (newValues) => setValue("assignedUsers", newValues)
-                          )
-                        }
-                      >
-                        <MdOutlineAdd />
-                      </Avatar>
-                    </Flex>
-                  )}
+                <FlexCol sx={{ gap: 4 }}>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <IdeaDialogAssignedUsers
+                        watch={watch}
+                        setValue={setValue}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      {watch("highImpactVotes")?.length > 0 && (
+                        <IdeaDialogUsersVotedHighImpact
+                          watch={watch}
+                          setValue={setValue}
+                        />
+                      )}
+                    </Grid>
+                  </Grid>
 
                   <Controller
                     name="name"

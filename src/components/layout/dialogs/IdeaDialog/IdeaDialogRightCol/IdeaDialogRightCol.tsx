@@ -6,6 +6,7 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { Grid } from "@mui/material";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { AiOutlineUserAdd } from "react-icons/ai";
+import HighImpactVoteButton from "./HighImpactVoteButton/HighImpactVoteButton";
 import OnFireDatePicker from "./OnFireDatePicker/OnFireDatePicker";
 
 interface Props {
@@ -34,6 +35,7 @@ const IdeaDialogRightCol = (props: Props) => {
         </DarkButton>
 
         <OnFireDatePicker watch={props.watch} setValue={props.setValue} />
+        <HighImpactVoteButton watch={props.watch} setValue={props.setValue} />
       </FlexCol>
     </Grid>
   );

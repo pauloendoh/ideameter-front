@@ -5,21 +5,13 @@ import urls from "@/utils/urls";
 import { useQuery } from "react-query";
 
 const useGroupIdeasQuery = (groupId: string) => {
-  const query = useQuery(
-    queryKeys.groupIdeas(groupId),
-    async () => {
-      if (!groupId) return [];
+  const query = useQuery(queryKeys.groupIdeas(groupId), async () => {
+    if (!groupId) return [];
 
-      return myAxios
-        .get<IdeaDto[]>(urls.api.groupIdeas(groupId))
-        .then((res) => res.data);
-    },
-
-    {
-      initialData: [],
-      refetchOnWindowFocus: false,
-    }
-  );
+    return myAxios
+      .get<IdeaDto[]>(urls.api.groupIdeas(groupId))
+      .then((res) => res.data);
+  });
   return query;
 };
 
