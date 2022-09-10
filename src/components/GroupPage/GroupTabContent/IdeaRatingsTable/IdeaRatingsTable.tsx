@@ -1,5 +1,6 @@
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import {
   Box,
   TableBody,
@@ -13,6 +14,7 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import S from "./IdeaTable.styles";
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow";
+import UserTableCell from "./UserTableCell/UserTableCell";
 
 interface Props {
   ideaRatings: IdeaRating[];
@@ -20,7 +22,8 @@ interface Props {
 
 const IdeaRatingsTable = (props: Props) => {
   const router = useRouter();
-  const query = router.query as { groupId: string };
+
+  const authUser = useAuthStore((s) => s.authUser);
 
   const [hidingDone, filteringUsers] = useGroupFilterStore((s) => [
     s.filter.hidingDone,
@@ -73,17 +76,12 @@ const IdeaRatingsTable = (props: Props) => {
                 </Box>
               </TableSortLabel>
             </TableCell>
-            <TableCell align="center" width="64px">
-              You
-            </TableCell>
+            <UserTableCell userId={authUser!.id} />
             {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
-              <TableCell
+              <UserTableCell
                 key={JSON.stringify(otherRating)}
-                align="center"
-                width="100px"
-              >
-                {otherRating.userGroup.user.username}
-              </TableCell>
+                userId={otherRating.userGroup.userId}
+              />
             ))}
 
             {/* Empty cell to avoid bigger width on the last cell */}

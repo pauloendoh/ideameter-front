@@ -34,6 +34,8 @@ const urls = {
     userSearch: (query: string) => `/user/search?q=${query}`,
 
     lastOpenedGroupId: `/me/lastOpenedGroupId`,
+
+    profilesPicture: "/profiles/picture",
   },
 };
 

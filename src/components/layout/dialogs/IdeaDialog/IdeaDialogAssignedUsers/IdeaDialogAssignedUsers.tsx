@@ -1,5 +1,7 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import { Avatar, Typography } from "@mui/material";
@@ -13,13 +15,13 @@ interface Props {
 
 const IdeaDialogAssignedUsers = ({ watch, setValue }: Props) => {
   const openAssignDialog = useIdeaAssignmentStore((s) => s.openDialog);
-
+  const { groupId } = useRouterQueryString();
   return (
     <FlexCol gap={1}>
       <Typography>Assigned</Typography>
       <Flex gap={1}>
         {watch("assignedUsers").map((user) => (
-          <Avatar key={user.id}>{user.username[0].toUpperCase()}</Avatar>
+          <UserGroupAvatar key={user.id} userId={user.id} groupId={groupId!} />
         ))}
         <Avatar
           sx={{ cursor: "pointer", background: "LightGray" }}

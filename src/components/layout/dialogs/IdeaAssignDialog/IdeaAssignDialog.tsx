@@ -1,3 +1,4 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import Txt from "@/components/_common/text/Txt";
@@ -8,7 +9,6 @@ import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
 import { pushOrRemove } from "@/utils/array/pushOrRemove";
 import pushOrReplace from "@/utils/array/pushOrReplace";
 import {
-  Avatar,
   Box,
   Checkbox,
   Dialog,
@@ -19,7 +19,6 @@ import {
   Typography,
 } from "@mui/material";
 import produce from "immer";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 
@@ -29,7 +28,6 @@ const IdeaAssignDialog = () => {
   const routerQuery = useRouterQueryString();
 
   const inputRef = useRef<HTMLDivElement>(null);
-  const query = useRouter().query as { groupId: string };
 
   const { data: members } = useGroupMembersQuery(routerQuery.groupId!);
 
@@ -112,9 +110,14 @@ const IdeaAssignDialog = () => {
                 key={member.userId}
                 label={
                   <FlexVCenter gap={1}>
-                    <Avatar sx={{ width: 24, height: 24, fontSize: 14 }}>
-                      {member.user.username[0].toUpperCase()}
-                    </Avatar>
+                    <UserGroupAvatar
+                      userId={member.user.id}
+                      groupId={routerQuery.groupId!}
+                      avatarProps={{
+                        sx: { width: 24, height: 24, fontSize: 14 },
+                      }}
+                    />
+
                     <Txt>{member.user.username}</Txt>
                   </FlexVCenter>
                 }

@@ -3,18 +3,13 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify";
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import {
-  Avatar,
-  Box,
-  TableCell,
-  Tooltip,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, TableCell, Tooltip, Typography, useTheme } from "@mui/material";
 import { useMemo } from "react";
 import { MdDescription, MdOfflineBolt } from "react-icons/md";
 import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo";
+import UserGroupAvatar from "../../UserTableCell/UserGroupAvatar/UserGroupAvatar";
 
 interface Props {
   ideaRating: IdeaRating;
@@ -22,6 +17,7 @@ interface Props {
 
 const IdeaNameTableCell = (props: Props) => {
   const theme = useTheme();
+  const { groupId } = useRouterQueryString();
   const hasSubideas = useMemo(() => props.ideaRating.subideas.length > 0, [
     props.ideaRating.subideas,
   ]);
@@ -90,12 +86,14 @@ const IdeaNameTableCell = (props: Props) => {
         <FlexVCenter justifyContent="space-between">
           <Flex gap={0.5} flexWrap="wrap">
             {props.ideaRating.idea.assignedUsers?.map((user) => (
-              <Avatar
+              <UserGroupAvatar
+                userId={user.id}
+                groupId={groupId!}
+                avatarProps={{
+                  sx: { width: 24, height: 24, fontSize: 14 },
+                }}
                 key={user.id}
-                sx={{ width: 24, height: 24, fontSize: 14 }}
-              >
-                {user.username[0].toUpperCase()}
-              </Avatar>
+              />
             ))}
           </Flex>
 

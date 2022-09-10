@@ -1,9 +1,10 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery";
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import { Avatar, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useCallback } from "react";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 
@@ -28,9 +29,11 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
       <Typography>High impact</Typography>
       <Flex gap={1}>
         {watch("highImpactVotes").map((vote) => (
-          <Avatar key={vote.userId}>
-            {getMember(vote.userId)?.username[0].toUpperCase()}
-          </Avatar>
+          <UserGroupAvatar
+            key={vote.userId}
+            groupId={groupId!}
+            userId={vote.userId}
+          />
         ))}
         {/* <Avatar
           sx={{ cursor: "pointer", background: "LightGray" }}

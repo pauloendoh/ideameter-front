@@ -4,7 +4,7 @@ import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
 import { useQuery } from "react-query";
 
-const useGroupMembersQuery = (groupId: string) => {
+const useGroupMembersQuery = (groupId?: string) => {
   const query = useQuery(queryKeys.groupMembers(groupId), async () => {
     if (!groupId) return [];
 

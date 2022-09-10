@@ -64,6 +64,7 @@ const IdeaTableRow = (props: Props) => {
         </TableCell>
       ))}
 
+      {/* Empty cell to avoid bigger width on the last cell */}
       <TableCell></TableCell>
     </TableRow>
   );

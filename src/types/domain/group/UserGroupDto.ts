@@ -1,4 +1,4 @@
-import SimpleUserDto from "../user/SimpleUserDto";
+import UserWithProfileDto from "../user/UserWithProfileDto";
 
 export default interface UserGroupDto {
   userId: string;
@@ -7,5 +7,5 @@ export default interface UserGroupDto {
   updatedAt: string;
   isAdmin: boolean;
 
-  user: SimpleUserDto;
+  user: UserWithProfileDto;
 }

@@ -1,12 +1,13 @@
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import EditLabelDialog from "../EditLabelDialog/EditLabelDialog";
+import EditProfileDialog from "../EditProfileDialog/EditProfileDialog";
 import GroupDialog from "../GroupDialog/GroupDialog";
 import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog";
 import IdeaDialog from "../IdeaDialog/IdeaDialog";
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog";
 import TabDialog from "../TabDialog/TabDialog";
 
-// managed by zustand
+// each one is managed by zustand
 const GlobalDialogs = () => {
   return (
     <>
@@ -16,6 +17,7 @@ const GlobalDialogs = () => {
       <IdeaDialog />
       <EditLabelDialog />
 
+      <EditProfileDialog />
       <IdeaAssignDialog />
       <SubideaDialog />
     </>

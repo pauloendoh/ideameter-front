@@ -8,12 +8,16 @@ import useSubideasQuery from "../subidea/useSubideasQuery";
 import useRatingsQuery from "./tab/idea/rating/useRatingsQuery";
 import useTabIdeasQuery from "./tab/idea/useTabIdeasQuery";
 
+export interface OtherUserGroupRating {
+  userGroup: UserGroupDto;
+  rating: number | null;
+}
 export interface IdeaRating {
   idea: IdeaDto;
   subideas: IdeaDto[];
   avgRating: number | null;
   yourRating: number | null;
-  otherUserGroupRatings: { userGroup: UserGroupDto; rating: number | null }[];
+  otherUserGroupRatings: OtherUserGroupRating[];
 }
 
 const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {

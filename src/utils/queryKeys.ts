@@ -1,6 +1,6 @@
 const queryKeys = {
   groups: "groups",
-  groupMembers: (groupId: string) => `/group/${groupId}/members`,
+  groupMembers: (groupId?: string) => `/group/${groupId}/members`,
   userSearchResults: "userSearchResults",
 
   groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,

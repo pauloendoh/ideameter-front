@@ -1,9 +1,9 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import { Avatar, DialogContent, Typography } from "@mui/material";
-import React from "react";
+import { DialogContent, Typography } from "@mui/material";
 import AddMemberButton from "./AddMemberButton/AddMemberButton";
 
 interface Props {
@@ -25,9 +25,13 @@ const GroupMembers = (props: Props) => {
         {members &&
           members.map((member, index) => (
             <FlexVCenter key={index} sx={{ gap: 1.5 }}>
-              <Avatar sx={{ width: 32, height: 32, fontSize: 20 }}>
-                {member.user.username[0].toUpperCase()}
-              </Avatar>
+              <UserGroupAvatar
+                userId={member.user.id}
+                groupId={props.groupId}
+                avatarProps={{
+                  sx: { width: 32, height: 32, fontSize: 20 },
+                }}
+              />
               <Typography>
                 {authUser && authUser.id === member.user.id
                   ? "You"
