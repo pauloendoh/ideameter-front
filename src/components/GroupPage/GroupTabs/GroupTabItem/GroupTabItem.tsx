@@ -17,7 +17,10 @@ interface Props {
 const GroupTabItem = (props: Props) => {
   const { authUser } = useAuthStore();
   const { data: groupRatings } = useRatingsQuery(props.groupId);
-  const { data: tabIdeas } = useTabIdeasQuery(props.tab.id);
+  const { data: tabIdeas } = useTabIdeasQuery({
+    tabId: props.tab.id,
+    groupId: props.groupId,
+  });
 
   const notRatedCount = useMemo(() => {
     if (!authUser || !groupRatings || !tabIdeas) return 0;

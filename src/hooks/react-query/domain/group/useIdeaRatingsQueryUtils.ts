@@ -18,7 +18,7 @@ export interface IdeaRating {
 
 const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { authUser } = useAuthStore();
-  const { data: tabIdeas } = useTabIdeasQuery(tabId);
+  const { data: tabIdeas } = useTabIdeasQuery({ tabId, groupId });
   const otherMembers = useOtherMembersQueryUtils(groupId);
   const { data: groupRatings } = useRatingsQuery(groupId);
   const { data: subideas } = useSubideasQuery(groupId);

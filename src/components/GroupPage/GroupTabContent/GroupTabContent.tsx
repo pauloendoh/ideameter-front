@@ -7,16 +7,19 @@ import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
 import IdeaRatingsTable from "./IdeaRatingsTable/IdeaRatingsTable";
 
 interface Props {
   tabId: string;
+  groupId: string;
 }
 
 const GroupTabContent = (props: Props) => {
   const query = useRouter().query as { groupId: string };
-  const { data: ideas } = useTabIdeasQuery(props.tabId);
+  const { data: ideas } = useTabIdeasQuery({
+    tabId: props.tabId,
+    groupId: props.groupId,
+  });
 
   const ideaRatings = useIdeaRatingsQueryUtils(query.groupId, props.tabId);
 

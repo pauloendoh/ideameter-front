@@ -98,7 +98,9 @@ const GroupId: NextPage = () => {
               </FlexVCenter>
 
               <SearchRow />
-              {query.tabId && <GroupTabContent tabId={query.tabId} />}
+              {query.tabId && query.groupId && (
+                <GroupTabContent tabId={query.tabId} groupId={query.groupId} />
+              )}
             </Paper>
           </Box>
         )}
