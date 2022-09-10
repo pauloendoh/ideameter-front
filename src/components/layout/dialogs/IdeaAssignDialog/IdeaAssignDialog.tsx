@@ -43,7 +43,7 @@ const IdeaAssignDialog = () => {
   const [localValues, setLocalValues] = useState<SimpleUserDto[]>([]);
 
   useEffect(() => {
-    setLocalValues(initialValues);
+    if (initialValues) setLocalValues(initialValues);
   }, [initialValues]);
 
   // useEffect(() => {
@@ -109,6 +109,7 @@ const IdeaAssignDialog = () => {
           <FlexCol pt={1}>
             {members?.map((member) => (
               <FormControlLabel
+                key={member.userId}
                 label={
                   <FlexVCenter gap={1}>
                     <Avatar sx={{ width: 24, height: 24, fontSize: 14 }}>

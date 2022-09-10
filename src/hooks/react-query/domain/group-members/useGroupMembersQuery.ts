@@ -5,11 +5,13 @@ import urls from "@/utils/urls";
 import { useQuery } from "react-query";
 
 const useGroupMembersQuery = (groupId: string) => {
-  const query = useQuery(queryKeys.groupMembers(groupId), () =>
-    myAxios
+  const query = useQuery(queryKeys.groupMembers(groupId), async () => {
+    if (!groupId) return [];
+
+    return myAxios
       .get<UserGroupDto[]>(urls.api.groupMembers(groupId))
-      .then((res) => res.data)
-  );
+      .then((res) => res.data);
+  });
   return query;
 };
 
