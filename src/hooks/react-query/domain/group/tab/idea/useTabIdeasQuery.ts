@@ -1,4 +1,5 @@
 import queryKeys from "@/utils/queryKeys";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import useGroupIdeasQuery from "../../idea/useGroupIdeasQuery";
 
@@ -15,6 +16,11 @@ const useTabIdeasQuery = ({ tabId, groupId }: Params) => {
 
     return groupIdeas.filter((i) => i.tabId === tabId);
   });
+
+  useEffect(() => {
+    query.refetch();
+  }, [groupIdeas]);
+
   return query;
 };
 
