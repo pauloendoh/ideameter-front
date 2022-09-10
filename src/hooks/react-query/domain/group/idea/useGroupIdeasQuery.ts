@@ -7,10 +7,14 @@ import { useQuery } from "react-query";
 const useGroupIdeasQuery = (groupId: string) => {
   const query = useQuery(
     queryKeys.groupIdeas(groupId),
-    () =>
-      myAxios
+    async () => {
+      if (!groupId) return [];
+
+      return myAxios
         .get<IdeaDto[]>(urls.api.groupIdeas(groupId))
-        .then((res) => res.data),
+        .then((res) => res.data);
+    },
+
     {
       initialData: [],
       refetchOnWindowFocus: false,
