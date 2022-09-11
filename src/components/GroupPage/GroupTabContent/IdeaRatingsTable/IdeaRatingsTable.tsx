@@ -39,6 +39,7 @@ const IdeaRatingsTable = (props: Props) => {
     let result = [...props.ideaRatings];
 
     result = result.filter((r) => {
+      if (r.idea.parentId) return true; // subideas must always appear
       if (hidingDone && r.idea.isDone) return false;
 
       if (filteringUsers.length > 0) {
@@ -57,7 +58,7 @@ const IdeaRatingsTable = (props: Props) => {
 
     if (onlyHighImpactVoted)
       result = result.filter(
-        (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0
+        (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0 // subideas must always appear in their table
       );
 
     result = result.sort((a, b) => {
