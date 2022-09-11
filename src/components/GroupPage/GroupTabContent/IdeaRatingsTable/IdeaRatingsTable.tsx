@@ -32,9 +32,6 @@ const IdeaRatingsTable = (props: Props) => {
 
   const visibleIdeaRatings = useMemo(() => {
     let result = [...props.ideaRatings];
-    result = result.sort((a, b) =>
-      Number(a.avgRating) > Number(b.avgRating) ? -1 : 1
-    );
 
     result = result.filter((r) => {
       if (hidingDone && r.idea.isDone) return false;
@@ -51,6 +48,27 @@ const IdeaRatingsTable = (props: Props) => {
       }
 
       return true;
+    });
+
+    result = result.sort((a, b) => {
+      const numRatingA = Number(a.avgRating);
+      const numRatingB = Number(b.avgRating);
+      // if both ideas have same avg rating, it will sort by ratings count
+      if (numRatingA === numRatingB) {
+        const youRatedIdeaA = a.yourRating ? 1 : 0;
+        const ratingsCountA =
+          youRatedIdeaA +
+          a.otherUserGroupRatings.filter((r) => r.rating).length;
+
+        const youRatedIdeaB = b.yourRating ? 1 : 0;
+        const ratingsCountB =
+          youRatedIdeaB +
+          b.otherUserGroupRatings.filter((r) => r.rating).length;
+
+        return ratingsCountA > ratingsCountB ? -1 : 1;
+      }
+
+      return numRatingA > numRatingB ? -1 : 1;
     });
 
     return result;
