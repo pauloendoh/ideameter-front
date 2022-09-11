@@ -56,7 +56,7 @@ const IdeaRatingsTable = (props: Props) => {
     });
 
     if (onlyHighImpactVoted)
-      result = result.filter((r) => r.idea.highImpactVotes.length > 0);
+      result = result.filter((r) => r.idea.highImpactVotes?.length > 0);
 
     result = result.sort((a, b) => {
       const numRatingA = Number(a.avgRating);
