@@ -9,6 +9,7 @@ interface IGroupFilterStore {
     labelIds: string[];
     hidingDone: boolean;
     users: SimpleUserDto[];
+    onlyHighImpactVoted: boolean;
   };
 
   getFilterCount: () => number;
@@ -20,6 +21,7 @@ interface IGroupFilterStore {
   toggleHidingDone: () => void;
 
   changeFilterUsers: (users: SimpleUserDto[]) => void;
+  toggleOnlyHighImpactVoted: () => void;
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
@@ -28,12 +30,14 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     byText: "",
     labelIds: [],
     users: [],
+    onlyHighImpactVoted: false,
   },
 
   getFilterCount: () => {
-    const { labelIds, hidingDone } = get().filter;
+    const { labelIds, hidingDone, onlyHighImpactVoted } = get().filter;
     let count = labelIds.length;
     if (hidingDone) count++;
+    if (onlyHighImpactVoted) count++;
 
     return count;
   },
@@ -86,6 +90,14 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       filter: {
         ...curr.filter,
         users: userIds,
+      },
+    }));
+  },
+  toggleOnlyHighImpactVoted: () => {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        onlyHighImpactVoted: !curr.filter.onlyHighImpactVoted,
       },
     }));
   },

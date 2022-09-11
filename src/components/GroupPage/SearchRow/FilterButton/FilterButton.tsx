@@ -25,6 +25,7 @@ const FilterButton = (props: Props) => {
     labelIdIsInFilter,
     toggleFilterLabelId,
     toggleHidingDone,
+    toggleOnlyHighImpactVoted,
   } = useGroupFilterStore();
 
   const handleClick = (event: any) => {
@@ -81,6 +82,13 @@ const FilterButton = (props: Props) => {
         <S.MenuItem onClick={toggleHidingDone}>
           <Checkbox checked={filter.hidingDone} name="hiding-done" />
           <S.CheckboxLabel>Hide done</S.CheckboxLabel>
+        </S.MenuItem>
+        <S.MenuItem onClick={toggleOnlyHighImpactVoted}>
+          <Checkbox
+            checked={filter.onlyHighImpactVoted}
+            name="voted-as-high-impact"
+          />
+          <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
         </S.MenuItem>
         {/*
         <S.MenuItem onClick={toggleFilterCurrentGoal}>

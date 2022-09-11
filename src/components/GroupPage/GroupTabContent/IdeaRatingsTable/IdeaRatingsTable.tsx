@@ -25,9 +25,14 @@ const IdeaRatingsTable = (props: Props) => {
 
   const authUser = useAuthStore((s) => s.authUser);
 
-  const [hidingDone, filteringUsers] = useGroupFilterStore((s) => [
+  const [
+    hidingDone,
+    filteringUsers,
+    onlyHighImpactVoted,
+  ] = useGroupFilterStore((s) => [
     s.filter.hidingDone,
     s.filter.users,
+    s.filter.onlyHighImpactVoted,
   ]);
 
   const visibleIdeaRatings = useMemo(() => {
@@ -49,6 +54,9 @@ const IdeaRatingsTable = (props: Props) => {
 
       return true;
     });
+
+    if (onlyHighImpactVoted)
+      result = result.filter((r) => r.idea.highImpactVotes.length > 0);
 
     result = result.sort((a, b) => {
       const numRatingA = Number(a.avgRating);
@@ -72,7 +80,7 @@ const IdeaRatingsTable = (props: Props) => {
     });
 
     return result;
-  }, [props.ideaRatings, hidingDone, filteringUsers]);
+  }, [props.ideaRatings, hidingDone, filteringUsers, onlyHighImpactVoted]);
 
   if (props.ideaRatings.length === 0) return <div></div>;
 
