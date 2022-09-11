@@ -3,7 +3,6 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery";
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import { Checkbox, Divider, Menu } from "@mui/material";
-import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { MdFilterAlt } from "react-icons/md";
@@ -43,8 +42,6 @@ const FilterButton = (props: Props) => {
     if (labels === undefined || labels?.length === 0) return [];
     return labels.sort((a, b) => (a.id > b.id ? 1 : -1));
   }, [labels]);
-
-  if (sortedLabelsById.length === 0) return <Box />;
 
   return (
     <>
