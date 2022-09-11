@@ -22,7 +22,7 @@ const UserTableCell = (props: Props) => {
   }, [groupMembers, props.userId]);
 
   return (
-    <TableCell key={props.userId} align="center" width="100px">
+    <TableCell key={props.userId} align="center" width="75px">
       {groupId && user && (
         <FlexHCenter>
           <UserGroupAvatar groupId={groupId} userId={user.id} />
