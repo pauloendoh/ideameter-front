@@ -84,6 +84,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
     otherMembers,
     groupRatings,
     selectedLabelIds,
+    tabId,
   ]);
 
   return ideaRatings;

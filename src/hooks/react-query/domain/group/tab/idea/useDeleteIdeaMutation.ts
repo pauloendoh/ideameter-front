@@ -1,3 +1,4 @@
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import deleteFromArray from "@/utils/array/deleteFromArray";
@@ -12,6 +13,7 @@ interface Variables {
 
 const useDeleteIdeaMutation = () => {
   const queryClient = useQueryClient();
+  const { groupId } = useRouterQueryString();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
 
   return useMutation(
@@ -21,12 +23,13 @@ const useDeleteIdeaMutation = () => {
       onSuccess: (_, { idea }) => {
         setSuccessMessage("Idea deleted!");
 
-        queryClient.setQueryData<IdeaDto[]>(
-          queryKeys.tabIdeas(idea.tabId!),
-          (curr) => {
-            return deleteFromArray(curr, (i) => i.id === idea.id);
-          }
-        );
+        if (groupId)
+          queryClient.setQueryData<IdeaDto[]>(
+            queryKeys.groupIdeas(groupId),
+            (curr) => {
+              return deleteFromArray(curr, (i) => i.id === idea.id);
+            }
+          );
       },
       onError: (err) => {
         setErrorMessage(JSON.stringify(err));

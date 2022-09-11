@@ -1,6 +1,7 @@
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import pushOrReplace from "@/utils/array/pushOrReplace";
+import upsert from "@/utils/array/upsert";
 import myAxios from "@/utils/axios/myAxios";
 import queryKeys from "@/utils/queryKeys";
 import urls from "@/utils/urls";
@@ -10,6 +11,7 @@ import { useMutation, useQueryClient } from "react-query";
 const useSaveIdeaMutation = () => {
   const queryClient = useQueryClient();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
+  const { groupId } = useRouterQueryString();
 
   return useMutation(
     (payload: IdeaDto) =>
@@ -22,16 +24,10 @@ const useSaveIdeaMutation = () => {
         .then((res) => res.data),
     {
       onSuccess: (savedIdea) => {
-        if (savedIdea.tabId) {
-          const tabIdeas = queryClient.getQueryData<IdeaDto[]>(
-            queryKeys.tabIdeas(savedIdea.tabId)
-          );
-
-          const newTabIdeas = pushOrReplace(tabIdeas, savedIdea, "id");
-
-          queryClient.setQueryData(
-            queryKeys.tabIdeas(savedIdea.tabId),
-            newTabIdeas
+        if (groupId) {
+          queryClient.setQueryData<IdeaDto[]>(
+            queryKeys.groupIdeas(groupId),
+            (curr) => upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
           );
         }
 

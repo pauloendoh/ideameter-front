@@ -40,7 +40,7 @@ const useSaveRatingMutation = () => {
         }
 
         queryClient.setQueryData<IdeaDto[]>(
-          queryKeys.tabIdeas(idea.tabId!),
+          queryKeys.groupIdeas(groupId),
           (curr) => {
             return upsert(curr, idea, (i) => i.id === idea.id);
           }
