@@ -1,4 +1,3 @@
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
 import Flex from "@/components/_common/flexboxes/Flex";
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import ProfilePicture from "@/components/_common/ProfilePicture/ProfilePicture";
@@ -217,10 +216,10 @@ const EditProfileDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons
+            {/* <SaveCancelButtons
               disabled={saveMutation.isLoading}
               onCancel={closeDialog}
-            />
+            /> */}
           </DialogTitle>
         </form>
       </Box>
