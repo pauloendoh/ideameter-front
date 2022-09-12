@@ -1,1 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+::-webkit-scrollbar {
+  width: 7.5px;
+  height: 7.5px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 25px;
+  height: 50px;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

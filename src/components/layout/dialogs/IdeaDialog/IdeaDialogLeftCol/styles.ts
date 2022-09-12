@@ -11,10 +11,15 @@ export const styles = {
     },
     ".mantine-RichTextEditor-toolbar": {
       background: theme.palette.grey[900],
-      borderBottom: `1px solid ${theme.palette.grey[600]}`,
+      borderBottom: "none",
+      ".mantine-RichTextEditor-toolbarInner": {
+        overflowX: "auto",
+        flexWrap: "unset",
+      },
     },
     ".mantine-RichTextEditor-toolbarGroup": {
       background: "none",
+      flexWrap: "unset",
       button: {
         background: theme.palette.grey[800],
         border: `1px solid ${theme.palette.grey[600]}`,
