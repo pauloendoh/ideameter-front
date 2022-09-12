@@ -33,6 +33,8 @@ const useSaveIdeaMutation = () => {
           );
         }
 
+        queryClient.invalidateQueries(queryKeys.tabIdeas(savedIdea.tabId!));
+
         if (payload.id === null && groupId)
           queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId));
 
