@@ -18,10 +18,8 @@ import {
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
-import IdeaDialogAssignedUsers from "./IdeaDialogAssignedUsers/IdeaDialogAssignedUsers";
+import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol";
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol";
-import IdeaDialogSelectedLabels from "./IdeaDialogSelectedLabels/IdeaDialogSelectedLabels";
-import IdeaDialogUsersVotedHighImpact from "./IdeaDialogUsersVotedHighImpact/IdeaDialogUsersVotedHighImpact";
 import IdeaMenu from "./IdeaMenu/IdeaMenu";
 import SubideasTable from "./SubideasTable/SubideasTable";
 
@@ -30,15 +28,13 @@ const ariaLabel = "idea-dialog";
 const IdeaDialog = () => {
   const inputRef = useRef<HTMLDivElement>(null);
 
-  const saveIdeaMutation = useSaveIdeaMutation();
+  const { mutate: submitSaveIdea } = useSaveIdeaMutation();
 
   const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore();
 
   const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog);
 
-  const { watch, control, setValue, register, handleSubmit, reset } = useForm<
-    IdeaDto
-  >({
+  const { watch, control, setValue, handleSubmit, reset } = useForm<IdeaDto>({
     defaultValues: initialValue,
   });
 
@@ -52,8 +48,8 @@ const IdeaDialog = () => {
   }, [dialogIsOpen]);
 
   const onSubmit = (values: IdeaDto) => {
-    saveIdeaMutation.mutate(values, {
-      onSuccess: (savedTab) => {
+    submitSaveIdea(values, {
+      onSuccess: () => {
         closeDialog();
       },
     });
@@ -108,50 +104,12 @@ const IdeaDialog = () => {
 
           <DialogContent>
             <Grid container pt={1} spacing={2}>
-              <Grid item xs={8}>
-                <FlexCol sx={{ gap: 4 }}>
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <IdeaDialogAssignedUsers
-                        watch={watch}
-                        setValue={setValue}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      {watch("highImpactVotes")?.length > 0 && (
-                        <IdeaDialogUsersVotedHighImpact
-                          watch={watch}
-                          setValue={setValue}
-                        />
-                      )}
-                    </Grid>
-                  </Grid>
-
-                  <IdeaDialogSelectedLabels
-                    idea={watch()}
-                    onChangeSelectedLabels={(labels) => {
-                      setValue("labels", labels);
-                    }}
-                  />
-
-                  <Controller
-                    name="description"
-                    control={control}
-                    render={({ field }) => (
-                      <MyTextField
-                        id="description"
-                        size="small"
-                        label="Description"
-                        multiline
-                        minRows={3}
-                        onCtrlEnter={() => onSubmit(watch())}
-                        {...field}
-                        fullWidth
-                      />
-                    )}
-                  />
-                </FlexCol>
-              </Grid>
+              <IdeaDialogLeftCol
+                watch={watch}
+                setValue={setValue}
+                control={control}
+                onSubmit={onSubmit}
+              />
 
               <IdeaDialogRightCol watch={watch} setValue={setValue} />
             </Grid>

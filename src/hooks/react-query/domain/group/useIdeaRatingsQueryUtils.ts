@@ -22,10 +22,10 @@ export interface IdeaRating {
 
 const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { authUser } = useAuthStore();
-  const { data: tabIdeas } = useTabIdeasQuery({ tabId, groupId });
+  const { data: subideas } = useSubideasQuery(groupId);
   const otherMembers = useOtherMembersQueryUtils(groupId);
   const { data: groupRatings } = useRatingsQuery(groupId);
-  const { data: subideas } = useSubideasQuery(groupId);
+  const { data: tabIdeas } = useTabIdeasQuery({ tabId, groupId });
 
   const selectedLabelIds = useGroupFilterStore(
     (state) => state.filter.labelIds

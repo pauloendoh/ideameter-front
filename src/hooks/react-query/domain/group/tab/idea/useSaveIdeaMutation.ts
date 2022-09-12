@@ -23,13 +23,16 @@ const useSaveIdeaMutation = () => {
         })
         .then((res) => res.data),
     {
-      onSuccess: (savedIdea) => {
+      onSuccess: (savedIdea, payload) => {
         if (groupId) {
           queryClient.setQueryData<IdeaDto[]>(
             queryKeys.groupIdeas(groupId),
             (curr) => upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
           );
         }
+
+        if (payload.id === null && groupId)
+          queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId));
 
         setSuccessMessage("Idea saved!");
       },
