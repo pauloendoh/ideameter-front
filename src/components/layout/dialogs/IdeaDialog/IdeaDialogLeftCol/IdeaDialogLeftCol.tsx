@@ -74,6 +74,7 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
 
         <S.MantineRteContainer>
           <MantineRTE
+            placeholder="Idea description"
             value={localDescription}
             onChange={setLocalDescription}
             onImageUpload={handleImageUpload}
