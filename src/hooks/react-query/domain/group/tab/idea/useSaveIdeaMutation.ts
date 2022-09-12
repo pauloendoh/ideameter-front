@@ -27,7 +27,9 @@ const useSaveIdeaMutation = () => {
         if (groupId) {
           queryClient.setQueryData<IdeaDto[]>(
             queryKeys.groupIdeas(groupId),
-            (curr) => upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
+            (curr) => {
+              return upsert(curr, savedIdea, (i) => i.id === savedIdea.id);
+            }
           );
         }
 

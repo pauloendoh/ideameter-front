@@ -5,8 +5,8 @@ import UserGroupDto from "@/types/domain/group/UserGroupDto";
 import { useCallback, useMemo } from "react";
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils";
 import useSubideasQuery from "../subidea/useSubideasQuery";
+import useGroupIdeasQuery from "./idea/useGroupIdeasQuery";
 import useRatingsQuery from "./tab/idea/rating/useRatingsQuery";
-import useTabIdeasQuery from "./tab/idea/useTabIdeasQuery";
 
 export interface OtherUserGroupRating {
   userGroup: UserGroupDto;
@@ -25,7 +25,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { data: subideas } = useSubideasQuery(groupId);
   const otherMembers = useOtherMembersQueryUtils(groupId);
   const { data: groupRatings } = useRatingsQuery(groupId);
-  const { data: tabIdeas } = useTabIdeasQuery({ tabId, groupId });
+  const { data: groupIdeas } = useGroupIdeasQuery(groupId);
 
   const selectedLabelIds = useGroupFilterStore(
     (state) => state.filter.labelIds
@@ -50,9 +50,9 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   );
 
   const ideaRatings = useMemo(() => {
-    if (!tabIdeas || !groupRatings || !authUser) return [];
+    if (!groupIdeas || !groupRatings || !authUser) return [];
 
-    let results: IdeaRating[] = tabIdeas.map((idea) => ({
+    let results: IdeaRating[] = groupIdeas.map((idea) => ({
       idea,
       subideas: subideas?.filter((s) => s.parentId === idea.id) || [],
       yourRating:
@@ -79,7 +79,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
     return results;
   }, [
     authUser,
-    tabIdeas,
+    groupIdeas,
     subideas,
     otherMembers,
     groupRatings,
