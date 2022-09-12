@@ -10,19 +10,18 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import S from "./IdeaTable.styles";
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow";
+import { useAssignMeHotkey } from "./useAssignMeHotkey/useAssignMeHotkey";
 import UserTableCell from "./UserTableCell/UserTableCell";
+import { useToggleVoteHotkey } from "./useToggleVoteHotkey/useToggleVoteHotkey";
 
 interface Props {
   ideaRatings: IdeaRating[];
 }
 
 const IdeaRatingsTable = (props: Props) => {
-  const router = useRouter();
-
   const authUser = useAuthStore((s) => s.authUser);
 
   const [
@@ -85,6 +84,9 @@ const IdeaRatingsTable = (props: Props) => {
     return result;
   }, [props.ideaRatings, hidingDone, filteringUsers, onlyHighImpactVoted]);
 
+  useAssignMeHotkey();
+  useToggleVoteHotkey();
+
   if (props.ideaRatings.length === 0) return <div></div>;
 
   return (
@@ -121,7 +123,7 @@ const IdeaRatingsTable = (props: Props) => {
         <TableBody>
           {visibleIdeaRatings.map((ideaRating, index) => (
             <IdeaTableRow
-              key={ideaRating.idea.id}
+              key={ideaRating.idea.id + ideaRating.idea.updatedAt}
               ideaRating={ideaRating}
               rowNumber={index + 1}
             />

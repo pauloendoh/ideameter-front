@@ -2,6 +2,7 @@ import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSa
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
+import useIdeaHoverStore from "@/hooks/zustand/domain/idea/useIdeaHoverStore";
 import { Checkbox, TableCell, TableRow } from "@mui/material";
 import { useRouter } from "next/router";
 import RatingInput from "../RatingInput/RatingInput";
@@ -21,10 +22,22 @@ const IdeaTableRow = (props: Props) => {
 
   const { mutate: submitSaveIdea } = useSaveIdeaMutation();
 
+  const setHoveredIdeaId = useIdeaHoverStore((s) => s.setHoveredIdeaId);
+
   return (
     <TableRow
       hover
-      sx={{ ":hover": { cursor: "pointer" } }}
+      onMouseEnter={() => {
+        setHoveredIdeaId(props.ideaRating.idea.id);
+      }}
+      onMouseLeave={() => {
+        setHoveredIdeaId(null);
+      }}
+      sx={{
+        ":hover": {
+          cursor: "pointer",
+        },
+      }}
       onClick={() => {
         if (props.ideaRating.idea.parentId) {
           openSubideaDialog(props.ideaRating.idea);
