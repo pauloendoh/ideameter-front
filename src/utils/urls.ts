@@ -36,6 +36,7 @@ const urls = {
     lastOpenedGroupId: `/me/lastOpenedGroupId`,
 
     profilesPicture: "/profiles/picture",
+    rteImages: "/rte-images",
   },
 };
 

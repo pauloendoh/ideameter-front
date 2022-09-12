@@ -1,13 +1,15 @@
+import { styles as S } from "./styles";
+
 import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import MyTextField from "@/components/_common/inputs/MyTextField";
+import MantineRTE from "@/components/_common/text/MantineRTE";
+import useDebounce from "@/hooks/utils/useDebounce";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
+import { RteImageDto } from "@/types/domain/rte-image/RteImageDto";
+import myAxios from "@/utils/axios/myAxios";
+import urls from "@/utils/urls";
 import { Grid } from "@mui/material";
-import {
-  Control,
-  Controller,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
+import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import IdeaDialogAssignedUsers from "../IdeaDialogAssignedUsers/IdeaDialogAssignedUsers";
 import IdeaDialogSelectedLabels from "../IdeaDialogSelectedLabels/IdeaDialogSelectedLabels";
 import IdeaDialogUsersVotedHighImpact from "../IdeaDialogUsersVotedHighImpact/IdeaDialogUsersVotedHighImpact";
@@ -20,6 +22,32 @@ interface Props {
 }
 
 const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
+  // some stuff to improve performance
+  const [localDescription, setLocalDescription] = useState(
+    watch("description")
+  );
+
+  const debouncedDescription = useDebounce(localDescription, 250);
+  useEffect(() => {
+    setValue("description", debouncedDescription);
+  }, [debouncedDescription]);
+
+  const handleImageUpload = useCallback(
+    (file: File): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        myAxios
+          .post<RteImageDto>(urls.api.rteImages, formData)
+          .then((res) => {
+            return resolve(res.data.imageUrl);
+          })
+          .catch(() => reject(new Error("Upload failed")));
+      }),
+    []
+  );
+
   return (
     <Grid item xs={8}>
       <FlexCol sx={{ gap: 4 }}>
@@ -44,22 +72,13 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
           }}
         />
 
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <MyTextField
-              id="description"
-              size="small"
-              label="Description"
-              multiline
-              minRows={3}
-              onCtrlEnter={() => onSubmit(watch())}
-              {...field}
-              fullWidth
-            />
-          )}
-        />
+        <S.MantineRteContainer>
+          <MantineRTE
+            value={localDescription}
+            onChange={setLocalDescription}
+            onImageUpload={handleImageUpload}
+          />
+        </S.MantineRteContainer>
       </FlexCol>
     </Grid>
   );
