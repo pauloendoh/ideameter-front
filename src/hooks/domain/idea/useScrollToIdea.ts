@@ -20,12 +20,6 @@ export const useScrollToIdea = () => {
         });
 
         row.classList.add("highlight-idea-row");
-        // row.style.backgroundColor = theme.palette.grey[700];
-
-        // setTimeout(() => {
-        //   const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`);
-        //   if (row) row.classList.add("fade-out");
-        // }, 1500);
 
         setTimeout(() => {
           const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`);

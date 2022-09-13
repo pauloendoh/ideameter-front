@@ -3,12 +3,11 @@ import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQuery
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
 import useIdeaHoverStore from "@/hooks/zustand/domain/idea/useIdeaHoverStore";
-import { Checkbox, TableCell } from "@mui/material";
+import { Checkbox, TableCell, TableRow } from "@mui/material";
 import { useRouter } from "next/router";
 import RatingInput from "../RatingInput/RatingInput";
 import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell";
 import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell";
-import { S } from "./styles";
 interface Props {
   ideaRating: IdeaRating;
   rowNumber: number;
@@ -25,7 +24,7 @@ const IdeaTableRow = (props: Props) => {
   const setHoveredIdeaId = useIdeaHoverStore((s) => s.setHoveredIdeaId);
 
   return (
-    <S.TableRow
+    <TableRow
       id={`idea-${props.ideaRating.idea.id}`}
       hover
       onMouseEnter={() => {
@@ -80,7 +79,7 @@ const IdeaTableRow = (props: Props) => {
 
       {/* Empty cell to avoid bigger width on the last cell */}
       <TableCell></TableCell>
-    </S.TableRow>
+    </TableRow>
   );
 };
 
