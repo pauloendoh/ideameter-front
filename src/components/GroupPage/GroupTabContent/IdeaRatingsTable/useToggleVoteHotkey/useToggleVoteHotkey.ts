@@ -10,7 +10,7 @@ import { useQueryClient } from "react-query";
 
 export const useToggleVoteHotkey = () => {
   const hoveredIdeaId = useIdeaHoverStore((s) => s.hoveredIdeaId);
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation(false);
+  const { mutate: submitSaveIdea } = useSaveIdeaMutation();
 
   const { groupId } = useRouterQueryString();
   const queryClient = useQueryClient();

@@ -9,7 +9,7 @@ import urls from "@/utils/urls";
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
-const useSaveIdeaMutation = (highlightAfterSave = true) => {
+const useSaveIdeaMutation = () => {
   const scrollToIdea = useScrollToIdea();
   const queryClient = useQueryClient();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
@@ -42,7 +42,7 @@ const useSaveIdeaMutation = (highlightAfterSave = true) => {
 
         setSuccessMessage("Idea saved!");
 
-        if (highlightAfterSave) scrollToIdea(savedIdea.id);
+        scrollToIdea(savedIdea.id);
       },
       onError: (err: AxiosError<string>) => {
         setErrorMessage(err?.response?.statusText || "Error saving idea");
