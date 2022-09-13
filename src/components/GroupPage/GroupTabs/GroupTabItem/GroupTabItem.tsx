@@ -23,14 +23,15 @@ const GroupTabItem = (props: Props) => {
   });
 
   const notRatedCount = useMemo(() => {
-    if (!authUser || !groupRatings || !tabIdeas) return 0;
+    if (!groupRatings || !tabIdeas) return 0;
 
     const tabIdeaIds = tabIdeas
       .filter((idea) => idea.tabId === props.tab.id)
+      .filter((idea) => idea.isDone === false)
       .map((idea) => idea.id);
 
     const userRatings = groupRatings.filter(
-      (rating) => rating.userId === authUser.id
+      (rating) => rating.userId === authUser?.id
     );
     const userRatingIdeaIds = userRatings.map((r) => r.ideaId);
 
