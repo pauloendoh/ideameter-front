@@ -34,6 +34,8 @@ const RatingInput = (props: Props) => {
     return userRating.rating;
   }, [props.idea, groupRatings]);
 
+  const shouldShowBadge = !props.idea.isDone && currentRating === -1;
+
   const handleChange = (newValue: number) => {
     if (newValue === -1) {
       deleteRatingMutation.mutate({
@@ -53,7 +55,7 @@ const RatingInput = (props: Props) => {
   };
 
   return (
-    <Badge color="error" variant={currentRating === -1 ? "dot" : "standard"}>
+    <Badge color="error" variant={shouldShowBadge ? "dot" : "standard"}>
       <Select
         disabled={isLoading}
         size="small"
