@@ -26,6 +26,7 @@ const IdeaTableRow = (props: Props) => {
 
   return (
     <TableRow
+      id={`idea-${props.ideaRating.idea.id}`}
       hover
       onMouseEnter={() => {
         setHoveredIdeaId(props.ideaRating.idea.id);

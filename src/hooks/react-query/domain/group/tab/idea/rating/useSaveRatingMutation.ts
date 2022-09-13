@@ -1,3 +1,4 @@
+import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea";
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto";
@@ -15,6 +16,7 @@ interface ResponseData {
 
 const useSaveRatingMutation = () => {
   const queryClient = useQueryClient();
+  const scrollToIdea = useScrollToIdea();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
 
   return useMutation(
@@ -54,6 +56,8 @@ const useSaveRatingMutation = () => {
           queryKeys.ratingsByGroup(groupId),
           newGroupRatings
         );
+
+        scrollToIdea(idea.id);
       },
       onError: (err) => {
         setErrorMessage(JSON.stringify(err));

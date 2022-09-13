@@ -77,7 +77,7 @@ const IdeaRatingsTable = (props: Props) => {
 
         // if both ideas have same avg rating and same ratings count, it will sort by high impact votes count
         if (ratingsCountA === ratingsCountB) {
-          return a.idea.highImpactVotes.length > b.idea.highImpactVotes.length
+          return a.idea.highImpactVotes?.length > b.idea.highImpactVotes?.length
             ? -1
             : 1;
         }

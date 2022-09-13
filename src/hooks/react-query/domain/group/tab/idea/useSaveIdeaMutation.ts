@@ -1,3 +1,4 @@
+import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea";
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
@@ -9,6 +10,7 @@ import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 const useSaveIdeaMutation = () => {
+  const scrollToIdea = useScrollToIdea();
   const queryClient = useQueryClient();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
   const { groupId } = useRouterQueryString();
@@ -39,6 +41,8 @@ const useSaveIdeaMutation = () => {
           queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId));
 
         setSuccessMessage("Idea saved!");
+
+        scrollToIdea(savedIdea.id);
       },
       onError: (err: AxiosError<string>) => {
         setErrorMessage(err?.response?.statusText || "Error saving idea");
