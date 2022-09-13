@@ -20,7 +20,7 @@ export const useScrollToIdea = () => {
         });
 
         row.style.transition = "all .5s";
-        row.style.background = theme.palette.primary.main;
+        row.style.background = theme.palette.primary.dark;
 
         setTimeout(() => {
           row.style.background = "unset";
