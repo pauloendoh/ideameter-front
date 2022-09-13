@@ -24,3 +24,18 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.highlight-idea-row {
+  animation: highlightIdeaTransition 2s 1;
+  /* transition: background-color 0.5s;
+  background-color: rgb(97, 97, 97) !important; */
+}
+
+@keyframes highlightIdeaTransition {
+  25% {
+    background: rgb(97, 97, 97);
+  }
+  75% {
+    background: rgb(97, 97, 97);
+  }
+}

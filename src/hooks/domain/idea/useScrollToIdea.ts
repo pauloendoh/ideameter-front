@@ -19,11 +19,17 @@ export const useScrollToIdea = () => {
           top: top,
         });
 
-        row.style.transition = "all .5s";
-        row.style.background = theme.palette.primary.dark;
+        row.classList.add("highlight-idea-row");
+        // row.style.backgroundColor = theme.palette.grey[700];
+
+        // setTimeout(() => {
+        //   const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`);
+        //   if (row) row.classList.add("fade-out");
+        // }, 1500);
 
         setTimeout(() => {
-          row.style.background = "unset";
+          const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`);
+          if (row) row.classList.remove("highlight-idea-row");
         }, 2000);
       }
     }, 250);
