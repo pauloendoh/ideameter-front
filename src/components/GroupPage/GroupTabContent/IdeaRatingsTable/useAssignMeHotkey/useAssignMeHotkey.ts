@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 
 export const useAssignMeHotkey = () => {
   const hoveredIdeaId = useIdeaHoverStore((s) => s.hoveredIdeaId);
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation();
+  const { mutate: submitSaveIdea } = useSaveIdeaMutation(false);
 
   const { groupId } = useRouterQueryString();
   const queryClient = useQueryClient();
