@@ -7,6 +7,7 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
 import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup";
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery";
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery";
+import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets";
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore";
 import { resetGroupFilterStore } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
@@ -31,6 +32,8 @@ const GroupId: NextPage = () => {
   const { openDialog } = useTabDialogStore();
 
   const query = useRouterQueryString();
+
+  useGroupRelatedSockets(query.groupId);
 
   const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage);
   const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup();
@@ -63,7 +66,9 @@ const GroupId: NextPage = () => {
   useEffect(() => {
     resetGroupFilterStore();
 
-    if (query.groupId) updateLastOpenedGroupId(query.groupId);
+    if (query.groupId) {
+      updateLastOpenedGroupId(query.groupId);
+    }
   }, [query.groupId]);
 
   return (

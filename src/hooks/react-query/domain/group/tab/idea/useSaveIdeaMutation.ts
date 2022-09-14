@@ -1,4 +1,5 @@
 import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea";
+import { useMySocketEvent } from "@/hooks/socket/useMySocketEvent";
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
@@ -10,10 +11,13 @@ import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 const useSaveIdeaMutation = () => {
+  const { groupId } = useRouterQueryString();
+
+  const { sendMessage } = useMySocketEvent("saveIdea");
+
   const scrollToIdea = useScrollToIdea();
   const queryClient = useQueryClient();
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
-  const { groupId } = useRouterQueryString();
 
   return useMutation(
     (payload: IdeaDto) =>
@@ -42,6 +46,7 @@ const useSaveIdeaMutation = () => {
 
         setSuccessMessage("Idea saved!");
 
+        sendMessage({ idea: savedIdea, groupId });
         scrollToIdea(savedIdea.id);
       },
       onError: (err: AxiosError<string>) => {

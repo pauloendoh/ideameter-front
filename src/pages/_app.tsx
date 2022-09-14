@@ -15,6 +15,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { IoProvider } from "socket.io-react-hook";
 import createEmotionCache from "../createEmotionCache";
 import theme from "../theme";
 import "./global.css";
@@ -44,11 +45,13 @@ export default function MyApp(props: MyAppProps) {
         </Head>
         <ThemeProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterLuxon}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
+            <IoProvider>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
 
-            {loading ? <LoadingPage /> : <Component {...pageProps} />}
-            <ReactQueryDevtools initialIsOpen={false} />
+              {loading ? <LoadingPage /> : <Component {...pageProps} />}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </IoProvider>
           </LocalizationProvider>
           <SnackbarWrapper />
         </ThemeProvider>
