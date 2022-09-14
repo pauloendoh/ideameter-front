@@ -29,6 +29,7 @@ const IdeaRatingsTable = (props: Props) => {
 
   const sortingBy = useIdeaSortStore((s) => s.sortingBy);
 
+  // PE 1/3 - put this filter + sort function in a separated file
   const visibleIdeaRatings = useMemo(() => {
     let result = [...props.ideaRatings];
 

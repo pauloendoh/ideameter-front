@@ -1,3 +1,5 @@
+const { NEXT_PUBLIC_WS_URL } = process.env;
+
 const urls = {
   pages: {
     index: "/",
@@ -37,6 +39,9 @@ const urls = {
 
     profilesPicture: "/profiles/picture",
     rteImages: "/rte-images",
+  },
+  ws: {
+    groupId: (groupId: string) => `${NEXT_PUBLIC_WS_URL}/groups/${groupId}`,
   },
 };
 
