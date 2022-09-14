@@ -2,15 +2,7 @@ import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQuery
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
 import useIdeaSortStore from "@/hooks/zustand/domain/auth/group/useIdeaSortStore";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import {
-  Box,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TableSortLabel,
-} from "@mui/material";
-import { visuallyHidden } from "@mui/utils";
+import { TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { useMemo } from "react";
 import S from "./IdeaTable.styles";
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow";
@@ -125,13 +117,8 @@ const IdeaRatingsTable = (props: Props) => {
             </TableCell>
             <TableCell width="360px">Idea</TableCell>
             <TableCell width="64px">Done</TableCell>
-            <TableCell align="center" width="64px" sortDirection="desc">
-              <TableSortLabel active direction="desc">
-                Avg
-                <Box component="span" sx={visuallyHidden}>
-                  sorted descending
-                </Box>
-              </TableSortLabel>
+            <TableCell align="center" width="64px">
+              Avg
             </TableCell>
             <UserTableCell userId={authUser!.id} />
             {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
