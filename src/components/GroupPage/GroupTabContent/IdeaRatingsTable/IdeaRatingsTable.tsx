@@ -1,5 +1,6 @@
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
+import useIdeaSortStore from "@/hooks/zustand/domain/auth/group/useIdeaSortStore";
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
 import {
   Box,
@@ -34,6 +35,8 @@ const IdeaRatingsTable = (props: Props) => {
     s.filter.onlyHighImpactVoted,
   ]);
 
+  const sortingBy = useIdeaSortStore((s) => s.sortingBy);
+
   const visibleIdeaRatings = useMemo(() => {
     let result = [...props.ideaRatings];
 
@@ -60,36 +63,52 @@ const IdeaRatingsTable = (props: Props) => {
         (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0 // subideas must always appear in their table
       );
 
-    result = result.sort((a, b) => {
-      const numRatingA = Number(a.avgRating);
-      const numRatingB = Number(b.avgRating);
-      // if both ideas have same avg rating, it will sort by ratings count
-      if (numRatingA === numRatingB) {
-        const youRatedIdeaA = a.yourRating ? 1 : 0;
-        const ratingsCountA =
-          youRatedIdeaA +
-          a.otherUserGroupRatings.filter((r) => r.rating).length;
+    if (sortingBy.attribute === "irrelevantSince")
+      result = result.sort((a, b) =>
+        String(b.idea.irrelevantSince || "").localeCompare(
+          String(a.idea.irrelevantSince || "")
+        )
+      );
 
-        const youRatedIdeaB = b.yourRating ? 1 : 0;
-        const ratingsCountB =
-          youRatedIdeaB +
-          b.otherUserGroupRatings.filter((r) => r.rating).length;
+    if (sortingBy.attribute === "avgRating") {
+      result = result.sort((a, b) => {
+        const numRatingA = Number(a.avgRating);
+        const numRatingB = Number(b.avgRating);
+        // if both ideas have same avg rating, it will sort by ratings count
+        if (numRatingA === numRatingB) {
+          const youRatedIdeaA = a.yourRating ? 1 : 0;
+          const ratingsCountA =
+            youRatedIdeaA +
+            a.otherUserGroupRatings.filter((r) => r.rating).length;
 
-        // if both ideas have same avg rating and same ratings count, it will sort by high impact votes count
-        if (ratingsCountA === ratingsCountB) {
-          return a.idea.highImpactVotes?.length > b.idea.highImpactVotes?.length
-            ? -1
-            : 1;
+          const youRatedIdeaB = b.yourRating ? 1 : 0;
+          const ratingsCountB =
+            youRatedIdeaB +
+            b.otherUserGroupRatings.filter((r) => r.rating).length;
+
+          // if both ideas have same avg rating and same ratings count, it will sort by high impact votes count
+          if (ratingsCountA === ratingsCountB) {
+            return a.idea.highImpactVotes?.length >
+              b.idea.highImpactVotes?.length
+              ? -1
+              : 1;
+          }
+
+          return ratingsCountA > ratingsCountB ? -1 : 1;
         }
 
-        return ratingsCountA > ratingsCountB ? -1 : 1;
-      }
-
-      return numRatingA > numRatingB ? -1 : 1;
-    });
+        return numRatingA > numRatingB ? -1 : 1;
+      });
+    }
 
     return result;
-  }, [props.ideaRatings, hidingDone, filteringUsers, onlyHighImpactVoted]);
+  }, [
+    props.ideaRatings,
+    hidingDone,
+    filteringUsers,
+    onlyHighImpactVoted,
+    sortingBy,
+  ]);
 
   useAssignMeHotkey();
   useToggleVoteHotkey();
