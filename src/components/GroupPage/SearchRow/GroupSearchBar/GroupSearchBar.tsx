@@ -51,7 +51,7 @@ const GroupSearchBar = (props: Props) => {
             {...params}
             label="Search ideas"
             size="small"
-            sx={{ width: 300 }}
+            sx={{ width: 200 }}
           />
         )}
         getOptionLabel={(option) => option.name}

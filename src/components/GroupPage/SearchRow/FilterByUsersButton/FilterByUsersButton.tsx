@@ -10,6 +10,7 @@ interface Props {
   test?: string;
 }
 
+// PE 1/3 - melhorar nome?
 const FilterByUsersButton = (props: Props) => {
   const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog);
   const { groupId } = useRouterQueryString();
