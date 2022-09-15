@@ -1,4 +1,5 @@
-const { NEXT_PUBLIC_WS_URL } = process.env;
+const { NEXT_PUBLIC_API_URL } = process.env;
+
 
 const urls = {
   pages: {
@@ -41,7 +42,8 @@ const urls = {
     rteImages: "/rte-images",
   },
   ws: {
-    groupId: (groupId: string) => `${NEXT_PUBLIC_WS_URL}/groups/${groupId}`,
+    groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,
+
   },
 };
 
