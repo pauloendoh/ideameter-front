@@ -1,5 +1,6 @@
 const { NEXT_PUBLIC_API_URL } = process.env;
 
+
 const urls = {
   pages: {
     index: "/",
@@ -42,6 +43,7 @@ const urls = {
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,
+
   },
 };
 
