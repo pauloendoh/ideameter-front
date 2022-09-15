@@ -12,10 +12,14 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
 
   // first render
   useEffect(() => {
-    if (groupId) sendEnterGroupMessage(groupId);
+    console.log("first render: " + groupId);
+    setTimeout(() => {
+      if (groupId) sendEnterGroupMessage(groupId);
+    }, 100);
   }, []);
 
   useEffect(() => {
+    console.log("second render: " + groupId);
     if (groupId) sendEnterGroupMessage(groupId);
   }, [groupId]);
 
