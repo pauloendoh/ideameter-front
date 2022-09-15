@@ -10,6 +10,11 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
     "enter-group"
   );
 
+  // first render
+  useEffect(() => {
+    if (groupId) sendEnterGroupMessage(groupId);
+  }, []);
+
   useEffect(() => {
     if (groupId) sendEnterGroupMessage(groupId);
   }, [groupId]);
