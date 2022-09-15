@@ -1,20 +1,20 @@
-import GroupTabContent from "@/components/GroupPage/GroupTabContent/GroupTabContent";
-import GroupTabs from "@/components/GroupPage/GroupTabs/GroupTabs";
-import SearchRow from "@/components/GroupPage/SearchRow/SearchRow";
-import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon";
-import HomeLayout from "@/components/layout/HomeLayout/HomeLayout";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup";
-import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery";
-import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery";
-import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets";
-import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
-import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore";
-import { resetGroupFilterStore } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import { newTabDto } from "@/types/domain/group/tab/TabDto";
-import myAxios from "@/utils/axios/myAxios";
-import urls from "@/utils/urls";
+import GroupTabContent from "@/components/GroupPage/GroupTabContent/GroupTabContent"
+import GroupTabs from "@/components/GroupPage/GroupTabs/GroupTabs"
+import SearchRow from "@/components/GroupPage/SearchRow/SearchRow"
+import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon"
+import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup"
+import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
+import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
+import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
+import { resetGroupFilterStore } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import { newTabDto } from "@/types/domain/group/tab/TabDto"
+import myAxios from "@/utils/axios/myAxios"
+import urls from "@/utils/urls"
 import {
   Box,
   Container,
@@ -22,59 +22,61 @@ import {
   Paper,
   Tooltip,
   Typography,
-} from "@mui/material";
-import type { NextPage } from "next";
-import { useEffect, useMemo } from "react";
-import { MdAdd } from "react-icons/md";
+} from "@mui/material"
+import type { NextPage } from "next"
+import { useEffect, useMemo } from "react"
+import { MdAdd } from "react-icons/md"
 
 const GroupId: NextPage = () => {
-  const { data: groups } = useGroupsQuery();
-  const { openDialog } = useTabDialogStore();
+  const { data: groups } = useGroupsQuery()
+  const { openDialog } = useTabDialogStore()
+  const { groupId, tabId } = useRouterQueryString()
 
-  const query = useRouterQueryString();
+  useGroupRelatedSockets(groupId)
 
-  useGroupRelatedSockets(query.groupId);
-
-  const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage);
-  const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup();
+  const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage)
+  const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup()
 
   const selectedGroup = useMemo(() => {
-    if (!groups) return undefined;
+    if (groupId) {
+      const foundGroup = groups?.find((group) => group.id === groupId)
 
-    const foundGroup = groups.find((group) => group.id === query.groupId);
-    if (!foundGroup) {
-      setErrorMessage("Group not found. Redirecting to last opened group...");
-      checkAndRedirectLastOpenedGroup();
-      return undefined;
+      if (!foundGroup) {
+        setErrorMessage("Group not found. Redirecting to last opened group...")
+        checkAndRedirectLastOpenedGroup()
+        return undefined
+      }
+
+      return foundGroup
     }
 
-    return foundGroup;
-  }, [groups, query.groupId]);
+    return null
+  }, [groups, groupId])
 
-  const { data: groupTabs } = useGroupTabsQuery(query.groupId!);
+  const { data: groupTabs } = useGroupTabsQuery(groupId!)
 
   // oldest first
   const sortedGroupTabs = useMemo(
     () => groupTabs?.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1)) || [],
     [groupTabs]
-  );
+  )
 
   const updateLastOpenedGroupId = (groupId: string) => {
-    myAxios.put(urls.api.lastOpenedGroupId, { groupId });
-  };
+    myAxios.put(urls.api.lastOpenedGroupId, { groupId })
+  }
 
   useEffect(() => {
-    resetGroupFilterStore();
+    resetGroupFilterStore()
 
-    if (query.groupId) {
-      updateLastOpenedGroupId(query.groupId);
+    if (groupId) {
+      updateLastOpenedGroupId(groupId)
     }
-  }, [query.groupId]);
+  }, [groupId])
 
   return (
     <HomeLayout>
       <Container>
-        {selectedGroup && (
+        {groupId && selectedGroup && (
           <Box sx={{ mt: 5 }}>
             <Typography variant="h5">{selectedGroup.name}</Typography>
             <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
@@ -84,15 +86,12 @@ const GroupId: NextPage = () => {
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="Add tab">
                     <IconButton
-                      onClick={() =>
-                        openDialog(newTabDto({ groupId: query.groupId }))
-                      }
+                      onClick={() => openDialog(newTabDto({ groupId }))}
                     >
                       <MdAdd />
                     </IconButton>
                   </Tooltip>
-
-                  <GroupTabs groupId={query.groupId!} tabs={sortedGroupTabs} />
+                  <GroupTabs groupId={groupId} tabs={sortedGroupTabs} />
                 </div>
 
                 <GroupMoreIcon
@@ -103,15 +102,15 @@ const GroupId: NextPage = () => {
               </FlexVCenter>
 
               <SearchRow />
-              {query.tabId && query.groupId && (
-                <GroupTabContent tabId={query.tabId} groupId={query.groupId} />
+              {tabId && groupId && (
+                <GroupTabContent tabId={tabId} groupId={groupId} />
               )}
             </Paper>
           </Box>
         )}
       </Container>
     </HomeLayout>
-  );
-};
+  )
+}
 
-export default GroupId;
+export default GroupId

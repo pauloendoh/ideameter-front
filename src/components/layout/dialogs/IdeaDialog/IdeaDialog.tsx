@@ -1,12 +1,12 @@
-import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
-import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
-import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto";
+import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
+import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import {
   Box,
   Dialog,
@@ -14,46 +14,49 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-} from "@mui/material";
-import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { MdClose } from "react-icons/md";
-import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol";
-import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol";
-import IdeaMenu from "./IdeaMenu/IdeaMenu";
-import SubideasTable from "./SubideasTable/SubideasTable";
+} from "@mui/material"
+import { useEffect, useRef } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { MdClose } from "react-icons/md"
+import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
+import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
+import IdeaMenu from "./IdeaMenu/IdeaMenu"
+import SubideasTable from "./SubideasTable/SubideasTable"
 
-const ariaLabel = "idea-dialog";
+const ariaLabel = "idea-dialog"
 
 const IdeaDialog = () => {
-  const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null)
 
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation();
+  const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
-  const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore();
+  const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore()
 
-  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog);
+  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
 
   const { watch, control, setValue, handleSubmit, reset } = useForm<IdeaDto>({
     defaultValues: initialValue,
-  });
+  })
 
   useEffect(() => {
-    if (dialogIsOpen) {
-      reset(initialValue);
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+    const initDialog = async () => {
+      if (dialogIsOpen) {
+        reset(initialValue)
+      }
     }
-  }, [dialogIsOpen]);
+
+    initDialog().then(() => inputRef.current?.focus())
+
+    return
+  }, [dialogIsOpen])
 
   const onSubmit = (values: IdeaDto) => {
     submitSaveIdea(values, {
       onSuccess: () => {
-        closeDialog();
+        closeDialog()
       },
-    });
-  };
+    })
+  }
 
   return (
     <Dialog
@@ -119,7 +122,7 @@ const IdeaDialog = () => {
                 <DarkButton
                   sx={{ width: 150 }}
                   onClick={() => {
-                    openSubideaDialog(newIdeaDto({ parentId: watch("id") }));
+                    openSubideaDialog(newIdeaDto({ parentId: watch("id") }))
                   }}
                 >
                   Create subideas
@@ -139,7 +142,7 @@ const IdeaDialog = () => {
         </form>
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default IdeaDialog;
+export default IdeaDialog
