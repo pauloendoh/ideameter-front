@@ -1,10 +1,14 @@
+import GroupDto from "../GroupDto"
+
 export default interface TabDto {
-  id: string;
-  creatorId: string;
-  groupId: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  creatorId: string
+
+  group?: GroupDto
+  groupId: string
+  name: string
+  createdAt: string
+  updatedAt: string
 }
 
 export const newTabDto = (partial?: Partial<TabDto>): TabDto => ({
@@ -16,4 +20,4 @@ export const newTabDto = (partial?: Partial<TabDto>): TabDto => ({
   updatedAt: "",
 
   ...partial,
-});
+})

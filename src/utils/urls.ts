@@ -1,5 +1,4 @@
-const { NEXT_PUBLIC_API_URL } = process.env;
-
+const { NEXT_PUBLIC_API_URL } = process.env
 
 const urls = {
   pages: {
@@ -40,11 +39,13 @@ const urls = {
 
     profilesPicture: "/profiles/picture",
     rteImages: "/rte-images",
+
+    notifications: "/notifications",
+    notificationsHideDots: "/notifications/hide-dots",
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,
-
   },
-};
+}
 
-export default urls;
+export default urls
