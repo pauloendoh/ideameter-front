@@ -1,11 +1,11 @@
-import UserWithProfileDto from "../user/UserWithProfileDto";
+import SimpleUserDto from "../user/SimpleUserDto"
 
 export default interface UserGroupDto {
-  userId: string;
-  groupId: string;
-  createdAt: string;
-  updatedAt: string;
-  isAdmin: boolean;
+  userId: string
+  groupId: string
+  createdAt: string
+  updatedAt: string
+  isAdmin: boolean
 
-  user: UserWithProfileDto;
+  user: SimpleUserDto
 }
