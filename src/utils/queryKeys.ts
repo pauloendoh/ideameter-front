@@ -16,6 +16,8 @@ const queryKeys = {
     "subideas",
     "ratings",
   ],
-};
 
-export default queryKeys;
+  notifications: "/notifications",
+}
+
+export default queryKeys

@@ -1,7 +1,8 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import { Typography } from "@mui/material";
-import S from "./Navbar.styles";
-import NavbarUserMenu from "./NavbarUserMenu/NavbarUserMenu";
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { Typography } from "@mui/material"
+import S from "./Navbar.styles"
+import NavbarUserMenu from "./NavbarUserMenu/NavbarUserMenu"
+import NavbarUserNotifications from "./NavbarUserNotifications/NavbarUserNotifications"
 
 const Navbar = () => {
   return (
@@ -16,11 +17,12 @@ const Navbar = () => {
         </FlexVCenter>
 
         <FlexVCenter sx={{ gap: 2 }}>
+          <NavbarUserNotifications />
           <NavbarUserMenu />
         </FlexVCenter>
       </S.NavbarToolbar>
     </S.AppBarRoot>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
