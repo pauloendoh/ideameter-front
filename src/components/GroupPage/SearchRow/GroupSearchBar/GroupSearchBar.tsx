@@ -1,24 +1,27 @@
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery";
-import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import { Autocomplete, Box, Popper } from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+import textContainsWords from "@/utils/text/textContainsWords"
+import { Autocomplete, Box, Popper } from "@mui/material"
+import { useEffect, useMemo, useState } from "react"
 
 interface Props {
-  test?: string;
+  test?: string
 }
 
+// PE 1/3 - rename to <GroupSearchBox /> ?
 const GroupSearchBar = (props: Props) => {
-  const router = useRouter();
-  const { groupId } = router.query as { groupId: string };
-  const { data, refetch } = useGroupIdeasQuery(groupId);
+  const { groupId } = useRouterQueryString()
+  const { data: groupIdeas, refetch } = useGroupIdeasQuery(groupId!)
 
-  const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog);
-  const dialogIsOpen = useIdeaDialogStore((s) => s.dialogIsOpen);
+  const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog)
+  const dialogIsOpen = useIdeaDialogStore((s) => s.dialogIsOpen)
 
-  const [value, setValue] = useState<IdeaDto | null>(null);
+  const [text, setText] = useState("")
+
+  const [selectedIdea, setSelectedIdea] = useState<IdeaDto | null>(null)
 
   const MyPopper = function (props: React.ComponentProps<typeof Popper>) {
     return (
@@ -27,28 +30,36 @@ const GroupSearchBar = (props: Props) => {
         sx={{ width: 700, display: dialogIsOpen ? "none" : "unset" }}
         placement="bottom-start"
       />
-    );
-  };
+    )
+  }
 
   useEffect(() => {
-    if (!value) return;
-    openIdeaDialog(value);
+    if (!selectedIdea) return
+    openIdeaDialog(selectedIdea)
 
-    setValue(null);
-  }, [value]);
+    setSelectedIdea(null)
+  }, [selectedIdea])
+
+  const filteredIdeas = useMemo(() => {
+    if (!groupIdeas) return []
+    return groupIdeas.filter((i) => textContainsWords(i.name, text))
+  }, [text, groupIdeas])
 
   return (
     <Box onClick={() => refetch()}>
       <Autocomplete
-        value={value}
+        value={selectedIdea}
         onChange={(e, idea) => {
-          setValue(idea);
+          setSelectedIdea(idea)
         }}
+        filterOptions={(ideas) => ideas} // disable autocomplete default filter behavior
         PopperComponent={MyPopper}
-        options={data || []}
+        options={filteredIdeas || []}
         renderInput={(params) => (
           <MyTextField
             {...params}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             label="Search ideas"
             size="small"
             sx={{ width: 200 }}
@@ -57,7 +68,7 @@ const GroupSearchBar = (props: Props) => {
         getOptionLabel={(option) => option.name}
       />
     </Box>
-  );
-};
+  )
+}
 
-export default GroupSearchBar;
+export default GroupSearchBar
