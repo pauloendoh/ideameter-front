@@ -1,29 +1,31 @@
-import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
-import Flex from "@/components/_common/flexboxes/Flex";
-import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
-import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
-import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore";
-import { CgChevronDown } from "react-icons/cg";
-import UserGroupAvatar from "../../GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
+import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import Flex from "@/components/_common/flexboxes/Flex"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
+import { CgChevronDown } from "react-icons/cg"
+import UserGroupAvatar from "../../GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 
 interface Props {
-  test?: string;
+  test?: string
 }
 
 // PE 1/3 - melhorar nome?
 const FilterByUsersButton = (props: Props) => {
-  const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog);
-  const { groupId } = useRouterQueryString();
+  const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog)
+  const { groupId, tabId } = useRouterQueryString()
   const [filter, changeUserIds] = useGroupFilterStore((s) => [
     s.filter,
     s.changeFilterUsers,
-  ]);
+  ])
 
   return (
     <DarkButton
       endIcon={<CgChevronDown />}
       onClick={() => {
-        openAssignModal(filter.users, (newValue) => changeUserIds(newValue));
+        openAssignModal(filter.users, (newValue) =>
+          changeUserIds(newValue, tabId)
+        )
       }}
     >
       <Flex gap={1}>
@@ -44,7 +46,7 @@ const FilterByUsersButton = (props: Props) => {
           ))}
       </Flex>
     </DarkButton>
-  );
-};
+  )
+}
 
-export default FilterByUsersButton;
+export default FilterByUsersButton

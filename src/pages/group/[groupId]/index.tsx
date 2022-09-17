@@ -10,10 +10,13 @@ import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
-import { resetGroupFilterStore } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
+import useGroupFilterStore, {
+  resetGroupFilterStore,
+} from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { newTabDto } from "@/types/domain/group/tab/TabDto"
 import myAxios from "@/utils/axios/myAxios"
+import { cookieKeys } from "@/utils/cookieKeys"
 import urls from "@/utils/urls"
 import {
   Box,
@@ -24,6 +27,7 @@ import {
   Typography,
 } from "@mui/material"
 import type { NextPage } from "next"
+import nookies from "nookies"
 import { useEffect, useMemo } from "react"
 import { MdAdd } from "react-icons/md"
 
@@ -72,6 +76,18 @@ const GroupId: NextPage = () => {
       updateLastOpenedGroupId(groupId)
     }
   }, [groupId])
+
+  useEffect(() => {
+    if (tabId) {
+      const cookieStr = nookies.get(null)[cookieKeys.groupTabIdeasFilter(tabId)]
+      if (cookieStr) {
+        const filterState = JSON.parse(cookieStr)
+        useGroupFilterStore.setState(filterState)
+        return
+      }
+    }
+    resetGroupFilterStore()
+  }, [tabId])
 
   return (
     <HomeLayout>
