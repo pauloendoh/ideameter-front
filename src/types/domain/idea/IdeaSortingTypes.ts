@@ -1,8 +1,12 @@
-export type IdeaSortAttributeType = "avgRating" | "irrelevantSince";
+export type IdeaSortAttributeType =
+  | "avgRating"
+  | "irrelevantSince"
+  | "createdAt"
+  | "updatedAt"
 
-export type SortOrderType = "desc" | "asc";
+export type SortOrderType = "desc" | "asc"
 
 export interface ISortOption {
-  attribute: IdeaSortAttributeType;
-  order: SortOrderType;
+  attribute: IdeaSortAttributeType
+  order: SortOrderType
 }
