@@ -27,7 +27,10 @@ const GroupSearchBar = (props: Props) => {
     return (
       <Popper
         {...props}
-        sx={{ width: 700, display: dialogIsOpen ? "none" : "unset" }}
+        sx={{
+          minWidth: 480,
+          display: dialogIsOpen ? "none" : "unset",
+        }}
         placement="bottom-start"
       />
     )
@@ -42,6 +45,7 @@ const GroupSearchBar = (props: Props) => {
 
   const filteredIdeas = useMemo(() => {
     if (!groupIdeas) return []
+    if (!text) return groupIdeas
     return groupIdeas.filter((i) => textContainsWords(i.name, text))
   }, [text, groupIdeas])
 
@@ -49,6 +53,7 @@ const GroupSearchBar = (props: Props) => {
     <Box onClick={() => refetch()}>
       <Autocomplete
         value={selectedIdea}
+        onBlur={() => setText("")}
         onChange={(e, idea) => {
           setSelectedIdea(idea)
         }}
