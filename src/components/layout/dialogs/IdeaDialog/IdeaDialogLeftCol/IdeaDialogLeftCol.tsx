@@ -11,7 +11,7 @@ import { RteImageDto } from "@/types/domain/rte-image/RteImageDto"
 import myAxios from "@/utils/axios/myAxios"
 import urls from "@/utils/urls"
 import { Grid } from "@mui/material"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { KeyboardEvent, useCallback, useEffect, useMemo, useState } from "react"
 import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form"
 import IdeaDialogAssignedUsers from "../IdeaDialogAssignedUsers/IdeaDialogAssignedUsers"
 import IdeaDialogSelectedLabels from "../IdeaDialogSelectedLabels/IdeaDialogSelectedLabels"
@@ -71,6 +71,14 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
     [groupMembers, authUser]
   )
 
+  const onCtrlEnter = (e: KeyboardEvent<HTMLDivElement>) => {
+    // I had to add a default function for onCtrlEnter to remove console.error
+    if (e.key === "Enter" && e.ctrlKey) {
+      setValue("description", localDescription)
+      onSubmit(watch())
+    }
+  }
+
   return (
     <Grid item xs={8}>
       <FlexCol sx={{ gap: 4 }}>
@@ -102,6 +110,7 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
             onChange={setLocalDescription}
             onImageUpload={handleImageUpload}
             mentions={mentions}
+            onKeyDown={onCtrlEnter}
           />
         </S.MantineRteContainer>
       </FlexCol>
