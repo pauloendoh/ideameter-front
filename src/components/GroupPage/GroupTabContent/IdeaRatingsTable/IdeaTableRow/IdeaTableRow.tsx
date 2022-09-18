@@ -5,9 +5,9 @@ import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore
 import { Checkbox, TableCell, TableRow } from "@mui/material"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { useAssignMeHotkey } from "../../../../../hooks/hotkeys/useAssignMeHotkey/useAssignMeHotkey"
+import { useToggleVoteHotkey } from "../../../../../hooks/hotkeys/useToggleVoteHotkey/useToggleVoteHotkey"
 import RatingInput from "../RatingInput/RatingInput"
-import { useAssignMeHotkey } from "../useAssignMeHotkey/useAssignMeHotkey"
-import { useToggleVoteHotkey } from "../useToggleVoteHotkey/useToggleVoteHotkey"
 import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell"
 import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell"
 interface Props {

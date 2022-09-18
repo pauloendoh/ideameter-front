@@ -1,5 +1,6 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import Flex from "@/components/_common/flexboxes/Flex"
+import { useToggleFilterMeHotkey } from "@/hooks/hotkeys/useToggleFilterMeHotkey/useToggleFilterMeHotkey"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
@@ -18,6 +19,8 @@ const FilterByUsersButton = (props: Props) => {
     s.filter,
     s.changeFilterUsers,
   ])
+
+  useToggleFilterMeHotkey()
 
   return (
     <DarkButton
