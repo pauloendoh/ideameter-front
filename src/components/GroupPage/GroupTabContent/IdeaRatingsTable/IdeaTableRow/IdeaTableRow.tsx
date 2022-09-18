@@ -1,37 +1,43 @@
-import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation";
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
-import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore";
-import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
-import useIdeaHoverStore from "@/hooks/zustand/domain/idea/useIdeaHoverStore";
-import { Checkbox, TableCell, TableRow } from "@mui/material";
-import { useRouter } from "next/router";
-import RatingInput from "../RatingInput/RatingInput";
-import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell";
-import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell";
+import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
+import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
+import { Checkbox, TableCell, TableRow } from "@mui/material"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import RatingInput from "../RatingInput/RatingInput"
+import { useAssignMeHotkey } from "../useAssignMeHotkey/useAssignMeHotkey"
+import { useToggleVoteHotkey } from "../useToggleVoteHotkey/useToggleVoteHotkey"
+import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell"
+import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell"
 interface Props {
-  ideaRating: IdeaRating;
-  rowNumber: number;
+  ideaRating: IdeaRating
+  rowNumber: number
 }
 
 const IdeaTableRow = (props: Props) => {
-  const router = useRouter();
-  const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog);
-  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog);
-  const query = router.query as { groupId: string };
+  const router = useRouter()
+  const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog)
+  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
+  const query = router.query as { groupId: string }
 
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation();
+  const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
-  const setHoveredIdeaId = useIdeaHoverStore((s) => s.setHoveredIdeaId);
+  const [isHoveringIdeaId, setHoveringIdeaId] = useState<string | null>(null)
+
+  useAssignMeHotkey(isHoveringIdeaId)
+  useToggleVoteHotkey(isHoveringIdeaId)
 
   return (
     <TableRow
       id={`idea-${props.ideaRating.idea.id}`}
+      className="idea-table-row"
       hover
       onMouseEnter={() => {
-        setHoveredIdeaId(props.ideaRating.idea.id);
+        setHoveringIdeaId(props.ideaRating.idea.id)
       }}
       onMouseLeave={() => {
-        setHoveredIdeaId(null);
+        setHoveringIdeaId(null)
       }}
       sx={{
         ":hover": {
@@ -40,11 +46,11 @@ const IdeaTableRow = (props: Props) => {
       }}
       onClick={() => {
         if (props.ideaRating.idea.parentId) {
-          openSubideaDialog(props.ideaRating.idea);
-          return;
+          openSubideaDialog(props.ideaRating.idea)
+          return
         }
 
-        openIdeaDialog(props.ideaRating.idea);
+        openIdeaDialog(props.ideaRating.idea)
       }}
     >
       <TableCell align="center">{props.rowNumber}</TableCell>
@@ -58,7 +64,7 @@ const IdeaTableRow = (props: Props) => {
             submitSaveIdea({
               ...props.ideaRating.idea,
               isDone: e.target.checked,
-            });
+            })
           }}
           inputProps={{ "aria-label": "controlled" }}
         />
@@ -80,7 +86,7 @@ const IdeaTableRow = (props: Props) => {
       {/* Empty cell to avoid bigger width on the last cell */}
       <TableCell></TableCell>
     </TableRow>
-  );
-};
+  )
+}
 
-export default IdeaTableRow;
+export default IdeaTableRow

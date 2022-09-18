@@ -6,9 +6,7 @@ import { TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
 import { useMemo } from "react"
 import S from "./IdeaTable.styles"
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow"
-import { useAssignMeHotkey } from "./useAssignMeHotkey/useAssignMeHotkey"
 import UserTableCell from "./UserTableCell/UserTableCell"
-import { useToggleVoteHotkey } from "./useToggleVoteHotkey/useToggleVoteHotkey"
 
 interface Props {
   ideaRatings: IdeaRating[]
@@ -112,9 +110,6 @@ const IdeaRatingsTable = (props: Props) => {
     onlyHighImpactVoted,
     sortingBy,
   ])
-
-  useAssignMeHotkey()
-  useToggleVoteHotkey()
 
   if (props.ideaRatings.length === 0) return <div></div>
 

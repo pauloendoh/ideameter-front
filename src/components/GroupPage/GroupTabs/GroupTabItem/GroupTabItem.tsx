@@ -1,46 +1,68 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery";
-import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery";
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import TabDto from "@/types/domain/group/tab/TabDto";
-import urls from "@/utils/urls";
-import { Badge, Tab, Typography } from "@mui/material";
-import Link from "next/link";
-import { useMemo } from "react";
-import TabMenuOptions from "./TabMenuOptions/TabMenuOptions";
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
+import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery"
+import useSubideasQuery from "@/hooks/react-query/domain/subidea/useSubideasQuery"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import TabDto from "@/types/domain/group/tab/TabDto"
+import urls from "@/utils/urls"
+import { Badge, Tab, Typography } from "@mui/material"
+import Link from "next/link"
+import { useMemo } from "react"
+import TabMenuOptions from "./TabMenuOptions/TabMenuOptions"
 
 interface Props {
-  groupId: string;
-  tab: TabDto;
+  groupId: string
+  tab: TabDto
 }
 
 const GroupTabItem = (props: Props) => {
-  const { authUser } = useAuthStore();
-  const { data: groupRatings } = useRatingsQuery(props.groupId);
+  const { authUser } = useAuthStore()
+  const { data: groupRatings } = useRatingsQuery(props.groupId)
   const { data: tabIdeas } = useTabIdeasQuery({
     tabId: props.tab.id,
     groupId: props.groupId,
-  });
+  })
 
-  const notRatedCount = useMemo(() => {
-    if (!groupRatings || !tabIdeas) return 0;
+  const { data: subideas } = useSubideasQuery(props.groupId)
 
-    const tabIdeaIds = tabIdeas
-      .filter((idea) => idea.tabId === props.tab.id)
-      .filter((idea) => idea.isDone === false)
-      .map((idea) => idea.id);
+  const groupIdeaParentIds = useMemo(() => {
+    if (!subideas) return []
+    return subideas?.reduce<string[]>((result, subidea) => {
+      if (!result.includes(String(subidea.parentId)))
+        return [...result, String(subidea.parentId)]
+      return result
+    }, [])
+  }, [])
 
-    const userRatings = groupRatings.filter(
-      (rating) => rating.userId === authUser?.id
-    );
-    const userRatingIdeaIds = userRatings.map((r) => r.ideaId);
+  const userMustRateCount = useMemo(() => {
+    let count = 0
+    if (!groupRatings || !tabIdeas) return 0
 
-    const userRatedTabIdeaIds = tabIdeaIds.filter((ideaId) =>
-      userRatingIdeaIds.includes(ideaId)
-    );
+    const userRatedIdeaIds = groupRatings
+      .filter((rating) => rating.userId === authUser?.id)
+      .map((r) => r.ideaId)
 
-    return tabIdeaIds.length - userRatedTabIdeaIds.length;
-  }, [authUser, groupRatings, tabIdeas]);
+    const ideasWithoutSubideas = tabIdeas
+      .filter((i) => !groupIdeaParentIds.includes(i.id))
+      .filter((i) => !i.isDone)
+
+    const ideasUserMustRate = ideasWithoutSubideas.filter(
+      (i) => !userRatedIdeaIds.includes(i.id)
+    )
+
+    // =====
+
+    const tabIdeasIds = tabIdeas.map((i) => i.id)
+    const tabSubideas =
+      subideas
+        ?.filter((si) => tabIdeasIds.includes(String(si.parentId)))
+        .filter((si) => !si.isDone) || []
+    const subideasUserMustRate = tabSubideas.filter(
+      (si) => !userRatedIdeaIds.includes(si.id)
+    )
+
+    return ideasUserMustRate.length + subideasUserMustRate.length
+  }, [authUser, groupRatings, tabIdeas, groupIdeaParentIds, subideas])
 
   return (
     <Link href={urls.pages.groupTab(props.groupId, props.tab.id)}>
@@ -59,10 +81,10 @@ const GroupTabItem = (props: Props) => {
             <Badge
               color="error"
               overlap="rectangular"
-              badgeContent={notRatedCount}
+              badgeContent={userMustRateCount}
               componentsProps={{
                 badge: {
-                  title: `You have ${notRatedCount} ideas to rate`,
+                  title: `You have ${userMustRateCount} ideas to rate`,
                 },
               }}
             >
@@ -87,7 +109,7 @@ const GroupTabItem = (props: Props) => {
         />
       </a>
     </Link>
-  );
-};
+  )
+}
 
-export default GroupTabItem;
+export default GroupTabItem

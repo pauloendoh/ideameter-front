@@ -25,10 +25,13 @@
   background: #555;
 }
 
+.idea-table-row {
+  transition: background-color 0.5s;
+}
+
 .highlight-idea-row {
-  animation: highlightIdeaTransition 2s 1;
-  /* transition: background-color 0.5s;
-  background-color: rgb(97, 97, 97) !important; */
+  /* animation: highlightIdeaTransition 2s 1; */
+  background-color: rgb(97, 97, 97) !important;
 }
 
 @keyframes highlightIdeaTransition {

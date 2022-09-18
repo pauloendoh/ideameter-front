@@ -1,28 +1,41 @@
-import Flex from "@/components/_common/flexboxes/Flex";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify";
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils";
-import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import { Box, TableCell, Tooltip, Typography, useTheme } from "@mui/material";
-import { useMemo } from "react";
-import { MdDescription, MdOfflineBolt } from "react-icons/md";
-import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo";
-import UserGroupAvatar from "../../UserTableCell/UserGroupAvatar/UserGroupAvatar";
+import Flex from "@/components/_common/flexboxes/Flex"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify"
+import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import {
+  Badge,
+  Box,
+  TableCell,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material"
+import { useMemo } from "react"
+import { MdDescription, MdOfflineBolt } from "react-icons/md"
+import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo"
+import UserGroupAvatar from "../../UserTableCell/UserGroupAvatar/UserGroupAvatar"
 
 interface Props {
-  ideaRating: IdeaRating;
+  ideaRating: IdeaRating
 }
 
 const IdeaNameTableCell = (props: Props) => {
-  const theme = useTheme();
-  const { groupId } = useRouterQueryString();
+  const theme = useTheme()
+  const { groupId } = useRouterQueryString()
   const hasSubideas = useMemo(() => props.ideaRating.subideas.length > 0, [
     props.ideaRating.subideas,
-  ]);
+  ])
 
-  const authUser = useAuthStore((s) => s.authUser);
+  const { data: subideasRatings } = useSubideaRatingsQueryUtils(
+    props.ideaRating.idea.id,
+    groupId!
+  )
+
+  const authUser = useAuthStore((s) => s.authUser)
 
   const youVotedHighImpact = useMemo(
     () =>
@@ -32,7 +45,13 @@ const IdeaNameTableCell = (props: Props) => {
         )
       ),
     [props.ideaRating.idea.highImpactVotes, authUser]
-  );
+  )
+
+  const notRatedSubideasCount = useMemo(() => {
+    if (!subideasRatings) return 0
+
+    return subideasRatings.filter((r) => r.yourRating === null).length
+  }, [subideasRatings])
 
   return (
     <TableCell>
@@ -56,27 +75,33 @@ const IdeaNameTableCell = (props: Props) => {
           </Flex>
         )}
         <Box>
-          <span
-            style={{
-              display: "inline-flex",
-              whiteSpace: "break-spaces",
-              fontWeight: hasSubideas ? "bold" : undefined,
-            }}
+          <Badge
+            color="error"
+            overlap="rectangular"
+            badgeContent={notRatedSubideasCount}
           >
-            <MyReactLinkify openNewTab stopPropagation>
-              {props.ideaRating.idea.name}
-            </MyReactLinkify>
+            <span
+              style={{
+                display: "inline-flex",
+                whiteSpace: "break-spaces",
+                fontWeight: hasSubideas ? "bold" : undefined,
+              }}
+            >
+              <MyReactLinkify openNewTab stopPropagation>
+                {props.ideaRating.idea.name}
+              </MyReactLinkify>
 
-            {props.ideaRating.idea.description.length > 0 && (
-              <Tooltip title={props.ideaRating.idea.description}>
-                <span>
-                  <MdDescription
-                    style={{ position: "relative", top: 2, left: 8 }}
-                  />
-                </span>
-              </Tooltip>
-            )}
-          </span>
+              {props.ideaRating.idea.description.length > 0 && (
+                <Tooltip title={props.ideaRating.idea.description}>
+                  <span>
+                    <MdDescription
+                      style={{ position: "relative", bottom: -10, left: 6 }}
+                    />
+                  </span>
+                </Tooltip>
+              )}
+            </span>
+          </Badge>
         </Box>
 
         {hasSubideas && (
@@ -126,7 +151,7 @@ const IdeaNameTableCell = (props: Props) => {
         </FlexVCenter>
       </FlexCol>
     </TableCell>
-  );
-};
+  )
+}
 
-export default IdeaNameTableCell;
+export default IdeaNameTableCell

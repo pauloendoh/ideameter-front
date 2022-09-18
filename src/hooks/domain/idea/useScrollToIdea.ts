@@ -1,33 +1,46 @@
-import { useTheme } from "@mui/material";
+import { useTheme } from "@mui/material"
+import { useState } from "react"
 
 export const useScrollToIdea = () => {
-  const theme = useTheme();
+  const theme = useTheme()
+
+  const [
+    removeClassTimeout,
+    setRemoveClassTimeout,
+  ] = useState<NodeJS.Timeout | null>(null)
   const scrollToIdea = (ideaId: string) => {
     setTimeout(() => {
-      const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`);
-      const table = document.querySelector(".MuiTableContainer-root");
-      const thead = document.querySelector<HTMLElement>(".MuiTableRow-head");
+      const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`)
+      const table = document.querySelector(".MuiTableContainer-root")
+      const thead = document.querySelector<HTMLElement>(".MuiTableRow-head")
 
       if (row && table && thead) {
-        const tableTop = table.getBoundingClientRect().top;
-        const theadHeight = thead.offsetHeight;
+        const tableTop = table.getBoundingClientRect().top
+        const theadHeight = thead.offsetHeight
 
-        const rowTop = row.getBoundingClientRect().top + table.scrollTop;
-        const top = rowTop - (tableTop + theadHeight);
+        const rowTop = row.getBoundingClientRect().top + table.scrollTop
+        const top = rowTop - (tableTop + theadHeight)
 
         table.scrollTo({
           top: top,
-        });
+        })
 
-        row.classList.add("highlight-idea-row");
+        row.classList.add("highlight-idea-row")
 
-        setTimeout(() => {
-          const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`);
-          if (row) row.classList.remove("highlight-idea-row");
-        }, 2000);
+        if (removeClassTimeout) {
+          clearTimeout(removeClassTimeout)
+          setRemoveClassTimeout(null)
+        }
+
+        setRemoveClassTimeout(
+          setTimeout(() => {
+            const row = document.querySelector<HTMLElement>(`#idea-${ideaId}`)
+            if (row) row.classList.remove("highlight-idea-row")
+          }, 2000)
+        )
       }
-    }, 250);
-  };
+    }, 250)
+  }
 
-  return scrollToIdea;
-};
+  return scrollToIdea
+}
