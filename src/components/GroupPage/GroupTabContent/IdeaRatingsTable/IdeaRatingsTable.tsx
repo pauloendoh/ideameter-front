@@ -114,7 +114,7 @@ const IdeaRatingsTable = (props: Props) => {
   if (props.ideaRatings.length === 0) return <div></div>
 
   return (
-    <TableContainer sx={{ maxHeight: 440 }}>
+    <TableContainer sx={{ maxHeight: "calc(100vh - 330px)" }}>
       <S.Table stickyHeader>
         <S.TableHead>
           <TableRow>

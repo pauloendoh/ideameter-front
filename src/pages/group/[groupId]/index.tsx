@@ -93,7 +93,7 @@ const GroupId: NextPage = () => {
     <HomeLayout>
       <Container>
         {groupId && selectedGroup && (
-          <Box sx={{ mt: 5 }}>
+          <Box sx={{ mt: 1 }}>
             <Typography variant="h5">{selectedGroup.name}</Typography>
             <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
               <FlexVCenter
