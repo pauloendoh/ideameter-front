@@ -1,31 +1,31 @@
-import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea";
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto";
-import pushOrReplace from "@/utils/array/pushOrReplace";
-import upsert from "@/utils/array/upsert";
-import myAxios from "@/utils/axios/myAxios";
-import queryKeys from "@/utils/queryKeys";
-import urls from "@/utils/urls";
-import { useMutation, useQueryClient } from "react-query";
+import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
+import pushOrReplace from "@/utils/array/pushOrReplace"
+import upsert from "@/utils/array/upsert"
+import myAxios from "@/utils/axios/myAxios"
+import queryKeys from "@/utils/queryKeys"
+import urls from "@/utils/urls"
+import { useMutation, useQueryClient } from "react-query"
 
 interface ResponseData {
-  savedRating: RatingDto;
-  idea: IdeaDto;
+  savedRating: RatingDto
+  idea: IdeaDto
 }
 
 const useSaveRatingMutation = () => {
-  const queryClient = useQueryClient();
-  const scrollToIdea = useScrollToIdea();
-  const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
+  const queryClient = useQueryClient()
+  const scrollToIdea = useScrollToIdea()
+  const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
   return useMutation(
     ({
       payload,
     }: {
-      payload: RatingDto;
-      groupId: string;
-      parentIdeaId?: string;
+      payload: RatingDto
+      groupId: string
+      parentIdeaId?: string
     }) =>
       myAxios
         .request<ResponseData>({
@@ -37,33 +37,33 @@ const useSaveRatingMutation = () => {
     {
       onSuccess: ({ savedRating, idea }, { groupId, parentIdeaId }) => {
         if (parentIdeaId) {
-          queryClient.invalidateQueries(queryKeys.subideaRatings(parentIdeaId));
-          return;
+          queryClient.invalidateQueries(queryKeys.subideaRatings(parentIdeaId))
+          // return;
         }
 
         queryClient.setQueryData<IdeaDto[]>(
           queryKeys.groupIdeas(groupId),
           (curr) => {
-            return upsert(curr, idea, (i) => i.id === idea.id);
+            return upsert(curr, idea, (i) => i.id === idea.id)
           }
-        );
+        )
 
         const groupRatings = queryClient.getQueryData<RatingDto[]>(
           queryKeys.ratingsByGroup(groupId)
-        );
-        const newGroupRatings = pushOrReplace(groupRatings, savedRating, "id");
+        )
+        const newGroupRatings = pushOrReplace(groupRatings, savedRating, "id")
         queryClient.setQueryData(
           queryKeys.ratingsByGroup(groupId),
           newGroupRatings
-        );
+        )
 
-        scrollToIdea(idea.id);
+        scrollToIdea(idea.id)
       },
       onError: (err) => {
-        setErrorMessage(JSON.stringify(err));
+        setErrorMessage(JSON.stringify(err))
       },
     }
-  );
-};
+  )
+}
 
-export default useSaveRatingMutation;
+export default useSaveRatingMutation
