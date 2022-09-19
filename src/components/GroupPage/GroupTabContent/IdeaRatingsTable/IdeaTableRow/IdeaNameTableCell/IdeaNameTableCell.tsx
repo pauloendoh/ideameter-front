@@ -95,7 +95,11 @@ const IdeaNameTableCell = (props: Props) => {
                 <Tooltip title={props.ideaRating.idea.description}>
                   <span>
                     <MdDescription
-                      style={{ position: "relative", bottom: -10, left: 6 }}
+                      style={{
+                        position: "relative",
+                        bottom: notRatedSubideasCount ? -10 : -2,
+                        left: 6,
+                      }}
                     />
                   </span>
                 </Tooltip>

@@ -4,26 +4,25 @@ import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabId
 import useSubideasQuery from "@/hooks/react-query/domain/subidea/useSubideasQuery"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import TabDto from "@/types/domain/group/tab/TabDto"
-import urls from "@/utils/urls"
-import { Badge, Tab, Typography } from "@mui/material"
-import Link from "next/link"
-import { useMemo } from "react"
-import TabMenuOptions from "./TabMenuOptions/TabMenuOptions"
+import { Badge, Typography } from "@mui/material"
+import { HTMLAttributes, useMemo } from "react"
 
 interface Props {
-  groupId: string
   tab: TabDto
+  htmlProps: HTMLAttributes<HTMLLIElement>
 }
 
-const GroupTabItem = (props: Props) => {
-  const { authUser } = useAuthStore()
-  const { data: groupRatings } = useRatingsQuery(props.groupId)
+const TabSelectorItem = ({ tab, htmlProps }: Props) => {
   const { data: tabIdeas } = useTabIdeasQuery({
-    tabId: props.tab.id,
-    groupId: props.groupId,
+    tabId: tab.id,
+    groupId: tab.groupId,
   })
 
-  const { data: subideas } = useSubideasQuery(props.groupId)
+  const { authUser } = useAuthStore()
+
+  const { data: groupRatings } = useRatingsQuery(tab.groupId)
+
+  const { data: subideas } = useSubideasQuery(tab.groupId)
 
   const groupIdeaParentIds = useMemo(() => {
     if (!subideas) return []
@@ -64,51 +63,30 @@ const GroupTabItem = (props: Props) => {
   }, [authUser, groupRatings, tabIdeas, groupIdeaParentIds, subideas])
 
   return (
-    <Link href={urls.pages.groupTab(props.groupId, props.tab.id)}>
-      <a style={{ color: "inherit", textDecoration: "none" }}>
-        <Tab
-          key={props.tab.id}
-          title={props.tab.name}
-          sx={{
-            maxWidth: {
-              xs: 100,
-              md: 150,
-              lg: 200,
+    <FlexVCenter {...(htmlProps as any)}>
+      <FlexVCenter
+        justifyContent="space-between"
+        style={{ width: "100%" }}
+        py={1}
+      >
+        <Typography>{tab.name}</Typography>
+
+        <Badge
+          sx={{ fontSize: 12 }}
+          color="error"
+          overlap="rectangular"
+          badgeContent={userMustRateCount}
+          componentsProps={{
+            badge: {
+              title: `You have ${userMustRateCount} ideas to rate`,
             },
           }}
-          label={
-            <Badge
-              color="error"
-              overlap="rectangular"
-              badgeContent={userMustRateCount}
-              componentsProps={{
-                badge: {
-                  title: `You have ${userMustRateCount} ideas to rate`,
-                },
-              }}
-            >
-              <FlexVCenter gap={0.5}>
-                <TabMenuOptions tab={props.tab} />
-                <Typography
-                  noWrap
-                  sx={{
-                    maxWidth: {
-                      xs: 100 - 48,
-                      md: 150 - 48,
-                      lg: 200 - 48,
-                    },
-                    fontSize: 14,
-                  }}
-                >
-                  {props.tab.name}
-                </Typography>
-              </FlexVCenter>
-            </Badge>
-          }
-        />
-      </a>
-    </Link>
+        >
+          <Typography>{tabIdeas?.length || 0}</Typography>
+        </Badge>
+      </FlexVCenter>
+    </FlexVCenter>
   )
 }
 
-export default GroupTabItem
+export default TabSelectorItem

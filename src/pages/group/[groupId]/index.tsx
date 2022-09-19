@@ -1,9 +1,6 @@
 import GroupTabContent from "@/components/GroupPage/GroupTabContent/GroupTabContent"
-import GroupTabs from "@/components/GroupPage/GroupTabs/GroupTabs"
 import SearchRow from "@/components/GroupPage/SearchRow/SearchRow"
-import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon"
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
@@ -14,22 +11,13 @@ import useGroupFilterStore, {
   resetGroupFilterStore,
 } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
-import { newTabDto } from "@/types/domain/group/tab/TabDto"
 import myAxios from "@/utils/axios/myAxios"
 import { cookieKeys } from "@/utils/cookieKeys"
 import urls from "@/utils/urls"
-import {
-  Box,
-  Container,
-  IconButton,
-  Paper,
-  Tooltip,
-  Typography,
-} from "@mui/material"
+import { Box, Container, Paper, Typography } from "@mui/material"
 import type { NextPage } from "next"
 import nookies from "nookies"
 import { useEffect, useMemo } from "react"
-import { MdAdd } from "react-icons/md"
 
 const GroupId: NextPage = () => {
   const { data: groups } = useGroupsQuery()
@@ -95,8 +83,8 @@ const GroupId: NextPage = () => {
         {groupId && selectedGroup && (
           <Box sx={{ mt: 1 }}>
             <Typography variant="h5">{selectedGroup.name}</Typography>
-            <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
-              <FlexVCenter
+            <Paper sx={{ mt: 2, pt: 2, width: "100%", background: "#2B2B2B" }}>
+              {/* <FlexVCenter
                 sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
               >
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -115,7 +103,7 @@ const GroupId: NextPage = () => {
                   onAfterDelete={() => {}}
                   canEdit
                 />
-              </FlexVCenter>
+              </FlexVCenter> */}
 
               <SearchRow />
               {tabId && groupId && (
