@@ -41,11 +41,16 @@ const IdeaMentionNotificationItem = ({ notification }: Props) => {
             {groupName.substring(0, 2)}
           </Avatar>
         </Box>
-        <FlexCol justifyContent="center">
+        <FlexCol justifyContent="center" width={268}>
           <Typography>
-            <b>{mentionByUsername}</b> mentioned you in an idea
+            <b>{mentionByUsername}</b> mentioned you in an idea:
           </Typography>
-          <Typography>{formatTimeago(notification.createdAt)}</Typography>
+          <Typography noWrap sx={{ fontStyle: "italic" }}>
+            {notification.ideaDescriptionMention?.idea.name}
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 0.5 }}>
+            {formatTimeago(notification.createdAt)}
+          </Typography>
         </FlexCol>
         <FlexVCenter sx={{ width: 24 }}>
           {notification.showDot && (
