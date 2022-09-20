@@ -1,7 +1,7 @@
-import useDeleteGroupMutation from "@/hooks/react-query/domain/group/useDeleteGroupMutation";
-import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore";
-import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore";
-import GroupDto from "@/types/domain/group/GroupDto";
+import useDeleteGroupMutation from "@/hooks/react-query/domain/group/useDeleteGroupMutation"
+import useConfirmDeleteGroupDialogStore from "@/hooks/zustand/dialogs/useConfirmDeleteGroupDialogStore"
+import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
+import GroupDto from "@/types/domain/group/GroupDto"
 import {
   Box,
   IconButton,
@@ -9,29 +9,31 @@ import {
   Menu,
   MenuItem,
   Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md";
+} from "@mui/material"
+import { useState } from "react"
+import { MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md"
 
 interface Props {
-  group: GroupDto;
-  canEdit?: boolean;
-  onAfterDelete: () => void;
+  group: GroupDto
+  canEdit?: boolean
+  onAfterDelete: () => void
 }
 
 function GroupMoreIcon(props: Props) {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null)
   const handleOpenMore = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleCloseMore = () => {
-    setAnchorEl(null); // avoids error "The `anchorEl` prop provided to the component is invalid"
-  };
+    setAnchorEl(null) // avoids error "The `anchorEl` prop provided to the component is invalid"
+  }
 
-  const deleteMutation = useDeleteGroupMutation();
+  const deleteMutation = useDeleteGroupMutation()
 
-  const { openDialog } = useGroupDialogStore();
-  const { openConfirmDialog } = useConfirmDialogStore();
+  const { openDialog } = useGroupDialogStore()
+  const {
+    openDialog: openConfirmDeleteGroupDialog,
+  } = useConfirmDeleteGroupDialogStore()
 
   return (
     <Box>
@@ -40,8 +42,8 @@ function GroupMoreIcon(props: Props) {
         size="small"
         aria-label="decision-more-icon"
         onClick={(e) => {
-          e.preventDefault();
-          handleOpenMore(e);
+          e.preventDefault()
+          handleOpenMore(e)
         }}
       >
         <MdMoreHoriz />
@@ -56,14 +58,14 @@ function GroupMoreIcon(props: Props) {
         open={Boolean(anchorEl)}
         onClose={(e) => {
           // const event = e as any
-          handleCloseMore();
+          handleCloseMore()
         }}
       >
         {props.canEdit && (
           <MenuItem
             onClick={(e) => {
-              handleCloseMore();
-              openDialog(props.group);
+              handleCloseMore()
+              openDialog(props.group)
             }}
           >
             <ListItemIcon sx={{ width: 16 }}>
@@ -76,14 +78,11 @@ function GroupMoreIcon(props: Props) {
         )}
         <MenuItem
           onClick={(e) => {
-            openConfirmDialog({
-              title: "Delete group?",
-              onConfirm: () => {
-                deleteMutation.mutate(String(props.group.id), {
-                  onSuccess: props.onAfterDelete,
-                });
-              },
-            });
+            openConfirmDeleteGroupDialog(props.group, () => {
+              deleteMutation.mutate(String(props.group.id), {
+                onSuccess: props.onAfterDelete,
+              })
+            })
           }}
           id="delete-decision-button"
           sx={{ color: (theme) => theme.palette.error.main }}
@@ -99,7 +98,7 @@ function GroupMoreIcon(props: Props) {
         </MenuItem>
       </Menu>
     </Box>
-  );
+  )
 }
 
-export default GroupMoreIcon;
+export default GroupMoreIcon

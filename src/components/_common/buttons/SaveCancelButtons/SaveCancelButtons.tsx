@@ -1,6 +1,13 @@
-import { Box, Button } from "@mui/material";
-import React from "react";
-import Flex from "../../flexboxes/Flex";
+import { Box, Button } from "@mui/material"
+import Flex from "../../flexboxes/Flex"
+
+interface Props {
+  submitButtonId?: string
+  disabled?: boolean
+  onSave?: () => void
+  onCancel?: () => void
+  saveText?: string
+}
 
 const SaveCancelButtons = (props: Props) => {
   return (
@@ -13,7 +20,7 @@ const SaveCancelButtons = (props: Props) => {
         disabled={props.disabled}
         onClick={props.onSave}
       >
-        Save
+        {props.saveText || "Save"}
       </Button>
 
       <Box ml={1}>
@@ -22,14 +29,7 @@ const SaveCancelButtons = (props: Props) => {
         </Button>
       </Box>
     </Flex>
-  );
-};
-
-interface Props {
-  submitButtonId?: string;
-  disabled?: boolean;
-  onSave?: () => void;
-  onCancel?: () => void;
+  )
 }
 
-export default SaveCancelButtons;
+export default SaveCancelButtons
