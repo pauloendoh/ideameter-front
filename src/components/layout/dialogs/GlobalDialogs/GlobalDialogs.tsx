@@ -1,11 +1,12 @@
-import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
-import EditLabelDialog from "../EditLabelDialog/EditLabelDialog";
-import EditProfileDialog from "../EditProfileDialog/EditProfileDialog";
-import GroupDialog from "../GroupDialog/GroupDialog";
-import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog";
-import IdeaDialog from "../IdeaDialog/IdeaDialog";
-import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog";
-import TabDialog from "../TabDialog/TabDialog";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog"
+import EditLabelDialog from "../EditLabelDialog/EditLabelDialog"
+import EditProfileDialog from "../EditProfileDialog/EditProfileDialog"
+import GroupDialog from "../GroupDialog/GroupDialog"
+import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
+import IdeaDialog from "../IdeaDialog/IdeaDialog"
+import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
+import ShortcutsDialog from "../ShortcutsDialog/ShortcutsDialog"
+import TabDialog from "../TabDialog/TabDialog"
 
 // each one is managed by zustand
 const GlobalDialogs = () => {
@@ -20,8 +21,9 @@ const GlobalDialogs = () => {
       <EditProfileDialog />
       <IdeaAssignDialog />
       <SubideaDialog />
+      <ShortcutsDialog />
     </>
-  );
-};
+  )
+}
 
-export default GlobalDialogs;
+export default GlobalDialogs
