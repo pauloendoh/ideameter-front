@@ -1,53 +1,53 @@
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useSaveGroupMutation from "@/hooks/react-query/domain/group/useSaveGroupMutation";
-import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore";
-import GroupDto from "@/types/domain/group/GroupDto";
-import urls from "@/utils/urls";
+import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useSaveGroupMutation from "@/hooks/react-query/domain/group/useSaveGroupMutation"
+import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
+import GroupDto from "@/types/domain/group/GroupDto"
+import urls from "@/utils/urls"
 import {
   Box,
   Dialog,
   DialogContent,
   DialogTitle,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import GroupMembers from "./GroupMembers/GroupMembers";
-import GroupMoreIcon from "./GroupMoreIcon/GroupMoreIcon";
+} from "@mui/material"
+import { useRouter } from "next/router"
+import { useEffect, useRef } from "react"
+import { Controller, useForm } from "react-hook-form"
+import GroupMembers from "./GroupMembers/GroupMembers"
+import GroupMoreIcon from "./GroupMoreIcon/GroupMoreIcon"
 
 const GroupDialog = () => {
-  const router = useRouter();
-  const { initialValue, isOpen, close } = useGroupDialogStore();
-  const inputRef = useRef<HTMLDivElement>(null);
-  const { mutate } = useSaveGroupMutation();
+  const router = useRouter()
+  const { initialValue, isOpen, close } = useGroupDialogStore()
+  const inputRef = useRef<HTMLDivElement>(null)
+  const { mutate } = useSaveGroupMutation()
 
   const { register, control, handleSubmit, reset, watch, setValue } = useForm<
     GroupDto
   >({
     defaultValues: initialValue,
-  });
+  })
 
   const onSubmit = (values: GroupDto) => {
     mutate(values, {
       onSuccess: (savedGroup) => {
-        close();
-        router.push(urls.pages.groupId(String(savedGroup.id)));
+        close()
+        router.push(urls.pages.groupId(String(savedGroup.id)))
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     if (isOpen) {
-      reset(initialValue);
+      reset(initialValue)
       setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+        inputRef.current?.focus()
+      }, 100)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <Dialog
@@ -65,7 +65,7 @@ const GroupDialog = () => {
                 {watch("id") ? "Edit Group" : "New Group"}
               </Typography>
 
-              <GroupMoreIcon group={watch()} onAfterDelete={close} />
+              <GroupMoreIcon group={watch()} onAfterDelete={close} showDelete />
             </FlexVCenter>
           </DialogTitle>
 
@@ -107,7 +107,7 @@ const GroupDialog = () => {
         {initialValue.id && <GroupMembers groupId={initialValue.id} />}
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default GroupDialog;
+export default GroupDialog

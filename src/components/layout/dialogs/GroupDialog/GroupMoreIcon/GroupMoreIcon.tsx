@@ -17,6 +17,7 @@ interface Props {
   group: GroupDto
   canEdit?: boolean
   onAfterDelete: () => void
+  showDelete?: boolean
 }
 
 function GroupMoreIcon(props: Props) {
@@ -76,26 +77,28 @@ function GroupMoreIcon(props: Props) {
             </Typography>{" "}
           </MenuItem>
         )}
-        <MenuItem
-          onClick={(e) => {
-            openConfirmDeleteGroupDialog(props.group, () => {
-              deleteMutation.mutate(String(props.group.id), {
-                onSuccess: props.onAfterDelete,
+        {props.showDelete && (
+          <MenuItem
+            onClick={(e) => {
+              openConfirmDeleteGroupDialog(props.group, () => {
+                deleteMutation.mutate(String(props.group.id), {
+                  onSuccess: props.onAfterDelete,
+                })
               })
-            })
-          }}
-          id="delete-decision-button"
-          sx={{ color: (theme) => theme.palette.error.main }}
-        >
-          <ListItemIcon
-            sx={{ width: 16, color: (theme) => theme.palette.error.main }}
+            }}
+            id="delete-decision-button"
+            sx={{ color: (theme) => theme.palette.error.main }}
           >
-            <MdDelete />
-          </ListItemIcon>
-          <Typography variant="inherit" noWrap>
-            Delete group
-          </Typography>
-        </MenuItem>
+            <ListItemIcon
+              sx={{ width: 16, color: (theme) => theme.palette.error.main }}
+            >
+              <MdDelete />
+            </ListItemIcon>
+            <Typography variant="inherit" noWrap>
+              Delete group
+            </Typography>
+          </MenuItem>
+        )}
       </Menu>
     </Box>
   )
