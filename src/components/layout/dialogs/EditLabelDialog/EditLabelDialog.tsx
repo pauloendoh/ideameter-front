@@ -1,14 +1,14 @@
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import Flex from "@/components/_common/flexboxes/Flex";
-import FlexCenter from "@/components/_common/flexboxes/FlexCenter";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useDeleteLabelMutation from "@/hooks/react-query/domain/label/useDeleteLabelMutation";
-import useSaveLabelMutation from "@/hooks/react-query/domain/label/useSaveLabelMutation";
-import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore";
-import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore";
-import LabelDto from "@/types/domain/label/LabelDto";
+import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
+import Flex from "@/components/_common/flexboxes/Flex"
+import FlexCenter from "@/components/_common/flexboxes/FlexCenter"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useDeleteLabelMutation from "@/hooks/react-query/domain/label/useDeleteLabelMutation"
+import useSaveLabelMutation from "@/hooks/react-query/domain/label/useSaveLabelMutation"
+import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
+import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
+import LabelDto from "@/types/domain/label/LabelDto"
 import {
   Box,
   Button,
@@ -17,48 +17,46 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { MdCheck, MdClose, MdDelete } from "react-icons/md";
-import labelColors from "./labelColors";
+} from "@mui/material"
+import { useEffect, useRef } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { MdCheck, MdClose, MdDelete } from "react-icons/md"
+import labelColors from "./labelColors"
 
-const ariaLabel = "edit-label-dialog";
+const ariaLabel = "edit-label-dialog"
 
 const EditLabelDialog = () => {
-  const router = useRouter();
-  const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null)
 
-  const saveTabMutation = useSaveLabelMutation();
-  const isLoading = saveTabMutation.isLoading;
+  const saveTabMutation = useSaveLabelMutation()
+  const isLoading = saveTabMutation.isLoading
 
-  const { mutate: deleteLabelMutation } = useDeleteLabelMutation();
-  const { openConfirmDialog } = useConfirmDialogStore();
+  const { mutate: deleteLabelMutation } = useDeleteLabelMutation()
+  const { openConfirmDialog } = useConfirmDialogStore()
 
-  const { initialValue, dialogIsOpen, closeDialog } = useEditLabelDialogStore();
+  const { initialValue, dialogIsOpen, closeDialog } = useEditLabelDialogStore()
 
   const { watch, control, handleSubmit, reset, setValue } = useForm<LabelDto>({
     defaultValues: initialValue,
-  });
+  })
 
   useEffect(() => {
     if (dialogIsOpen) {
-      reset(initialValue);
+      reset(initialValue)
 
       setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+        inputRef.current?.focus()
+      }, 100)
     }
-  }, [dialogIsOpen]);
+  }, [dialogIsOpen])
 
   const onSubmit = (values: LabelDto) => {
     saveTabMutation.mutate(values, {
       onSuccess: (saved) => {
-        closeDialog();
+        closeDialog()
       },
-    });
-  };
+    })
+  }
 
   const handleDelete = (id: string) => {
     openConfirmDialog({
@@ -66,10 +64,10 @@ const EditLabelDialog = () => {
       onConfirm: () => {
         deleteLabelMutation(id, {
           onSuccess: closeDialog,
-        });
+        })
       },
-    });
-  };
+    })
+  }
 
   return (
     <Dialog
@@ -152,7 +150,7 @@ const EditLabelDialog = () => {
         </form>
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default EditLabelDialog;
+export default EditLabelDialog
