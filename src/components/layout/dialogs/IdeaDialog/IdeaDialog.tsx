@@ -4,9 +4,11 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
 import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import urls from "@/utils/urls"
 import {
   Box,
   Dialog,
@@ -15,6 +17,7 @@ import {
   Grid,
   IconButton,
 } from "@mui/material"
+import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
@@ -38,22 +41,45 @@ const IdeaDialog = () => {
     defaultValues: initialValue,
   })
 
+  const routerQuery = useRouterQueryString()
+  const router = useRouter()
+
   useEffect(() => {
     const initDialog = async () => {
       if (dialogIsOpen) {
         reset(initialValue)
+
+        // makes sure that the URL will change when you open an idea
+        console.log({ initialValue, routerQuery })
+        if (initialValue.id && routerQuery.groupId && routerQuery.tabId) {
+          router.push(
+            urls.pages.groupTabIdea(
+              routerQuery.groupId,
+              routerQuery.tabId,
+              initialValue.id
+            )
+          )
+        }
+
+        return
       }
     }
 
     initDialog().then(() => inputRef.current?.focus())
-
-    return
   }, [dialogIsOpen])
+
+  const handleClose = () => {
+    if (routerQuery.groupId && routerQuery.tabId) {
+      router.push(urls.pages.groupTab(routerQuery.groupId, routerQuery.tabId))
+    }
+
+    closeDialog()
+  }
 
   const onSubmit = (values: IdeaDto) => {
     submitSaveIdea(values, {
       onSuccess: () => {
-        closeDialog()
+        handleClose()
       },
     })
   }
@@ -61,7 +87,7 @@ const IdeaDialog = () => {
   return (
     <Dialog
       open={dialogIsOpen}
-      onClose={closeDialog}
+      onClose={handleClose}
       fullWidth
       maxWidth="xl"
       aria-labelledby={ariaLabel}
@@ -97,8 +123,8 @@ const IdeaDialog = () => {
               />
 
               <FlexVCenter>
-                <IdeaMenu idea={watch()} afterDelete={closeDialog} />
-                <IconButton onClick={closeDialog}>
+                <IdeaMenu idea={watch()} afterDelete={handleClose} />
+                <IconButton onClick={handleClose}>
                   <MdClose />
                 </IconButton>
               </FlexVCenter>
@@ -136,7 +162,7 @@ const IdeaDialog = () => {
           <DialogTitle>
             <SaveCancelButtons
               // disabled={isSubmitting}
-              onCancel={closeDialog}
+              onCancel={handleClose}
             />
           </DialogTitle>
         </form>

@@ -5,10 +5,12 @@ import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup"
+import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
 import useGroupFilterStore, {
   resetGroupFilterStore,
@@ -34,9 +36,15 @@ import { MdAdd } from "react-icons/md"
 const GroupId: NextPage = () => {
   const { data: groups } = useGroupsQuery()
   const { openDialog } = useTabDialogStore()
-  const { groupId, tabId } = useRouterQueryString()
+  const { groupId, tabId, ideaId } = useRouterQueryString()
 
   useGroupRelatedSockets(groupId)
+  const { data: groupIdeas } = useGroupIdeasQuery(groupId!)
+
+  const [openIdeaDialog, ideaDialogIsOpen] = useIdeaDialogStore((s) => [
+    s.openDialog,
+    s.dialogIsOpen,
+  ])
 
   const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage)
   const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup()
@@ -76,6 +84,15 @@ const GroupId: NextPage = () => {
       updateLastOpenedGroupId(groupId)
     }
   }, [groupId])
+
+  useEffect(() => {
+    if (groupIdeas && ideaId) {
+      const foundIdea = groupIdeas.find((i) => i.id === ideaId)
+      if (foundIdea && !ideaDialogIsOpen) {
+        openIdeaDialog(foundIdea)
+      }
+    }
+  }, [groupIdeas, ideaId]) // don't add ideaDialogIsOpen, otherwise it will keep opening while closing the dialog
 
   useEffect(() => {
     if (tabId) {
