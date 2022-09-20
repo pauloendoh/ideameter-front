@@ -3,6 +3,7 @@ import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/Sa
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
+import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
@@ -18,7 +19,7 @@ import {
   IconButton,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
@@ -33,7 +34,12 @@ const IdeaDialog = () => {
 
   const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
-  const { initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore()
+  const {
+    initialValue,
+    dialogIsOpen,
+    closeDialog,
+    openDialog,
+  } = useIdeaDialogStore()
 
   const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
 
@@ -44,35 +50,47 @@ const IdeaDialog = () => {
   const routerQuery = useRouterQueryString()
   const router = useRouter()
 
+  // I had to add this validator because sometimes the dialog was reopening after closing
+  const [canReopen, setCanReopen] = useState(true)
+
   useEffect(() => {
-    const initDialog = async () => {
-      if (dialogIsOpen) {
-        reset(initialValue)
+    if (dialogIsOpen) {
+      reset(initialValue)
 
-        // makes sure that the URL will change when you open an idea
-        console.log({ initialValue, routerQuery })
-        if (initialValue.id && routerQuery.groupId && routerQuery.tabId) {
-          router.push(
-            urls.pages.groupTabIdea(
-              routerQuery.groupId,
-              routerQuery.tabId,
-              initialValue.id
-            )
-          )
-        }
-
-        return
+      // makes sure that the URL will change when you open an idea
+      if (initialValue.id && routerQuery.groupId && routerQuery.tabId) {
+        router.push(
+          urls.pages.groupTabIdea(
+            routerQuery.groupId,
+            routerQuery.tabId,
+            initialValue.id
+          ),
+          undefined,
+          { shallow: true }
+        )
       }
+
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 250)
     }
 
-    initDialog().then(() => inputRef.current?.focus())
+    if (!dialogIsOpen && initialValue.id) {
+      setCanReopen(false)
+      setTimeout(() => {
+        if (routerQuery.groupId && routerQuery.tabId) {
+          router.push(
+            urls.pages.groupTab(routerQuery.groupId, routerQuery.tabId),
+            undefined,
+            { shallow: true }
+          )
+        }
+        setCanReopen(true)
+      }, 250) // I had to add this delay because it was having some weird behavior where the dialog seemed to stay open even when it was not visible
+    }
   }, [dialogIsOpen])
 
   const handleClose = () => {
-    if (routerQuery.groupId && routerQuery.tabId) {
-      router.push(urls.pages.groupTab(routerQuery.groupId, routerQuery.tabId))
-    }
-
     closeDialog()
   }
 
@@ -84,8 +102,20 @@ const IdeaDialog = () => {
     })
   }
 
+  const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
+
+  useEffect(() => {
+    if (groupIdeas && routerQuery.ideaId) {
+      const foundIdea = groupIdeas.find((i) => i.id === routerQuery.ideaId)
+      if (foundIdea && !dialogIsOpen && canReopen) {
+        openDialog(foundIdea)
+      }
+    }
+  }, [groupIdeas, routerQuery.ideaId]) // don't add dialogIsOpen or dontReopen, otherwise it will keep opening while closing the dialog
+
   return (
     <Dialog
+      keepMounted
       open={dialogIsOpen}
       onClose={handleClose}
       fullWidth
