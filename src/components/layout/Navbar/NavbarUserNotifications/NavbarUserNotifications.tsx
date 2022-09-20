@@ -82,6 +82,7 @@ const NavbarUserNotifications = () => {
           <IdeaMentionNotificationItem
             key={notification.id}
             notification={notification}
+            onClick={handleClose}
           />
         ))}
       </Menu>

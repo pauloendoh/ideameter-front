@@ -1,3 +1,5 @@
+import { stringify } from "querystring"
+
 const { NEXT_PUBLIC_API_URL } = process.env
 
 const urls = {
@@ -6,6 +8,8 @@ const urls = {
     groupId: (groupId: string) => `/group/${groupId}`,
     groupTab: (groupId: string, tabId: string) =>
       `/group/${groupId}?tabId=${tabId}`,
+    groupTabIdea: (groupId: string, tabId: string, ideaId: string) =>
+      `/group/${groupId}?${stringify({ tabId, ideaId })}`,
   },
   api: {
     register: "/auth/register",
