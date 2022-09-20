@@ -1,16 +1,16 @@
-export default function textContainsWords(_text: string, _words: string) {
-  const text = _text
+export default function textContainsWords(text: string, words: string) {
+  const normalizedText = text
     .trim()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-  const words = _words
+  const normalizedWords = words
     .trim()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
 
-  const wordArray = words.split(" ")
+  const wordArray = normalizedWords.split(" ")
 
-  return wordArray.every((w) => text.includes(w))
+  return wordArray.every((w) => normalizedText.includes(w))
 }

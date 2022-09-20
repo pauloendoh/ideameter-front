@@ -34,7 +34,7 @@ import { MdAdd } from "react-icons/md"
 const GroupId: NextPage = () => {
   const { data: groups } = useGroupsQuery()
   const { openDialog } = useTabDialogStore()
-  const { groupId, tabId } = useRouterQueryString()
+  const { groupId, tabId, ideaId } = useRouterQueryString()
 
   useGroupRelatedSockets(groupId)
 
