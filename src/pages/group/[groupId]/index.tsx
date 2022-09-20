@@ -5,10 +5,12 @@ import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup"
+import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
 import useGroupFilterStore, {
   resetGroupFilterStore,
@@ -45,7 +47,7 @@ const GroupId: NextPage = () => {
     if (groupId) {
       const foundGroup = groups?.find((group) => group.id === groupId)
 
-      if (!foundGroup) {
+      if (groups && !foundGroup) {
         setErrorMessage("Group not found. Redirecting to last opened group...")
         checkAndRedirectLastOpenedGroup()
         return undefined
@@ -56,6 +58,22 @@ const GroupId: NextPage = () => {
 
     return null
   }, [groups, groupId])
+
+  const { data: groupIdeas } = useGroupIdeasQuery(groupId!)
+
+  const [
+    ideaDialogIsOpen,
+    canOpenIdeaDialog,
+    openIdeaDialog,
+  ] = useIdeaDialogStore((s) => [s.dialogIsOpen, s.canOpen, s.openDialog])
+  useEffect(() => {
+    if (groupIdeas && ideaId) {
+      const foundIdea = groupIdeas.find((i) => i.id === ideaId)
+      if (foundIdea && !ideaDialogIsOpen && canOpenIdeaDialog) {
+        openIdeaDialog(foundIdea)
+      }
+    }
+  }, [groupIdeas, ideaId]) // don't add dialogIsOpen or dontReopen, otherwise it will keep opening while closing the dialog
 
   const { data: groupTabs } = useGroupTabsQuery(groupId!)
 
