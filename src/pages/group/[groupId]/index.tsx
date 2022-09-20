@@ -73,7 +73,7 @@ const GroupId: NextPage = () => {
     resetGroupFilterStore()
 
     if (groupId) {
-      updateLastOpenedGroupId(groupId)
+      updateLastOpenedGroupId(groupId) //
     }
   }, [groupId])
 
