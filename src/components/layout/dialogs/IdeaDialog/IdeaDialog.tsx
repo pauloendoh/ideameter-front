@@ -3,6 +3,7 @@ import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/Sa
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
+import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
@@ -18,7 +19,7 @@ import {
   IconButton,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
@@ -34,10 +35,10 @@ const IdeaDialog = () => {
   const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
   const {
+    openDialog,
     initialValue,
     dialogIsOpen,
     closeDialog,
-    setCanOpen,
   } = useIdeaDialogStore()
 
   const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
@@ -91,6 +92,18 @@ const IdeaDialog = () => {
   const handleClose = () => {
     closeDialog()
   }
+
+  const [canOpen, setCanOpen] = useState(true)
+  const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
+
+  useEffect(() => {
+    if (groupIdeas && routerQuery.ideaId) {
+      const foundIdea = groupIdeas.find((i) => i.id === routerQuery.ideaId)
+      if (foundIdea && !dialogIsOpen && canOpen) {
+        openDialog(foundIdea)
+      }
+    }
+  }, [groupIdeas, routerQuery.ideaId]) // don't add dialogIsOpen or dontReopen, otherwise it will keep opening while closing the dialog
 
   const onSubmit = (values: IdeaDto) => {
     submitSaveIdea(values, {

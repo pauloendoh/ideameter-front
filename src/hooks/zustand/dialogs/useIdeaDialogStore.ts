@@ -6,8 +6,6 @@ interface IIdeaDialogStore {
   dialogIsOpen: boolean
   openDialog: (initialValue: IdeaDto) => void
   closeDialog: () => void
-  canOpen: boolean
-  setCanOpen: (canOpen: boolean) => void
 }
 
 const useIdeaDialogStore = create<IIdeaDialogStore>((set, get) => ({
@@ -18,9 +16,6 @@ const useIdeaDialogStore = create<IIdeaDialogStore>((set, get) => ({
     set({ dialogIsOpen: true, initialValue })
   },
   closeDialog: () => set({ dialogIsOpen: false }),
-
-  canOpen: true,
-  setCanOpen: (canOpen) => set({ canOpen }),
 }))
 
 export default useIdeaDialogStore
