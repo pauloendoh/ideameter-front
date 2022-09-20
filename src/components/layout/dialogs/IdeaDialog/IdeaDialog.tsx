@@ -115,7 +115,6 @@ const IdeaDialog = () => {
 
   return (
     <Dialog
-      keepMounted
       open={dialogIsOpen}
       onClose={handleClose}
       fullWidth
