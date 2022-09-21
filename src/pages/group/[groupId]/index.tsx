@@ -135,7 +135,6 @@ const GroupId: NextPage<Props> = (props) => {
         />
         <meta property="og:image" content={"/favicon.ico"} />
       </Head>
-
       <HomeLayout>
         <Container>
           {groupId && selectedGroup && (
