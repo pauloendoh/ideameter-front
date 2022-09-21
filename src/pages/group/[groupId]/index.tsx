@@ -33,21 +33,23 @@ import { useEffect, useMemo } from "react"
 import { MdAdd } from "react-icons/md"
 
 interface Props {
-  ideaName: string
+  linkPreview: { title: string; description: string } | null
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const { ideaId } = context.query
-  let ideaName = ""
+  let linkPreview = null
   if (ideaId) {
-    const res = await myAxios.get<string>(urls.api.ideaName(String(ideaId)))
-    ideaName = res.data
+    const res = await myAxios.get<{ title: string; description: string }>(
+      urls.api.ideaName(String(ideaId))
+    )
+    if (res.data) linkPreview = res.data
   }
   return {
     props: {
-      ideaName,
+      linkPreview,
     },
   }
 }
@@ -120,11 +122,14 @@ const GroupId: NextPage<Props> = (props) => {
         <title>Ideameter</title>
         <meta
           property="og:title"
-          content={props.ideaName ? "Idea" : "Ideameter"}
+          content={props.linkPreview?.title || "Ideameter"}
         />
         <meta
           property="og:description"
-          content={props.ideaName || "Quickly align ideas within your team"}
+          content={
+            props.linkPreview?.description ||
+            "Quickly align ideas within your team"
+          }
         />
       </Head>
       <HomeLayout>

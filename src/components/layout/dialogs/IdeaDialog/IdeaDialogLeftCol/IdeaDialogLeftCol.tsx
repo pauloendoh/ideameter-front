@@ -5,6 +5,7 @@ import MantineRTE from "@/components/_common/text/MantineRTE"
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
 import useDebounce from "@/hooks/utils/useDebounce"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { RteImageDto } from "@/types/domain/rte-image/RteImageDto"
@@ -28,6 +29,12 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
   // some stuff to improve performance
   const [localDescription, setLocalDescription] = useState(watch("description"))
   const [canDirty, setCanDirty] = useState(false)
+
+  const dialogIsOpen = useIdeaDialogStore((s) => s.dialogIsOpen)
+  useEffect(() => {
+    // reset
+    if (dialogIsOpen) setCanDirty(false)
+  }, [dialogIsOpen])
 
   const debouncedDescription = useDebounce(localDescription, 250)
   useEffect(() => {
@@ -109,6 +116,7 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
             placeholder="Idea description"
             value={localDescription}
             onChange={(text) => {
+              console.log({ text })
               setCanDirty(true)
               setLocalDescription(text)
             }}
