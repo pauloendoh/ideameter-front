@@ -122,15 +122,10 @@ const GroupId: NextPage<Props> = (props) => {
           property="og:title"
           content={props.ideaName ? "Idea" : "Ideameter"}
         />
-        <meta property="og:url" content="your url" />
-        <meta property="og:type" content="website" />
-
-        <meta name="twitter:card" content="summary" />
         <meta
           property="og:description"
           content={props.ideaName || "Quickly align ideas within your team"}
         />
-        <meta property="og:image" content={"/favicon.ico"} />
       </Head>
       <HomeLayout>
         <Container>
