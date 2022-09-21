@@ -1,17 +1,19 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import textContainsWords from "@/utils/text/textContainsWords"
-import { Autocomplete, Box, Popper } from "@mui/material"
+
+import { Autocomplete, Box, Popper, useTheme } from "@mui/material"
 import { useEffect, useMemo, useState } from "react"
 
 interface Props {
   test?: string
 }
 
-// PE 1/3 - rename to <GroupSearchBox /> ?
+// PE 1/3 - rename to <GroupIdeasSearchBox /> ?
 const GroupSearchBar = (props: Props) => {
   const { groupId } = useRouterQueryString()
   const { data: groupIdeas, refetch } = useGroupIdeasQuery(groupId!)
@@ -46,8 +48,15 @@ const GroupSearchBar = (props: Props) => {
   const filteredIdeas = useMemo(() => {
     if (!groupIdeas) return []
     if (!text) return groupIdeas
-    return groupIdeas.filter((i) => textContainsWords(i.name, text))
+    return groupIdeas
+      .filter((i) => textContainsWords(i.name, text))
+      .sort((a, b) => {
+        if (a.isDone && !b.isDone) return 1
+        return -1
+      })
   }, [text, groupIdeas])
+
+  const theme = useTheme()
 
   return (
     <Box onClick={() => refetch()}>
@@ -71,6 +80,17 @@ const GroupSearchBar = (props: Props) => {
           />
         )}
         getOptionLabel={(option) => option.name}
+        renderOption={(props, idea) => (
+          <FlexVCenter
+            {...(props as any)}
+            sx={{
+              textDecoration: idea.isDone ? "line-through" : undefined,
+              color: idea.isDone ? theme.palette.grey[600] : undefined,
+            }}
+          >
+            {idea.name}
+          </FlexVCenter>
+        )}
       />
     </Box>
   )
