@@ -1,23 +1,23 @@
-import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea";
-import { useMySocketEvent } from "@/hooks/socket/useMySocketEvent";
-import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import upsert from "@/utils/array/upsert";
-import myAxios from "@/utils/axios/myAxios";
-import queryKeys from "@/utils/queryKeys";
-import urls from "@/utils/urls";
-import { AxiosError } from "axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea"
+import { useMySocketEvent } from "@/hooks/socket/useMySocketEvent"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+import upsert from "@/utils/array/upsert"
+import myAxios from "@/utils/axios/myAxios"
+import queryKeys from "@/utils/queryKeys"
+import urls from "@/utils/urls"
+import { AxiosError } from "axios"
+import { useMutation, useQueryClient } from "react-query"
 
 const useSaveIdeaMutation = () => {
-  const { groupId } = useRouterQueryString();
+  const { groupId } = useRouterQueryString()
 
-  const { sendMessage } = useMySocketEvent("saveIdea");
+  const { sendMessage } = useMySocketEvent("saveIdea")
 
-  const scrollToIdea = useScrollToIdea();
-  const queryClient = useQueryClient();
-  const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
+  const scrollToIdea = useScrollToIdea()
+  const queryClient = useQueryClient()
+  const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
   return useMutation(
     (payload: IdeaDto) =>
@@ -34,26 +34,26 @@ const useSaveIdeaMutation = () => {
           queryClient.setQueryData<IdeaDto[]>(
             queryKeys.groupIdeas(groupId),
             (curr) => {
-              return upsert(curr, savedIdea, (i) => i.id === savedIdea.id);
+              return upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
             }
-          );
+          )
         }
 
-        queryClient.invalidateQueries(queryKeys.tabIdeas(savedIdea.tabId!));
+        queryClient.invalidateQueries(queryKeys.tabIdeas(savedIdea.tabId!))
 
         if (payload.id === null && groupId)
-          queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId));
+          queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId))
 
-        setSuccessMessage("Idea saved!");
+        setSuccessMessage("Idea saved!")
 
-        sendMessage({ idea: savedIdea, groupId });
-        scrollToIdea(savedIdea.id);
+        sendMessage({ idea: savedIdea, groupId })
+        scrollToIdea(savedIdea.id)
       },
-      onError: (err: AxiosError<string>) => {
-        setErrorMessage(err?.response?.statusText || "Error saving idea");
+      onError: (err: AxiosError<any>) => {
+        setErrorMessage(err?.response?.data?.message || "Error saving idea")
       },
     }
-  );
-};
+  )
+}
 
-export default useSaveIdeaMutation;
+export default useSaveIdeaMutation

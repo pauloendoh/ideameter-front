@@ -1,23 +1,22 @@
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto";
-import myAxios from "@/utils/axios/myAxios";
-import urls from "@/utils/urls";
-import { Button, Link, Typography } from "@mui/material";
-import { AxiosError } from "axios";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import RegisterDto from "../../../types/domain/auth/RegisterDto";
-import FlexCol from "../../_common/flexboxes/FlexCol";
-import MyTextField from "../../_common/inputs/MyTextField";
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
+import myAxios from "@/utils/axios/myAxios"
+import urls from "@/utils/urls"
+import { Button, Link, Typography } from "@mui/material"
+import { AxiosError } from "axios"
+import { Controller, useForm } from "react-hook-form"
+import RegisterDto from "../../../types/domain/auth/RegisterDto"
+import FlexCol from "../../_common/flexboxes/FlexCol"
+import MyTextField from "../../_common/inputs/MyTextField"
 
 interface Props {
-  onClickSignIn: () => void;
+  onClickSignIn: () => void
 }
 
 const RegisterForm = (props: Props) => {
-  const { setErrorMessage, setSuccessMessage } = useSnackbarStore();
-  const { setAuthUser } = useAuthStore();
+  const { setErrorMessage, setSuccessMessage } = useSnackbarStore()
+  const { setAuthUser } = useAuthStore()
 
   const { handleSubmit, formState, control } = useForm<RegisterDto>({
     defaultValues: {
@@ -26,11 +25,11 @@ const RegisterForm = (props: Props) => {
       password1: "",
       password2: "",
     },
-  });
+  })
 
   const onSubmit = (values: RegisterDto) => {
     if (values.password1 !== values.password2) {
-      return;
+      return
     }
 
     // setResponseErrors([]);
@@ -38,15 +37,15 @@ const RegisterForm = (props: Props) => {
     myAxios
       .post<AuthUserGetDto>(urls.api.register, values)
       .then((res) => {
-        setAuthUser(res.data);
-        setSuccessMessage("Successfully registered!");
+        setAuthUser(res.data)
+        setSuccessMessage("Successfully registered!")
       })
-      .catch((err: AxiosError<string>) => {
-        setErrorMessage(err?.response?.data || "Error");
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err?.response?.data?.message || "Error")
         // setResponseErrors(err.response.data.errors);
         // setSubmitting(false);
-      });
-  };
+      })
+  }
 
   return (
     <div>
@@ -129,7 +128,7 @@ const RegisterForm = (props: Props) => {
         </Link>
       </Typography>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm
