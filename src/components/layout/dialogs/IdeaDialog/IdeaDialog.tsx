@@ -138,6 +138,13 @@ const IdeaDialog = () => {
 
   return (
     <Dialog
+      onKeyDown={(e) => {
+        if (e.key === "Esc") {
+          e.preventDefault()
+          e.stopPropagation()
+          confirmClose()
+        }
+      }}
       open={dialogIsOpen}
       onClose={confirmClose}
       fullWidth

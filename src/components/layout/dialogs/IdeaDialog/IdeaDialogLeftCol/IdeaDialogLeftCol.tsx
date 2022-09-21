@@ -38,7 +38,7 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
 
   const debouncedDescription = useDebounce(localDescription, 250)
   useEffect(() => {
-    setValue("description", debouncedDescription, { shouldDirty: canDirty })
+    if (canDirty) setValue("description", debouncedDescription)
   }, [debouncedDescription, canDirty])
 
   const handleImageUpload = useCallback(
@@ -79,7 +79,8 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
     [groupMembers, authUser]
   )
 
-  const onCtrlEnter = (e: KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    setCanDirty(true)
     // I had to add a default function for onCtrlEnter to remove console.error
     if (e.key === "Enter" && e.ctrlKey) {
       setValue("description", localDescription)
@@ -117,12 +118,12 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
             value={localDescription}
             onChange={(text) => {
               console.log({ text })
-              setCanDirty(true)
+
               setLocalDescription(text)
             }}
             onImageUpload={handleImageUpload}
             mentions={mentions}
-            onKeyDown={onCtrlEnter}
+            onKeyDown={handleKeyDown}
           />
         </S.MantineRteContainer>
       </FlexCol>
