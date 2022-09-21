@@ -117,21 +117,18 @@ const GroupId: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{props.ideaName || "Ideameter"}</title>
+        <title>Ideameter</title>
         <meta
           property="og:title"
-          content={props.ideaName || "Ideameter"}
-          key="title"
+          content={props.ideaName ? "Idea" : "Ideameter"}
         />
-        <title>Social Media Preview</title>
         <meta property="og:url" content="your url" />
         <meta property="og:type" content="website" />
-        <meta property="fb:app_id" content="your fb app id" />
 
         <meta name="twitter:card" content="summary" />
         <meta
           property="og:description"
-          content="Hurray!! Yes Social Media Preview is Working"
+          content={props.ideaName || "Quickly align ideas within your team"}
         />
         <meta property="og:image" content={"/favicon.ico"} />
       </Head>
