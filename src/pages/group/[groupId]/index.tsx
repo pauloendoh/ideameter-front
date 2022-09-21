@@ -69,6 +69,8 @@ const GroupId: NextPage = () => {
     myAxios.put(urls.api.lastOpenedGroupId, { groupId })
   }
 
+  const setFilter = useGroupFilterStore((s) => s.setFilter)
+
   useEffect(() => {
     resetGroupFilterStore()
 
@@ -82,8 +84,10 @@ const GroupId: NextPage = () => {
       const cookieStr = nookies.get(null)[cookieKeys.groupTabIdeasFilter(tabId)]
       if (cookieStr) {
         const filterState = JSON.parse(cookieStr)
-        useGroupFilterStore.setState(filterState)
-        return
+        if ("onlyCompletedIdeas" in filterState.filter) {
+          useGroupFilterStore.setState(filterState)
+          return
+        }
       }
     }
     resetGroupFilterStore()

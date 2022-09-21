@@ -16,11 +16,11 @@ const IdeaRatingsTable = (props: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
 
   const [
-    hidingDone,
+    onlyCompletedIdeas,
     filteringUsers,
     onlyHighImpactVoted,
   ] = useGroupFilterStore((s) => [
-    s.filter.hidingDone,
+    s.filter.onlyCompletedIdeas,
     s.filter.users,
     s.filter.onlyHighImpactVoted,
   ])
@@ -33,7 +33,8 @@ const IdeaRatingsTable = (props: Props) => {
 
     result = result.filter((r) => {
       if (r.idea.parentId) return true // subideas must always appear
-      if (hidingDone && r.idea.isDone) return false
+      if (onlyCompletedIdeas && !r.idea.isDone) return false
+      if (!onlyCompletedIdeas && r.idea.isDone) return false
 
       if (filteringUsers.length > 0) {
         const filteringIds = filteringUsers.map((u) => u.id)
@@ -105,7 +106,7 @@ const IdeaRatingsTable = (props: Props) => {
     return result
   }, [
     props.ideaRatings,
-    hidingDone,
+    onlyCompletedIdeas,
     filteringUsers,
     onlyHighImpactVoted,
     sortingBy,
