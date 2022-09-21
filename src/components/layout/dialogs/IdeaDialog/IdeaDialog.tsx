@@ -115,7 +115,7 @@ const IdeaDialog = () => {
     })
   }
 
-  useConfirmTabClose(formState.isDirty)
+  useConfirmTabClose(formState.isDirty && dialogIsOpen)
   const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
 
   const confirmClose = () => {
