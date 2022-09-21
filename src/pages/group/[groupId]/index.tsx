@@ -115,62 +115,64 @@ const GroupId: NextPage<Props> = (props) => {
   }, [tabId])
 
   return (
-    <HomeLayout>
-      <Container>
-        <Head>
-          <title>{props.ideaName || "Ideameter"}</title>
-          <meta
-            property="og:title"
-            content={props.ideaName || "Ideameter"}
-            key="title"
-          />
-          <title>Social Media Preview</title>
-          <meta property="og:url" content="your url" />
-          <meta property="og:type" content="website" />
-          <meta property="fb:app_id" content="your fb app id" />
+    <>
+      <Head>
+        <title>{props.ideaName || "Ideameter"}</title>
+        <meta
+          property="og:title"
+          content={props.ideaName || "Ideameter"}
+          key="title"
+        />
+        <title>Social Media Preview</title>
+        <meta property="og:url" content="your url" />
+        <meta property="og:type" content="website" />
+        <meta property="fb:app_id" content="your fb app id" />
 
-          <meta name="twitter:card" content="summary" />
-          <meta
-            property="og:description"
-            content="Hurray!! Yes Social Media Preview is Working"
-          />
-          <meta property="og:image" content={"/favicon.ico"} />
-        </Head>
+        <meta name="twitter:card" content="summary" />
+        <meta
+          property="og:description"
+          content="Hurray!! Yes Social Media Preview is Working"
+        />
+        <meta property="og:image" content={"/favicon.ico"} />
+      </Head>
 
-        {groupId && selectedGroup && (
-          <Box sx={{ mt: 1 }}>
-            <Typography variant="h5">{selectedGroup.name}</Typography>
-            <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
-              <FlexVCenter
-                sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <Tooltip title="Add tab">
-                    <IconButton
-                      onClick={() => openDialog(newTabDto({ groupId }))}
-                    >
-                      <MdAdd />
-                    </IconButton>
-                  </Tooltip>
-                  <GroupTabs groupId={groupId} tabs={sortedGroupTabs} />
-                </div>
+      <HomeLayout>
+        <Container>
+          {groupId && selectedGroup && (
+            <Box sx={{ mt: 1 }}>
+              <Typography variant="h5">{selectedGroup.name}</Typography>
+              <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
+                <FlexVCenter
+                  sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
+                >
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Tooltip title="Add tab">
+                      <IconButton
+                        onClick={() => openDialog(newTabDto({ groupId }))}
+                      >
+                        <MdAdd />
+                      </IconButton>
+                    </Tooltip>
+                    <GroupTabs groupId={groupId} tabs={sortedGroupTabs} />
+                  </div>
 
-                <GroupMoreIcon
-                  group={selectedGroup}
-                  onAfterDelete={() => {}}
-                  canEdit
-                />
-              </FlexVCenter>
+                  <GroupMoreIcon
+                    group={selectedGroup}
+                    onAfterDelete={() => {}}
+                    canEdit
+                  />
+                </FlexVCenter>
 
-              <SearchRow />
-              {tabId && groupId && (
-                <GroupTabContent tabId={tabId} groupId={groupId} />
-              )}
-            </Paper>
-          </Box>
-        )}
-      </Container>
-    </HomeLayout>
+                <SearchRow />
+                {tabId && groupId && (
+                  <GroupTabContent tabId={tabId} groupId={groupId} />
+                )}
+              </Paper>
+            </Box>
+          )}
+        </Container>
+      </HomeLayout>
+    </>
   )
 }
 
