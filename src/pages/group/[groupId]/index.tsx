@@ -26,12 +26,33 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import type { NextPage } from "next"
+import type { GetServerSideProps, NextPage } from "next"
+import Head from "next/head"
 import nookies from "nookies"
 import { useEffect, useMemo } from "react"
 import { MdAdd } from "react-icons/md"
 
-const GroupId: NextPage = () => {
+interface Props {
+  ideaName: string
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => {
+  const { ideaId } = context.query
+  let ideaName = ""
+  if (ideaId) {
+    const res = await myAxios.get<string>(urls.api.ideaName(String(ideaId)))
+    ideaName = res.data
+  }
+  return {
+    props: {
+      ideaName,
+    },
+  }
+}
+
+const GroupId: NextPage<Props> = (props) => {
   const { data: groups } = useGroupsQuery()
   const { openDialog } = useTabDialogStore()
   const { groupId, tabId, ideaId } = useRouterQueryString()
@@ -96,6 +117,14 @@ const GroupId: NextPage = () => {
   return (
     <HomeLayout>
       <Container>
+        <Head>
+          <title>{props.ideaName || "Ideameter"}</title>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
+
         {groupId && selectedGroup && (
           <Box sx={{ mt: 1 }}>
             <Typography variant="h5">{selectedGroup.name}</Typography>

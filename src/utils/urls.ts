@@ -32,6 +32,7 @@ const urls = {
     subideaId: (id: string) => `/subideas/${id}`,
 
     ideaId: (ideaId: string) => `/idea/${ideaId}`,
+    ideaName: (ideaId: string) => `/idea/${ideaId}/name`,
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
     subideaRatings: (parentId: string) => `/ratings?parentId=${parentId}`,
 
