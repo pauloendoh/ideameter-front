@@ -24,7 +24,7 @@ const FilterButton = (props: Props) => {
     getFilterCount,
     labelIdIsInFilter,
     toggleFilterLabelId,
-    toggleHidingDone,
+
     toggleOnlyHighImpactVoted,
   } = useGroupFilterStore()
 
@@ -79,10 +79,6 @@ const FilterButton = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <S.MenuItem onClick={() => toggleHidingDone(routerQuery.tabId!)}>
-          <Checkbox checked={filter.hidingDone} name="hiding-done" />
-          <S.CheckboxLabel>Hide done</S.CheckboxLabel>
-        </S.MenuItem>
         <S.MenuItem
           onClick={() => toggleOnlyHighImpactVoted(routerQuery.tabId!)}
         >

@@ -4,37 +4,38 @@ import nookies from "nookies"
 import { pushOrRemove } from "utils/array/pushOrRemove"
 import create from "zustand"
 
+interface IFilter {
+  labelIds: string[]
+  onlyCompletedIdeas: boolean
+  users: SimpleUserDto[]
+  onlyHighImpactVoted: boolean
+}
+
 interface IGroupFilterStore {
-  // filter
-  filter: {
-    labelIds: string[]
-    hidingDone: boolean
-    users: SimpleUserDto[]
-    onlyHighImpactVoted: boolean
-  }
+  filter: IFilter
+  setFilter: (filter: IFilter) => void
 
   getFilterCount: () => number
   labelIdIsInFilter: (id: string) => boolean
 
   // ↓ ↓ ↓ saves tab ideas store in cookie after changing
   toggleFilterLabelId: (id: string, tabId?: string) => void
-  toggleHidingDone: (tabId?: string) => void
+  toggleOnlyCompletedIdeas: (tabId?: string) => void
   changeFilterUsers: (users: SimpleUserDto[], tabId?: string) => void
   toggleOnlyHighImpactVoted: (tabId?: string) => void
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
   filter: {
-    hidingDone: false,
+    onlyCompletedIdeas: false,
     labelIds: [],
     users: [],
     onlyHighImpactVoted: false,
   },
-
+  setFilter: (filter) => set({ filter }),
   getFilterCount: () => {
-    const { labelIds, hidingDone, onlyHighImpactVoted } = get().filter
+    const { labelIds, onlyHighImpactVoted } = get().filter
     let count = labelIds.length
-    if (hidingDone) count++
     if (onlyHighImpactVoted) count++
 
     return count
@@ -65,18 +66,19 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     return get().filter.labelIds.includes(id)
   },
 
-  toggleHidingDone: (tabId) => {
+  toggleOnlyCompletedIdeas: (tabId) => {
     const { filter } = get()
 
     set({
       filter: {
         ...filter,
-        hidingDone: !filter.hidingDone,
+        onlyCompletedIdeas: !filter.onlyCompletedIdeas,
       },
     })
 
     if (tabId) {
       const state = get()
+
       nookies.set(
         null,
         cookieKeys.groupTabIdeasFilter(tabId),
