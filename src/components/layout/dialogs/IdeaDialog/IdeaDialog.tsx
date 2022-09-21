@@ -54,6 +54,13 @@ const IdeaDialog = () => {
     defaultValues: initialValue,
   })
 
+  useEffect(() => {
+    if (formState.isDirty) {
+      console.log({ initialValue })
+      console.log({ watch: watch() })
+    }
+  }, [formState.isDirty])
+
   type SetValueParams = Parameters<typeof setValue>
   const setValueDirty = (...p: SetValueParams) =>
     setValue(p[0], p[1], p[2] || { shouldDirty: true })
