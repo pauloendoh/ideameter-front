@@ -5,7 +5,9 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
+import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
 import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
@@ -32,6 +34,9 @@ const ariaLabel = "idea-dialog"
 const IdeaDialog = () => {
   const inputRef = useRef<HTMLDivElement>(null)
 
+  // I had to add this validator because sometimes the dialog was reopening after closing
+  const [canOpen, setCanOpen] = useState(true)
+
   const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
   const {
@@ -43,14 +48,18 @@ const IdeaDialog = () => {
 
   const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
 
-  const { watch, control, setValue, handleSubmit, reset } = useForm<IdeaDto>({
+  const { watch, control, setValue, handleSubmit, reset, formState } = useForm<
+    IdeaDto
+  >({
     defaultValues: initialValue,
   })
 
+  type SetValueParams = Parameters<typeof setValue>
+  const setValueDirty = (...p: SetValueParams) =>
+    setValue(p[0], p[1], { shouldDirty: true })
+
   const routerQuery = useRouterQueryString()
   const router = useRouter()
-
-  // I had to add this validator because sometimes the dialog was reopening after closing
 
   useEffect(() => {
     if (dialogIsOpen) {
@@ -89,11 +98,6 @@ const IdeaDialog = () => {
     }
   }, [dialogIsOpen])
 
-  const handleClose = () => {
-    closeDialog()
-  }
-
-  const [canOpen, setCanOpen] = useState(true)
   const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
 
   useEffect(() => {
@@ -107,16 +111,28 @@ const IdeaDialog = () => {
 
   const onSubmit = (values: IdeaDto) => {
     submitSaveIdea(values, {
-      onSuccess: () => {
-        handleClose()
-      },
+      onSuccess: closeDialog,
     })
+  }
+
+  useConfirmTabClose(formState.isDirty)
+  const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
+
+  const confirmClose = () => {
+    if (formState.isDirty) {
+      openConfirmDialog({
+        onConfirm: () => closeDialog(),
+        title: "Discard changes?",
+      })
+    } else {
+      closeDialog()
+    }
   }
 
   return (
     <Dialog
       open={dialogIsOpen}
-      onClose={handleClose}
+      onClose={confirmClose}
       fullWidth
       maxWidth="xl"
       aria-labelledby={ariaLabel}
@@ -152,8 +168,8 @@ const IdeaDialog = () => {
               />
 
               <FlexVCenter>
-                <IdeaMenu idea={watch()} afterDelete={handleClose} />
-                <IconButton onClick={handleClose}>
+                <IdeaMenu idea={watch()} afterDelete={closeDialog} />
+                <IconButton onClick={confirmClose}>
                   <MdClose />
                 </IconButton>
               </FlexVCenter>
@@ -164,12 +180,12 @@ const IdeaDialog = () => {
             <Grid container pt={1} spacing={2}>
               <IdeaDialogLeftCol
                 watch={watch}
-                setValue={setValue}
+                setValue={setValueDirty}
                 control={control}
                 onSubmit={onSubmit}
               />
 
-              <IdeaDialogRightCol watch={watch} setValue={setValue} />
+              <IdeaDialogRightCol watch={watch} setValue={setValueDirty} />
             </Grid>
 
             {watch("id") && (
@@ -191,7 +207,7 @@ const IdeaDialog = () => {
           <DialogTitle>
             <SaveCancelButtons
               // disabled={isSubmitting}
-              onCancel={handleClose}
+              onCancel={confirmClose}
             />
           </DialogTitle>
         </form>
