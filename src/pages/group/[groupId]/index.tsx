@@ -120,8 +120,9 @@ const GroupId: NextPage<Props> = (props) => {
         <Head>
           <title>{props.ideaName || "Ideameter"}</title>
           <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
+            property="og:title"
+            content={props.ideaName || "Ideameter"}
+            key="title"
           />
         </Head>
 
