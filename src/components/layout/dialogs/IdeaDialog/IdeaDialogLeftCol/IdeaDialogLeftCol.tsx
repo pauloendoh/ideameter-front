@@ -27,11 +27,12 @@ interface Props {
 const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
   // some stuff to improve performance
   const [localDescription, setLocalDescription] = useState(watch("description"))
+  const [canDirty, setCanDirty] = useState(false)
 
   const debouncedDescription = useDebounce(localDescription, 250)
   useEffect(() => {
-    setValue("description", debouncedDescription)
-  }, [debouncedDescription])
+    setValue("description", debouncedDescription, { shouldDirty: canDirty })
+  }, [debouncedDescription, canDirty])
 
   const handleImageUpload = useCallback(
     (file: File): Promise<string> =>
@@ -107,7 +108,10 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
           <MantineRTE
             placeholder="Idea description"
             value={localDescription}
-            onChange={setLocalDescription}
+            onChange={(text) => {
+              setCanDirty(true)
+              setLocalDescription(text)
+            }}
             onImageUpload={handleImageUpload}
             mentions={mentions}
             onKeyDown={onCtrlEnter}

@@ -56,7 +56,7 @@ const IdeaDialog = () => {
 
   type SetValueParams = Parameters<typeof setValue>
   const setValueDirty = (...p: SetValueParams) =>
-    setValue(p[0], p[1], { shouldDirty: true })
+    setValue(p[0], p[1], p[2] || { shouldDirty: true })
 
   const routerQuery = useRouterQueryString()
   const router = useRouter()
