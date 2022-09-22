@@ -62,8 +62,13 @@ const IdeaDialog = () => {
   }, [formState.isDirty])
 
   type SetValueParams = Parameters<typeof setValue>
-  const setValueDirty = (...p: SetValueParams) =>
-    setValue(p[0], p[1], p[2] || { shouldDirty: true })
+  const setValueDirty = (...p: SetValueParams) => {
+    console.log({
+      p0: p[0],
+      p1: p[1],
+    })
+    return setValue(p[0], p[1], p[2] || { shouldDirty: true })
+  }
 
   const routerQuery = useRouterQueryString()
   const router = useRouter()
