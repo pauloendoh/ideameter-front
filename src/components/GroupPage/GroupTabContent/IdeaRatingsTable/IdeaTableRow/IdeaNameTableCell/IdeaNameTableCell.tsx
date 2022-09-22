@@ -49,6 +49,7 @@ const IdeaNameTableCell = (props: Props) => {
 
   const notRatedSubideasCount = useMemo(() => {
     if (!subideasRatings) return 0
+    if (props.ideaRating.idea.isDone) return 0
 
     return subideasRatings.filter((r) => r.yourRating === null).length
   }, [subideasRatings])
