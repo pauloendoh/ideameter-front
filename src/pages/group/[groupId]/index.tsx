@@ -11,6 +11,7 @@ import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRela
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
 import useGroupFilterStore, {
+  IGroupFilterStore,
   resetGroupFilterStore,
 } from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
@@ -106,9 +107,13 @@ const GroupId: NextPage<Props> = (props) => {
     if (tabId) {
       const cookieStr = nookies.get(null)[cookieKeys.groupTabIdeasFilter(tabId)]
       if (cookieStr) {
-        const filterState = JSON.parse(cookieStr)
-        if ("onlyCompletedIdeas" in filterState.filter) {
-          useGroupFilterStore.setState(filterState)
+        const filterStore: IGroupFilterStore = JSON.parse(cookieStr)
+        if (
+          // you need to add here when you create new filters, so the cookie doesn't mess it up
+          filterStore.filter.onlyCompletedIdeas !== undefined &&
+          filterStore.filter.requiresYourRating !== undefined
+        ) {
+          useGroupFilterStore.setState(filterStore)
           return
         }
       }

@@ -12,7 +12,7 @@ interface IFilter {
   requiresYourRating: boolean
 }
 
-interface IGroupFilterStore {
+export interface IGroupFilterStore {
   filter: IFilter
   setFilter: (filter: IFilter) => void
 
