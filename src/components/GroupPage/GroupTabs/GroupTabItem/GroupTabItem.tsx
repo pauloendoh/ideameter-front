@@ -52,7 +52,7 @@ const GroupTabItem = (props: Props) => {
 
     // =====
 
-    const tabIdeasIds = tabIdeas.map((i) => i.id)
+    const tabIdeasIds = tabIdeas.filter((i) => !i.isDone).map((i) => i.id)
     const tabSubideas =
       subideas
         ?.filter((si) => tabIdeasIds.includes(String(si.parentId)))
