@@ -1,21 +1,19 @@
-import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import Txt from "@/components/_common/text/Txt";
-import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import { Grid } from "@mui/material";
-import { UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { AiOutlineUserAdd } from "react-icons/ai";
-import HighImpactVoteButton from "./HighImpactVoteButton/HighImpactVoteButton";
-import OnFireDatePicker from "./OnFireDatePicker/OnFireDatePicker";
+import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import Txt from "@/components/_common/text/Txt"
+import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+import { Grid } from "@mui/material"
+import { UseFormSetValue, UseFormWatch } from "react-hook-form"
+import { AiOutlineUserAdd } from "react-icons/ai"
 
 interface Props {
-  watch: UseFormWatch<IdeaDto>;
-  setValue: UseFormSetValue<IdeaDto>;
+  watch: UseFormWatch<IdeaDto>
+  setValue: UseFormSetValue<IdeaDto>
 }
 
 const IdeaDialogRightCol = (props: Props) => {
-  const openAssignDialog = useIdeaAssignmentStore((s) => s.openDialog);
+  const openAssignDialog = useIdeaAssignmentStore((s) => s.openDialog)
 
   return (
     <Grid item xs={4}>
@@ -34,11 +32,11 @@ const IdeaDialogRightCol = (props: Props) => {
           Members
         </DarkButton>
 
-        <OnFireDatePicker watch={props.watch} setValue={props.setValue} />
-        <HighImpactVoteButton watch={props.watch} setValue={props.setValue} />
+        {/* <OnFireDatePicker watch={props.watch} setValue={props.setValue} />
+        <HighImpactVoteButton watch={props.watch} setValue={props.setValue} /> */}
       </FlexCol>
     </Grid>
-  );
-};
+  )
+}
 
-export default IdeaDialogRightCol;
+export default IdeaDialogRightCol
