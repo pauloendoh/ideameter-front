@@ -1,10 +1,10 @@
-import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery";
-import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore";
-import LabelDto, { newLabelDto } from "@/types/domain/label/LabelDto";
-import { pushOrRemove } from "@/utils/array/pushOrRemove";
+import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
+import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
+import LabelDto, { newLabelDto } from "@/types/domain/label/LabelDto"
+import { pushOrRemove } from "@/utils/array/pushOrRemove"
 import {
   Box,
   Dialog,
@@ -12,38 +12,42 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-} from "@mui/material";
-import { useMemo } from "react";
-import { MdCheck, MdClose, MdEdit } from "react-icons/md";
+} from "@mui/material"
+import { useMemo } from "react"
+import { MdCheck, MdClose, MdEdit } from "react-icons/md"
 
-const ariaLabel = "select-labels-dialog";
+const ariaLabel = "select-labels-dialog"
 
 interface Props {
-  groupId: string;
+  groupId: string
 
-  selectedLabels: LabelDto[];
-  onChangeSelectedLabels: (newLabels: LabelDto[]) => void;
-  open: boolean;
-  onClose: () => void;
+  selectedLabels: LabelDto[]
+  onChangeSelectedLabels: (newLabels: LabelDto[]) => void
+  open: boolean
+  onClose: () => void
 }
 
 const SelectLabelsDialog = (props: Props) => {
-  const { data: groupLabels } = useGroupLabelsQuery(props.groupId);
-  const { openDialog: openEditLabelDialog } = useEditLabelDialogStore();
+  const { data: groupLabels } = useGroupLabelsQuery(props.groupId)
+  const { openDialog: openEditLabelDialog } = useEditLabelDialogStore()
 
   const sortedLabels = useMemo(() => {
-    if (!groupLabels) return [];
-    return groupLabels.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-  }, [groupLabels]);
+    if (!groupLabels) return []
+    return groupLabels.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  }, [groupLabels])
 
   const handleClick = (label: LabelDto) => {
-    const newLabels = pushOrRemove([...props.selectedLabels], label, "id");
-    props.onChangeSelectedLabels(newLabels);
-  };
+    const newLabels = pushOrRemove([...props.selectedLabels], label, "id")
+
+    console.log("changing select labels. ")
+    console.log({ label, newLabels })
+
+    props.onChangeSelectedLabels(newLabels)
+  }
 
   const labelIsSelected = (label: LabelDto) => {
-    return props.selectedLabels.find((l) => l.id === label.id);
-  };
+    return props.selectedLabels.find((l) => l.id === label.id)
+  }
 
   return (
     <Dialog
@@ -104,7 +108,7 @@ const SelectLabelsDialog = (props: Props) => {
         </DialogContent>
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default SelectLabelsDialog;
+export default SelectLabelsDialog
