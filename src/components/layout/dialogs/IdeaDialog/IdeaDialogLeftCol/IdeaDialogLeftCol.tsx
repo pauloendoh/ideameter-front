@@ -80,7 +80,10 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
   )
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Esc") return
+
     setCanDirty(true)
+
     // I had to add a default function for onCtrlEnter to remove console.error
     if (e.key === "Enter" && e.ctrlKey) {
       setValue("description", localDescription)
