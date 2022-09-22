@@ -24,7 +24,7 @@ const FilterButton = (props: Props) => {
     getFilterCount,
     labelIdIsInFilter,
     toggleFilterLabelId,
-
+    toggleRequiresYourRating,
     toggleOnlyHighImpactVoted,
   } = useGroupFilterStore()
 
@@ -88,11 +88,11 @@ const FilterButton = (props: Props) => {
           />
           <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
         </S.MenuItem>
-        {/*
-        <S.MenuItem onClick={toggleFilterCurrentGoal}>
-          <Checkbox checked={filter.currentGoal} name="current-goal" />
-          <S.CheckboxLabel>With current goal</S.CheckboxLabel>
-        </S.MenuItem> */}
+
+        <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
+          <Checkbox checked={filter.requiresYourRating} name="current-goal" />
+          <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
+        </S.MenuItem>
 
         {sortedLabelsById.length > 0 && <Divider />}
 

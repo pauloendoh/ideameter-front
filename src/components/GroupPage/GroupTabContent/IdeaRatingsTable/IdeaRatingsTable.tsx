@@ -1,4 +1,6 @@
+import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
 import useIdeaSortStore from "@/hooks/zustand/domain/auth/group/useIdeaSortStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
@@ -15,14 +17,19 @@ interface Props {
 const IdeaRatingsTable = (props: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
 
+  const { groupId } = useRouterQueryString()
+  const { data: ratings } = useRatingsQuery(groupId!)
+
   const [
     onlyCompletedIdeas,
     filteringUsers,
     onlyHighImpactVoted,
+    requiresYourRating,
   ] = useGroupFilterStore((s) => [
     s.filter.onlyCompletedIdeas,
     s.filter.users,
     s.filter.onlyHighImpactVoted,
+    s.filter.requiresYourRating,
   ])
 
   const sortingBy = useIdeaSortStore((s) => s.sortingBy)
@@ -54,6 +61,30 @@ const IdeaRatingsTable = (props: Props) => {
       result = result.filter(
         (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0 // subideas must always appear in their table
       )
+
+    if (requiresYourRating) {
+      result = result.filter((ideaRating) => {
+        if (!ideaRating.idea.isDone) {
+          const foundUserIdeaRating =
+            ratings?.find(
+              (r) =>
+                r.ideaId === ideaRating.idea.id && r.userId === authUser?.id
+            ) || null
+          if (!foundUserIdeaRating) return true
+
+          for (const subidea of ideaRating.subideas) {
+            const foundUserSubideaRating =
+              ratings?.find(
+                (r) => r.ideaId === subidea.id && r.userId === authUser?.id
+              ) || null
+
+            if (!foundUserSubideaRating) return true
+          }
+        }
+
+        return false
+      })
+    }
 
     if (sortingBy.attribute === "irrelevantSince")
       result = result.sort((a, b) =>
@@ -105,11 +136,13 @@ const IdeaRatingsTable = (props: Props) => {
 
     return result
   }, [
+    ratings,
     props.ideaRatings,
     onlyCompletedIdeas,
     filteringUsers,
     onlyHighImpactVoted,
     sortingBy,
+    requiresYourRating,
   ])
 
   if (props.ideaRatings.length === 0) return <div></div>

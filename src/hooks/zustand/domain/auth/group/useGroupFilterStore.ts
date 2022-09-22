@@ -9,6 +9,7 @@ interface IFilter {
   onlyCompletedIdeas: boolean
   users: SimpleUserDto[]
   onlyHighImpactVoted: boolean
+  requiresYourRating: boolean
 }
 
 interface IGroupFilterStore {
@@ -23,6 +24,7 @@ interface IGroupFilterStore {
   toggleOnlyCompletedIdeas: (tabId?: string) => void
   changeFilterUsers: (users: SimpleUserDto[], tabId?: string) => void
   toggleOnlyHighImpactVoted: (tabId?: string) => void
+  toggleRequiresYourRating: (tabId?: string) => void
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
@@ -31,12 +33,14 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     labelIds: [],
     users: [],
     onlyHighImpactVoted: false,
+    requiresYourRating: false,
   },
   setFilter: (filter) => set({ filter }),
   getFilterCount: () => {
-    const { labelIds, onlyHighImpactVoted } = get().filter
+    const { labelIds, onlyHighImpactVoted, requiresYourRating } = get().filter
     let count = labelIds.length
     if (onlyHighImpactVoted) count++
+    if (requiresYourRating) count++
 
     return count
   },
@@ -108,6 +112,23 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       filter: {
         ...curr.filter,
         onlyHighImpactVoted: !curr.filter.onlyHighImpactVoted,
+      },
+    }))
+
+    if (tabId) {
+      const state = get()
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
+    }
+  },
+  toggleRequiresYourRating: (tabId) => {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        requiresYourRating: !curr.filter.requiresYourRating,
       },
     }))
 
