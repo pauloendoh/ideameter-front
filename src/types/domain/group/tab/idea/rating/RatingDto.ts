@@ -1,10 +1,15 @@
 export default interface RatingDto {
-  id: string;
-  userId: string;
-  ideaId: string;
-  createdAt: string;
-  updatedAt: string;
-  rating: number | null;
+  id: string
+  userId: string
+
+  idea?: {
+    id: string
+    parentId: string | null
+  }
+  ideaId: string
+  createdAt: string
+  updatedAt: string
+  rating: number | null
 }
 
 export const newRatingDto = (
@@ -17,4 +22,4 @@ export const newRatingDto = (
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   rating,
-});
+})
