@@ -2,7 +2,6 @@ import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
-import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
@@ -22,7 +21,7 @@ import {
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
@@ -160,7 +159,7 @@ const IdeaDialog = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id={`${ariaLabel}-title`}>
             <FlexVCenter justifyContent="space-between">
-              <Controller
+              {/* <Controller
                 name="name"
                 control={control}
                 render={({ field }) => (
@@ -184,7 +183,7 @@ const IdeaDialog = () => {
                     inputRef={inputRef}
                   />
                 )}
-              />
+              /> */}
 
               <FlexVCenter>
                 <IdeaMenu idea={watch()} afterDelete={closeDialog} />
