@@ -1,6 +1,4 @@
-import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
-import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
@@ -9,8 +7,7 @@ import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
-import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
-import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import urls from "@/utils/urls"
 import {
   Box,
@@ -27,7 +24,6 @@ import { MdClose } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
 import IdeaMenu from "./IdeaMenu/IdeaMenu"
-import SubideasTable from "./SubideasTable/SubideasTable"
 
 const ariaLabel = "idea-dialog"
 
@@ -45,8 +41,6 @@ const IdeaDialog = () => {
     dialogIsOpen,
     closeDialog,
   } = useIdeaDialogStore()
-
-  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
 
   const { watch, control, setValue, handleSubmit, reset, formState } = useForm<
     IdeaDto
@@ -207,21 +201,6 @@ const IdeaDialog = () => {
 
               <IdeaDialogRightCol watch={watch} setValue={setValueDirty} />
             </Grid>
-
-            {watch("id") && (
-              <FlexCol mt={2}>
-                <DarkButton
-                  sx={{ width: 150 }}
-                  onClick={() => {
-                    openSubideaDialog(newIdeaDto({ parentId: watch("id") }))
-                  }}
-                >
-                  Create subideas
-                </DarkButton>
-
-                <SubideasTable parentId={watch("id")} />
-              </FlexCol>
-            )}
           </DialogContent>
 
           <DialogTitle>
