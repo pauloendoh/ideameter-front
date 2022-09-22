@@ -55,18 +55,18 @@ const IdeaDialog = () => {
   })
 
   useEffect(() => {
-    if (formState.isDirty) {
-      console.log({ initialValue })
-      console.log({ watch: watch() })
-    }
+    // if (formState.isDirty) {
+    //   console.log({ initialValue })
+    //   console.log({ watch: watch() })
+    // }
   }, [formState.isDirty])
 
   type SetValueParams = Parameters<typeof setValue>
   const setValueDirty = (...p: SetValueParams) => {
-    console.log({
-      p0: p[0],
-      p1: p[1],
-    })
+    // console.log({
+    //   p0: p[0],
+    //   p1: p[1],
+    // })
     return setValue(p[0], p[1], p[2] || { shouldDirty: true })
   }
 
@@ -181,7 +181,7 @@ const IdeaDialog = () => {
                       },
                     }}
                     {...field}
-                    onBlur={() => {}}
+                    onBlur={() => {}} // overwrite the field.onBlur so it doesn't dirty the form unnecessarily
                     inputRef={inputRef}
                   />
                 )}

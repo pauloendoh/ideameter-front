@@ -82,7 +82,6 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") return
 
-    console.log("setting dirty true. key = ", e.key)
     setCanDirty(true)
 
     // I had to add a default function for onCtrlEnter to remove console.error
@@ -121,8 +120,6 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
             placeholder="Idea description"
             value={localDescription}
             onChange={(text) => {
-              console.log({ text })
-
               setLocalDescription(text)
             }}
             onImageUpload={handleImageUpload}
