@@ -14,6 +14,13 @@ export const ideaSortOptionsDivided: {
   ],
   [
     {
+      attribute: "requiresYourRating",
+      buttonLabel: "Requires your rating",
+      menuText: "Requires your rating",
+    },
+  ],
+  [
+    {
       attribute: "createdAt",
       buttonLabel: "by Creation Date",
       menuText: "Creation Date",

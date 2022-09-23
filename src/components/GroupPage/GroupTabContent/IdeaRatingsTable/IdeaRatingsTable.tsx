@@ -8,6 +8,7 @@ import { TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
 import { useMemo } from "react"
 import S from "./IdeaTable.styles"
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow"
+import { useIdeaRequiresYourRating } from "./useIdeaRequiresYourRating"
 import UserTableCell from "./UserTableCell/UserTableCell"
 
 interface Props {
@@ -19,6 +20,11 @@ const IdeaRatingsTable = (props: Props) => {
 
   const { groupId } = useRouterQueryString()
   const { data: ratings } = useRatingsQuery(groupId!)
+
+  const ideaRequiresYourRating = useIdeaRequiresYourRating(
+    props.ideaRatings,
+    ratings
+  )
 
   const [
     onlyCompletedIdeas,
@@ -134,6 +140,18 @@ const IdeaRatingsTable = (props: Props) => {
       })
     }
 
+    if (sortingBy.attribute === "requiresYourRating") {
+      result = result.sort((a, b) => {
+        if (
+          ideaRequiresYourRating(b.idea.id) &&
+          !ideaRequiresYourRating(a.idea.id)
+        )
+          return 1
+
+        return -1
+      })
+    }
+
     return result
   }, [
     ratings,
@@ -143,6 +161,7 @@ const IdeaRatingsTable = (props: Props) => {
     onlyHighImpactVoted,
     sortingBy,
     requiresYourRating,
+    ideaRequiresYourRating,
   ])
 
   if (props.ideaRatings.length === 0) return <div></div>
