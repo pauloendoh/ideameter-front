@@ -18,7 +18,7 @@ const RatingInput = (props: Props) => {
   const { authUser } = useAuthStore()
   const saveRatingMutation = useSaveRatingMutation()
   const deleteRatingMutation = useDeleteRatingMutation()
-  const { data: groupRatings } = useRatingsQuery(props.groupId, props.parentId)
+  const { data: groupRatings } = useRatingsQuery(props.groupId)
 
   const { data: subideas } = useSubideasQuery(props.groupId)
 

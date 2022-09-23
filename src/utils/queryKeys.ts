@@ -10,12 +10,6 @@ const queryKeys = {
   ratingsByGroup: (groupId: string) => `/idea-rating?groupId=${groupId}`,
 
   subideas: (groupId: string) => ["subideas", "group", groupId],
-  subideaRatings: (parentId: string) => [
-    "ideas",
-    parentId,
-    "subideas",
-    "ratings",
-  ],
 
   notifications: "/notifications",
 }

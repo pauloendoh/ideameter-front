@@ -35,12 +35,7 @@ const useSaveRatingMutation = () => {
         })
         .then((res) => res.data),
     {
-      onSuccess: ({ savedRating, idea }, { groupId, parentIdeaId }) => {
-        if (parentIdeaId) {
-          queryClient.invalidateQueries(queryKeys.subideaRatings(parentIdeaId))
-          // return;
-        }
-
+      onSuccess: ({ savedRating, idea }, { groupId }) => {
         queryClient.setQueryData<IdeaDto[]>(
           queryKeys.groupIdeas(groupId),
           (curr) => {

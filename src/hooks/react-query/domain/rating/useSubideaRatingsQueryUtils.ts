@@ -1,46 +1,43 @@
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import { useCallback, useMemo } from "react";
-import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils";
-import useRatingsQuery from "../group/tab/idea/rating/useRatingsQuery";
-import { IdeaRating } from "../group/useIdeaRatingsQueryUtils";
-import useSubideasQueryUtils from "../subidea/useSubideasQueryUtils";
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import { useCallback, useMemo } from "react"
+import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils"
+import useRatingsQuery from "../group/tab/idea/rating/useRatingsQuery"
+import { IdeaRating } from "../group/useIdeaRatingsQueryUtils"
+import useSubideasQueryUtils from "../subidea/useSubideasQueryUtils"
 
 const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
-  const { authUser } = useAuthStore();
-  const { data: ratings, isLoading: loadingRatings } = useRatingsQuery(
-    groupId,
-    parentId
-  );
+  const { authUser } = useAuthStore()
+  const { data: ratings, isLoading: loadingRatings } = useRatingsQuery(groupId)
 
-  const otherMembers = useOtherMembersQueryUtils(groupId);
+  const otherMembers = useOtherMembersQueryUtils(groupId)
 
-  const { data: subideas, isLoading: loadingSubideas } = useSubideasQueryUtils(
-    groupId,
-    { ideaId: parentId }
-  );
+  const {
+    data: subideas,
+    isLoading: loadingSubideas,
+  } = useSubideasQueryUtils(groupId, { ideaId: parentId })
 
-  const isLoading = loadingSubideas || loadingRatings;
+  const isLoading = loadingSubideas || loadingRatings
 
   const getAvgIdeaRating = useCallback(
     (subideaId: string) => {
-      if (!ratings) return null;
-      const ideaRatings = ratings.filter((r) => r.ideaId === subideaId);
-      if (ideaRatings.length === 0) return null;
+      if (!ratings) return null
+      const ideaRatings = ratings.filter((r) => r.ideaId === subideaId)
+      if (ideaRatings.length === 0) return null
 
-      const validRatings = ideaRatings.filter((r) => r.rating !== null);
+      const validRatings = ideaRatings.filter((r) => r.rating !== null)
       const sum = validRatings.reduce(
         (partialSum, r) => partialSum + (r.rating || 0),
         0
-      );
+      )
 
-      if (sum === 0) return null;
-      return sum / validRatings.length;
+      if (sum === 0) return null
+      return sum / validRatings.length
     },
     [ratings]
-  );
+  )
 
   const ideaRatings = useMemo(() => {
-    if (!subideas || !ratings || !authUser) return [];
+    if (!subideas || !ratings || !authUser) return []
 
     const results: IdeaRating[] = subideas.map((idea) => ({
       idea,
@@ -57,12 +54,12 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
               rating.userId === member.user.id && rating.ideaId === idea.id
           )?.rating || null,
       })),
-    }));
+    }))
 
-    return results;
-  }, [authUser, subideas, otherMembers, ratings]);
+    return results
+  }, [authUser, subideas, otherMembers, ratings])
 
-  return { data: ideaRatings, isLoading };
-};
+  return { data: ideaRatings, isLoading }
+}
 
-export default useSubideaRatingsQueryUtils;
+export default useSubideaRatingsQueryUtils

@@ -35,7 +35,6 @@ const GroupTabItem = (props: Props) => {
   }, [])
 
   const userMustRateCount = useMemo(() => {
-    let count = 0
     if (!groupRatings || !tabIdeas) return 0
 
     const userRatedIdeaIds = groupRatings
