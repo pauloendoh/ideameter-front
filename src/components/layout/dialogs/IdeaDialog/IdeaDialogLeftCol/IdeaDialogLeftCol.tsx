@@ -16,9 +16,7 @@ import { KeyboardEvent, useCallback, useEffect, useMemo, useState } from "react"
 import { Control, UseFormSetValue, UseFormWatch } from "react-hook-form"
 import IdeaDialogAssignedUsers from "../IdeaDialogAssignedUsers/IdeaDialogAssignedUsers"
 import IdeaDialogSelectedLabels from "../IdeaDialogSelectedLabels/IdeaDialogSelectedLabels"
-import IdeaDialogSubideasAccordion from "../IdeaDialogSubideasAccordion/IdeaDialogSubideasAccordion"
 import IdeaDialogUsersVotedHighImpact from "../IdeaDialogUsersVotedHighImpact/IdeaDialogUsersVotedHighImpact"
-import IdeaDialogRatingsAccordion from "./IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 
 interface Props {
   watch: UseFormWatch<IdeaDto>
@@ -129,16 +127,6 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
             onKeyDown={handleKeyDown}
           />
         </S.MantineRteContainer>
-
-        {watch("id") && watch("tabId") && groupId && (
-          <IdeaDialogRatingsAccordion
-            ideaId={watch("id")}
-            groupId={groupId}
-            tabId={String(watch("tabId"))}
-          />
-        )}
-
-        {watch("id") && <IdeaDialogSubideasAccordion ideaId={watch("id")} />}
       </FlexCol>
     </Grid>
   )

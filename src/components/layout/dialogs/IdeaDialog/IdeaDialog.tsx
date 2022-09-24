@@ -22,7 +22,9 @@ import { useEffect, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
+import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
+import IdeaDialogSubideasAccordion from "./IdeaDialogSubideasAccordion/IdeaDialogSubideasAccordion"
 import IdeaMenu from "./IdeaMenu/IdeaMenu"
 
 const ariaLabel = "idea-dialog"
@@ -201,6 +203,22 @@ const IdeaDialog = () => {
 
               <IdeaDialogRightCol watch={watch} setValue={setValueDirty} />
             </Grid>
+
+            {watch("id") && watch("tabId") && routerQuery.groupId && (
+              <Box mt={4}>
+                <IdeaDialogRatingsAccordion
+                  ideaId={watch("id")}
+                  groupId={routerQuery.groupId}
+                  tabId={String(watch("tabId"))}
+                />
+              </Box>
+            )}
+
+            {watch("id") && (
+              <Box mt={4}>
+                <IdeaDialogSubideasAccordion ideaId={watch("id")} />
+              </Box>
+            )}
           </DialogContent>
 
           <DialogTitle>
