@@ -23,7 +23,6 @@ const useDeleteRatingMutation = () => {
 
         if (!groupRatings) return
 
-        debugger
         const newGroupRatings = pushOrRemove(groupRatings, savedRating, "id")
 
         queryClient.setQueryData(
