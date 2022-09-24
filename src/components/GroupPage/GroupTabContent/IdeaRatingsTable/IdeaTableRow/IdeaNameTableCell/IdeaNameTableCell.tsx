@@ -83,7 +83,6 @@ const IdeaNameTableCell = (props: Props) => {
           >
             <span
               style={{
-                display: "inline-flex",
                 whiteSpace: "break-spaces",
                 fontWeight: hasSubideas ? "bold" : undefined,
               }}
