@@ -79,11 +79,6 @@ const FilterButton = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
-          <Checkbox checked={filter.requiresYourRating} name="current-goal" />
-          <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
-        </S.MenuItem>
-        <Divider />
         <S.MenuItem
           onClick={() => toggleOnlyHighImpactVoted(routerQuery.tabId!)}
         >
@@ -92,6 +87,11 @@ const FilterButton = (props: Props) => {
             name="voted-as-high-impact"
           />
           <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
+        </S.MenuItem>
+        <Divider />
+        <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
+          <Checkbox checked={filter.requiresYourRating} name="current-goal" />
+          <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
         </S.MenuItem>
 
         {sortedLabelsById.length > 0 && <Divider />}
