@@ -6,6 +6,7 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { Grid } from "@mui/material"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
 import { AiOutlineUserAdd } from "react-icons/ai"
+import CompleteIdeaButton from "./CompleteIdeaButton/CompleteIdeaButton"
 import HighImpactVoteButton from "./HighImpactVoteButton/HighImpactVoteButton"
 import OnFireDatePicker from "./OnFireDatePicker/OnFireDatePicker"
 
@@ -22,6 +23,8 @@ const IdeaDialogRightCol = (props: Props) => {
       <FlexCol gap={1}>
         <Txt>Add to idea</Txt>
 
+        <CompleteIdeaButton watch={props.watch} setValue={props.setValue} />
+
         <DarkButton
           startIcon={<AiOutlineUserAdd />}
           sx={{ justifyContent: "flex-start", pl: 2 }}
@@ -31,7 +34,7 @@ const IdeaDialogRightCol = (props: Props) => {
             )
           }
         >
-          Members
+          Assign members
         </DarkButton>
 
         <OnFireDatePicker watch={props.watch} setValue={props.setValue} />
