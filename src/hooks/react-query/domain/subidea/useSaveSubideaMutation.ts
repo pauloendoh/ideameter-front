@@ -26,7 +26,7 @@ const useSaveSubideaMutation = () => {
         })
         .then((res) => res.data),
     {
-      onSuccess: (saved, { groupId }) => {
+      onSuccess: (saved, { groupId, subidea: payloadSubidea }) => {
         if (saved.parentId) {
           const currentData = queryClient.getQueryData<IdeaDto[]>(
             queryKeys.subideas(groupId)
@@ -40,6 +40,9 @@ const useSaveSubideaMutation = () => {
 
           queryClient.setQueryData(queryKeys.subideas(groupId), newSubideas)
         }
+
+        if (!payloadSubidea.id)
+          queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId))
 
         setSuccessMessage("Subidea saved!")
       },
