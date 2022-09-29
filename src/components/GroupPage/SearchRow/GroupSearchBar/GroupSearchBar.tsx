@@ -1,13 +1,15 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
+import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import textContainsWords from "@/utils/text/textContainsWords"
 
 import { Autocomplete, Box, Popper, useTheme } from "@mui/material"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import SearchBarTabChip from "./SearchBarTabChip/SearchBarTabChip"
 
 interface Props {
   test?: string
@@ -17,6 +19,8 @@ interface Props {
 const GroupSearchBar = (props: Props) => {
   const { groupId } = useRouterQueryString()
   const { data: groupIdeas, refetch } = useGroupIdeasQuery(groupId!)
+
+  const { data: tabs } = useGroupTabsQuery(groupId!)
 
   const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog)
   const dialogIsOpen = useIdeaDialogStore((s) => s.dialogIsOpen)
@@ -44,6 +48,13 @@ const GroupSearchBar = (props: Props) => {
 
     setSelectedIdea(null)
   }, [selectedIdea])
+
+  const getTab = useCallback(
+    (tabId: string) => {
+      return tabs?.find((t) => tabId)
+    },
+    [tabs]
+  )
 
   const filteredIdeas = useMemo(() => {
     if (!groupIdeas) return []
@@ -82,13 +93,22 @@ const GroupSearchBar = (props: Props) => {
         getOptionLabel={(option) => option.name}
         renderOption={(props, idea) => (
           <FlexVCenter
+            key={idea.id}
             {...(props as any)}
             sx={{
               textDecoration: idea.isDone ? "line-through" : undefined,
               color: idea.isDone ? theme.palette.grey[600] : undefined,
             }}
           >
-            {idea.name}
+            <FlexVCenter
+              sx={{ width: "100%", justifyContent: "space-between" }}
+            >
+              <FlexVCenter>{idea.name}</FlexVCenter>
+
+              {groupId && idea.tabId && (
+                <SearchBarTabChip tab={getTab(idea.tabId)} />
+              )}
+            </FlexVCenter>
           </FlexVCenter>
         )}
       />
