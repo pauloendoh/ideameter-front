@@ -51,7 +51,7 @@ const GroupSearchBar = (props: Props) => {
 
   const getTab = useCallback(
     (tabId: string) => {
-      return tabs?.find((t) => tabId)
+      return tabs?.find((t) => t.id === tabId)
     },
     [tabs]
   )
