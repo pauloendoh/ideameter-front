@@ -107,7 +107,7 @@ const GroupSearchBar = (props: Props) => {
               <FlexVCenter>{idea.name}</FlexVCenter>
 
               {groupId && idea.tabId && (
-                <Flex>
+                <Flex title={getTab(idea.tabId)?.name}>
                   <SearchBarTabChip tab={getTab(idea.tabId)} />
                 </Flex>
               )}
