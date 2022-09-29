@@ -44,7 +44,7 @@ const useSaveIdeaMutation = () => {
 
         queryClient.invalidateQueries(queryKeys.tabIdeas(savedIdea.tabId!))
 
-        if (payload.id === null && groupId)
+        if (payload.id === "" && groupId)
           queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId))
 
         setSuccessMessage("Idea saved!")
