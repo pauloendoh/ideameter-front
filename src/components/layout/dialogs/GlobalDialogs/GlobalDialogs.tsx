@@ -4,6 +4,7 @@ import ConfirmDialog from "../ConfirmDialog/ConfirmDialog"
 import EditLabelDialog from "../EditLabelDialog/EditLabelDialog"
 import EditProfileDialog from "../EditProfileDialog/EditProfileDialog"
 import GroupDialog from "../GroupDialog/GroupDialog"
+import GroupInsightsDialog from "../GroupInsightsDialog/GroupInsightsDialog"
 import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
@@ -26,6 +27,8 @@ const GlobalDialogs = () => {
       <ShortcutsDialog />
       <ConfirmDeleteTabDialog />
       <ConfirmDeleteGroupDialog />
+
+      <GroupInsightsDialog />
     </>
   )
 }

@@ -47,6 +47,10 @@ const urls = {
 
     notifications: "/notifications",
     notificationsHideDots: "/notifications/hide-dots",
+
+    // insights
+    interestSimilarity: (groupId: string) =>
+      `/groups/${groupId}/insights/interest-similarity`,
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,

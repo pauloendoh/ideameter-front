@@ -9,6 +9,7 @@ import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabs
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useGroupInsightsDialogStore from "@/hooks/zustand/dialogs/useGroupInsightsDialogStore"
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
 import useGroupFilterStore, {
   IGroupFilterStore,
@@ -21,6 +22,7 @@ import { cookieKeys } from "@/utils/cookieKeys"
 import urls from "@/utils/urls"
 import {
   Box,
+  Button,
   Container,
   IconButton,
   Paper,
@@ -121,6 +123,10 @@ const GroupId: NextPage<Props> = (props) => {
     resetGroupFilterStore()
   }, [tabId])
 
+  const openGroupInsightsDialog = useGroupInsightsDialogStore(
+    (s) => s.openDialog
+  )
+
   return (
     <>
       <Head>
@@ -141,7 +147,13 @@ const GroupId: NextPage<Props> = (props) => {
         <Container>
           {groupId && selectedGroup && (
             <Box sx={{ mt: 1 }}>
-              <Typography variant="h5">{selectedGroup.name}</Typography>
+              <FlexVCenter justifyContent="space-between">
+                <Typography variant="h5">{selectedGroup.name}</Typography>
+                <Button onClick={() => openGroupInsightsDialog(selectedGroup)}>
+                  Insights
+                </Button>
+              </FlexVCenter>
+
               <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
                 <FlexVCenter
                   sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}

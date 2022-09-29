@@ -12,6 +12,8 @@ const queryKeys = {
   subideas: (groupId: string) => ["subideas", "group", groupId],
 
   notifications: "/notifications",
+  interestSimilarity: (groupId: string) =>
+    `/groups/${groupId}/insights/interest-similarity`,
 }
 
 export default queryKeys
