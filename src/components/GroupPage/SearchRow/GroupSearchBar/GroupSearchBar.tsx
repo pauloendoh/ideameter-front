@@ -1,3 +1,4 @@
+import Flex from "@/components/_common/flexboxes/Flex"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
@@ -100,15 +101,17 @@ const GroupSearchBar = (props: Props) => {
               color: idea.isDone ? theme.palette.grey[600] : undefined,
             }}
           >
-            <FlexVCenter
-              sx={{ width: "100%", justifyContent: "space-between" }}
+            <Flex
+              sx={{ width: "100%", justifyContent: "space-between", gap: 1 }}
             >
               <FlexVCenter>{idea.name}</FlexVCenter>
 
               {groupId && idea.tabId && (
-                <SearchBarTabChip tab={getTab(idea.tabId)} />
+                <Flex>
+                  <SearchBarTabChip tab={getTab(idea.tabId)} />
+                </Flex>
               )}
-            </FlexVCenter>
+            </Flex>
           </FlexVCenter>
         )}
       />

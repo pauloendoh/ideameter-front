@@ -1,6 +1,5 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import TabDto from "@/types/domain/group/tab/TabDto"
-import { useTheme } from "@mui/material"
+import { Typography, useTheme } from "@mui/material"
 
 interface Props {
   tab?: TabDto
@@ -12,16 +11,20 @@ const SearchBarTabChip = (props: Props) => {
   if (!props.tab) return null
 
   return (
-    <FlexVCenter
+    <Typography
       sx={{
         px: 1,
         py: 0.25,
         borderRadius: 0.5,
         background: theme.palette.grey[800],
+        justifyContent: "center",
+        width: "100px",
+        height: "fit-content",
       }}
+      noWrap
     >
       {props.tab.name}
-    </FlexVCenter>
+    </Typography>
   )
 }
 
