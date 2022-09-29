@@ -39,6 +39,9 @@ const useSaveIdeaMutation = () => {
           )
         }
 
+        if (groupId && payload.parentId)
+          queryClient.invalidateQueries(queryKeys.subideas(groupId))
+
         queryClient.invalidateQueries(queryKeys.tabIdeas(savedIdea.tabId!))
 
         if (payload.id === null && groupId)
