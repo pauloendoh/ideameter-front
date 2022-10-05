@@ -18,7 +18,7 @@ import {
   IconButton,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
@@ -35,7 +35,10 @@ const IdeaDialog = () => {
   // I had to add this validator because sometimes the dialog was reopening after closing
   const [canOpen, setCanOpen] = useState(true)
 
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation()
+  const {
+    mutate: submitSaveIdea,
+    isLoading: isSubmitting,
+  } = useSaveIdeaMutation()
 
   const {
     openDialog,
@@ -50,19 +53,8 @@ const IdeaDialog = () => {
     defaultValues: initialValue,
   })
 
-  useEffect(() => {
-    // if (formState.isDirty) {
-    //   console.log({ initialValue })
-    //   console.log({ watch: watch() })
-    // }
-  }, [formState.isDirty])
-
   type SetValueParams = Parameters<typeof setValue>
   const setValueDirty = (...p: SetValueParams) => {
-    // console.log({
-    //   p0: p[0],
-    //   p1: p[1],
-    // })
     return setValue(p[0], p[1], p[2] || { shouldDirty: true })
   }
 
@@ -136,6 +128,11 @@ const IdeaDialog = () => {
       closeDialog()
     }
   }
+
+  const saveButtonIsDisabled = useMemo(
+    () => isSubmitting || !formState.isDirty,
+    [isSubmitting, formState.isDirty]
+  )
 
   return (
     <Dialog
@@ -223,7 +220,7 @@ const IdeaDialog = () => {
 
           <DialogTitle>
             <SaveCancelButtons
-              // disabled={isSubmitting}
+              disabled={saveButtonIsDisabled}
               onCancel={confirmClose}
             />
           </DialogTitle>
