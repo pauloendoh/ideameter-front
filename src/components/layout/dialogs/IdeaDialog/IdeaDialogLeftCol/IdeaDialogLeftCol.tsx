@@ -99,12 +99,7 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
             <IdeaDialogAssignedUsers watch={watch} setValue={setValue} />
           </Grid>
           <Grid item xs={6}>
-            {watch("highImpactVotes")?.length > 0 && (
-              <IdeaDialogUsersVotedHighImpact
-                watch={watch}
-                setValue={setValue}
-              />
-            )}
+            <IdeaDialogUsersVotedHighImpact watch={watch} setValue={setValue} />
           </Grid>
         </Grid>
 
