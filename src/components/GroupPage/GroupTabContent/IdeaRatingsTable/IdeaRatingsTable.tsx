@@ -9,6 +9,7 @@ import { useMemo } from "react"
 import S from "./IdeaTable.styles"
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow"
 import { useIdeaRequiresYourRating } from "./useIdeaRequiresYourRating"
+import useMultiSelectIdeas from "./useMultiSelectIdeas/useMultiSelectIdeas"
 import UserTableCell from "./UserTableCell/UserTableCell"
 
 interface Props {
@@ -173,6 +174,8 @@ const IdeaRatingsTable = (props: Props) => {
     selectedLabelIds,
   ])
 
+  const { onCtrlClick, onShiftClick } = useMultiSelectIdeas()
+
   if (props.ideaRatings.length === 0) return <div></div>
 
   return (
@@ -207,6 +210,13 @@ const IdeaRatingsTable = (props: Props) => {
               key={ideaRating.idea.id + ideaRating.idea.updatedAt}
               ideaRating={ideaRating}
               rowNumber={index + 1}
+              onCtrlClick={() => onCtrlClick(ideaRating.idea.id)}
+              onShiftClick={() =>
+                onShiftClick(
+                  visibleIdeaRatings.map((r) => r.idea.id),
+                  ideaRating.idea.id
+                )
+              }
             />
           ))}
         </TableBody>

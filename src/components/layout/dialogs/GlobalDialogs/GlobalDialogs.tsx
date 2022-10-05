@@ -8,10 +8,12 @@ import GroupInsightsDialog from "../GroupInsightsDialog/GroupInsightsDialog"
 import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
+import MoveIdeasToTabDialog from "../MoveIdeasToTabDialog/MoveIdeasToTabDialog"
 import ShortcutsDialog from "../ShortcutsDialog/ShortcutsDialog"
 import TabDialog from "../TabDialog/TabDialog"
 
 // each one is managed by zustand
+// PE 1/3 - use lazy import?
 const GlobalDialogs = () => {
   return (
     <>
@@ -29,6 +31,7 @@ const GlobalDialogs = () => {
       <ConfirmDeleteGroupDialog />
 
       <GroupInsightsDialog />
+      <MoveIdeasToTabDialog />
     </>
   )
 }

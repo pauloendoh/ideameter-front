@@ -1,6 +1,7 @@
 import GroupTabContent from "@/components/GroupPage/GroupTabContent/GroupTabContent"
 import GroupTabs from "@/components/GroupPage/GroupTabs/GroupTabs"
 import SearchRow from "@/components/GroupPage/SearchRow/SearchRow"
+import SelectedIdeasOptionsRow from "@/components/GroupPage/SelectedIdeasOptionsRow/SelectedIdeasOptionsRow"
 import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon"
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
@@ -15,6 +16,7 @@ import useGroupFilterStore, {
   IGroupFilterStore,
   resetGroupFilterStore,
 } from "@/hooks/zustand/domain/group/useGroupFilterStore"
+import useSelectedIdeasStore from "@/hooks/zustand/domain/idea/useSelectedIdeasStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { newTabDto } from "@/types/domain/group/tab/TabDto"
 import myAxios from "@/utils/axios/myAxios"
@@ -95,8 +97,6 @@ const GroupId: NextPage<Props> = (props) => {
     myAxios.put(urls.api.lastOpenedGroupId, { groupId })
   }
 
-  const setFilter = useGroupFilterStore((s) => s.setFilter)
-
   useEffect(() => {
     resetGroupFilterStore()
 
@@ -126,6 +126,8 @@ const GroupId: NextPage<Props> = (props) => {
   const openGroupInsightsDialog = useGroupInsightsDialogStore(
     (s) => s.openDialog
   )
+
+  const selectedIdeaIds = useSelectedIdeasStore((s) => s.selectedIdeaIds)
 
   return (
     <>
@@ -176,7 +178,12 @@ const GroupId: NextPage<Props> = (props) => {
                   />
                 </FlexVCenter>
 
-                <SearchRow />
+                {selectedIdeaIds.length > 0 ? (
+                  <SelectedIdeasOptionsRow selectedIdeaIds={selectedIdeaIds} />
+                ) : (
+                  <SearchRow />
+                )}
+
                 {tabId && groupId && (
                   <GroupTabContent tabId={tabId} groupId={groupId} />
                 )}

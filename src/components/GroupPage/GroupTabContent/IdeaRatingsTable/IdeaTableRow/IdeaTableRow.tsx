@@ -2,17 +2,20 @@ import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSa
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
-import { Checkbox, TableCell, TableRow } from "@mui/material"
+import { Checkbox, TableCell, TableRow, useTheme } from "@mui/material"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useAssignMeHotkey } from "../../../../../hooks/hotkeys/useAssignMeHotkey/useAssignMeHotkey"
 import { useToggleVoteHotkey } from "../../../../../hooks/hotkeys/useToggleVoteHotkey/useToggleVoteHotkey"
 import RatingInput from "../RatingInput/RatingInput"
+import useMultiSelectIdeas from "../useMultiSelectIdeas/useMultiSelectIdeas"
 import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell"
 import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell"
 interface Props {
   ideaRating: IdeaRating
   rowNumber: number
+  onCtrlClick: () => void
+  onShiftClick: () => void
 }
 
 const IdeaTableRow = (props: Props) => {
@@ -27,6 +30,13 @@ const IdeaTableRow = (props: Props) => {
 
   useAssignMeHotkey(isHoveringIdeaId)
   useToggleVoteHotkey(isHoveringIdeaId)
+
+  const isSubidea = useMemo(() => !!props.ideaRating.idea.parentId, [
+    props.ideaRating,
+  ])
+
+  const { idIsSelected } = useMultiSelectIdeas()
+  const theme = useTheme()
 
   return (
     <TableRow
@@ -43,10 +53,26 @@ const IdeaTableRow = (props: Props) => {
         ":hover": {
           cursor: "pointer",
         },
+        background: idIsSelected(props.ideaRating.idea.id)
+          ? `${theme.palette.grey[700]} !important`
+          : undefined,
       }}
-      onClick={() => {
-        if (props.ideaRating.idea.parentId) {
+      onClick={(e) => {
+        if (isSubidea) {
           openSubideaDialog(props.ideaRating.idea)
+          return
+        }
+
+        if (e.ctrlKey) {
+          e.preventDefault()
+          props.onCtrlClick()
+          return
+        }
+
+        if (e.shiftKey) {
+          e.preventDefault()
+
+          props.onShiftClick()
           return
         }
 

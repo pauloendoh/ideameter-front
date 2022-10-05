@@ -49,4 +49,21 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
       )
     }
   }, [lastMessageDeleteIdea])
+
+  const { lastMessage: lastMessageMoveIdeasToTab } = useMySocketEvent<
+    IdeaDto[]
+  >(wsEventNames.moveIdeasToTab)
+  useEffect(() => {
+    if (!lastMessageMoveIdeasToTab) return
+
+    for (const idea of lastMessageMoveIdeasToTab) {
+      queryClient.setQueryData<IdeaDto[]>(
+        queryKeys.groupIdeas(groupId!),
+        (curr) => {
+          if (!curr) return [idea]
+          return upsert(curr, idea, (i) => i.id === idea.id)
+        }
+      )
+    }
+  }, [lastMessageMoveIdeasToTab])
 }

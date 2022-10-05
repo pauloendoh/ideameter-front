@@ -31,6 +31,8 @@ const urls = {
     subideas: (groupId: string) => `/subideas?groupId=${groupId}`,
     subideaId: (id: string) => `/subideas/${id}`,
 
+    moveIdeasToTab: `/ideas/move-to-tab`,
+
     ideaId: (ideaId: string) => `/idea/${ideaId}`,
     ideaName: (ideaId: string) => `/idea/${ideaId}/name`,
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
