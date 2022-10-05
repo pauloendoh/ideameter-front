@@ -31,11 +31,13 @@ const IdeaRatingsTable = (props: Props) => {
     filteringUsers,
     onlyHighImpactVoted,
     requiresYourRating,
+    selectedLabelIds,
   ] = useGroupFilterStore((s) => [
     s.filter.onlyCompletedIdeas,
     s.filter.users,
     s.filter.onlyHighImpactVoted,
     s.filter.requiresYourRating,
+    s.filter.labelIds,
   ])
 
   const sortingBy = useIdeaSortStore((s) => s.sortingBy)
@@ -152,6 +154,12 @@ const IdeaRatingsTable = (props: Props) => {
       })
     }
 
+    if (selectedLabelIds.length > 0)
+      result = result.filter((r) => {
+        const labelIds = r.idea.labels.map((l) => l.id)
+        return selectedLabelIds.every((id) => labelIds.includes(id))
+      })
+
     return result
   }, [
     ratings,
@@ -162,6 +170,7 @@ const IdeaRatingsTable = (props: Props) => {
     sortingBy,
     requiresYourRating,
     ideaRequiresYourRating,
+    selectedLabelIds,
   ])
 
   if (props.ideaRatings.length === 0) return <div></div>
