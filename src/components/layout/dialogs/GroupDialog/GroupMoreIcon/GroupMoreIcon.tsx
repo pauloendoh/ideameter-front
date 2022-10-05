@@ -1,6 +1,8 @@
 import useDeleteGroupMutation from "@/hooks/react-query/domain/group/useDeleteGroupMutation"
 import useConfirmDeleteGroupDialogStore from "@/hooks/zustand/dialogs/useConfirmDeleteGroupDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
+import useAutoScrollStore from "@/hooks/zustand/useAutoScrollStore"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import GroupDto from "@/types/domain/group/GroupDto"
 import {
   Box,
@@ -11,7 +13,7 @@ import {
   Typography,
 } from "@mui/material"
 import { useState } from "react"
-import { MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md"
+import { MdDelete, MdEdit, MdMoreHoriz, MdMouse } from "react-icons/md"
 
 interface Props {
   group: GroupDto
@@ -20,6 +22,7 @@ interface Props {
   showDelete?: boolean
 }
 
+// PE 1/3 - rename to GroupMenu ?
 function GroupMoreIcon(props: Props) {
   const [anchorEl, setAnchorEl] = useState(null)
   const handleOpenMore = (event: any) => {
@@ -35,6 +38,13 @@ function GroupMoreIcon(props: Props) {
   const {
     openDialog: openConfirmDeleteGroupDialog,
   } = useConfirmDeleteGroupDialogStore()
+
+  const [autoScrollIsDisabled, toggleAutoScroll] = useAutoScrollStore((s) => [
+    s.isDisabled,
+    s.toggleIsDisabled,
+  ])
+
+  const setSuccessMessage = useSnackbarStore((s) => s.setSuccessMessage)
 
   return (
     <Box>
@@ -74,6 +84,30 @@ function GroupMoreIcon(props: Props) {
             </ListItemIcon>
             <Typography variant="inherit" noWrap>
               Edit group
+            </Typography>{" "}
+          </MenuItem>
+        )}
+
+        {props.canEdit && (
+          <MenuItem
+            onClick={(e) => {
+              handleCloseMore()
+              const message = autoScrollIsDisabled
+                ? "Auto-scroll enabled!"
+                : "Auto-scroll disabled!"
+              setSuccessMessage(message)
+              setTimeout(() => {
+                toggleAutoScroll()
+              }, 250) // so it changes the text after closing
+            }}
+          >
+            <ListItemIcon sx={{ width: 16 }}>
+              <MdMouse />
+            </ListItemIcon>
+            <Typography variant="inherit" noWrap>
+              {autoScrollIsDisabled
+                ? "Enable auto-scroll for me"
+                : "Disable auto-scroll for me"}
             </Typography>{" "}
           </MenuItem>
         )}

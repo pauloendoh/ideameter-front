@@ -14,7 +14,7 @@ import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
 import useGroupFilterStore, {
   IGroupFilterStore,
   resetGroupFilterStore,
-} from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
+} from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { newTabDto } from "@/types/domain/group/tab/TabDto"
 import myAxios from "@/utils/axios/myAxios"

@@ -3,7 +3,7 @@ import Flex from "@/components/_common/flexboxes/Flex"
 import { useToggleFilterMeHotkey } from "@/hooks/hotkeys/useToggleFilterMeHotkey/useToggleFilterMeHotkey"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore"
-import useGroupFilterStore from "@/hooks/zustand/domain/auth/group/useGroupFilterStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import { CgChevronDown } from "react-icons/cg"
 import UserGroupAvatar from "../../GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 

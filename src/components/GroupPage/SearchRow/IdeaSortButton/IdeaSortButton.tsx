@@ -1,5 +1,5 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
-import useIdeaSortStore from "@/hooks/zustand/domain/auth/group/useIdeaSortStore"
+import useIdeaSortStore from "@/hooks/zustand/domain/group/useIdeaSortStore"
 import {
   findSortOptionByAttribute,
   ideaSortOptionsDivided,

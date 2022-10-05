@@ -1,8 +1,11 @@
+import useAutoScrollStore from "@/hooks/zustand/useAutoScrollStore"
 import { useTheme } from "@mui/material"
 import { useState } from "react"
 
 export const useScrollToIdea = () => {
   const theme = useTheme()
+
+  const isDisabled = useAutoScrollStore((s) => s.isDisabled)
 
   const [
     removeClassTimeout,
@@ -14,7 +17,7 @@ export const useScrollToIdea = () => {
       const table = document.querySelector(".MuiTableContainer-root")
       const thead = document.querySelector<HTMLElement>(".MuiTableRow-head")
 
-      if (row && table && thead) {
+      if (row && table && thead && !isDisabled) {
         const tableTop = table.getBoundingClientRect().top
         const theadHeight = thead.offsetHeight
 
