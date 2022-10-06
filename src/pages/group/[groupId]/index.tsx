@@ -161,7 +161,11 @@ const GroupId: NextPage<Props> = (props) => {
                   sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
                 >
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <Tooltip title="Add tab">
+                    <Tooltip
+                      open={sortedGroupTabs.length === 0 ? true : undefined}
+                      arrow
+                      title="Add tab"
+                    >
                       <IconButton
                         onClick={() => openDialog(newTabDto({ groupId }))}
                       >

@@ -1,3 +1,4 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useDeleteGroupMutation from "@/hooks/react-query/domain/group/useDeleteGroupMutation"
 import useConfirmDeleteGroupDialogStore from "@/hooks/zustand/dialogs/useConfirmDeleteGroupDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
@@ -10,10 +11,11 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import { useState } from "react"
-import { MdDelete, MdEdit, MdMoreHoriz, MdMouse } from "react-icons/md"
+import { MdDelete, MdEdit, MdInfo, MdMoreHoriz, MdMouse } from "react-icons/md"
 
 interface Props {
   group: GroupDto
@@ -104,11 +106,21 @@ function GroupMoreIcon(props: Props) {
             <ListItemIcon sx={{ width: 16 }}>
               <MdMouse />
             </ListItemIcon>
-            <Typography variant="inherit" noWrap>
-              {autoScrollIsDisabled
-                ? "Enable auto-scroll for me"
-                : "Disable auto-scroll for me"}
-            </Typography>{" "}
+            <FlexVCenter gap={0.5}>
+              <Typography variant="inherit" noWrap>
+                {autoScrollIsDisabled
+                  ? "Enable auto-scroll for me"
+                  : "Disable auto-scroll for me"}
+              </Typography>
+              <Tooltip
+                title="Auto-scroll: after you save an idea, it will highlight and scroll to the saved idea in the table"
+                arrow
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <MdInfo />
+                </div>
+              </Tooltip>
+            </FlexVCenter>
           </MenuItem>
         )}
         {props.showDelete && (

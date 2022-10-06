@@ -1,29 +1,29 @@
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery";
-import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore";
-import { newGroupDto } from "@/types/domain/group/GroupDto";
-import urls from "@/utils/urls";
-import { Avatar, Drawer, IconButton, Toolbar, Tooltip } from "@mui/material";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMemo } from "react";
-import { MdAdd } from "react-icons/md";
-import S from "./Sidebar.styles";
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
+import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
+import { newGroupDto } from "@/types/domain/group/GroupDto"
+import urls from "@/utils/urls"
+import { Avatar, Drawer, IconButton, Toolbar, Tooltip } from "@mui/material"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useMemo } from "react"
+import { MdAdd } from "react-icons/md"
+import S from "./Sidebar.styles"
 
 const Sidebar = () => {
-  const { data: groups } = useGroupsQuery();
-  const router = useRouter();
-  const query = router.query as { groupId?: string };
+  const { data: groups } = useGroupsQuery()
+  const router = useRouter()
+  const query = router.query as { groupId?: string }
 
-  const { openDialog } = useGroupDialogStore();
+  const { openDialog } = useGroupDialogStore()
 
   // newest first
   const sortedGroups = useMemo(() => {
-    if (!groups) return [];
+    if (!groups) return []
     return groups.sort((a, b) =>
       (a.createdAt || "") > (b.createdAt || "") ? -1 : 1
-    );
-  }, [groups]);
+    )
+  }, [groups])
 
   return (
     <Drawer
@@ -57,7 +57,12 @@ const Sidebar = () => {
           </Link>
         ))}
 
-        <Tooltip title="Create group" placement="right">
+        <Tooltip
+          open={sortedGroups.length === 0 ? true : undefined}
+          arrow
+          title="Create group"
+          placement="right"
+        >
           <IconButton
             onClick={() => openDialog(newGroupDto())}
             sx={{ background: "#3E3E3E", width: 64, height: 64 }}
@@ -67,7 +72,7 @@ const Sidebar = () => {
         </Tooltip>
       </FlexCol>
     </Drawer>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
