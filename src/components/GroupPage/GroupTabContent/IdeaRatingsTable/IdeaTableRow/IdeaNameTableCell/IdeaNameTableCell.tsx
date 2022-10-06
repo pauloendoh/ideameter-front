@@ -128,7 +128,27 @@ const IdeaNameTableCell = (props: Props) => {
 
           {props.ideaRating.idea.highImpactVotes?.length > 0 && (
             <Tooltip
-              title={youVotedHighImpact ? "You voted as high impact" : "sadfa"}
+              arrow
+              title={
+                <FlexCol gap={0.5}>
+                  <Typography>
+                    {props.ideaRating.idea.highImpactVotes.length} voted as high
+                    impact
+                  </Typography>
+                  <FlexVCenter gap={0.5}>
+                    {props.ideaRating.idea.highImpactVotes.map((vote) => (
+                      <UserGroupAvatar
+                        userId={vote.userId}
+                        groupId={groupId!}
+                        avatarProps={{
+                          sx: { width: 24, height: 24, fontSize: 12 },
+                        }}
+                        key={vote.userId}
+                      />
+                    ))}
+                  </FlexVCenter>
+                </FlexCol>
+              }
             >
               {/* had to use div instead of FlexVCenter due to tooltip */}
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
