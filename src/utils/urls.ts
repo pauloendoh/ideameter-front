@@ -15,6 +15,8 @@ const urls = {
     register: "/auth/register",
     login: "/auth/login",
     me: "/auth/me",
+    sendPasswordResetEmail: "/utils/password-reset-email",
+    resetPassword: "/auth/password-reset",
 
     group: "/group",
     groupId: (groupId: string) => `/group/${groupId}`,

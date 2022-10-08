@@ -1,3 +1,4 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
@@ -12,9 +13,10 @@ import MyTextField from "../../_common/inputs/MyTextField"
 
 interface Props {
   onClickSignUp: () => void
+  onClickForgotPassword: () => void
 }
 
-const RegisterForm = (props: Props) => {
+const LoginForm = (props: Props) => {
   const { setErrorMessage, setSuccessMessage } = useSnackbarStore()
   const { setAuthUser } = useAuthStore()
 
@@ -75,6 +77,15 @@ const RegisterForm = (props: Props) => {
               )}
             />
           </FlexCol>
+          <FlexVCenter sx={{ justifyContent: "flex-end" }}>
+            <Link
+              variant="body2"
+              onClick={props.onClickForgotPassword}
+              sx={{ cursor: "pointer" }}
+            >
+              Forgot your password?
+            </Link>
+          </FlexVCenter>
           <Button type="submit" variant="contained" color="primary">
             Sign In
           </Button>
@@ -90,4 +101,4 @@ const RegisterForm = (props: Props) => {
   )
 }
 
-export default RegisterForm
+export default LoginForm
