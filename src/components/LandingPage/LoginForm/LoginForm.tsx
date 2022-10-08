@@ -42,7 +42,7 @@ const LoginForm = (props: Props) => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FlexCol sx={{ gap: 2 }}>
+        <FlexCol>
           <FlexCol sx={{ gap: 1 }}>
             <Controller
               control={control}
@@ -77,7 +77,7 @@ const LoginForm = (props: Props) => {
               )}
             />
           </FlexCol>
-          <FlexVCenter sx={{ justifyContent: "flex-end" }}>
+          <FlexVCenter sx={{ mt: 1, justifyContent: "flex-end" }}>
             <Link
               variant="body2"
               onClick={props.onClickForgotPassword}
@@ -86,7 +86,12 @@ const LoginForm = (props: Props) => {
               Forgot your password?
             </Link>
           </FlexVCenter>
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+          >
             Sign In
           </Button>
         </FlexCol>
