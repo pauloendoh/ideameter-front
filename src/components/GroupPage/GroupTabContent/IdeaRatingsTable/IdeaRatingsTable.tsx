@@ -90,7 +90,6 @@ const IdeaRatingsTable = (props: Props) => {
             if (!foundUserSubideaRating) return true
           }
         }
-
         return false
       })
     }

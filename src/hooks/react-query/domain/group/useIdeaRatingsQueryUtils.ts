@@ -69,21 +69,14 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       })),
     }))
 
-    // if (selectedLabelIds.length > 0)
-    //   results = results.filter((r) => {
-    //     const labelIds = r.idea.labels.map((l) => l.id);
-    //     return selectedLabelIds.every((id) => labelIds.includes(id));
-    //   });
-
     return results
   }, [
     authUser,
     tabIdeas,
+    tabIdeas?.map((i) => i.highImpactVotes),
     subideas,
     otherMembers,
     groupRatings,
-    // selectedLabelIds,
-    tabId,
   ])
 
   return ideaRatings

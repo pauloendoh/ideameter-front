@@ -36,7 +36,6 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
     () => tabRatings.find((r) => r.idea.id === props.ideaId),
     [tabRatings, props.ideaId]
   )
-
   if (!ideaRatings) return null
 
   const theme = useTheme()
