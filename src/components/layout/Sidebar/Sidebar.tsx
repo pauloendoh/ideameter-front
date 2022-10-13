@@ -44,16 +44,18 @@ const Sidebar = () => {
       <FlexCol sx={{ pt: 2, px: 2.5, gap: 2 }}>
         {sortedGroups.map((group) => (
           <Link key={group.id} href={urls.pages.groupId(String(group.id))}>
-            <Tooltip title={group.name} placement="right">
-              <a style={{ position: "relative" }}>
-                {query.groupId === group.id && <S.SelectedGroupLittleBar />}
-                <IconButton sx={{ width: 64, height: 64 }}>
-                  <Avatar sx={{ width: 64, height: 64 }}>
-                    {group.name.substring(0, 2)}
-                  </Avatar>
-                </IconButton>
-              </a>
-            </Tooltip>
+            <a style={{ position: "relative", textDecoration: "none" }}>
+              <Tooltip title={group.name} placement="right">
+                <div>
+                  {query.groupId === group.id && <S.SelectedGroupLittleBar />}
+                  <IconButton sx={{ width: 64, height: 64 }}>
+                    <Avatar sx={{ width: 64, height: 64 }}>
+                      {group.name.substring(0, 2)}
+                    </Avatar>
+                  </IconButton>
+                </div>
+              </Tooltip>
+            </a>
           </Link>
         ))}
 
