@@ -5,7 +5,7 @@ import useSubideasQuery from "@/hooks/react-query/domain/subidea/useSubideasQuer
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { newRatingDto } from "@/types/domain/group/tab/idea/rating/RatingDto"
-import { Badge, MenuItem, Select } from "@mui/material"
+import { Badge, NativeSelect } from "@mui/material"
 import { useMemo } from "react"
 
 interface Props {
@@ -65,26 +65,27 @@ const RatingInput = (props: Props) => {
 
   return (
     <Badge color="error" variant={hideBadge ? "standard" : "dot"}>
-      <Select
+      <NativeSelect
         disabled={isLoading}
+        variant="outlined"
         size="small"
-        value={currentRating}
-        sx={{ width: 56 }}
+        // value={currentRating}
+        sx={{ width: 56, textAlignLast: "right" }}
+        defaultValue={currentRating}
         onChange={(e) => {
-          e.stopPropagation()
-          handleChange(e.target.value as number)
+          handleChange(Number(e.target.value))
         }}
-        MenuProps={{
-          onClick: (e) => e.stopPropagation(),
+        onClick={(e) => {
+          e.stopPropagation()
         }}
       >
         {/* invisible character to avoid small height */}
-        <MenuItem value={-1}>⠀</MenuItem>
-        <MenuItem value={0}>-</MenuItem>
-        <MenuItem value={3}>3</MenuItem>
-        <MenuItem value={2}>2</MenuItem>
-        <MenuItem value={1}>1</MenuItem>
-      </Select>
+        <option value={-1}>⠀</option>
+        <option value={0}>-</option>
+        <option value={3}>3</option>
+        <option value={2}>2</option>
+        <option value={1}>1</option>
+      </NativeSelect>
     </Badge>
   )
 }
