@@ -10,14 +10,21 @@ import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AppProps } from "next/app"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 import { useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
-import { IoProvider } from "socket.io-react-hook"
 import createEmotionCache from "../createEmotionCache"
 import theme from "../theme"
 import "./global.css"
+
+const IoProvider = dynamic<any>(
+  () => import("socket.io-react-hook").then((module) => module.IoProvider),
+  {
+    ssr: false,
+  }
+)
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()

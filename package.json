@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3003",
     "build": "next build",
+    "build:analyze": "cross-env ANALYZE=true next build",
     "start": "next start -p 3003",
     "lint": "next lint",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
@@ -21,8 +22,10 @@
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
     "@mui/x-date-pickers": "^5.0.0",
+    "@next/bundle-analyzer": "^12.3.1",
     "@types/react-linkify": "^1.0.1",
     "axios": "^0.27.2",
+    "cross-env": "^7.0.3",
     "immer": "^9.0.12",
     "luxon": "^3.0.3",
     "next": "^12.3.0",

@@ -1,7 +1,17 @@
-import HomePage from "@/components/HomePage/HomePage"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import type { NextPage } from "next"
-import LandingPage from "../components/LandingPage/LandingPage"
+import dynamic from "next/dynamic"
+
+const HomePage = dynamic(() => import("@/components/HomePage/HomePage"), {
+  ssr: false,
+})
+
+const LandingPage = dynamic(
+  () => import("../components/LandingPage/LandingPage"),
+  {
+    ssr: false,
+  }
+)
 
 const Home: NextPage = () => {
   const { authUser } = useAuthStore()
