@@ -10,6 +10,7 @@ const urls = {
       `/group/${groupId}?tabId=${tabId}`,
     groupTabIdea: (groupId: string, tabId: string, ideaId: string) =>
       `/group/${groupId}?${stringify({ tabId, ideaId })}`,
+    ideasAssignedToMe: (userId: string) => `/assigned-to-me/${userId}`,
   },
   api: {
     register: "/auth/register",

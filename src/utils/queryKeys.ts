@@ -14,6 +14,7 @@ const queryKeys = {
   notifications: "/notifications",
   interestSimilarity: (groupId: string) =>
     `/groups/${groupId}/insights/interest-similarity`,
+  assignedToMeIdeas: "assigned-to-me",
 }
 
 export default queryKeys
