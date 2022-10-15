@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react"
 
 const AssignedToMePage = () => {
-  return (
-    <div>AssignedToMePage</div>
-  )
+  return <div>AssignedToMePage</div>
 }
 
 export default AssignedToMePage
