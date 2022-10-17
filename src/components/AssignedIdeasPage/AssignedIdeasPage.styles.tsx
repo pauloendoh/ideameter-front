@@ -7,12 +7,6 @@ const S = {
       padding: 8px;
     }
   `,
-  // TableHead: styled(TableHead)`
-  //   th {
-  //     background-color: #242424;
-  //     font-weight: bold;
-  //     padding: 3px;
-  //   }
 
   TableHead: styled(TableHead)`
     th {

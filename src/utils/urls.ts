@@ -10,7 +10,6 @@ const urls = {
       `/group/${groupId}?tabId=${tabId}`,
     groupTabIdea: (groupId: string, tabId: string, ideaId: string) =>
       `/group/${groupId}?${stringify({ tabId, ideaId })}`,
-    ideasAssignedToMe: (userId: string) => `/assigned-to-me/${userId}`,
   },
   api: {
     register: "/auth/register",
@@ -18,7 +17,7 @@ const urls = {
     me: "/auth/me",
     sendPasswordResetEmail: "/utils/password-reset-email",
     resetPassword: "/auth/password-reset",
-
+    ideasAssignedToMe: `ideas/assigned-to-me`,
     group: "/group",
     groupId: (groupId: string) => `/group/${groupId}`,
     groupMembers: (groupdId: string) => `/group/${groupdId}/members`,

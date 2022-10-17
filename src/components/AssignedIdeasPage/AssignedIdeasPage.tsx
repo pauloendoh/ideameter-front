@@ -1,25 +1,39 @@
-import dynamic from "next/dynamic"
-import React from "react"
-import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import {
-  Box,
-  Button,
   Container,
-  IconButton,
   Paper,
+  TableBody,
+  TableCell,
   TableContainer,
   TableRow,
-  TableCell,
   Typography,
-  TableBody,
 } from "@mui/material"
-import FlexVCenter from "../_common/flexboxes/FlexVCenter"
-import FlexHCenter from "../_common/flexboxes/FlexHCenter"
-import S from "./AssignedIdeasPage.styles"
-import FlexCol from "../_common/flexboxes/FlexCol"
+import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import Flex from "../_common/flexboxes/Flex"
+import FlexVCenter from "../_common/flexboxes/FlexVCenter"
+import S from "./AssignedIdeasPage.styles"
+import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
+import { useRouter } from "next/router"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+
+type IdeaRow = {
+  idea: {
+    id: string
+    name: string
+  }
+  group: {
+    id: string
+    name: string
+  }
+  tab: {
+    id: string
+    name: string
+  }
+}
 
 const AssignedIdeasPage = () => {
+  const { query } = useRouter()
+  const { data: ideas } = useAssignedToMeQuery(query.userId as string)
+
   return (
     <HomeLayout>
       <Container>
@@ -48,24 +62,18 @@ const AssignedIdeasPage = () => {
                   </TableRow>
                 </S.TableHead>
                 <TableBody>
-                  <S.TableRow id="1" className="idea-table-row" hover>
-                    <TableCell align="center">1</TableCell>
-                    <TableCell>
-                      Criar uma página onde consigo ver todas as ideias
-                      "assigned to me", independente do grupo
-                    </TableCell>
-                    <TableCell>Ideameter</TableCell>
-                    <TableCell>Funcionalidades</TableCell>
-                  </S.TableRow>
-                  <S.TableRow id="2" className="idea-table-row" hover>
-                    <TableCell align="center">2</TableCell>
-                    <TableCell>
-                      Criar uma página onde consigo ver todas as ideias
-                      "assigned to me", independente do grupo
-                    </TableCell>
-                    <TableCell>Ideameter</TableCell>
-                    <TableCell>Funcionalidades</TableCell>
-                  </S.TableRow>
+                  {ideas?.map((ideas: IdeaRow, index: string) => (
+                    <S.TableRow
+                      id={ideas.idea.id}
+                      className="idea-table-row"
+                      hover
+                    >
+                      <TableCell align="center">{index + 1}</TableCell>
+                      <TableCell>{ideas.idea.name}</TableCell>
+                      <TableCell>{ideas.group.name}</TableCell>
+                      <TableCell>{ideas.tab.name}</TableCell>
+                    </S.TableRow>
+                  ))}
                 </TableBody>
               </TableContainer>
             </FlexVCenter>

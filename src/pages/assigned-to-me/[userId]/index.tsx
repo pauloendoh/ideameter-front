@@ -5,21 +5,6 @@ import dynamic from "next/dynamic"
 import Head from "next/head"
 import { Suspense } from "react"
 import Loading from "@/components/layout/LoadingPage/LoadingPage"
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { ideaId } = context.query
-//   let linkPreview = null
-//   if (ideaId) {
-//     const res = await myAxios.get<{ title: string; description: string }>(
-//       urls.api.ideaName(String(ideaId))
-//     )
-//     if (res.data) linkPreview = res.data
-//   }
-//   return {
-//     props: {
-//       linkPreview,
-//     },
-//   }
-// }
 
 const DynamicAssignedToMePage = dynamic(
   () => import("@/components/AssignedIdeasPage"),
@@ -28,7 +13,8 @@ const DynamicAssignedToMePage = dynamic(
   }
 )
 
-const GroupId: NextPage = (props) => {
+const AssignedToMePage: NextPage = (props) => {
+  console.log(props)
   return (
     <>
       <Head>
@@ -42,4 +28,4 @@ const GroupId: NextPage = (props) => {
   )
 }
 
-export default GroupId
+export default AssignedToMePage
