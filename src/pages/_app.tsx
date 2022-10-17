@@ -28,6 +28,7 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const [showChild, setShowChild] = useState(false)
 
   const [queryClient] = useState(new QueryClient())
   const { checkAuthOrLogout, loading } = useCheckAuthOrLogout()
@@ -35,6 +36,19 @@ export default function MyApp(props: MyAppProps) {
   useEffect(() => {
     checkAuthOrLogout()
   }, [])
+
+  // only renders the child when components are really mounted
+  useEffect(() => {
+    setShowChild(true)
+  }, [])
+
+  if (!showChild) {
+    return null
+  }
+
+  if (typeof window === "undefined") {
+    return <></>
+  }
 
   return (
     <EmotionCacheProvider value={emotionCache}>
