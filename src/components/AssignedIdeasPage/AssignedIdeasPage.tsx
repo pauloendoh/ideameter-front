@@ -2,33 +2,16 @@ import {
   Container,
   Paper,
   TableBody,
-  TableCell,
   TableContainer,
-  TableRow,
   Typography,
 } from "@mui/material"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import Flex from "../_common/flexboxes/Flex"
 import FlexVCenter from "../_common/flexboxes/FlexVCenter"
-import S from "./AssignedIdeasPage.styles"
 import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
 import { useRouter } from "next/router"
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
-
-type IdeaRow = {
-  idea: {
-    id: string
-    name: string
-  }
-  group: {
-    id: string
-    name: string
-  }
-  tab: {
-    id: string
-    name: string
-  }
-}
+import { AssignedIdeasRow } from "./AssignedIdeasRow"
+import { AssignedIdeasTableHead } from "./AssignedIdeasTableHead"
 
 const AssignedIdeasPage = () => {
   const { query } = useRouter()
@@ -53,26 +36,28 @@ const AssignedIdeasPage = () => {
                 Ideas assigned to me
               </Typography>
               <TableContainer>
-                <S.TableHead>
-                  <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell width="360px">Idea</TableCell>
-                    <TableCell width="200px">Group</TableCell>
-                    <TableCell width="200px">Tab</TableCell>
-                  </TableRow>
-                </S.TableHead>
+                <AssignedIdeasTableHead
+                  headers={[
+                    {
+                      header: "#",
+                    },
+                    {
+                      header: "idea",
+                      width: "360px",
+                    },
+                    {
+                      header: "Group",
+                      width: "200px",
+                    },
+                    {
+                      header: "Tab",
+                      width: "200px",
+                    },
+                  ]}
+                />
                 <TableBody>
-                  {ideas?.map((ideas: IdeaRow, index: string) => (
-                    <S.TableRow
-                      id={ideas.idea.id}
-                      className="idea-table-row"
-                      hover
-                    >
-                      <TableCell align="center">{index + 1}</TableCell>
-                      <TableCell>{ideas.idea.name}</TableCell>
-                      <TableCell>{ideas.group.name}</TableCell>
-                      <TableCell>{ideas.tab.name}</TableCell>
-                    </S.TableRow>
+                  {ideas?.map((idea) => (
+                    <AssignedIdeasRow key={idea.idea.id} {...idea} />
                   ))}
                 </TableBody>
               </TableContainer>
