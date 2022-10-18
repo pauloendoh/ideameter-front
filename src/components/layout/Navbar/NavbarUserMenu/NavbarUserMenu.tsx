@@ -5,13 +5,17 @@ import useShortcutsDialogStore from "@/hooks/zustand/dialogs/useShortcutsDialogS
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
 import { useState } from "react"
-import { MdEdit, MdExitToApp, MdOutlineKeyboard } from "react-icons/md"
+import {
+  MdAssignment,
+  MdEdit,
+  MdExitToApp,
+  MdOutlineAssignmentInd,
+  MdOutlineKeyboard,
+} from "react-icons/md"
+import { useRouter } from "next/router"
 
-interface Props {
-  test?: string
-}
-
-const NavbarUserMenu = (props: Props) => {
+const NavbarUserMenu = () => {
+  const router = useRouter()
   const authUser = useAuthStore((s) => s.authUser)
 
   const logout = useLogoutAndPushIndex()
@@ -23,9 +27,7 @@ const NavbarUserMenu = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget)
     event.preventDefault()
     event.stopPropagation()
@@ -33,6 +35,12 @@ const NavbarUserMenu = (props: Props) => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const assignedToMeClickHandle = (e: any) => {
+    handleClose()
+
+    router.push("/assigned-to-me")
   }
 
   return (
@@ -62,6 +70,16 @@ const NavbarUserMenu = (props: Props) => {
         </MenuItem>
 
         <Divider />
+
+        <MenuItem onClick={(e) => assignedToMeClickHandle(e)}>
+          <FlexVCenter gap={1}>
+            <MdOutlineAssignmentInd />
+            <Typography>Assigned to me</Typography>
+          </FlexVCenter>
+        </MenuItem>
+
+        <Divider />
+
         <MenuItem
           onClick={(e) => {
             handleClose()
