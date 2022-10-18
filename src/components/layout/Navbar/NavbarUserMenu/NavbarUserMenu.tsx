@@ -47,13 +47,15 @@ const NavbarUserMenu = () => {
 
   type HrefOption = { href?: string }
 
-  const AssignedIdeaItem = forwardRef<any, HrefOption>(({ href }, ref) => (
-    <MUILink ref={ref} href={href} underline="none" color="inherit">
-      <FlexVCenter gap={1}>
-        <MdOutlineAssignmentInd />
-        <Typography>Assigned to me</Typography>
-      </FlexVCenter>
-    </MUILink>
+  const AssignedIdeaItem = forwardRef<any, HrefOption>((props, ref) => (
+    <MenuItem>
+      <MUILink {...props} ref={ref} underline="none" color="inherit">
+        <FlexVCenter gap={1}>
+          <MdOutlineAssignmentInd />
+          <Typography>Assigned to me</Typography>
+        </FlexVCenter>
+      </MUILink>
+    </MenuItem>
   ))
 
   return (
@@ -83,12 +85,23 @@ const NavbarUserMenu = () => {
         </MenuItem>
 
         <Divider />
+        {/* 
+        <MenuItem
+          onClick={() => {
+            handleClose()
 
-        <MenuItem>
-          <Link href="/assigned-to-me" passHref>
-            <AssignedIdeaItem />
-          </Link>
-        </MenuItem>
+            router.push("/assigned-to-me")
+          }}
+        >
+          <FlexVCenter gap={1}>
+            <MdOutlineAssignmentInd />
+            <Typography>Assigned to me</Typography>
+          </FlexVCenter>
+        </MenuItem> */}
+
+        <Link href="/assigned-to-me" passHref>
+          <AssignedIdeaItem />
+        </Link>
 
         <Divider />
 
