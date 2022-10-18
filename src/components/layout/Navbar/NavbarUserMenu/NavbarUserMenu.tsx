@@ -3,15 +3,27 @@ import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogout"
 import useEditProfileDialogStore from "@/hooks/zustand/dialogs/useEditProfileDialogStore"
 import useShortcutsDialogStore from "@/hooks/zustand/dialogs/useShortcutsDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
-import { useState } from "react"
-import { MdEdit, MdExitToApp, MdOutlineKeyboard } from "react-icons/md"
+import {
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  Typography,
+  Link as MUILink,
+} from "@mui/material"
+import { forwardRef, useState } from "react"
+import {
+  MdAssignment,
+  MdEdit,
+  MdExitToApp,
+  MdOutlineAssignmentInd,
+  MdOutlineKeyboard,
+} from "react-icons/md"
+import { useRouter } from "next/router"
+import Link from "next/link"
 
-interface Props {
-  test?: string
-}
-
-const NavbarUserMenu = (props: Props) => {
+const NavbarUserMenu = () => {
+  const router = useRouter()
   const authUser = useAuthStore((s) => s.authUser)
 
   const logout = useLogoutAndPushIndex()
@@ -23,9 +35,7 @@ const NavbarUserMenu = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget)
     event.preventDefault()
     event.stopPropagation()
@@ -34,6 +44,19 @@ const NavbarUserMenu = (props: Props) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  type HrefOption = { href?: string }
+
+  const AssignedIdeaItem = forwardRef<any, HrefOption>((props, ref) => (
+    <MenuItem>
+      <MUILink {...props} ref={ref} underline="none" color="inherit">
+        <FlexVCenter gap={1}>
+          <MdOutlineAssignmentInd />
+          <Typography>Assigned to me</Typography>
+        </FlexVCenter>
+      </MUILink>
+    </MenuItem>
+  ))
 
   return (
     <div>
@@ -62,6 +85,26 @@ const NavbarUserMenu = (props: Props) => {
         </MenuItem>
 
         <Divider />
+        {/* 
+        <MenuItem
+          onClick={() => {
+            handleClose()
+
+            router.push("/assigned-to-me")
+          }}
+        >
+          <FlexVCenter gap={1}>
+            <MdOutlineAssignmentInd />
+            <Typography>Assigned to me</Typography>
+          </FlexVCenter>
+        </MenuItem> */}
+
+        <Link href="/assigned-to-me" passHref>
+          <AssignedIdeaItem />
+        </Link>
+
+        <Divider />
+
         <MenuItem
           onClick={(e) => {
             handleClose()

@@ -17,7 +17,7 @@ const urls = {
     me: "/auth/me",
     sendPasswordResetEmail: "/utils/password-reset-email",
     resetPassword: "/auth/password-reset",
-
+    ideasAssignedToMe: `ideas/assigned-to-me`,
     group: "/group",
     groupId: (groupId: string) => `/group/${groupId}`,
     groupMembers: (groupdId: string) => `/group/${groupdId}/members`,

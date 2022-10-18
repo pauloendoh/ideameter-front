@@ -26,11 +26,7 @@ const ariaLabel = "move-ideas-to-tab-dialog"
 
 const MoveIdeasToTabDialog = () => {
   const { mutate: submitMove } = useMoveIdeasToTabMutation()
-  const {
-    initialValue,
-    dialogIsOpen,
-    closeDialog,
-  } = useMoveIdeasToTabDialogStore()
+  const { initialValue, dialogIsOpen, closeDialog } = useMoveIdeasToTabDialogStore()
 
   const { clearSelectedIds } = useMultiSelectIdeas()
 
@@ -48,7 +44,6 @@ const MoveIdeasToTabDialog = () => {
   }, [dialogIsOpen])
 
   const onSubmit = (dto: MoveIdeasToTabDto) => {
-    console.log(dto)
     submitMove(dto, {
       onSuccess: () => {
         closeDialog()
@@ -104,10 +99,7 @@ const MoveIdeasToTabDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons
-              disabled={saveIsDisabled}
-              onCancel={closeDialog}
-            />
+            <SaveCancelButtons disabled={saveIsDisabled} onCancel={closeDialog} />
           </DialogTitle>
         </form>
       </Box>
