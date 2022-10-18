@@ -13,19 +13,16 @@ const DynamicAssignedToMePage = dynamic(
   }
 )
 
-const AssignedToMePage: NextPage = (props) => {
-  console.log(props)
-  return (
-    <>
-      <Head>
-        <title>Ideameter</title>
-        <meta property="og:title" content="Ideameter" />
-      </Head>
-      <Suspense fallback={<Loading />}>
-        <DynamicAssignedToMePage />
-      </Suspense>
-    </>
-  )
-}
+const AssignedToMePage: NextPage = (props) => (
+  <>
+    <Head>
+      <title>Ideameter</title>
+      <meta property="og:title" content="Ideameter" />
+    </Head>
+    <Suspense fallback={<Loading />}>
+      <DynamicAssignedToMePage />
+    </Suspense>
+  </>
+)
 
 export default AssignedToMePage

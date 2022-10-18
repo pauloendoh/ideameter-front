@@ -1,13 +1,20 @@
-import { TableCell, TableRow } from "@mui/material"
+import { TableCell, TableHead, TableRow } from "@mui/material"
 import S from "./AssignedIdeasTableHead.styles"
 
-const AssignedIdeasTableHead = ({ headers }: { headers: any }) => (
+type Header = {
+  header: string
+  width?: number
+}
+
+type HeadProps = {
+  headers: Header[]
+}
+
+const AssignedIdeasTableHead = ({ headers }: HeadProps) => (
   <S.TableHead>
-    <TableRow>
-      {headers.map(({ header, width }: { header: any; width: any }) => (
-        <TableCell width={width || 0}>{header}</TableCell>
-      ))}
-    </TableRow>
+    {headers.map(({ header, width }) => (
+      <TableCell width={width || 0}>{header}</TableCell>
+    ))}
   </S.TableHead>
 )
 
