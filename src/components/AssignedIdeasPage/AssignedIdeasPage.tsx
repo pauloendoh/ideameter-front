@@ -1,4 +1,11 @@
-import { Container, Paper, TableBody, TableContainer, Typography } from "@mui/material"
+import {
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableContainer,
+  Typography,
+} from "@mui/material"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import Flex from "../_common/flexboxes/Flex"
 import FlexVCenter from "../_common/flexboxes/FlexVCenter"
@@ -27,7 +34,8 @@ const headers = [
 
 const AssignedIdeasPage = () => {
   const { query } = useRouter()
-  const { data: ideas, isSuccess } = useAssignedToMeQuery(query.userId as string)
+
+  const { data: ideas, isSuccess } = useAssignedToMeQuery()
 
   if (!isSuccess) {
     return null
@@ -39,12 +47,14 @@ const AssignedIdeasPage = () => {
         <Flex sx={{ mt: 10 }} alignItems="center" justifyContent="center">
           <Paper sx={{ mt: 2, background: "#2B2B2B" }}>
             <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
-              <Typography marginLeft={"10px"} pt="10px" pb="15px" fontWeight="bold">
+              <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
                 Ideas assigned to me
               </Typography>
               <TableContainer>
-                <AssignedIdeasTableHead headers={headers} />
-                <AssignedIdeasTableBody ideas={ideas} />
+                <Table>
+                  <AssignedIdeasTableHead headers={headers} />
+                  <AssignedIdeasTableBody ideas={ideas} />
+                </Table>
               </TableContainer>
             </FlexVCenter>
           </Paper>

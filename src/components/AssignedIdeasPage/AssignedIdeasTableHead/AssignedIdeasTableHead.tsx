@@ -12,9 +12,13 @@ type HeadProps = {
 
 const AssignedIdeasTableHead = ({ headers }: HeadProps) => (
   <S.TableHead>
-    {headers.map(({ header, width }) => (
-      <TableCell width={width || 0}>{header}</TableCell>
-    ))}
+    <TableRow>
+      {headers.map(({ header, width }, index) => (
+        <TableCell key={header + index} width={width || 0}>
+          {header}
+        </TableCell>
+      ))}
+    </TableRow>
   </S.TableHead>
 )
 

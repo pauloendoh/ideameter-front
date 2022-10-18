@@ -8,6 +8,7 @@ const S = {
       padding-top: 3px;
       padding-bottom: 3px;
       border-bottom: none;
+      padding-left: 30px;
     }
   `,
 }

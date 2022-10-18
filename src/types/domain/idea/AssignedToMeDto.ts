@@ -1,4 +1,4 @@
-export type AssignedToMeTypes = {
+export interface AssignedToMeDto {
   idea: {
     id: string
     name: string
