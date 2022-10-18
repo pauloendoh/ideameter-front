@@ -7,7 +7,7 @@ import { Suspense } from "react"
 import Loading from "@/components/layout/LoadingPage/LoadingPage"
 
 const DynamicAssignedToMePage = dynamic(
-  () => import("@/components/AssignedIdeasPage"),
+  () => import("@/components/AssignedIdeasPage/AssignedIdeasPage"),
   {
     suspense: true,
   }

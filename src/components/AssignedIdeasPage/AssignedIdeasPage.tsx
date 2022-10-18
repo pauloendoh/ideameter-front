@@ -10,8 +10,26 @@ import Flex from "../_common/flexboxes/Flex"
 import FlexVCenter from "../_common/flexboxes/FlexVCenter"
 import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
 import { useRouter } from "next/router"
-import { AssignedIdeasRow } from "./AssignedIdeasRow"
-import { AssignedIdeasTableHead } from "./AssignedIdeasTableHead"
+import AssignedIdeasRow from "./AssignedIdeasRow/AssignedIdeasRow"
+import AssignedIdeasTableHead from "./AssignedIdeasTableHead/AssignedIdeasTableHead"
+
+const headers = [
+  {
+    header: "#",
+  },
+  {
+    header: "idea",
+    width: "360px",
+  },
+  {
+    header: "Group",
+    width: "200px",
+  },
+  {
+    header: "Tab",
+    width: "200px",
+  },
+]
 
 const AssignedIdeasPage = () => {
   const { query } = useRouter()
@@ -36,28 +54,14 @@ const AssignedIdeasPage = () => {
                 Ideas assigned to me
               </Typography>
               <TableContainer>
-                <AssignedIdeasTableHead
-                  headers={[
-                    {
-                      header: "#",
-                    },
-                    {
-                      header: "idea",
-                      width: "360px",
-                    },
-                    {
-                      header: "Group",
-                      width: "200px",
-                    },
-                    {
-                      header: "Tab",
-                      width: "200px",
-                    },
-                  ]}
-                />
+                <AssignedIdeasTableHead headers={headers} />
                 <TableBody>
-                  {ideas?.map((idea) => (
-                    <AssignedIdeasRow key={idea.idea.id} {...idea} />
+                  {ideas?.map((idea, index) => (
+                    <AssignedIdeasRow
+                      key={idea.idea.id}
+                      index={index}
+                      {...idea}
+                    />
                   ))}
                 </TableBody>
               </TableContainer>

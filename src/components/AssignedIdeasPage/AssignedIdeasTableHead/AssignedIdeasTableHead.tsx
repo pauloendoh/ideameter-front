@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from "@mui/material"
-import S from "./AssignedIdeasPage.styles"
+import S from "../AssignedIdeasPage.styles"
 
-export const AssignedIdeasTableHead = ({ headers }: { headers: any }) => (
+const AssignedIdeasTableHead = ({ headers }: { headers: any }) => (
   <S.TableHead>
     <TableRow>
       {headers.map(({ header, width }: { header: any; width: any }) => (
@@ -10,3 +10,5 @@ export const AssignedIdeasTableHead = ({ headers }: { headers: any }) => (
     </TableRow>
   </S.TableHead>
 )
+
+export default AssignedIdeasTableHead
