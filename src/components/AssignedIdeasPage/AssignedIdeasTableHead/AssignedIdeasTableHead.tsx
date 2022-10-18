@@ -1,4 +1,4 @@
-import { TableCell, TableHead, TableRow } from "@mui/material"
+import { TableCell, TableRow } from "@mui/material"
 import S from "./AssignedIdeasTableHead.styles"
 
 type Header = {

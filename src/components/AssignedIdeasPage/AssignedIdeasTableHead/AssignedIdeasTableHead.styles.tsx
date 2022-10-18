@@ -1,4 +1,4 @@
-import { styled, Table, TableCell, TableHead, TableRow } from "@mui/material"
+import { styled, TableHead } from "@mui/material"
 
 const S = {
   TableHead: styled(TableHead)`

@@ -1,8 +1,8 @@
-import { TableBody, TableCell } from "@mui/material"
-import S from "./AssignedIdeasTableBody.styles"
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
-import Link from "next/link"
 import urls from "@/utils/urls"
+import { TableBody, TableCell } from "@mui/material"
+import Link from "next/link"
+import S from "./AssignedIdeasTableBody.styles"
 
 type AssignedToMeBodyProps = { ideas: AssignedToMeDto[] }
 

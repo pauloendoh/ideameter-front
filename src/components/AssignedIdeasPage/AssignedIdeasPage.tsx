@@ -1,16 +1,8 @@
-import {
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableContainer,
-  Typography,
-} from "@mui/material"
+import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
+import { Container, Paper, Table, TableContainer, Typography } from "@mui/material"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import Flex from "../_common/flexboxes/Flex"
 import FlexVCenter from "../_common/flexboxes/FlexVCenter"
-import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
-import { useRouter } from "next/router"
 import AssignedIdeasTableBody from "./AssignedIdeasTableBody/AssignedIdeasTableBody"
 import AssignedIdeasTableHead from "./AssignedIdeasTableHead/AssignedIdeasTableHead"
 
@@ -33,8 +25,6 @@ const headers = [
 ]
 
 const AssignedIdeasPage = () => {
-  const { query } = useRouter()
-
   const { data: ideas, isSuccess } = useAssignedToMeQuery()
 
   if (!isSuccess) {

@@ -3,8 +3,15 @@ import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogout"
 import useEditProfileDialogStore from "@/hooks/zustand/dialogs/useEditProfileDialogStore"
 import useShortcutsDialogStore from "@/hooks/zustand/dialogs/useShortcutsDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
-import { useState } from "react"
+import {
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  Typography,
+  Link as MUILink,
+} from "@mui/material"
+import { forwardRef, useState } from "react"
 import {
   MdAssignment,
   MdEdit,
@@ -13,6 +20,7 @@ import {
   MdOutlineKeyboard,
 } from "react-icons/md"
 import { useRouter } from "next/router"
+import Link from "next/link"
 
 const NavbarUserMenu = () => {
   const router = useRouter()
@@ -37,11 +45,16 @@ const NavbarUserMenu = () => {
     setAnchorEl(null)
   }
 
-  const assignedToMeClickHandle = (e: any) => {
-    handleClose()
+  type HrefOption = { href?: string }
 
-    router.push("/assigned-to-me")
-  }
+  const AssignedIdeaItem = forwardRef<any, HrefOption>(({ href }, ref) => (
+    <MUILink ref={ref} href={href} underline="none" color="inherit">
+      <FlexVCenter gap={1}>
+        <MdOutlineAssignmentInd />
+        <Typography>Assigned to me</Typography>
+      </FlexVCenter>
+    </MUILink>
+  ))
 
   return (
     <div>
@@ -71,11 +84,10 @@ const NavbarUserMenu = () => {
 
         <Divider />
 
-        <MenuItem onClick={(e) => assignedToMeClickHandle(e)}>
-          <FlexVCenter gap={1}>
-            <MdOutlineAssignmentInd />
-            <Typography>Assigned to me</Typography>
-          </FlexVCenter>
+        <MenuItem>
+          <Link href="/assigned-to-me" passHref>
+            <AssignedIdeaItem />
+          </Link>
         </MenuItem>
 
         <Divider />
