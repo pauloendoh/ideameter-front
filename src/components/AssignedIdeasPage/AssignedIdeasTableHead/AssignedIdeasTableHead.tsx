@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from "@mui/material"
-import S from "../AssignedIdeasPage.styles"
+import S from "./AssignedIdeasTableHead.styles"
 
 const AssignedIdeasTableHead = ({ headers }: { headers: any }) => (
   <S.TableHead>

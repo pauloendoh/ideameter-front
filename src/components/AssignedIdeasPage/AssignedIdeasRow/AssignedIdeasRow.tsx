@@ -1,5 +1,5 @@
 import { TableCell } from "@mui/material"
-import S from "../AssignedIdeasPage.styles"
+import S from "./AssignedIdeasRow.styles"
 import { AssignedToMeTypes } from "@/types/domain/idea/AssignedToMeTypes"
 
 type AssignedIdeasRowTypes = AssignedToMeTypes & {
