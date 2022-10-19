@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import S from "./IdeaDialogRatingsAccordion.styles"
 
@@ -32,11 +32,17 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
 
   const authUser = useAuthStore((s) => s.authUser)
 
-  const ideaRatings = useMemo(
-    () => tabRatings.find((r) => r.idea.id === props.ideaId),
-    [tabRatings, props.ideaId]
-  )
+  const ideaRatings = useMemo(() => tabRatings.find((r) => r.idea.id === props.ideaId), [
+    tabRatings,
+    props.ideaId,
+  ])
   if (!ideaRatings) return null
+
+  useEffect(() => {
+    console.log({
+      ideaId: props.ideaId,
+    })
+  }, [props.ideaId])
 
   const theme = useTheme()
 
@@ -76,10 +82,7 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
             <TableRow>
               <UserTableCell userId={authUser!.id} isYou />
               {ideaRatings.otherUserGroupRatings.map((gr) => (
-                <UserTableCell
-                  key={gr.userGroup.userId}
-                  userId={gr.userGroup.userId}
-                />
+                <UserTableCell key={gr.userGroup.userId} userId={gr.userGroup.userId} />
               ))}
 
               {/* Empty cell to avoid bigger width on the last cell */}

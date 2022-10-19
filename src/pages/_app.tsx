@@ -2,10 +2,7 @@ import SnackbarWrapper from "@/components/layout/SnackbarWrapper/SnackbarWrapper
 import useCheckAuthOrLogout from "@/hooks/domain/auth/useCheckAuthOrLogout"
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon"
 
-import {
-  CacheProvider as EmotionCacheProvider,
-  EmotionCache,
-} from "@emotion/react"
+import { CacheProvider as EmotionCacheProvider, EmotionCache } from "@emotion/react"
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import { LocalizationProvider } from "@mui/x-date-pickers"
@@ -28,7 +25,6 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
-  const [showChild, setShowChild] = useState(false)
 
   const [queryClient] = useState(new QueryClient())
   const { checkAuthOrLogout, loading } = useCheckAuthOrLogout()
@@ -36,19 +32,6 @@ export default function MyApp(props: MyAppProps) {
   useEffect(() => {
     checkAuthOrLogout()
   }, [])
-
-  // only renders the child when components are really mounted
-  useEffect(() => {
-    setShowChild(true)
-  }, [])
-
-  if (!showChild) {
-    return null
-  }
-
-  if (typeof window === "undefined") {
-    return <></>
-  }
 
   return (
     <EmotionCacheProvider value={emotionCache}>
