@@ -46,7 +46,7 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
 
   const LocalRatingInput = useCallback(
     () => <RatingInput idea={ideaRatings.idea} groupId={props.groupId} />,
-    [props.ideaId, ideaRatings, props.groupId]
+    [props.ideaId, ideaRatings.idea, props.groupId]
   )
 
   return (
