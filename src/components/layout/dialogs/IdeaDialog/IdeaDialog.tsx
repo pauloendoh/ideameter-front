@@ -184,19 +184,19 @@ const IdeaDialog = () => {
               <IdeaDialogRightCol watch={watch} setValue={setValueDirty} />
             </Grid>
 
-            {initialValue.id && watch("tabId") && routerQuery.groupId && (
+            {watch("id") && watch("tabId") && routerQuery.groupId && (
               <Box mt={4}>
                 <IdeaDialogRatingsAccordion
                   groupId={routerQuery.groupId}
                   tabId={String(watch("tabId"))}
-                  ideaId={initialValue.id} // if you use watch("id"), sometimes it would keep the last opened dialog idea id
+                  ideaId={watch("id")}
                 />
               </Box>
             )}
 
-            {initialValue.id && (
+            {watch("id") && (
               <Box mt={4}>
-                <IdeaDialogSubideasAccordion ideaId={initialValue.id} />
+                <IdeaDialogSubideasAccordion ideaId={watch("id")} />
               </Box>
             )}
           </DialogContent>
