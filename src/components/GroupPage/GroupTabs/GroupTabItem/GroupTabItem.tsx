@@ -32,7 +32,7 @@ const GroupTabItem = (props: Props) => {
         return [...result, String(subidea.parentId)]
       return result
     }, [])
-  }, [])
+  }, [subideas])
 
   // PE 1/3 - ?
   const userMustRateCount = useMemo(() => {
