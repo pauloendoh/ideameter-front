@@ -184,7 +184,7 @@ const IdeaDialog = () => {
               <IdeaDialogRightCol watch={watch} setValue={setValueDirty} />
             </Grid>
 
-            {watch("id") && watch("tabId") && routerQuery.groupId && (
+            {initialValue.id && watch("tabId") && routerQuery.groupId && (
               <Box mt={4}>
                 <IdeaDialogRatingsAccordion
                   groupId={routerQuery.groupId}
@@ -194,9 +194,9 @@ const IdeaDialog = () => {
               </Box>
             )}
 
-            {watch("id") && (
+            {initialValue.id && (
               <Box mt={4}>
-                <IdeaDialogSubideasAccordion ideaId={watch("id")} />
+                <IdeaDialogSubideasAccordion ideaId={initialValue.id} />
               </Box>
             )}
           </DialogContent>
