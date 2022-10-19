@@ -34,6 +34,7 @@ const GroupTabItem = (props: Props) => {
     }, [])
   }, [])
 
+  // PE 1/3 - ?
   const userMustRateCount = useMemo(() => {
     if (!groupRatings || !tabIdeas) return 0
 
@@ -41,9 +42,9 @@ const GroupTabItem = (props: Props) => {
       .filter((rating) => rating.userId === authUser?.id)
       .map((r) => r.ideaId)
 
-    const ideasWithoutSubideas = tabIdeas
-      .filter((i) => !groupIdeaParentIds.includes(i.id))
-      .filter((i) => !i.isDone)
+    const ideasWithoutSubideas = tabIdeas.filter(
+      (i) => !groupIdeaParentIds.includes(i.id)
+    )
 
     const ideasUserMustRate = ideasWithoutSubideas.filter(
       (i) => !userRatedIdeaIds.includes(i.id)
@@ -60,6 +61,10 @@ const GroupTabItem = (props: Props) => {
       (si) => !userRatedIdeaIds.includes(si.id)
     )
 
+    console.log({
+      ideas: ideasUserMustRate.length,
+      subideas: subideasUserMustRate.length,
+    })
     return ideasUserMustRate.length + subideasUserMustRate.length
   }, [authUser, groupRatings, tabIdeas, groupIdeaParentIds, subideas])
 
