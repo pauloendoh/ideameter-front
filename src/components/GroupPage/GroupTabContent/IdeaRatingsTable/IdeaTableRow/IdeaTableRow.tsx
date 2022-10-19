@@ -1,4 +1,3 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
@@ -32,9 +31,7 @@ const IdeaTableRow = (props: Props) => {
   useAssignMeHotkey(isHoveringIdeaId)
   useToggleVoteHotkey(isHoveringIdeaId)
 
-  const isSubidea = useMemo(() => !!props.ideaRating.idea.parentId, [
-    props.ideaRating,
-  ])
+  const isSubidea = useMemo(() => !!props.ideaRating.idea.parentId, [props.ideaRating])
 
   const { idIsSelected } = useMultiSelectIdeas()
   const theme = useTheme()
@@ -98,17 +95,12 @@ const IdeaTableRow = (props: Props) => {
       </TableCell>
       <AvgRatingTableCell ideaRating={props.ideaRating} />
       <TableCell align="center">
-        {isHoveringIdeaId ? (
-          <RatingInput
-            idea={props.ideaRating.idea}
-            groupId={query.groupId}
-            parentId={props.ideaRating.idea.parentId}
-          />
-        ) : (
-          <FlexVCenter sx={{ width: 64, justifyContent: "center" }}>
-            {props.ideaRating.yourRating}
-          </FlexVCenter>
-        )}
+        <RatingInput
+          idea={props.ideaRating.idea}
+          groupId={query.groupId}
+          parentId={props.ideaRating.idea.parentId}
+          hideInput={!isHoveringIdeaId}
+        />
       </TableCell>
       {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
         <TableCell key={JSON.stringify(userGroupRating)} align="center">

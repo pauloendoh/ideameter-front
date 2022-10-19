@@ -1,23 +1,14 @@
+import GroupPageContent from "@/components/GroupPage/GroupPageContent/GroupPageContent"
 import myAxios from "@/utils/axios/myAxios"
 import urls from "@/utils/urls"
 import type { GetServerSideProps, NextPage } from "next"
-import dynamic from "next/dynamic"
 import Head from "next/head"
-
-const GroupPageContent = dynamic(
-  () => import("@/components/GroupPage/GroupPageContent/GroupPageContent"),
-  {
-    ssr: false,
-  }
-)
 
 interface Props {
   linkPreview: { title: string; description: string } | null
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const { ideaId } = context.query
   let linkPreview = null
   if (ideaId) {
@@ -38,15 +29,11 @@ const GroupId: NextPage<Props> = (props) => {
     <>
       <Head>
         <title>Ideameter</title>
-        <meta
-          property="og:title"
-          content={props.linkPreview?.title || "Ideameter"}
-        />
+        <meta property="og:title" content={props.linkPreview?.title || "Ideameter"} />
         <meta
           property="og:description"
           content={
-            props.linkPreview?.description ||
-            "Quickly align ideas within your team"
+            props.linkPreview?.description || "Quickly align ideas within your team"
           }
         />
       </Head>

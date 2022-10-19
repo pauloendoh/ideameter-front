@@ -1,3 +1,4 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useDeleteRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useDeleteRatingMutation"
 import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation"
@@ -12,6 +13,7 @@ interface Props {
   idea: IdeaDto
   groupId: string
   parentId?: string
+  hideInput?: boolean
 }
 
 const RatingInput = (props: Props) => {
@@ -22,14 +24,12 @@ const RatingInput = (props: Props) => {
 
   const { data: subideas } = useSubideasQuery(props.groupId)
 
-  const isLoading =
-    saveRatingMutation.isLoading || deleteRatingMutation.isLoading
+  const isLoading = saveRatingMutation.isLoading || deleteRatingMutation.isLoading
 
   const currentRating = useMemo(() => {
     if (!groupRatings) return -1
     const userRating = groupRatings.find(
-      (rating) =>
-        rating.userId === authUser?.id && rating.ideaId === props.idea.id
+      (rating) => rating.userId === authUser?.id && rating.ideaId === props.idea.id
     )
 
     if (!userRating) return -1
@@ -65,27 +65,34 @@ const RatingInput = (props: Props) => {
 
   return (
     <Badge color="error" variant={hideBadge ? "standard" : "dot"}>
-      <NativeSelect
-        disabled={isLoading}
-        variant="outlined"
-        size="small"
-        // value={currentRating}
-        sx={{ width: 56, textAlignLast: "right" }}
-        defaultValue={currentRating}
-        onChange={(e) => {
-          handleChange(Number(e.target.value))
-        }}
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
-      >
-        {/* invisible character to avoid small height */}
-        <option value={-1}>⠀</option>
-        <option value={0}>-</option>
-        <option value={3}>3</option>
-        <option value={2}>2</option>
-        <option value={1}>1</option>
-      </NativeSelect>
+      {props.hideInput ? (
+        <FlexVCenter sx={{ width: 64, justifyContent: "center" }}>
+          {currentRating === 0 && "-"}
+          {currentRating > 0 && currentRating}
+        </FlexVCenter>
+      ) : (
+        <NativeSelect
+          disabled={isLoading}
+          variant="outlined"
+          size="small"
+          // value={currentRating}
+          sx={{ width: 56, textAlignLast: "right" }}
+          defaultValue={currentRating}
+          onChange={(e) => {
+            handleChange(Number(e.target.value))
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
+          {/* invisible character to avoid small height */}
+          <option value={-1}>⠀</option>
+          <option value={0}>-</option>
+          <option value={3}>3</option>
+          <option value={2}>2</option>
+          <option value={1}>1</option>
+        </NativeSelect>
+      )}
     </Badge>
   )
 }
