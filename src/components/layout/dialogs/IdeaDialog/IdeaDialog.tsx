@@ -45,9 +45,18 @@ const IdeaDialog = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (dialogIsOpen) {
-      reset(initialValue)
+    console.log({ initialValue })
+    reset(initialValue)
+  }, [initialValue])
 
+  useEffect(() => {
+    console.log({
+      id: watch("id"),
+    })
+  }, [watch("id")])
+
+  useEffect(() => {
+    if (dialogIsOpen) {
       // makes sure that the URL will change when you open an idea
       if (initialValue.id && routerQuery.groupId && routerQuery.tabId) {
         router.push(

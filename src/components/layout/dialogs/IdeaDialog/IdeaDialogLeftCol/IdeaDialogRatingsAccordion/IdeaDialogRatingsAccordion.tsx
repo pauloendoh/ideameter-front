@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import S from "./IdeaDialogRatingsAccordion.styles"
 
@@ -32,19 +32,22 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
 
   const authUser = useAuthStore((s) => s.authUser)
 
-  const ideaRatings = useMemo(() => tabRatings.find((r) => r.idea.id === props.ideaId), [
-    tabRatings,
-    props.ideaId,
-  ])
-  if (!ideaRatings) return null
-
-  useEffect(() => {
+  const ideaRatings = useMemo(() => {
+    const ideaRating = tabRatings.find((r) => r.idea.id === props.ideaId)
     console.log({
+      ideaRating,
       ideaId: props.ideaId,
     })
-  }, [props.ideaId])
+    return ideaRating
+  }, [tabRatings, props.ideaId])
+  if (!ideaRatings) return null
 
   const theme = useTheme()
+
+  const LocalRatingInput = useCallback(
+    () => <RatingInput idea={ideaRatings.idea} groupId={props.groupId} />,
+    [props.ideaId, ideaRatings, props.groupId]
+  )
 
   return (
     <S.Accordion
@@ -92,7 +95,7 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
           <TableBody>
             <TableRow>
               <TableCell align="center">
-                <RatingInput idea={ideaRatings.idea} groupId={props.groupId} />
+                <LocalRatingInput />
               </TableCell>
               {ideaRatings.otherUserGroupRatings.map((userGroupRating) => (
                 <TableCell key={JSON.stringify(userGroupRating)} align="center">
