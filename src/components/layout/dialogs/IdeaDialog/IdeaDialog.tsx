@@ -9,14 +9,7 @@ import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import urls from "@/utils/urls"
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  IconButton,
-} from "@mui/material"
+import { Box, Dialog, DialogContent, DialogTitle, Grid, IconButton } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -35,21 +28,11 @@ const IdeaDialog = () => {
   // I had to add this validator because sometimes the dialog was reopening after closing
   const [canOpen, setCanOpen] = useState(true)
 
-  const {
-    mutate: submitSaveIdea,
-    isLoading: isSubmitting,
-  } = useSaveIdeaMutation()
+  const { mutate: submitSaveIdea, isLoading: isSubmitting } = useSaveIdeaMutation()
 
-  const {
-    openDialog,
-    initialValue,
-    dialogIsOpen,
-    closeDialog,
-  } = useIdeaDialogStore()
+  const { openDialog, initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore()
 
-  const { watch, control, setValue, handleSubmit, reset, formState } = useForm<
-    IdeaDto
-  >({
+  const { watch, control, setValue, handleSubmit, reset, formState } = useForm<IdeaDto>({
     defaultValues: initialValue,
   })
 
@@ -129,10 +112,10 @@ const IdeaDialog = () => {
     }
   }
 
-  const saveButtonIsDisabled = useMemo(
-    () => isSubmitting || !formState.isDirty,
-    [isSubmitting, formState.isDirty]
-  )
+  const saveButtonIsDisabled = useMemo(() => isSubmitting || !formState.isDirty, [
+    isSubmitting,
+    formState.isDirty,
+  ])
 
   return (
     <Dialog
@@ -204,9 +187,9 @@ const IdeaDialog = () => {
             {watch("id") && watch("tabId") && routerQuery.groupId && (
               <Box mt={4}>
                 <IdeaDialogRatingsAccordion
-                  ideaId={watch("id")}
                   groupId={routerQuery.groupId}
                   tabId={String(watch("tabId"))}
+                  ideaId={initialValue.id} // if you use watch("id"), sometimes it would keep the last opened dialog idea id
                 />
               </Box>
             )}
@@ -219,10 +202,7 @@ const IdeaDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons
-              disabled={saveButtonIsDisabled}
-              onCancel={confirmClose}
-            />
+            <SaveCancelButtons disabled={saveButtonIsDisabled} onCancel={confirmClose} />
           </DialogTitle>
         </form>
       </Box>
