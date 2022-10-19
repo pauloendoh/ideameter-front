@@ -34,16 +34,14 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
 
   const ideaRatings = useMemo(() => {
     const ideaRating = tabRatings.find((r) => r.idea.id === props.ideaId)
-    console.log({
-      ideaRating,
-      ideaId: props.ideaId,
-    })
+
     return ideaRating
   }, [tabRatings, props.ideaId])
   if (!ideaRatings) return null
 
   const theme = useTheme()
 
+  // It was not re-rendering when the props.ideaId was changing!
   const LocalRatingInput = useCallback(
     () => <RatingInput idea={ideaRatings.idea} groupId={props.groupId} />,
     [props.ideaId, ideaRatings.idea, props.groupId]
