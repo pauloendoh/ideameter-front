@@ -1,26 +1,28 @@
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
 import urls from "@/utils/urls"
-import { TableBody, TableCell } from "@mui/material"
-import Link from "next/link"
+import { Link, TableBody, TableCell } from "@mui/material"
+import NextLink from "next/link"
 import S from "./AssignedIdeasTableBody.styles"
 
-type AssignedToMeBodyProps = { ideas: AssignedToMeDto[] }
+type Props = { ideas: AssignedToMeDto[] }
 
-const AssignedIdeasTableBody = ({ ideas }: AssignedToMeBodyProps) => {
+const AssignedIdeasTableBody = ({ ideas }: Props) => {
   return (
     <TableBody>
       {ideas.map(({ group, tab, idea }, index) => {
-        const ideaUrl = urls.pages.groupTabIdea(group.id, tab.id, idea.id)
+        const ideaUrl = urls.pages.groupTabIdea(group.groupId, tab.id, idea.id)
 
         return (
-          <Link href={ideaUrl} key={idea.id}>
-            <S.TableRow id={idea.id} className="idea-table-row" hover>
-              <TableCell align="center">{index + 1}</TableCell>
-              <TableCell>{idea.name}</TableCell>
-              <TableCell>{group.name}</TableCell>
-              <TableCell>{tab.name}</TableCell>
-            </S.TableRow>
-          </Link>
+          <S.TableRow id={idea.id} className="idea-table-row">
+            <TableCell align="center">{index + 1}</TableCell>
+            <TableCell>
+              <NextLink href={ideaUrl} key={idea.id} passHref>
+                <Link>{idea.name}</Link>
+              </NextLink>
+            </TableCell>
+            <TableCell>{group.name}</TableCell>
+            <TableCell>{tab.name}</TableCell>
+          </S.TableRow>
         )
       })}
     </TableBody>
