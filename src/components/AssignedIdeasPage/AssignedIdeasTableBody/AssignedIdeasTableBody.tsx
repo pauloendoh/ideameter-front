@@ -24,9 +24,7 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
             <TableCell align="center">{index + 1}</TableCell>
             <TableCell>
               <NextLink href={ideaUrl} passHref>
-                <Link color={theme.palette.grey[100]}>
-                  {idea.name} - {idea.isDone && "is done"}
-                </Link>
+                <Link color={theme.palette.grey[100]}>{idea.name}</Link>
               </NextLink>
             </TableCell>
             <TableCell>
