@@ -19,15 +19,17 @@ const HighestSubideaInfo = (props: Props) => {
     if (ideaSubideaRatings.length === 0) return []
 
     const highestRating = ideaSubideaRatings.reduce((highest, rating) => {
+      if (rating.idea.isDone) return highest
       if (Number(rating.avgRating) > highest) return Number(rating.avgRating)
       return highest
     }, 0)
 
-    return ideaSubideaRatings.filter((r) => r.avgRating === highestRating)
+    return ideaSubideaRatings
+      .filter((r) => r.avgRating === highestRating)
+      .filter((r) => !r.idea.isDone)
   }, [ideaSubideaRatings])
 
-  if (ideaSubideaRatings.length === 0 || highestSubideas.length === 0)
-    return null
+  if (ideaSubideaRatings.length === 0 || highestSubideas.length === 0) return null
 
   return (
     <FlexCol gap={1}>
