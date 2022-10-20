@@ -1,5 +1,15 @@
 import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
-import { Container, Paper, Table, TableContainer, Typography } from "@mui/material"
+import {
+  Container,
+  FormControlLabel,
+  Paper,
+  Switch,
+  Table,
+  TableContainer,
+  TableFooter,
+  Typography,
+} from "@mui/material"
+import { useState } from "react"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import Flex from "../_common/flexboxes/Flex"
 import FlexVCenter from "../_common/flexboxes/FlexVCenter"
@@ -31,6 +41,8 @@ const AssignedIdeasPage = () => {
     return null
   }
 
+  const [showCompleted, setShowCompleted] = useState(false)
+
   return (
     <HomeLayout>
       <Container>
@@ -40,11 +52,30 @@ const AssignedIdeasPage = () => {
               <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
                 Ideas assigned to me
               </Typography>
-              <TableContainer>
-                <Table>
+              <TableContainer sx={{ maxHeight: "calc(100vh - 376px)" }}>
+                <Table stickyHeader>
                   <AssignedIdeasTableHead headers={headers} />
-                  <AssignedIdeasTableBody ideas={ideas} />
+                  <AssignedIdeasTableBody ideas={ideas} showCompleted={showCompleted} />
                 </Table>
+                <TableFooter
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    pr: 2,
+                    py: 1,
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        defaultChecked={showCompleted}
+                        checked={showCompleted}
+                        onClick={() => setShowCompleted(!showCompleted)}
+                      />
+                    }
+                    label={`Completed ideas`}
+                  />
+                </TableFooter>
               </TableContainer>
             </FlexVCenter>
           </Paper>
