@@ -36,7 +36,7 @@ const GroupSearchBar = (props: Props) => {
         {...props}
         sx={{
           minWidth: 480,
-          display: dialogIsOpen ? "none" : "unset",
+          display: dialogIsOpen || text.length === 0 ? "none" : "unset",
         }}
         placement="bottom-start"
       />
@@ -59,7 +59,8 @@ const GroupSearchBar = (props: Props) => {
 
   const filteredIdeas = useMemo(() => {
     if (!groupIdeas) return []
-    if (!text) return groupIdeas
+    if (!text) return []
+
     return groupIdeas
       .filter((i) => textContainsWords(i.name, text))
       .sort((a, b) => {
@@ -76,6 +77,7 @@ const GroupSearchBar = (props: Props) => {
         value={selectedIdea}
         onBlur={() => setText("")}
         onChange={(e, idea) => {
+          if (typeof idea === "string") return
           setSelectedIdea(idea)
         }}
         filterOptions={(ideas) => ideas} // disable autocomplete default filter behavior
@@ -91,7 +93,10 @@ const GroupSearchBar = (props: Props) => {
             sx={{ width: 200 }}
           />
         )}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => {
+          if (typeof option === "string") return option
+          return option.name
+        }}
         renderOption={(props, idea) => (
           <FlexVCenter
             key={idea.id}
@@ -101,9 +106,7 @@ const GroupSearchBar = (props: Props) => {
               color: idea.isDone ? theme.palette.grey[600] : undefined,
             }}
           >
-            <Flex
-              sx={{ width: "100%", justifyContent: "space-between", gap: 1 }}
-            >
+            <Flex sx={{ width: "100%", justifyContent: "space-between", gap: 1 }}>
               <FlexVCenter>{idea.name}</FlexVCenter>
 
               {groupId && idea.tabId && (
