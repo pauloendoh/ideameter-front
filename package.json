@@ -61,7 +61,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run test"
+      "pre-push": "git diff HEAD --quiet && npm run test"
     }
   }
 }
