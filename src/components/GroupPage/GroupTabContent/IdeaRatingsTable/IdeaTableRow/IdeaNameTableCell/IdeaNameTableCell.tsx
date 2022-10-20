@@ -19,9 +19,10 @@ interface Props {
 const IdeaNameTableCell = (props: Props) => {
   const theme = useTheme()
   const { groupId } = useRouterQueryString()
-  const hasSubideas = useMemo(() => props.ideaRating.subideas.length > 0, [
-    props.ideaRating.subideas,
-  ])
+  const hasSubideas = useMemo(
+    () => props.ideaRating.subideas.length > 0,
+    [props.ideaRating.subideas]
+  )
 
   const { data: subideasRatings } = useSubideaRatingsQueryUtils(
     props.ideaRating.idea.id,

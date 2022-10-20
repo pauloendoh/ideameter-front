@@ -26,13 +26,6 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
 
   const { authUser } = useAuthStore()
 
-  const getMember = useCallback(
-    (userId: string) => {
-      return groupMembers?.find((m) => m.userId === userId)?.user
-    },
-    [groupMembers, watch("highImpactVotes")]
-  )
-
   const toggleUserVote = () => {
     const vote: HighImpactVoteDto = {
       ideaId: watch("id"),

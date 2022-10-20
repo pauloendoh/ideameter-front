@@ -114,10 +114,10 @@ const IdeaDialog = () => {
     }
   }
 
-  const saveButtonIsDisabled = useMemo(() => isSubmitting || !formState.isDirty, [
-    isSubmitting,
-    formState.isDirty,
-  ])
+  const saveButtonIsDisabled = useMemo(
+    () => isSubmitting || !formState.isDirty,
+    [isSubmitting, formState.isDirty]
+  )
 
   return (
     <Dialog
