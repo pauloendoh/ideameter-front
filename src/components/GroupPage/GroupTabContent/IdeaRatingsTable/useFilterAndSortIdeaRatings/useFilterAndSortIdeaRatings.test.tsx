@@ -3,7 +3,6 @@ import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { buildLabelDto } from "@/types/domain/label/LabelDto"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, test } from "vitest"
-import { useIdeaRequiresYourRating } from "../useIdeaRequiresYourRating"
 import { useFilterAndSortIdeaRatings } from "./useFilterAndSortIdeaRatings"
 
 describe("useFilterAndSortIdeaRatings", () => {
@@ -11,7 +10,6 @@ describe("useFilterAndSortIdeaRatings", () => {
     test("it should return '1'", async () => {
       const Test = () => {
         const labelId = "labelId"
-        const requiresYourRating = useIdeaRequiresYourRating([], [])
 
         const ideaRatings = useFilterAndSortIdeaRatings({
           authUserId: "",
