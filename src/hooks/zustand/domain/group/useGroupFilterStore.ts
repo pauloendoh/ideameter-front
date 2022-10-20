@@ -4,7 +4,7 @@ import nookies from "nookies"
 import { pushOrRemove } from "utils/array/pushOrRemove"
 import create from "zustand"
 
-interface IFilter {
+export interface IFilter {
   labelIds: string[]
   onlyCompletedIdeas: boolean
   users: SimpleUserDto[]
@@ -58,11 +58,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(
-        null,
-        cookieKeys.groupTabIdeasFilter(tabId),
-        JSON.stringify(state)
-      )
+      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
     }
   },
 
@@ -83,11 +79,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     if (tabId) {
       const state = get()
 
-      nookies.set(
-        null,
-        cookieKeys.groupTabIdeasFilter(tabId),
-        JSON.stringify(state)
-      )
+      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
     }
   },
   changeFilterUsers: (userIds, tabId) => {
@@ -100,11 +92,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(
-        null,
-        cookieKeys.groupTabIdeasFilter(tabId),
-        JSON.stringify(state)
-      )
+      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
     }
   },
   toggleOnlyHighImpactVoted: (tabId) => {
@@ -117,11 +105,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(
-        null,
-        cookieKeys.groupTabIdeasFilter(tabId),
-        JSON.stringify(state)
-      )
+      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
     }
   },
   toggleRequiresYourRating: (tabId) => {
@@ -134,11 +118,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(
-        null,
-        cookieKeys.groupTabIdeasFilter(tabId),
-        JSON.stringify(state)
-      )
+      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
     }
   },
 }))

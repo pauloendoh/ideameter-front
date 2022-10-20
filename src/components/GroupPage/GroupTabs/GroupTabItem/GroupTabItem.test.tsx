@@ -50,8 +50,6 @@ describe("GroupTabItem", () => {
       </TestProviders>
     )
 
-    screen.logTestingPlaygroundURL()
-
     expect(screen.getByText("1")).toBeDefined()
   })
 })

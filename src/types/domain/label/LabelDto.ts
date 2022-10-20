@@ -1,21 +1,22 @@
 export default interface LabelDto {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  createdAt: string
+  updatedAt: string
 
-  groupId: string;
+  groupId: string
 
-  name: string;
-  bgColor: string;
+  name: string
+  bgColor: string
 }
 
-export const newLabelDto = (groupId: string): LabelDto => ({
+export const buildLabelDto = (p?: Partial<LabelDto>): LabelDto => ({
   id: "",
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 
-  groupId: groupId,
+  groupId: "",
 
   name: "",
   bgColor: "#61bd4f",
-});
+  ...p,
+})

@@ -3,7 +3,7 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
-import LabelDto, { newLabelDto } from "@/types/domain/label/LabelDto"
+import LabelDto, { buildLabelDto } from "@/types/domain/label/LabelDto"
 import { pushOrRemove } from "@/utils/array/pushOrRemove"
 import {
   Box,
@@ -95,7 +95,7 @@ const SelectLabelsDialog = (props: Props) => {
           <DarkButton
             sx={{ mt: 2 }}
             fullWidth
-            onClick={() => openEditLabelDialog(newLabelDto(props.groupId))}
+            onClick={() => openEditLabelDialog(buildLabelDto({ groupId: props.groupId }))}
           >
             + Create new label
           </DarkButton>

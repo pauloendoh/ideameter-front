@@ -1,20 +1,20 @@
-import LabelDto, { newLabelDto } from "@/types/domain/label/LabelDto";
-import create from "zustand";
+import LabelDto, { buildLabelDto } from "@/types/domain/label/LabelDto"
+import create from "zustand"
 
 interface IEditLabelDialogStore {
-  initialValue: LabelDto;
-  dialogIsOpen: boolean;
-  openDialog: (initialValue: LabelDto) => void;
-  closeDialog: () => void;
+  initialValue: LabelDto
+  dialogIsOpen: boolean
+  openDialog: (initialValue: LabelDto) => void
+  closeDialog: () => void
 }
 
 const useEditLabelDialogStore = create<IEditLabelDialogStore>((set, get) => ({
-  initialValue: newLabelDto(""),
+  initialValue: buildLabelDto(),
   dialogIsOpen: false,
   openDialog: (initialValue) => {
-    set({ dialogIsOpen: true, initialValue });
+    set({ dialogIsOpen: true, initialValue })
   },
   closeDialog: () => set({ dialogIsOpen: false }),
-}));
+}))
 
-export default useEditLabelDialogStore;
+export default useEditLabelDialogStore
