@@ -14,7 +14,7 @@ import useGroupFilterStore, {
 } from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import useSelectedIdeasStore from "@/hooks/zustand/domain/idea/useSelectedIdeasStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
-import { newTabDto } from "@/types/domain/group/tab/TabDto"
+import { buildTabDto } from "@/types/domain/group/tab/TabDto"
 import myAxios from "@/utils/axios/myAxios"
 import { cookieKeys } from "@/utils/cookieKeys"
 import urls from "@/utils/urls"
@@ -103,9 +103,7 @@ const GroupPageContent = (props: Props) => {
     resetGroupFilterStore()
   }, [tabId])
 
-  const openGroupInsightsDialog = useGroupInsightsDialogStore(
-    (s) => s.openDialog
-  )
+  const openGroupInsightsDialog = useGroupInsightsDialogStore((s) => s.openDialog)
 
   const selectedIdeaIds = useSelectedIdeasStore((s) => s.selectedIdeaIds)
 
@@ -122,29 +120,21 @@ const GroupPageContent = (props: Props) => {
             </FlexVCenter>
 
             <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
-              <FlexVCenter
-                sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
-              >
+              <FlexVCenter sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}>
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Tooltip
                     open={sortedGroupTabs.length === 0 ? true : undefined}
                     arrow
                     title="Add tab"
                   >
-                    <IconButton
-                      onClick={() => openDialog(newTabDto({ groupId }))}
-                    >
+                    <IconButton onClick={() => openDialog(buildTabDto({ groupId }))}>
                       <MdAdd />
                     </IconButton>
                   </Tooltip>
                   <GroupTabs groupId={groupId} tabs={sortedGroupTabs} />
                 </div>
 
-                <GroupMoreIcon
-                  group={selectedGroup}
-                  onAfterDelete={() => {}}
-                  canEdit
-                />
+                <GroupMoreIcon group={selectedGroup} onAfterDelete={() => {}} canEdit />
               </FlexVCenter>
 
               {selectedIdeaIds.length > 0 ? (
@@ -153,9 +143,7 @@ const GroupPageContent = (props: Props) => {
                 <SearchRow />
               )}
 
-              {tabId && groupId && (
-                <GroupTabContent tabId={tabId} groupId={groupId} />
-              )}
+              {tabId && groupId && <GroupTabContent tabId={tabId} groupId={groupId} />}
             </Paper>
           </Box>
         )}

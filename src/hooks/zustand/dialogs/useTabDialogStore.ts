@@ -1,20 +1,20 @@
-import TabDto, { newTabDto } from "@/types/domain/group/tab/TabDto";
-import create from "zustand";
+import TabDto, { buildTabDto } from "@/types/domain/group/tab/TabDto"
+import create from "zustand"
 
 interface ITabDialogStore {
-  initialValue: TabDto;
-  dialogIsOpen: boolean;
-  openDialog: (initialValue: TabDto) => void;
-  closeDialog: () => void;
+  initialValue: TabDto
+  dialogIsOpen: boolean
+  openDialog: (initialValue: TabDto) => void
+  closeDialog: () => void
 }
 
 const useTabDialogStore = create<ITabDialogStore>((set, get) => ({
-  initialValue: newTabDto(),
+  initialValue: buildTabDto(),
   dialogIsOpen: false,
   openDialog: (initialValue) => {
-    set({ dialogIsOpen: true, initialValue });
+    set({ dialogIsOpen: true, initialValue })
   },
   closeDialog: () => set({ dialogIsOpen: false }),
-}));
+}))
 
-export default useTabDialogStore;
+export default useTabDialogStore

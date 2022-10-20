@@ -42,6 +42,10 @@ export default function MyApp(props: MyAppProps) {
         <ThemeProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterLuxon}>
             <IoProvider>
+              <Head>
+                <meta name="viewport" content="initial-scale=1, width=device-width" />
+              </Head>
+
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
 

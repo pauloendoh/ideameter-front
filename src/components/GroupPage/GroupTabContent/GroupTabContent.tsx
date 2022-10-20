@@ -5,7 +5,7 @@ import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabId
 import useIdeaRatingsQueryUtils from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material"
 import { useRouter } from "next/router"
 import IdeaRatingsTable from "./IdeaRatingsTable/IdeaRatingsTable"
@@ -36,9 +36,7 @@ const GroupTabContent = (props: Props) => {
       <Box>{ideas && <IdeaRatingsTable ideaRatings={ideaRatings} />}</Box>
 
       <FlexVCenter ml={2} mb={1} justifyContent="space-between">
-        <DarkButton
-          onClick={() => openDialog(newIdeaDto({ tabId: props.tabId }))}
-        >
+        <DarkButton onClick={() => openDialog(buildIdeaDto({ tabId: props.tabId }))}>
           + New idea
         </DarkButton>
 

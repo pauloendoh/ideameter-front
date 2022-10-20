@@ -61,10 +61,6 @@ const GroupTabItem = (props: Props) => {
       (si) => !userRatedIdeaIds.includes(si.id)
     )
 
-    console.log({
-      ideas: ideasUserMustRate.length,
-      subideas: subideasUserMustRate.length,
-    })
     return ideasUserMustRate.length + subideasUserMustRate.length
   }, [authUser, groupRatings, tabIdeas, groupIdeaParentIds, subideas])
 

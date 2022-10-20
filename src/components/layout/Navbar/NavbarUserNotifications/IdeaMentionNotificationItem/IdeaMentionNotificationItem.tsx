@@ -13,14 +13,12 @@ interface Props {
 }
 
 const IdeaMentionNotificationItem = ({ notification, onClick }: Props) => {
-  const groupName =
-    notification.ideaDescriptionMention!.idea.tab?.group?.name || ""
+  const groupName = notification.ideaDescriptionMention!.idea.tab?.group?.name || ""
 
-  const mentionByPictureUrl = notification.ideaDescriptionMention!.mentionBy
-    .profile?.pictureUrl
+  const mentionByPictureUrl = notification.ideaDescriptionMention!.mentionBy.profile
+    ?.pictureUrl
 
-  const mentionByUsername =
-    notification.ideaDescriptionMention!.mentionBy.username || ""
+  const mentionByUsername = notification.ideaDescriptionMention!.mentionBy.username || ""
 
   const groupId = notification.ideaDescriptionMention!.idea.tab!.group!.id!
   const tabId = notification.ideaDescriptionMention!.idea.tabId!
@@ -33,7 +31,6 @@ const IdeaMentionNotificationItem = ({ notification, onClick }: Props) => {
       <a
         style={{ color: "inherit", textDecoration: "none" }}
         onMouseDown={(e) => {
-          console.log({ button: e.button })
           onClick()
         }}
       >

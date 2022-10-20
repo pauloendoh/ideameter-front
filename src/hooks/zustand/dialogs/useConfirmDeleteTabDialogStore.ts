@@ -1,4 +1,4 @@
-import TabDto, { newTabDto } from "@/types/domain/group/tab/TabDto"
+import TabDto, { buildTabDto } from "@/types/domain/group/tab/TabDto"
 import create from "zustand"
 
 interface IConfirmTabDialogStore {
@@ -9,16 +9,14 @@ interface IConfirmTabDialogStore {
   closeDialog: () => void
 }
 
-const useConfirmDeleteTabDialogStore = create<IConfirmTabDialogStore>(
-  (set, get) => ({
-    tabValue: newTabDto(),
-    onConfirm: () => {},
-    dialogIsOpen: false,
-    openDialog: (tabValue, onConfirm) => {
-      set({ dialogIsOpen: true, tabValue, onConfirm })
-    },
-    closeDialog: () => set({ dialogIsOpen: false }),
-  })
-)
+const useConfirmDeleteTabDialogStore = create<IConfirmTabDialogStore>((set, get) => ({
+  tabValue: buildTabDto(),
+  onConfirm: () => {},
+  dialogIsOpen: false,
+  openDialog: (tabValue, onConfirm) => {
+    set({ dialogIsOpen: true, tabValue, onConfirm })
+  },
+  closeDialog: () => set({ dialogIsOpen: false }),
+}))
 
 export default useConfirmDeleteTabDialogStore

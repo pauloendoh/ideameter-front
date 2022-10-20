@@ -1,6 +1,6 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
-import { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 
 import {
   Accordion,
@@ -60,7 +60,7 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
         <DarkButton
           sx={{ width: 150, mt: 2 }}
           onClick={() => {
-            openSubideaDialog(newIdeaDto({ parentId: props.ideaId }))
+            openSubideaDialog(buildIdeaDto({ parentId: props.ideaId }))
           }}
         >
           Create subideas

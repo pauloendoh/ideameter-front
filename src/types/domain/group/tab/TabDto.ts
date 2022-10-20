@@ -11,7 +11,7 @@ export default interface TabDto {
   updatedAt: string
 }
 
-export const newTabDto = (partial?: Partial<TabDto>): TabDto => ({
+export const buildTabDto = (partial?: Partial<TabDto>): TabDto => ({
   id: "",
   creatorId: "",
   groupId: "",

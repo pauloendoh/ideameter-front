@@ -1,4 +1,4 @@
-import IdeaDto, { newIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import IdeaDto, { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import create from "zustand"
 
 interface IIdeaDialogStore {
@@ -9,7 +9,7 @@ interface IIdeaDialogStore {
 }
 
 const useIdeaDialogStore = create<IIdeaDialogStore>((set, get) => ({
-  initialValue: newIdeaDto(),
+  initialValue: buildIdeaDto(),
   confirmDialogValue: { title: "", onConfirm: () => {} },
   dialogIsOpen: false,
   openDialog: (initialValue) => {

@@ -24,7 +24,7 @@ export default interface IdeaDto {
   highImpactVotes: HighImpactVoteDto[]
 }
 
-export const newIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
+export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   id: "",
   createdAt: "",
   updatedAt: "",

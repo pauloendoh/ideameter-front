@@ -15,12 +15,9 @@ const useMoveIdeasToTabMutation = () => {
 
   return useMutation(
     (dto: MoveIdeasToTabDto) =>
-      myAxios
-        .put<IdeaDto[]>(urls.api.moveIdeasToTab, dto)
-        .then((res) => res.data),
+      myAxios.put<IdeaDto[]>(urls.api.moveIdeasToTab, dto).then((res) => res.data),
     {
       onSuccess: (ideas, payload) => {
-        console.log(ideas)
         queryClient.invalidateQueries(queryKeys.groupIdeas(groupId!))
 
         setSuccessMessage("Ideas moved to tab!")

@@ -39,9 +39,6 @@ const SelectLabelsDialog = (props: Props) => {
   const handleClick = (label: LabelDto) => {
     const newLabels = pushOrRemove([...props.selectedLabels], label, "id")
 
-    console.log("changing select labels. ")
-    console.log({ label, newLabels })
-
     props.onChangeSelectedLabels(newLabels)
   }
 
@@ -89,10 +86,7 @@ const SelectLabelsDialog = (props: Props) => {
                   {labelIsSelected(label) && <MdCheck />}
                 </FlexVCenter>
 
-                <IconButton
-                  size="small"
-                  onClick={() => openEditLabelDialog(label)}
-                >
+                <IconButton size="small" onClick={() => openEditLabelDialog(label)}>
                   <MdEdit />
                 </IconButton>
               </FlexVCenter>

@@ -9,10 +9,11 @@
     "build:analyze": "cross-env ANALYZE=true next build",
     "start": "next start -p 3003",
     "lint": "next lint",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
+    "test": "vitest"
   },
   "dependencies": {
-    "@date-io/luxon": "^2.15.0",
+    "@date-io/luxon": "^2.16.0",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
@@ -22,13 +23,15 @@
     "@mantine/rte": "^5.4.1",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
-    "@mui/x-date-pickers": "^5.0.0",
+    "@mui/x-date-pickers": "^5.0.4",
     "@next/bundle-analyzer": "^12.3.1",
+    "@testing-library/react": "^13.4.0",
     "@types/react-linkify": "^1.0.1",
+    "@vitejs/plugin-react": "^2.1.0",
     "axios": "^0.27.2",
     "cross-env": "^7.0.3",
     "immer": "^9.0.12",
-    "luxon": "^3.0.3",
+    "luxon": "^2.5.0",
     "next": "^12.3.0",
     "nookies": "^2.5.2",
     "query-string": "^7.1.1",
@@ -42,6 +45,8 @@
     "socket.io-react-hook": "^1.0.17",
     "timeago.js": "^4.0.2",
     "usehooks-ts": "^2.5.2",
+    "vite-tsconfig-paths": "^3.5.1",
+    "vitest": "^0.24.3",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
@@ -50,6 +55,7 @@
     "@types/react": "^18.0.8",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "jsdom": "^20.0.1",
     "typescript": "latest"
   }
 }

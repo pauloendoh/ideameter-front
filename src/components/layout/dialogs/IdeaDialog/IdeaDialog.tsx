@@ -45,15 +45,8 @@ const IdeaDialog = () => {
   const router = useRouter()
 
   useEffect(() => {
-    console.log({ initialValue })
     reset(initialValue)
   }, [initialValue])
-
-  useEffect(() => {
-    console.log({
-      id: watch("id"),
-    })
-  }, [watch("id")])
 
   useEffect(() => {
     if (dialogIsOpen) {

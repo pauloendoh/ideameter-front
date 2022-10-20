@@ -8,12 +8,11 @@ import { useQueryClient } from "react-query"
 import { useMySocketEvent } from "../../useMySocketEvent"
 
 export const useGroupRelatedSockets = (groupId: string | undefined) => {
-  const { sendMessage: sendEnterGroupMessage, socket } = useMySocketEvent<
-    string
-  >("enter-group")
+  const { sendMessage: sendEnterGroupMessage, socket } = useMySocketEvent<string>(
+    "enter-group"
+  )
 
   useEffect(() => {
-    console.log({ groupId, sendEnterGroupMessage })
     if (groupId && socket.connected) sendEnterGroupMessage(groupId)
   }, [groupId, socket.connected])
 
@@ -29,14 +28,12 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
   }>(wsEventNames.deleteIdea)
   useEffect(() => {
     if (lastMessageSaveIdea && groupId) {
-      queryClient.setQueryData<IdeaDto[]>(
-        queryKeys.groupIdeas(groupId),
-        (curr) =>
-          upsert(
-            curr,
-            lastMessageSaveIdea.idea,
-            (i) => i.id === lastMessageSaveIdea.idea.id
-          )
+      queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) =>
+        upsert(
+          curr,
+          lastMessageSaveIdea.idea,
+          (i) => i.id === lastMessageSaveIdea.idea.id
+        )
       )
     }
   }, [lastMessageSaveIdea])
@@ -50,20 +47,17 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
     }
   }, [lastMessageDeleteIdea])
 
-  const { lastMessage: lastMessageMoveIdeasToTab } = useMySocketEvent<
-    IdeaDto[]
-  >(wsEventNames.moveIdeasToTab)
+  const { lastMessage: lastMessageMoveIdeasToTab } = useMySocketEvent<IdeaDto[]>(
+    wsEventNames.moveIdeasToTab
+  )
   useEffect(() => {
     if (!lastMessageMoveIdeasToTab) return
 
     for (const idea of lastMessageMoveIdeasToTab) {
-      queryClient.setQueryData<IdeaDto[]>(
-        queryKeys.groupIdeas(groupId!),
-        (curr) => {
-          if (!curr) return [idea]
-          return upsert(curr, idea, (i) => i.id === idea.id)
-        }
-      )
+      queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId!), (curr) => {
+        if (!curr) return [idea]
+        return upsert(curr, idea, (i) => i.id === idea.id)
+      })
     }
   }, [lastMessageMoveIdeasToTab])
 }
