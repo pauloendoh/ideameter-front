@@ -1,4 +1,7 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 
@@ -6,10 +9,12 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  FormControlLabel,
+  Switch,
   Typography,
   useTheme,
 } from "@mui/material"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import SubideasTable from "../SubideasTable/SubideasTable"
 
@@ -22,6 +27,21 @@ const ariaLabel = `subideas-accordion`
 const IdeaDialogSubideasAccordion = (props: Props) => {
   const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
   const [expanded, setExpanded] = useState(true)
+
+  const { groupId } = useRouterQueryString()
+
+  const { data: subideaRatings, isLoading } = useSubideaRatingsQueryUtils(
+    props.ideaId,
+    groupId!
+  )
+
+  const [showCompleted, setShowCompleted] = useState(false)
+
+  const visibleSubideaRatings = useMemo(() => {
+    if (showCompleted) return subideaRatings.filter((r) => r.idea.isDone)
+
+    return subideaRatings.filter((r) => !r.idea.isDone)
+  }, [showCompleted, subideaRatings])
 
   const theme = useTheme()
 
@@ -56,15 +76,31 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
         <Typography>Subideas</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ px: 0, pb: 0 }}>
-        <SubideasTable parentId={props.ideaId} />
-        <DarkButton
-          sx={{ width: 150, mt: 2 }}
-          onClick={() => {
-            openSubideaDialog(buildIdeaDto({ parentId: props.ideaId }))
-          }}
-        >
-          Create subideas
-        </DarkButton>
+        <SubideasTable isLoading={isLoading} subideaRatings={visibleSubideaRatings} />
+
+        <FlexVCenter justifyContent={"space-between"}>
+          <DarkButton
+            sx={{ width: 150, mt: 2 }}
+            onClick={() => {
+              openSubideaDialog(buildIdeaDto({ parentId: props.ideaId }))
+            }}
+          >
+            Create subideas
+          </DarkButton>
+
+          {subideaRatings.length > 0 && (
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={showCompleted}
+                  checked={showCompleted}
+                  onClick={() => setShowCompleted(!showCompleted)}
+                />
+              }
+              label={`Completed subideas`}
+            />
+          )}
+        </FlexVCenter>
       </AccordionDetails>
     </Accordion>
   )

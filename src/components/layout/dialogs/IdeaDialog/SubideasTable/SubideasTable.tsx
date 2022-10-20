@@ -1,30 +1,22 @@
-import IdeaRatingsTable from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/IdeaRatingsTable";
-import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils";
-import { LinearProgress } from "@mui/material";
-import { useRouter } from "next/router";
-import React from "react";
+import IdeaRatingsTable from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/IdeaRatingsTable"
+import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { LinearProgress } from "@mui/material"
 
 interface Props {
-  parentId: string;
+  isLoading: boolean
+  subideaRatings: IdeaRating[]
 }
 
 const SubideasTable = (props: Props) => {
-  const query = useRouter().query as { groupId: string };
-
-  const { data: subideaRatings, isLoading } = useSubideaRatingsQueryUtils(
-    props.parentId,
-    query.groupId
-  );
-
   return (
     <div>
-      {isLoading ? (
+      {props.isLoading ? (
         <LinearProgress />
       ) : (
-        <IdeaRatingsTable ideaRatings={subideaRatings} />
+        <IdeaRatingsTable ideaRatings={props.subideaRatings} />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SubideasTable;
+export default SubideasTable
