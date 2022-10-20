@@ -43,6 +43,10 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
     return subideaRatings.filter((r) => !r.idea.isDone)
   }, [showCompleted, subideaRatings])
 
+  const completedSubideas = useMemo(() => subideaRatings.filter((r) => r.idea.isDone), [
+    subideaRatings,
+  ])
+
   const theme = useTheme()
 
   return (
@@ -88,7 +92,7 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
             Create subideas
           </DarkButton>
 
-          {subideaRatings.length > 0 && (
+          {completedSubideas.length > 0 && (
             <FormControlLabel
               control={
                 <Switch
