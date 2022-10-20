@@ -2,6 +2,7 @@ export interface AssignedToMeDto {
   idea: {
     id: string
     name: string
+    isDone: boolean
   }
   group: {
     groupId: string
