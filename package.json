@@ -10,7 +10,8 @@
     "start": "next start -p 3003",
     "lint": "next lint",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
-    "test": "vitest"
+    "test": "vitest",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@date-io/luxon": "^2.16.0",
@@ -58,10 +59,5 @@
     "husky": "^8.0.1",
     "jsdom": "^20.0.1",
     "typescript": "latest"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "git diff HEAD --quiet && npm run test"
-    }
   }
 }
