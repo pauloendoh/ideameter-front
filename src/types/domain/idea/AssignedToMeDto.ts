@@ -4,7 +4,7 @@ export interface AssignedToMeDto {
     name: string
   }
   group: {
-    id: string
+    groupId: string
     name: string
   }
   tab: {
