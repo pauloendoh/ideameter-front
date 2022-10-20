@@ -20,13 +20,7 @@ const useSaveRatingMutation = () => {
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
   return useMutation(
-    ({
-      payload,
-    }: {
-      payload: RatingDto
-      groupId: string
-      parentIdeaId?: string
-    }) =>
+    ({ payload }: { payload: RatingDto; groupId: string; parentIdeaId?: string }) =>
       myAxios
         .request<ResponseData>({
           url: urls.api.ideaRating(payload.ideaId),
@@ -36,21 +30,17 @@ const useSaveRatingMutation = () => {
         .then((res) => res.data),
     {
       onSuccess: ({ savedRating, idea }, { groupId }) => {
-        queryClient.setQueryData<IdeaDto[]>(
-          queryKeys.groupIdeas(groupId),
-          (curr) => {
-            return upsert(curr, idea, (i) => i.id === idea.id)
-          }
-        )
+        queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) => {
+          return upsert(curr, idea, (i) => i.id === idea.id)
+        })
 
         const groupRatings = queryClient.getQueryData<RatingDto[]>(
           queryKeys.ratingsByGroup(groupId)
         )
         const newGroupRatings = pushOrReplace(groupRatings, savedRating, "id")
-        queryClient.setQueryData(
-          queryKeys.ratingsByGroup(groupId),
-          newGroupRatings
-        )
+        queryClient.setQueryData(queryKeys.ratingsByGroup(groupId), newGroupRatings)
+
+        setSuccessMessage("Rating saved!")
 
         scrollToIdea(idea.id)
       },
