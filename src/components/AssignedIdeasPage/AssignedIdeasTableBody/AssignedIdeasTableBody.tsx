@@ -1,6 +1,6 @@
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
 import urls from "@/utils/urls"
-import { Link, TableBody, TableCell } from "@mui/material"
+import { Link, TableBody, TableCell, useTheme } from "@mui/material"
 import NextLink from "next/link"
 import S from "./AssignedIdeasTableBody.styles"
 
@@ -12,16 +12,25 @@ const AssignedIdeasTableBody = ({ ideas }: Props) => {
       {ideas.map(({ group, tab, idea }, index) => {
         const ideaUrl = urls.pages.groupTabIdea(group.groupId, tab.id, idea.id)
 
+        const theme = useTheme()
         return (
-          <S.TableRow id={idea.id} className="idea-table-row">
+          <S.TableRow id={idea.id} key={idea.id} className="idea-table-row">
             <TableCell align="center">{index + 1}</TableCell>
             <TableCell>
-              <NextLink href={ideaUrl} key={idea.id} passHref>
-                <Link>{idea.name}</Link>
+              <NextLink href={ideaUrl} passHref>
+                <Link color={theme.palette.grey[100]}>{idea.name}</Link>
               </NextLink>
             </TableCell>
-            <TableCell>{group.name}</TableCell>
-            <TableCell>{tab.name}</TableCell>
+            <TableCell>
+              <NextLink href={urls.pages.groupId(group.groupId)} passHref>
+                <Link color={theme.palette.grey[100]}> {group.name}</Link>
+              </NextLink>
+            </TableCell>
+            <TableCell>
+              <NextLink href={urls.pages.groupTab(group.groupId, tab.id)} passHref>
+                <Link color={theme.palette.grey[100]}> {tab.name}</Link>
+              </NextLink>
+            </TableCell>
           </S.TableRow>
         )
       })}
