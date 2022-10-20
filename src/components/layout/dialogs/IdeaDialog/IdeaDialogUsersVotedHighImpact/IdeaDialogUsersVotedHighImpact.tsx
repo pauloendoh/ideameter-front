@@ -8,9 +8,10 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { HighImpactVoteDto } from "@/types/domain/high-impact-votes/HighImpactVoteDto"
 import { pushOrRemove } from "@/utils/array/pushOrRemove"
-import { Avatar, Box, Typography, useTheme } from "@mui/material"
+import { Avatar, Box, Tooltip, Typography, useTheme } from "@mui/material"
 import { useCallback, useMemo } from "react"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
+import { FaQuestionCircle } from "react-icons/fa"
 import { MdOfflineBolt, MdOutlineAdd } from "react-icons/md"
 import { RiCloseCircleFill } from "react-icons/ri"
 
@@ -51,9 +52,7 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
 
   // show your vote first
   const sortedVotes = useMemo(() => {
-    return watch("highImpactVotes").sort((a, b) =>
-      a.userId === authUser?.id ? -1 : 1
-    )
+    return watch("highImpactVotes").sort((a, b) => (a.userId === authUser?.id ? -1 : 1))
   }, [watch("highImpactVotes")])
 
   const theme = useTheme()
@@ -61,15 +60,20 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
   return (
     <FlexCol gap={1}>
       <FlexVCenter
-        gap={1}
+        gap={0.5}
         sx={{
           color: youAlreadyVoted ? theme.palette.secondary.main : undefined,
         }}
       >
         <MdOfflineBolt />
-        <Typography>
-          {watch("highImpactVotes").length} voted as high impact
-        </Typography>
+        <Typography>{watch("highImpactVotes").length} voted as high impact</Typography>
+        <Tooltip title={"Members who feel this idea will be highly impactful"}>
+          <div>
+            <FaQuestionCircle
+              style={{ color: theme.palette.grey[100], marginLeft: 16 }}
+            />
+          </div>
+        </Tooltip>
       </FlexVCenter>
 
       <Flex gap={1}>
