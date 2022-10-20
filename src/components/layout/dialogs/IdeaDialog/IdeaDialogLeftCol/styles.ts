@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled } from "@mui/material"
 
 export const styles = {
   MantineRteContainer: styled(Box)(({ theme }) => ({
@@ -36,5 +36,9 @@ export const styles = {
       borderRadius: "0px 0px 4px 4px",
       color: theme.palette.grey[100],
     },
+    ".ql-editor": {
+      maxHeight: "300px",
+      overflowY: "auto",
+    },
   })),
-};
+}
