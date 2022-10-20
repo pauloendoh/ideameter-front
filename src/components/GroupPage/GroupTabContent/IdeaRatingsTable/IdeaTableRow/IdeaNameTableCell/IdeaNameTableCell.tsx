@@ -6,14 +6,7 @@ import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQuery
 import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import {
-  Badge,
-  Box,
-  TableCell,
-  Tooltip,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import { Badge, Box, TableCell, Tooltip, Typography, useTheme } from "@mui/material"
 import { useMemo } from "react"
 import { MdDescription, MdOfflineBolt } from "react-icons/md"
 import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo"
@@ -40,9 +33,7 @@ const IdeaNameTableCell = (props: Props) => {
   const youVotedHighImpact = useMemo(
     () =>
       Boolean(
-        props.ideaRating.idea.highImpactVotes?.find(
-          (v) => v.userId === authUser!.id
-        )
+        props.ideaRating.idea.highImpactVotes?.find((v) => v.userId === authUser!.id)
       ),
     [props.ideaRating.idea.highImpactVotes, authUser]
   )
@@ -76,11 +67,7 @@ const IdeaNameTableCell = (props: Props) => {
           </Flex>
         )}
         <Box>
-          <Badge
-            color="error"
-            overlap="rectangular"
-            badgeContent={notRatedSubideasCount}
-          >
+          <Badge color="error" overlap="rectangular" badgeContent={notRatedSubideasCount}>
             <span
               style={{
                 whiteSpace: "break-spaces",
@@ -92,7 +79,7 @@ const IdeaNameTableCell = (props: Props) => {
               </MyReactLinkify>
 
               {props.ideaRating.idea.description.length > 0 && (
-                <Tooltip title={props.ideaRating.idea.description}>
+                <Tooltip title="This idea contains a description">
                   <span>
                     <MdDescription
                       style={{
@@ -108,9 +95,7 @@ const IdeaNameTableCell = (props: Props) => {
           </Badge>
         </Box>
 
-        {hasSubideas && (
-          <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
-        )}
+        {hasSubideas && <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />}
 
         <FlexVCenter justifyContent="space-between">
           <Flex gap={0.5} flexWrap="wrap">
@@ -132,8 +117,7 @@ const IdeaNameTableCell = (props: Props) => {
               title={
                 <FlexCol gap={0.5}>
                   <Typography>
-                    {props.ideaRating.idea.highImpactVotes.length} voted as high
-                    impact
+                    {props.ideaRating.idea.highImpactVotes.length} voted as high impact
                   </Typography>
                   <FlexVCenter gap={0.5}>
                     {props.ideaRating.idea.highImpactVotes.map((vote) => (
@@ -155,16 +139,12 @@ const IdeaNameTableCell = (props: Props) => {
                 <MdOfflineBolt
                   fontSize={18}
                   style={{
-                    color: youVotedHighImpact
-                      ? theme.palette.secondary.main
-                      : undefined,
+                    color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
                   }}
                 />
                 <Typography
                   style={{
-                    color: youVotedHighImpact
-                      ? theme.palette.secondary.main
-                      : undefined,
+                    color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
                   }}
                 >
                   {props.ideaRating.idea.highImpactVotes.length}
