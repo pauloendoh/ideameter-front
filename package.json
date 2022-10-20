@@ -11,6 +11,7 @@
     "lint": "next lint",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "test": "vitest",
+    "test:once": "vitest run",
     "prepare": "husky install"
   },
   "dependencies": {
