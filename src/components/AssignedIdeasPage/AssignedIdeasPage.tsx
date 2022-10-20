@@ -37,11 +37,11 @@ const headers = [
 const AssignedIdeasPage = () => {
   const { data: ideas, isSuccess } = useAssignedToMeQuery()
 
+  const [showCompleted, setShowCompleted] = useState(false)
+
   if (!isSuccess) {
     return null
   }
-
-  const [showCompleted, setShowCompleted] = useState(false)
 
   return (
     <HomeLayout>
