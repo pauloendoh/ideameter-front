@@ -59,7 +59,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
         userGroup: member,
         rating:
           groupRatings.find(
-            (rating) => rating.userId === member.user.id && rating.ideaId === idea.id
+            (rating) => rating.userId === member.user?.id && rating.ideaId === idea.id
           )?.rating || null,
       })),
     }))

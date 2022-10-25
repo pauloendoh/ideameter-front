@@ -1,18 +1,18 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery";
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import { DialogContent, Typography } from "@mui/material";
-import AddMemberButton from "./AddMemberButton/AddMemberButton";
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import { DialogContent, List, Typography } from "@mui/material"
+import AddMemberButton from "./AddMemberButton/AddMemberButton"
+import GroupDialogMemberItem from "./GroupDialogMemberItem/GroupDialogMemberItem"
 
 interface Props {
-  groupId: string;
+  groupId: string
 }
 
 const GroupMembers = (props: Props) => {
-  const { authUser } = useAuthStore();
-  const { data: members } = useGroupMembersQuery(props.groupId);
+  const { authUser } = useAuthStore()
+  const { data: members } = useGroupMembersQuery(props.groupId)
   return (
     <DialogContent sx={{ pt: 2 }}>
       <FlexVCenter pb={2}>
@@ -22,26 +22,19 @@ const GroupMembers = (props: Props) => {
       <FlexCol mt={2} gap={2}>
         <AddMemberButton groupId={props.groupId} />
 
-        {members &&
-          members.map((member, index) => (
-            <FlexVCenter key={index} sx={{ gap: 1.5 }}>
-              <UserGroupAvatar
-                userId={member.user.id}
+        <List>
+          {members &&
+            members.map((userGroup) => (
+              <GroupDialogMemberItem
+                key={userGroup.userId}
                 groupId={props.groupId}
-                avatarProps={{
-                  sx: { width: 32, height: 32, fontSize: 20 },
-                }}
+                userGroup={userGroup}
               />
-              <Typography>
-                {authUser && authUser.id === member.user.id
-                  ? "You"
-                  : member.user.username}
-              </Typography>
-            </FlexVCenter>
-          ))}
+            ))}
+        </List>
       </FlexCol>
     </DialogContent>
-  );
-};
+  )
+}
 
-export default GroupMembers;
+export default GroupMembers

@@ -1,13 +1,13 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import Txt from "@/components/_common/text/Txt";
-import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery";
-import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString";
-import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore";
-import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
-import { pushOrRemove } from "@/utils/array/pushOrRemove";
-import pushOrReplace from "@/utils/array/pushOrReplace";
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import Txt from "@/components/_common/text/Txt"
+import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore"
+import SimpleUserDto from "@/types/domain/user/SimpleUserDto"
+import { pushOrRemove } from "@/utils/array/pushOrRemove"
+import pushOrReplace from "@/utils/array/pushOrReplace"
 import {
   Box,
   Checkbox,
@@ -17,32 +17,27 @@ import {
   FormControlLabel,
   IconButton,
   Typography,
-} from "@mui/material";
-import produce from "immer";
-import { useEffect, useRef, useState } from "react";
-import { MdClose } from "react-icons/md";
+} from "@mui/material"
+import produce from "immer"
+import { useEffect, useRef, useState } from "react"
+import { MdClose } from "react-icons/md"
 
-const ariaLabel = "idea-assign-dialog";
+const ariaLabel = "idea-assign-dialog"
 
 const IdeaAssignDialog = () => {
-  const routerQuery = useRouterQueryString();
+  const routerQuery = useRouterQueryString()
 
-  const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null)
 
-  const { data: members } = useGroupMembersQuery(routerQuery.groupId!);
+  const { data: members } = useGroupMembersQuery(routerQuery.groupId!)
 
-  const {
-    initialValues,
-    onChange,
-    dialogIsOpen,
-    closeDialog,
-  } = useIdeaAssignmentStore();
+  const { initialValues, onChange, dialogIsOpen, closeDialog } = useIdeaAssignmentStore()
 
-  const [localValues, setLocalValues] = useState<SimpleUserDto[]>([]);
+  const [localValues, setLocalValues] = useState<SimpleUserDto[]>([])
 
   useEffect(() => {
-    if (initialValues) setLocalValues(initialValues);
-  }, [initialValues]);
+    if (initialValues) setLocalValues(initialValues)
+  }, [initialValues])
 
   // useEffect(() => {
   //   if (props.open) {
@@ -65,20 +60,20 @@ const IdeaAssignDialog = () => {
   // };
 
   const idIsChecked = (userId: string) => {
-    return Boolean(localValues.find((v) => v.id === userId));
-  };
+    return Boolean(localValues.find((v) => v.id === userId))
+  }
 
   const handleChange = (user: SimpleUserDto, checked: boolean) => {
     const newValue = produce(localValues, (draft) => {
       if (checked) {
-        return pushOrReplace(draft, user, "id");
+        return pushOrReplace(draft, user, "id")
       }
-      return pushOrRemove(draft, user, "id");
-    });
+      return pushOrRemove(draft, user, "id")
+    })
 
-    setLocalValues(newValue);
-    onChange(newValue);
-  };
+    setLocalValues(newValue)
+    onChange(newValue)
+  }
 
   return (
     <Dialog
@@ -110,23 +105,25 @@ const IdeaAssignDialog = () => {
                 key={member.userId}
                 label={
                   <FlexVCenter gap={1}>
-                    <UserGroupAvatar
-                      userId={member.user.id}
-                      groupId={routerQuery.groupId!}
-                      avatarProps={{
-                        sx: { width: 24, height: 24, fontSize: 14 },
-                      }}
-                    />
+                    {member.user && (
+                      <UserGroupAvatar
+                        userId={member.user.id}
+                        groupId={routerQuery.groupId!}
+                        avatarProps={{
+                          sx: { width: 24, height: 24, fontSize: 14 },
+                        }}
+                      />
+                    )}
 
-                    <Txt>{member.user.username}</Txt>
+                    <Txt>{member.user?.username}</Txt>
                   </FlexVCenter>
                 }
                 control={
                   <Checkbox
-                    checked={idIsChecked(member.user.id)}
-                    onChange={(e) =>
-                      handleChange(member.user, e.currentTarget.checked)
-                    }
+                    checked={member.user && idIsChecked(member.user.id)}
+                    onChange={(e) => {
+                      if (member.user) handleChange(member.user, e.currentTarget.checked)
+                    }}
                   />
                 }
               />
@@ -135,7 +132,7 @@ const IdeaAssignDialog = () => {
         </DialogContent>
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default IdeaAssignDialog;
+export default IdeaAssignDialog

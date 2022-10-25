@@ -6,8 +6,7 @@ const urls = {
   pages: {
     index: "/",
     groupId: (groupId: string) => `/group/${groupId}`,
-    groupTab: (groupId: string, tabId: string) =>
-      `/group/${groupId}?tabId=${tabId}`,
+    groupTab: (groupId: string, tabId: string) => `/group/${groupId}?tabId=${tabId}`,
     groupTabIdea: (groupId: string, tabId: string, ideaId: string) =>
       `/group/${groupId}?${stringify({ tabId, ideaId })}`,
   },
@@ -23,6 +22,8 @@ const urls = {
     groupMembers: (groupdId: string) => `/group/${groupdId}/members`,
     groupMemberId: (groupdId: string, memberId: string) =>
       `/group/${groupdId}/members/${memberId}`,
+    groupAdmin: "/group/admin",
+    groupUser: (groupId: string, userId: string) => `/group/${groupId}/users/${userId}`,
     groupTab: (groupId: string) => `/group/${groupId}/tab`,
     groupRatings: (groupId: string) => `/group/${groupId}/ratings`,
     groupLabels: (groupId: string) => `/group/${groupId}/labels`,

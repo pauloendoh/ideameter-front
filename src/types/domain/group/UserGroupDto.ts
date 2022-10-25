@@ -7,5 +7,5 @@ export default interface UserGroupDto {
   updatedAt: string
   isAdmin: boolean
 
-  user: SimpleUserDto
+  user?: SimpleUserDto
 }
