@@ -11,10 +11,9 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
 
   const otherMembers = useOtherMembersQueryUtils(groupId)
 
-  const {
-    data: subideas,
-    isLoading: loadingSubideas,
-  } = useSubideasQueryUtils(groupId, { ideaId: parentId })
+  const { data: subideas, isLoading: loadingSubideas } = useSubideasQueryUtils(groupId, {
+    ideaId: parentId,
+  })
 
   const isLoading = loadingSubideas || loadingRatings
 
@@ -25,10 +24,7 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
       if (ideaRatings.length === 0) return null
 
       const validRatings = ideaRatings.filter((r) => r.rating !== null)
-      const sum = validRatings.reduce(
-        (partialSum, r) => partialSum + (r.rating || 0),
-        0
-      )
+      const sum = validRatings.reduce((partialSum, r) => partialSum + (r.rating || 0), 0)
 
       if (sum === 0) return null
       return sum / validRatings.length
@@ -43,15 +39,14 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
       idea,
       subideas: [],
       yourRating:
-        ratings.find((r) => r.userId === authUser.id && r.ideaId === idea.id)
-          ?.rating || null,
+        ratings.find((r) => r.userId === authUser.id && r.ideaId === idea.id)?.rating ||
+        null,
       avgRating: getAvgIdeaRating(idea.id),
       otherUserGroupRatings: otherMembers.map((member) => ({
         userGroup: member,
         rating:
           ratings.find(
-            (rating) =>
-              rating.userId === member.user.id && rating.ideaId === idea.id
+            (rating) => rating.userId === member.user?.id && rating.ideaId === idea.id
           )?.rating || null,
       })),
     }))

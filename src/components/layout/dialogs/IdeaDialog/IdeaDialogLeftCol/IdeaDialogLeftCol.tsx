@@ -69,7 +69,7 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
         const list =
           groupMembers
             ?.filter((m) => m.userId !== authUser?.id)
-            .map((m) => ({ id: m.userId, value: m.user.username })) || []
+            .map((m) => ({ id: m.userId, value: m.user?.username || "" })) || []
         const includesSearchTerm = list.filter((item) =>
           item.value.toLowerCase().includes(searchTerm.toLowerCase())
         )

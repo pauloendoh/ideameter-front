@@ -19,13 +19,9 @@ export const useToggleFilterMeHotkey = () => {
     "Shift+2",
     () => {
       if (groupMembers && authUser) {
-        const authUserMember = groupMembers.find(
-          (m) => m.userId === authUser.id
-        )
+        const authUserMember = groupMembers.find((m) => m.userId === authUser.id)
         if (authUserMember) {
-          changeFilterUsers(
-            pushOrRemove(filter.users, authUserMember.user, "id")
-          )
+          changeFilterUsers(pushOrRemove(filter.users, authUserMember.user!, "id"))
         }
       }
     },
