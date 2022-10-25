@@ -1,3 +1,4 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
@@ -7,13 +8,24 @@ import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import urls from "@/utils/urls"
-import { Box, Dialog, DialogContent, DialogTitle, Grid, IconButton } from "@mui/material"
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
+import { format } from "timeago.js"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
@@ -119,6 +131,8 @@ const IdeaDialog = () => {
     formState.isDirty,
   ])
 
+  const authUser = useAuthStore((s) => s.authUser)
+
   return (
     <Dialog
       onKeyDown={(e) => {
@@ -204,7 +218,28 @@ const IdeaDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons disabled={saveButtonIsDisabled} onCancel={confirmClose} />
+            <FlexVCenter justifyContent="space-between">
+              <SaveCancelButtons
+                disabled={saveButtonIsDisabled}
+                onCancel={confirmClose}
+              />
+
+              <FlexVCenter gap={1}>
+                {watch("creatorId") && (
+                  <>
+                    <UserGroupAvatar
+                      groupId={routerQuery.groupId!}
+                      userId={watch("creatorId")}
+                    />
+                    <Tooltip title={new Date(watch("createdAt")).toLocaleDateString()}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Typography>Created {format(watch("createdAt"))}</Typography>
+                      </div>
+                    </Tooltip>
+                  </>
+                )}
+              </FlexVCenter>
+            </FlexVCenter>
           </DialogTitle>
         </form>
       </Box>
