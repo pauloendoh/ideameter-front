@@ -33,7 +33,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   name: "",
   description: "",
   isDone: false,
-  onFireSince: null,
+  onFireSince: new Date().toISOString(),
   irrelevantSince: null,
 
   labels: [],
