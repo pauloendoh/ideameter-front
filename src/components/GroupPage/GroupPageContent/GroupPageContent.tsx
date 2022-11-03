@@ -27,6 +27,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
+import Head from "next/head"
 import nookies from "nookies"
 import { useEffect, useMemo } from "react"
 import { MdAdd } from "react-icons/md"
@@ -42,7 +43,7 @@ interface Props {
 const GroupPageContent = (props: Props) => {
   const { data: groups } = useGroupsQuery()
   const { openDialog } = useTabDialogStore()
-  const { groupId, tabId, ideaId } = useRouterQueryString()
+  const { groupId, tabId } = useRouterQueryString()
 
   useGroupRelatedSockets(groupId)
 
@@ -67,6 +68,10 @@ const GroupPageContent = (props: Props) => {
 
   const { data: groupTabs } = useGroupTabsQuery(groupId!)
 
+  const selectedTab = useMemo(() => {
+    if (!tabId || !groupTabs) return null
+    return groupTabs.find((t) => t.id === tabId)
+  }, [tabId, groupTabs])
   // oldest first
   const sortedGroupTabs = useMemo(
     () => groupTabs?.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1)) || [],
@@ -107,8 +112,18 @@ const GroupPageContent = (props: Props) => {
 
   const selectedIdeaIds = useSelectedIdeasStore((s) => s.selectedIdeaIds)
 
+  const htmlTitle = useMemo(() => {
+    if (selectedGroup && selectedTab)
+      return `${selectedGroup.name} - ${selectedTab.name} - Ideameter`
+    if (selectedGroup) return `${selectedGroup.name} - Ideameter`
+    return "Ideameter"
+  }, [selectedGroup, selectedTab])
+
   return (
     <HomeLayout>
+      <Head>
+        <title>{htmlTitle}</title>
+      </Head>
       <Container>
         {groupId && selectedGroup && (
           <Box sx={{ mt: 1 }}>
