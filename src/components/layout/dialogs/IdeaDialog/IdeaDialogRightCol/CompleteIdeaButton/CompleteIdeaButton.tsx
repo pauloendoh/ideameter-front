@@ -14,6 +14,9 @@ const CompleteIdeaButton = ({ watch, setValue }: Props) => {
   const theme = useTheme()
 
   const toggleIsDone = () => {
+    const newCompletedAt = watch("isDone") ? null : new Date().toISOString()
+    setValue("completedAt", newCompletedAt)
+
     setValue("isDone", !watch("isDone"))
   }
 

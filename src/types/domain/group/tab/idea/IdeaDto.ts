@@ -16,6 +16,7 @@ export default interface IdeaDto {
   name: string
   description: string
   isDone: boolean
+  completedAt: string | null
   onFireSince: string | null
   irrelevantSince: string | null
 
@@ -33,6 +34,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   name: "",
   description: "",
   isDone: false,
+  completedAt: null,
   onFireSince: new Date().toISOString(),
   irrelevantSince: null,
 

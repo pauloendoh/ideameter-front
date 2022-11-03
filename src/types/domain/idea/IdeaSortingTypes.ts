@@ -3,6 +3,7 @@ export type IdeaSortAttributeType =
   | "irrelevantSince"
   | "createdAt"
   | "updatedAt"
+  | "completedAt"
   | "requiresYourRating"
 
 export type SortOrderType = "desc" | "asc"

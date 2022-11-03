@@ -30,6 +30,11 @@ export const ideaSortOptionsDivided: {
       buttonLabel: "by Update Date",
       menuText: "Update Date",
     },
+    {
+      attribute: "completedAt",
+      buttonLabel: "by Completed Date",
+      menuText: "Completed Date",
+    },
   ],
   [
     {

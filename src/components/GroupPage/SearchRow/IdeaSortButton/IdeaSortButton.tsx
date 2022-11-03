@@ -1,12 +1,12 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import useIdeaSortStore from "@/hooks/zustand/domain/group/useIdeaSortStore"
 import {
   findSortOptionByAttribute,
   ideaSortOptionsDivided,
 } from "@/types/domain/idea/ideaSortOptions"
 import { Divider, Menu, MenuItem } from "@mui/material"
-import { useRouter } from "next/router"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { FaSortAmountDown, FaSortAmountUpAlt } from "react-icons/fa"
 interface Props {
   test?: string
@@ -17,7 +17,7 @@ const ariaLabel = `sort-button`
 const IdeaSortButton = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
-  const routerQuery = useRouter().query as { groupId: string }
+  const [filter] = useGroupFilterStore((s) => [s.filter])
 
   const handleOpen = (event: any) => {
     setAnchorEl(event.currentTarget)
@@ -27,14 +27,23 @@ const IdeaSortButton = (props: Props) => {
     setAnchorEl(null)
   }
 
-  const [sortingBy, setSortingBy] = useIdeaSortStore((s) => [
-    s.sortingBy,
-    s.setSortingBy,
-  ])
+  const [sortingBy, setSortingBy] = useIdeaSortStore((s) => [s.sortingBy, s.setSortingBy])
 
   const selectedSortOption = useMemo(() => {
     return findSortOptionByAttribute(sortingBy.attribute)
   }, [sortingBy])
+
+  const previousSortingByRef = useRef(sortingBy)
+
+  useEffect(() => {
+    if (filter.onlyCompletedIdeas) {
+      previousSortingByRef.current = sortingBy
+      setSortingBy({ attribute: "completedAt", order: "desc" })
+      return
+    }
+
+    setSortingBy(previousSortingByRef.current)
+  }, [filter.onlyCompletedIdeas])
 
   return (
     <>

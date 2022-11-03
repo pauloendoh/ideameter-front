@@ -123,6 +123,15 @@ export const useFilterAndSortIdeaRatings = ({
       })
     }
 
+    if (sortingBy.attribute === "completedAt")
+      result = result.sort((a, b) => {
+        if (!a.idea.completedAt && !b.idea.completedAt) return 1
+        if (!b.idea.completedAt) return -1
+        if (!a.idea.completedAt) return 1
+
+        return b.idea.completedAt.localeCompare(a.idea.completedAt)
+      })
+
     if (selectedLabelIds.length > 0)
       result = result.filter((r) => {
         const labelIds = r.idea.labels.map((l) => l.id)
