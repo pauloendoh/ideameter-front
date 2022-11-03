@@ -76,7 +76,7 @@ const RatingInput = (props: Props) => {
           variant="outlined"
           size="small"
           // value={currentRating}
-          sx={{ width: 56, textAlignLast: "right" }}
+          sx={{ width: 40, textAlignLast: "right" }}
           defaultValue={myCurrentRating}
           onChange={(e) => {
             handleChange(Number(e.target.value))
@@ -88,9 +88,9 @@ const RatingInput = (props: Props) => {
           {/* invisible character to avoid small height */}
           <option value={-1}>⠀</option>
           <option value={0}>-</option>
-          <option value={3}>3</option>
-          <option value={2}>2</option>
-          <option value={1}>1</option>
+          <option value={3}>3 - Very interesting</option>
+          <option value={2}>2 - Kinda interesting</option>
+          <option value={1}>1 - Not interesting</option>
         </NativeSelect>
       )}
     </Badge>
