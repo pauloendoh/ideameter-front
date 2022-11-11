@@ -1,10 +1,10 @@
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useSaveTabMutation from "@/hooks/react-query/domain/group/tab/useSaveTabMutation";
-import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore";
-import TabDto from "@/types/domain/group/tab/TabDto";
-import urls from "@/utils/urls";
+import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useSaveTabMutation from "@/hooks/react-query/domain/group/tab/useSaveTabMutation"
+import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
+import TabDto from "@/types/domain/group/tab/TabDto"
+import urls from "@/utils/urls"
 import {
   Box,
   Dialog,
@@ -12,43 +12,43 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { MdClose } from "react-icons/md";
+} from "@mui/material"
+import { useRouter } from "next/router"
+import { useEffect, useRef } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { MdClose } from "react-icons/md"
 
-const ariaLabel = "tab-dialog";
+const ariaLabel = "tab-dialog"
 
 const TabDialog = () => {
-  const router = useRouter();
-  const inputRef = useRef<HTMLDivElement>(null);
+  const router = useRouter()
+  const inputRef = useRef<HTMLDivElement>(null)
 
-  const saveTabMutation = useSaveTabMutation();
-  const { initialValue, dialogIsOpen, closeDialog } = useTabDialogStore();
+  const { mutate, isLoading } = useSaveTabMutation()
+  const { initialValue, dialogIsOpen, closeDialog } = useTabDialogStore()
 
   const { watch, control, handleSubmit, reset } = useForm<TabDto>({
     defaultValues: initialValue,
-  });
+  })
 
   useEffect(() => {
     if (dialogIsOpen) {
-      reset(initialValue);
+      reset(initialValue)
 
       setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+        inputRef.current?.focus()
+      }, 100)
     }
-  }, [dialogIsOpen]);
+  }, [dialogIsOpen])
 
   const onSubmit = (values: TabDto) => {
-    saveTabMutation.mutate(values, {
+    mutate(values, {
       onSuccess: (savedTab) => {
-        closeDialog();
-        router.push(urls.pages.groupTab(savedTab.groupId, savedTab.id));
+        closeDialog()
+        router.push(urls.pages.groupTab(savedTab.groupId, savedTab.id))
       },
-    });
-  };
+    })
+  }
 
   return (
     <Dialog
@@ -62,9 +62,7 @@ const TabDialog = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id={`${ariaLabel}-title`}>
             <FlexVCenter justifyContent="space-between">
-              <Typography variant="h5">
-                {watch("id") ? "Edit Tab" : "New Tab"}
-              </Typography>
+              <Typography variant="h5">{watch("id") ? "Edit Tab" : "New Tab"}</Typography>
 
               <IconButton onClick={closeDialog}>
                 <MdClose />
@@ -93,15 +91,12 @@ const TabDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons
-              // disabled={isSubmitting}
-              onCancel={closeDialog}
-            />
+            <SaveCancelButtons disabled={isLoading} onCancel={closeDialog} />
           </DialogTitle>
         </form>
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default TabDialog;
+export default TabDialog
