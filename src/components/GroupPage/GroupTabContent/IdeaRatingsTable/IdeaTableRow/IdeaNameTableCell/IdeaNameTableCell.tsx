@@ -145,53 +145,55 @@ const IdeaNameTableCell = (props: Props) => {
             ))}
           </Flex>
 
-          <Tooltip
-            arrow
-            title={
-              <FlexCol gap={0.5}>
-                <Typography>
-                  {props.ideaRating.idea.highImpactVotes.length} voted as high impact
-                </Typography>
-                <FlexVCenter gap={0.5}>
-                  {props.ideaRating.idea.highImpactVotes.map((vote) => (
-                    <UserGroupAvatar
-                      userId={vote.userId}
-                      groupId={groupId!}
-                      avatarProps={{
-                        sx: { width: 24, height: 24, fontSize: 12 },
-                      }}
-                      key={vote.userId}
-                    />
-                  ))}
-                </FlexVCenter>
-              </FlexCol>
-            }
-          >
-            {/* had to use div instead of FlexVCenter due to tooltip */}
-
-            <Button
-              size="small"
-              style={{ display: "flex", alignItems: "center", gap: 4, color: "unset" }}
-              onClick={(e) => {
-                e.stopPropagation()
-                toggleHighImpactVote()
-              }}
+          {props.ideaRating.idea.highImpactVotes?.length > 0 && (
+            <Tooltip
+              arrow
+              title={
+                <FlexCol gap={0.5}>
+                  <Typography>
+                    {props.ideaRating.idea.highImpactVotes.length} voted as high impact
+                  </Typography>
+                  <FlexVCenter gap={0.5}>
+                    {props.ideaRating.idea.highImpactVotes.map((vote) => (
+                      <UserGroupAvatar
+                        userId={vote.userId}
+                        groupId={groupId!}
+                        avatarProps={{
+                          sx: { width: 24, height: 24, fontSize: 12 },
+                        }}
+                        key={vote.userId}
+                      />
+                    ))}
+                  </FlexVCenter>
+                </FlexCol>
+              }
             >
-              <MdOfflineBolt
-                fontSize={18}
-                style={{
-                  color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
-                }}
-              />
-              <Typography
-                style={{
-                  color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
+              {/* had to use div instead of FlexVCenter due to tooltip */}
+
+              <Button
+                size="small"
+                style={{ display: "flex", alignItems: "center", gap: 4, color: "unset" }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  toggleHighImpactVote()
                 }}
               >
-                {props.ideaRating.idea.highImpactVotes.length}
-              </Typography>
-            </Button>
-          </Tooltip>
+                <MdOfflineBolt
+                  fontSize={18}
+                  style={{
+                    color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
+                  }}
+                />
+                <Typography
+                  style={{
+                    color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
+                  }}
+                >
+                  {props.ideaRating.idea.highImpactVotes.length}
+                </Typography>
+              </Button>
+            </Tooltip>
+          )}
         </FlexVCenter>
       </FlexCol>
     </TableCell>
