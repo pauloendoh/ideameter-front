@@ -1,6 +1,7 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useNewIdeaHotkey } from "@/hooks/hotkeys/useNewIdeaHotkey/useNewIdeaHotkey"
 import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery"
 import useIdeaRatingsQueryUtils from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
@@ -30,6 +31,8 @@ const GroupTabContent = (props: Props) => {
     s.filter,
     s.toggleOnlyCompletedIdeas,
   ])
+
+  useNewIdeaHotkey(props.tabId)
 
   return (
     <FlexCol gap={2}>
