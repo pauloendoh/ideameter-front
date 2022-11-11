@@ -180,7 +180,8 @@ const IdeaDialog = () => {
               />
 
               <FlexVCenter>
-                <IdeaMenu idea={watch()} afterDelete={closeDialog} />
+                {watch("id") && <IdeaMenu idea={watch()} afterDelete={closeDialog} />}
+
                 <IconButton onClick={confirmClose}>
                   <MdClose />
                 </IconButton>

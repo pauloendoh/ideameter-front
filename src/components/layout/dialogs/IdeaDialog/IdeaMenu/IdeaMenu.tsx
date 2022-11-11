@@ -1,30 +1,34 @@
-import useDeleteIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useDeleteIdeaMutation";
-import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import React from "react";
-import { MdMoreHoriz } from "react-icons/md";
+import useDeleteIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useDeleteIdeaMutation"
+import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+import { IconButton, Menu, MenuItem, useTheme } from "@mui/material"
+import React from "react"
+import { MdMoreHoriz } from "react-icons/md"
 
 interface Props {
-  idea: IdeaDto;
-  afterDelete?: () => void;
+  idea: IdeaDto
+  afterDelete?: () => void
 }
 
-const ariaName = `idea-menu`;
+const ariaName = `idea-menu`
 
 const IdeaMenu = (props: Props) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const theme = useTheme()
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
-  const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog);
-  const { mutate: submitDeleteIdea } = useDeleteIdeaMutation();
+  const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
+  const { mutate: submitDeleteIdea } = useDeleteIdeaMutation()
+
+  const setSuccessMessage = useSnackbarStore((s) => s.setSuccessMessage)
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleDelete = () => {
     openConfirmDialog({
@@ -34,14 +38,21 @@ const IdeaMenu = (props: Props) => {
           { idea: props.idea },
           {
             onSuccess: () => {
-              handleClose();
-              if (props.afterDelete) props.afterDelete();
+              handleClose()
+              if (props.afterDelete) props.afterDelete()
             },
           }
-        );
+        )
       },
-    });
-  };
+    })
+  }
+
+  const handleCopyId = () => {
+    if (navigator) {
+      navigator.clipboard.writeText(props.idea.id)
+      setSuccessMessage(`Copied: ${props.idea.id}`)
+    }
+  }
 
   return (
     <div>
@@ -68,10 +79,14 @@ const IdeaMenu = (props: Props) => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem onClick={handleCopyId}>Copy idea ID</MenuItem>
+
+        <MenuItem onClick={handleDelete} style={{ color: theme.palette.error.main }}>
+          Delete
+        </MenuItem>
       </Menu>
     </div>
-  );
-};
+  )
+}
 
-export default IdeaMenu;
+export default IdeaMenu
