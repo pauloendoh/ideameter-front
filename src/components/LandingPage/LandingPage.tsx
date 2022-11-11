@@ -11,13 +11,17 @@ const LandingPage = () => {
   const [currentForm, setCurrentForm] = useState<CurrentFormType>("login")
 
   return (
-    <Container sx={{ mt: 10, maxWidth: 400 }}>
-      <Paper sx={{ p: 2 }}>
+    <Container maxWidth={"xs"} sx={{ mt: 10 }}>
+      <Paper sx={{ p: 2, pb: 3, maxWidth: 360 }}>
         <FlexHCenter>
-          <Typography variant="h6">
-            {currentForm === "passwordReset"
-              ? "Reset your password"
-              : "Ideameter"}
+          <Typography variant="h5" textAlign={"center"}>
+            {currentForm === "passwordReset" ? (
+              "Reset your password"
+            ) : (
+              <>
+                Ideameter <br /> <Typography variant="body2">Align your ideas</Typography>
+              </>
+            )}
           </Typography>
 
           <Box sx={{ mt: 3 }} />
@@ -32,9 +36,7 @@ const LandingPage = () => {
           )}
 
           {currentForm === "passwordReset" && (
-            <PasswordResetForm
-              onClickReturnSignIn={() => setCurrentForm("login")}
-            />
+            <PasswordResetForm onClickReturnSignIn={() => setCurrentForm("login")} />
           )}
         </FlexHCenter>
       </Paper>
