@@ -1,4 +1,5 @@
 import { Box, Button } from "@mui/material"
+import { useHotkeys } from "react-hotkeys-hook"
 import Flex from "../../flexboxes/Flex"
 
 interface Props {
@@ -7,9 +8,22 @@ interface Props {
   onSave?: () => void
   onCancel?: () => void
   saveText?: string
+  onEnabledAndCtrlEnter?: () => void
 }
 
 const SaveCancelButtons = (props: Props) => {
+  useHotkeys(
+    "Ctrl+Enter",
+    () => {
+      if (!props.disabled && props.onEnabledAndCtrlEnter) {
+        props.onEnabledAndCtrlEnter()
+      }
+    },
+    {
+      enableOnTags: ["INPUT", "SELECT", "TEXTAREA"],
+    }
+  )
+
   return (
     <Flex>
       <Button

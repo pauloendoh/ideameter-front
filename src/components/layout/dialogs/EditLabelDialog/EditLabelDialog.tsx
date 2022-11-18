@@ -134,7 +134,11 @@ const EditLabelDialog = () => {
 
           <DialogTitle>
             <FlexVCenter justifyContent={"space-between"}>
-              <SaveCancelButtons disabled={isLoading} onCancel={closeDialog} />
+              <SaveCancelButtons
+                onEnabledAndCtrlEnter={() => onSubmit(watch())}
+                disabled={isLoading}
+                onCancel={closeDialog}
+              />
               {watch("id") && (
                 <Button
                   startIcon={<MdDelete />}

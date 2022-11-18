@@ -1,5 +1,6 @@
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
-import { TableCell } from "@mui/material"
+import { TableCell, Tooltip } from "@mui/material"
+import { format } from "timeago.js"
 
 interface Props {
   ideaRating: IdeaRating
@@ -13,7 +14,15 @@ const AvgRatingTableCell = (props: Props) => {
         background: Number(props.ideaRating.avgRating) >= 2.5 ? "#232323" : undefined,
       }}
     >
-      {props.ideaRating.avgRating}
+      <Tooltip
+        title={
+          props.ideaRating.idea.completedAt
+            ? format(props.ideaRating.idea.completedAt)
+            : ""
+        }
+      >
+        <div>{props.ideaRating.avgRating}</div>
+      </Tooltip>
     </TableCell>
   )
 }
