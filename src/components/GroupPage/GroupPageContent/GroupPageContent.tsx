@@ -15,7 +15,7 @@ import useGroupFilterStore, {
 import useSelectedIdeasStore from "@/hooks/zustand/domain/idea/useSelectedIdeasStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { buildTabDto } from "@/types/domain/group/tab/TabDto"
-import myAxios from "@/utils/axios/myAxios"
+import { useAxios } from "@/utils/axios/useAxios"
 import { cookieKeys } from "@/utils/cookieKeys"
 import urls from "@/utils/urls"
 import {
@@ -78,8 +78,10 @@ const GroupPageContent = (props: Props) => {
     [groupTabs]
   )
 
+  const axios = useAxios()
+
   const updateLastOpenedGroupId = (groupId: string) => {
-    myAxios.put(urls.api.lastOpenedGroupId, { groupId })
+    axios.put(urls.api.lastOpenedGroupId, { groupId })
   }
 
   useEffect(() => {

@@ -1,10 +1,9 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
-import myAxios from "@/utils/axios/myAxios"
+import { useAxios } from "@/utils/axios/useAxios"
 import urls from "@/utils/urls"
 import { Button, Link, Typography } from "@mui/material"
-import { AxiosError } from "axios"
 import { Controller, useForm } from "react-hook-form"
 import RegisterDto from "../../../types/domain/auth/RegisterDto"
 import FlexCol from "../../_common/flexboxes/FlexCol"
@@ -18,7 +17,9 @@ const RegisterForm = (props: Props) => {
   const { setErrorMessage, setSuccessMessage } = useSnackbarStore()
   const { setAuthUser } = useAuthStore()
 
-  const { handleSubmit, formState, control } = useForm<RegisterDto>({
+  const axios = useAxios()
+
+  const { handleSubmit, control } = useForm<RegisterDto>({
     defaultValues: {
       email: "",
       username: "",
@@ -34,17 +35,10 @@ const RegisterForm = (props: Props) => {
 
     // setResponseErrors([]);
 
-    myAxios
-      .post<AuthUserGetDto>(urls.api.register, values)
-      .then((res) => {
-        setAuthUser(res.data)
-        setSuccessMessage("Successfully registered!")
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err?.response?.data?.message || "Error")
-        // setResponseErrors(err.response.data.errors);
-        // setSubmitting(false);
-      })
+    axios.post<AuthUserGetDto>(urls.api.register, values).then((res) => {
+      setAuthUser(res.data)
+      setSuccessMessage("Successfully registered!")
+    })
   }
 
   return (

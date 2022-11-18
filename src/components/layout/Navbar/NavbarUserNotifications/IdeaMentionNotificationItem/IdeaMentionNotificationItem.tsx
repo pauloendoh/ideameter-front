@@ -13,16 +13,16 @@ interface Props {
 }
 
 const IdeaMentionNotificationItem = ({ notification, onClick }: Props) => {
-  const groupName = notification.ideaDescriptionMention!.idea.tab?.group?.name || ""
+  const groupName = notification.ideaDescriptionMention?.idea?.tab?.group?.name || ""
 
-  const mentionByPictureUrl = notification.ideaDescriptionMention!.mentionBy.profile
-    ?.pictureUrl
+  const mentionByPictureUrl =
+    notification.ideaDescriptionMention?.mentionBy.profile?.pictureUrl || ""
 
-  const mentionByUsername = notification.ideaDescriptionMention!.mentionBy.username || ""
+  const mentionByUsername = notification.ideaDescriptionMention?.mentionBy.username || ""
 
-  const groupId = notification.ideaDescriptionMention!.idea.tab!.group!.id!
-  const tabId = notification.ideaDescriptionMention!.idea.tabId!
-  const ideaId = notification.ideaDescriptionMention!.idea.id
+  const groupId = notification.ideaDescriptionMention?.idea?.tab?.group?.id || ""
+  const tabId = notification.ideaDescriptionMention?.idea?.tabId || ""
+  const ideaId = notification.ideaDescriptionMention?.idea?.id || ""
 
   const theme = useTheme()
 
@@ -58,7 +58,7 @@ const IdeaMentionNotificationItem = ({ notification, onClick }: Props) => {
                 <b>{mentionByUsername}</b> mentioned you in an idea:
               </Typography>
               <Typography noWrap sx={{ fontStyle: "italic" }}>
-                {notification.ideaDescriptionMention?.idea.name}
+                {notification.ideaDescriptionMention?.idea?.name}
               </Typography>
               <Typography variant="body2" sx={{ mt: 0.5 }}>
                 {formatTimeago(notification.createdAt)}

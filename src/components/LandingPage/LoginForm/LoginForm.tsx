@@ -3,10 +3,9 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
 import LoginDto from "@/types/domain/auth/LoginDto"
-import myAxios from "@/utils/axios/myAxios"
+import { useAxios } from "@/utils/axios/useAxios"
 import urls from "@/utils/urls"
 import { Button, Link, Typography } from "@mui/material"
-import { AxiosError } from "axios"
 import { Controller, useForm } from "react-hook-form"
 import FlexCol from "../../_common/flexboxes/FlexCol"
 import MyTextField from "../../_common/inputs/MyTextField"
@@ -20,7 +19,8 @@ const LoginForm = (props: Props) => {
   const { setErrorMessage, setSuccessMessage } = useSnackbarStore()
   const { setAuthUser } = useAuthStore()
 
-  const { handleSubmit, formState, control } = useForm<LoginDto>({
+  const axios = useAxios()
+  const { handleSubmit, control } = useForm<LoginDto>({
     defaultValues: {
       identificator: "",
       password: "",
@@ -28,15 +28,10 @@ const LoginForm = (props: Props) => {
   })
 
   const onSubmit = (values: LoginDto) => {
-    myAxios
-      .post<AuthUserGetDto>(urls.api.login, values)
-      .then((res) => {
-        setAuthUser(res.data)
-        setSuccessMessage("Login successful!")
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err?.response?.data?.message || "Error during login")
-      })
+    axios.post<AuthUserGetDto>(urls.api.login, values).then((res) => {
+      setAuthUser(res.data)
+      setSuccessMessage("Login successful!")
+    })
   }
 
   return (
@@ -86,12 +81,7 @@ const LoginForm = (props: Props) => {
               Forgot your password?
             </Link>
           </FlexVCenter>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ mt: 2 }}
-          >
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Sign In
           </Button>
         </FlexCol>

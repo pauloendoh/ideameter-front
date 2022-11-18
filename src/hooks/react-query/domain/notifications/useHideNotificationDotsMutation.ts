@@ -1,17 +1,17 @@
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { NotificationDto } from "@/types/domain/notification/NotificationDto"
-import myAxios from "@/utils/axios/myAxios"
+import { useAxios } from "@/utils/axios/useAxios"
 import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
 import { useMutation, useQueryClient } from "react-query"
 
 const useHideNotificationDotsMutation = () => {
   const queryClient = useQueryClient()
-  const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
+
+  const axios = useAxios()
 
   return useMutation(
     () =>
-      myAxios
+      axios
         .delete<NotificationDto[]>(urls.api.notificationsHideDots)
         .then((res) => res.data),
     {
@@ -20,9 +20,6 @@ const useHideNotificationDotsMutation = () => {
           queryKeys.notifications,
           notifications
         )
-      },
-      onError: (err) => {
-        setErrorMessage(JSON.stringify(err))
       },
     }
   )

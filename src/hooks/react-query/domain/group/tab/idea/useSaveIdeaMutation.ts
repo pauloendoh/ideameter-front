@@ -4,10 +4,9 @@ import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import upsert from "@/utils/array/upsert"
-import myAxios from "@/utils/axios/myAxios"
+import { useAxios } from "@/utils/axios/useAxios"
 import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
-import { AxiosError } from "axios"
 import { useMutation, useQueryClient } from "react-query"
 
 const useSaveIdeaMutation = () => {
@@ -19,9 +18,11 @@ const useSaveIdeaMutation = () => {
   const queryClient = useQueryClient()
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
+  const axios = useAxios()
+
   return useMutation(
     (payload: IdeaDto) =>
-      myAxios
+      axios
         .request<IdeaDto>({
           url: urls.api.tabIdea(payload.tabId as string),
           data: payload,
@@ -31,12 +32,9 @@ const useSaveIdeaMutation = () => {
     {
       onSuccess: (savedIdea, payload) => {
         if (groupId) {
-          queryClient.setQueryData<IdeaDto[]>(
-            queryKeys.groupIdeas(groupId),
-            (curr) => {
-              return upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
-            }
-          )
+          queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) => {
+            return upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
+          })
         }
 
         if (groupId && payload.parentId)
@@ -51,9 +49,6 @@ const useSaveIdeaMutation = () => {
 
         sendMessage({ idea: savedIdea, groupId })
         scrollToIdea(savedIdea.id)
-      },
-      onError: (err: AxiosError<any>) => {
-        setErrorMessage(err?.response?.data?.message || "Error saving idea")
       },
     }
   )
