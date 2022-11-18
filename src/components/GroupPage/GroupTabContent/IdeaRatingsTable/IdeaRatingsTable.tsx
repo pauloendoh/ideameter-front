@@ -14,9 +14,10 @@ import UserTableCell from "./UserTableCell/UserTableCell"
 
 interface Props {
   ideaRatings: IdeaRating[]
+  isSubideasTable?: boolean
 }
 
-const IdeaRatingsTable = (props: Props) => {
+const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
 
   const { groupId } = useRouterQueryString()
@@ -35,6 +36,7 @@ const IdeaRatingsTable = (props: Props) => {
     ideaRequiresYourRating,
     authUserId: authUser!.id,
     filter,
+    isSubideasTable,
   })
 
   const { onCtrlClick, onShiftClick } = useMultiSelectIdeas()

@@ -13,7 +13,7 @@ const SubideasTable = (props: Props) => {
       {props.isLoading ? (
         <LinearProgress />
       ) : (
-        <IdeaRatingsTable ideaRatings={props.subideaRatings} />
+        <IdeaRatingsTable ideaRatings={props.subideaRatings} isSubideasTable />
       )}
     </div>
   )

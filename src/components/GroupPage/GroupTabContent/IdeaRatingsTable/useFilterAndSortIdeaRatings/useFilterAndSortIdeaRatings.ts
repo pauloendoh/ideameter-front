@@ -3,6 +3,7 @@ import { IFilter } from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
 import { ISortOption } from "@/types/domain/idea/IdeaSortingTypes"
 import { useMemo } from "react"
+import { sortByAvgRatingDesc } from "./sortByAvgRatingDesc/sortByAvgRatingDesc"
 
 type Params = {
   ratings: RatingDto[] | undefined
@@ -11,6 +12,7 @@ type Params = {
   ideaRequiresYourRating: (ideaId: string) => boolean
   authUserId: string
   filter: IFilter
+  isSubideasTable?: boolean
 }
 
 export const useFilterAndSortIdeaRatings = ({
@@ -20,6 +22,7 @@ export const useFilterAndSortIdeaRatings = ({
   ideaRequiresYourRating,
   authUserId,
   filter,
+  isSubideasTable = false,
 }: Params) => {
   const filteredAndSortedIdeaRatings = useMemo(() => {
     const {
@@ -46,6 +49,10 @@ export const useFilterAndSortIdeaRatings = ({
 
       return true
     })
+
+    if (isSubideasTable) {
+      return sortByAvgRatingDesc(result)
+    }
 
     if (onlyHighImpactVoted)
       result = result.filter(
@@ -87,31 +94,7 @@ export const useFilterAndSortIdeaRatings = ({
       result = result.sort((a, b) => b.idea.updatedAt.localeCompare(a.idea.updatedAt))
 
     if (sortingBy.attribute === "avgRating") {
-      result = result.sort((a, b) => {
-        const numRatingA = Number(a.avgRating)
-        const numRatingB = Number(b.avgRating)
-        // if both ideas have same avg rating, it will sort by ratings count
-        if (numRatingA === numRatingB) {
-          const youRatedIdeaA = a.yourRating ? 1 : 0
-          const ratingsCountA =
-            youRatedIdeaA + a.otherUserGroupRatings.filter((r) => r.rating).length
-
-          const youRatedIdeaB = b.yourRating ? 1 : 0
-          const ratingsCountB =
-            youRatedIdeaB + b.otherUserGroupRatings.filter((r) => r.rating).length
-
-          // if both ideas have same avg rating and same ratings count, it will sort by high impact votes count
-          if (ratingsCountA === ratingsCountB) {
-            return a.idea.highImpactVotes?.length > b.idea.highImpactVotes?.length
-              ? -1
-              : 1
-          }
-
-          return ratingsCountA > ratingsCountB ? -1 : 1
-        }
-
-        return numRatingA > numRatingB ? -1 : 1
-      })
+      result = sortByAvgRatingDesc(result)
     }
 
     if (sortingBy.attribute === "requiresYourRating") {

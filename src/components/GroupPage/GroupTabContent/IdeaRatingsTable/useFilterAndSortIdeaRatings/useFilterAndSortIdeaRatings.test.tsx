@@ -1,11 +1,14 @@
 import { buildIdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { buildLabelDto } from "@/types/domain/label/LabelDto"
-import { render, screen } from "@testing-library/react"
-import { describe, expect, test } from "vitest"
+import { cleanup, render, screen } from "@testing-library/react"
+import { afterEach, describe, expect, test } from "vitest"
 import { useFilterAndSortIdeaRatings } from "./useFilterAndSortIdeaRatings"
 
 describe("useFilterAndSortIdeaRatings", () => {
+  afterEach(() => {
+    cleanup()
+  })
   describe("when you have 2 ideas, and 1 of them have a label, and you filter by that label", async () => {
     test("it should return '1'", async () => {
       const Test = () => {
@@ -38,8 +41,45 @@ describe("useFilterAndSortIdeaRatings", () => {
 
       render(<Test />)
 
-      screen.logTestingPlaygroundURL()
       expect(screen.getByText("1")).toBeDefined()
+    })
+  })
+
+  describe("when it is a subideas table, AND you have subideas with avgRating 1,3 and 2, AND you're ordering by createdAt", async () => {
+    test("the avgRating 2 should come first", async () => {
+      const Test2 = () => {
+        const ideaRatings = useFilterAndSortIdeaRatings({
+          isSubideasTable: true,
+          authUserId: "",
+          filter: {
+            labelIds: [],
+            onlyCompletedIdeas: false,
+            onlyHighImpactVoted: false,
+            requiresYourRating: false,
+            users: [],
+          },
+          ideaRatings: [
+            buildIdeaRating({
+              idea: buildIdeaDto(),
+              avgRating: 1,
+            }),
+            buildIdeaRating({ idea: buildIdeaDto(), avgRating: 3 }),
+            buildIdeaRating({ idea: buildIdeaDto(), avgRating: 2 }),
+          ],
+          ideaRequiresYourRating: () => false,
+          ratings: [],
+          sortingBy: {
+            attribute: "createdAt",
+            order: "desc",
+          },
+        })
+        return <>{ideaRatings[0].avgRating}</>
+      }
+
+      render(<Test2 />)
+
+      screen.logTestingPlaygroundURL()
+      expect(screen.getByText("3")).toBeDefined()
     })
   })
 })
