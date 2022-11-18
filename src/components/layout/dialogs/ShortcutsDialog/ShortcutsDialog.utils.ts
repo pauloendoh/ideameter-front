@@ -10,6 +10,11 @@ interface Shortcut {
 
 export const shortcutSections: Section[] = [
   {
+    title: "General",
+    shortcuts: [{ name: "Open new idea", shortcut: "Q" }],
+  },
+
+  {
     title: "Mouse over idea",
     shortcuts: [
       { name: "Assign idea to me", shortcut: "A" },
@@ -21,8 +26,6 @@ export const shortcutSections: Section[] = [
 
   {
     title: "Idea filter",
-    shortcuts: [
-      { name: "Filter ideas assigned to you", shortcut: "Shift + 2" },
-    ],
+    shortcuts: [{ name: "Filter ideas assigned to you", shortcut: "Shift + 2" }],
   },
 ]
