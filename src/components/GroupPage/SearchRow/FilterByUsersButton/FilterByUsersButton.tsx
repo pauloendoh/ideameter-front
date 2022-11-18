@@ -26,9 +26,7 @@ const FilterByUsersButton = (props: Props) => {
     <DarkButton
       endIcon={<CgChevronDown />}
       onClick={() => {
-        openAssignModal(filter.users, (newValue) =>
-          changeUserIds(newValue, tabId)
-        )
+        openAssignModal(filter.users, (newValue) => changeUserIds(newValue, tabId))
       }}
     >
       <Flex gap={1}>
@@ -36,6 +34,7 @@ const FilterByUsersButton = (props: Props) => {
         {filter.users.length > 0 &&
           filter.users.map((user) => (
             <UserGroupAvatar
+              key={user.id}
               userId={user.id}
               groupId={groupId!}
               avatarProps={{

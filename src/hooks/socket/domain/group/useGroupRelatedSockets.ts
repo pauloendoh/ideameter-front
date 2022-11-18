@@ -6,7 +6,10 @@ import { wsEventNames } from "@/utils/wsEventNames"
 import { useEffect } from "react"
 import { useQueryClient } from "react-query"
 import { useMySocketEvent } from "../../useMySocketEvent"
+import { useDeletedRatingSocket } from "./useDeletedRatingSocket/useDeletedRatingSocket"
+import { useSavedRatingSocket } from "./useSaveRatingSocket/useSaveRatingSocket"
 
+// PE 1/3
 export const useGroupRelatedSockets = (groupId: string | undefined) => {
   const { sendMessage: sendEnterGroupMessage, socket } = useMySocketEvent<string>(
     "enter-group"
@@ -21,11 +24,6 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
     groupId: string
   }>("saveIdea")
   const queryClient = useQueryClient()
-
-  const { lastMessage: lastMessageDeleteIdea } = useMySocketEvent<{
-    idea: IdeaDto
-    groupId: string
-  }>(wsEventNames.deleteIdea)
   useEffect(() => {
     if (lastMessageSaveIdea && groupId) {
       queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) =>
@@ -37,6 +35,11 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
       )
     }
   }, [lastMessageSaveIdea])
+
+  const { lastMessage: lastMessageDeleteIdea } = useMySocketEvent<{
+    idea: IdeaDto
+    groupId: string
+  }>(wsEventNames.deleteIdea)
 
   useEffect(() => {
     if (lastMessageDeleteIdea?.groupId) {
@@ -60,4 +63,7 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
       })
     }
   }, [lastMessageMoveIdeasToTab])
+
+  useSavedRatingSocket(groupId)
+  useDeletedRatingSocket(groupId)
 }

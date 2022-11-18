@@ -1,4 +1,4 @@
-import { styled, Table, TableHead } from "@mui/material";
+import { styled, Table, TableHead } from "@mui/material"
 
 const S = {
   Table: styled(Table)`
@@ -13,6 +13,6 @@ const S = {
       font-weight: bold;
     }
   `,
-};
+}
 
-export default S;
+export default S
