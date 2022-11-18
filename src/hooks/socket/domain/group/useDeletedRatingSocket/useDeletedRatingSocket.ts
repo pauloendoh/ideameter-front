@@ -6,17 +6,22 @@ import { wsEventNames } from "@/utils/wsEventNames"
 import { useEffect } from "react"
 import { useQueryClient } from "react-query"
 
-export const useDeletedRatingSocket = (groupId?: string) => {
-  const { lastMessage: lastDeletedRating } = useMySocketEvent<RatingDto>(
+export const useDeletedRatingSocket = () => {
+  const { lastMessage } = useMySocketEvent<{ ratingId: string; groupId: string }>(
     wsEventNames.deletedRating
   )
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    if (!groupId || !lastDeletedRating) return
+    if (!lastMessage) return
 
-    queryClient.setQueryData<RatingDto[]>(queryKeys.ratingsByGroup(groupId), (curr) =>
-      deleteFromArray(curr, (r) => r.id === lastDeletedRating.id)
+    console.log({
+      lastMessage,
+    })
+
+    queryClient.setQueryData<RatingDto[]>(
+      queryKeys.ratingsByGroup(lastMessage.groupId),
+      (curr) => deleteFromArray(curr, (r) => r.id === lastMessage.ratingId)
     )
-  }, [groupId, lastDeletedRating])
+  }, [lastMessage])
 }

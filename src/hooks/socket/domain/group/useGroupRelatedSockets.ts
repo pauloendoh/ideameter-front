@@ -64,6 +64,6 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
     }
   }, [lastMessageMoveIdeasToTab])
 
-  useSavedRatingSocket(groupId)
-  useDeletedRatingSocket(groupId)
+  useSavedRatingSocket()
+  useDeletedRatingSocket()
 }
