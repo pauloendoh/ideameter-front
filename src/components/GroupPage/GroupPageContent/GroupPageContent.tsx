@@ -130,7 +130,10 @@ const GroupPageContent = (props: Props) => {
         {groupId && selectedGroup && (
           <Box sx={{ mt: 1 }}>
             <FlexVCenter justifyContent="space-between">
-              <Typography variant="h5">{selectedGroup.name}</Typography>
+              <FlexVCenter gap={1}>
+                <Typography variant="h5">{selectedGroup.name}</Typography>
+                <GroupMoreIcon group={selectedGroup} onAfterDelete={() => {}} canEdit />
+              </FlexVCenter>
               <Button onClick={() => openGroupInsightsDialog(selectedGroup)}>
                 Insights
               </Button>
@@ -150,8 +153,6 @@ const GroupPageContent = (props: Props) => {
                   </Tooltip>
                   <GroupTabs groupId={groupId} tabs={sortedGroupTabs} />
                 </div>
-
-                <GroupMoreIcon group={selectedGroup} onAfterDelete={() => {}} canEdit />
               </FlexVCenter>
 
               {selectedIdeaIds.length > 0 ? (

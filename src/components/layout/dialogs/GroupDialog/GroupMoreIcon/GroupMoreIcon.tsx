@@ -37,9 +37,7 @@ function GroupMoreIcon(props: Props) {
   const deleteMutation = useDeleteGroupMutation()
 
   const { openDialog } = useGroupDialogStore()
-  const {
-    openDialog: openConfirmDeleteGroupDialog,
-  } = useConfirmDeleteGroupDialogStore()
+  const { openDialog: openConfirmDeleteGroupDialog } = useConfirmDeleteGroupDialogStore()
 
   const [autoScrollIsDisabled, toggleAutoScroll] = useAutoScrollStore((s) => [
     s.isDisabled,
@@ -65,8 +63,6 @@ function GroupMoreIcon(props: Props) {
       <Menu
         id="decision-more-menu"
         anchorEl={anchorEl}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={(e) => {
@@ -135,9 +131,7 @@ function GroupMoreIcon(props: Props) {
             id="delete-decision-button"
             sx={{ color: (theme) => theme.palette.error.main }}
           >
-            <ListItemIcon
-              sx={{ width: 16, color: (theme) => theme.palette.error.main }}
-            >
+            <ListItemIcon sx={{ width: 16, color: (theme) => theme.palette.error.main }}>
               <MdDelete />
             </ListItemIcon>
             <Typography variant="inherit" noWrap>
