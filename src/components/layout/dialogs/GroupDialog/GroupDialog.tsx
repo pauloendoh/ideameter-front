@@ -1,21 +1,19 @@
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexHCenter from "@/components/_common/flexboxes/FlexHCenter"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useSaveGroupMutation from "@/hooks/react-query/domain/group/useSaveGroupMutation"
+import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
+import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import GroupDto from "@/types/domain/group/GroupDto"
 import urls from "@/utils/urls"
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material"
+import { Box, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material"
 import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
+import EditGroupPicture from "./EditGroupPicture/EditGroupPicture"
 import GroupMembers from "./GroupMembers/GroupMembers"
 import GroupMoreIcon from "./GroupMoreIcon/GroupMoreIcon"
 
@@ -25,9 +23,15 @@ const GroupDialog = () => {
   const inputRef = useRef<HTMLDivElement>(null)
   const { mutate } = useSaveGroupMutation()
 
-  const { register, control, handleSubmit, reset, watch, setValue } = useForm<
-    GroupDto
-  >({
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { isDirty },
+  } = useForm<GroupDto>({
     defaultValues: initialValue,
   })
 
@@ -49,9 +53,28 @@ const GroupDialog = () => {
     }
   }, [isOpen])
 
+  const saveIsDisabled = useMemo(() => {
+    if (isDirty) return false
+    return true
+  }, [isDirty])
+
+  useConfirmTabClose(isDirty && isOpen)
+
+  const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
+  const confirmClose = () => {
+    if (isDirty) {
+      openConfirmDialog({
+        onConfirm: () => close(),
+        title: "Discard changes?",
+      })
+      return
+    }
+    close()
+  }
+
   return (
     <Dialog
-      onClose={close}
+      onClose={confirmClose}
       open={isOpen}
       fullWidth
       maxWidth="xs"
@@ -71,6 +94,14 @@ const GroupDialog = () => {
 
           <DialogContent>
             <FlexCol pt={1} sx={{ gap: 2 }}>
+              <FlexHCenter>
+                <EditGroupPicture
+                  groupName={watch("name")}
+                  imageUrl={watch("imageUrl")}
+                  onChangeImageUrl={(value) => setValue("imageUrl", value)}
+                />
+              </FlexHCenter>
+
               <Controller
                 control={control}
                 name="name"
@@ -97,10 +128,7 @@ const GroupDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons
-              // disabled={isSubmitting}
-              onCancel={close}
-            />
+            <SaveCancelButtons disabled={saveIsDisabled} onCancel={confirmClose} />
           </DialogTitle>
         </form>
 

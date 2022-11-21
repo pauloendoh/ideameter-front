@@ -7,7 +7,7 @@ import { useEffect } from "react"
 import { useQueryClient } from "react-query"
 import { useMySocketEvent } from "../../useMySocketEvent"
 import { useDeletedRatingSocket } from "./useDeletedRatingSocket/useDeletedRatingSocket"
-import { useSavedRatingSocket } from "./useSaveRatingSocket/useSaveRatingSocket"
+import { useSavedRatingSocket } from "./useSaveRatingSocket/useSavedRatingSocket"
 
 // PE 1/3
 export const useGroupRelatedSockets = (groupId: string | undefined) => {

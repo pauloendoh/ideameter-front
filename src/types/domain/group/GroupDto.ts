@@ -1,17 +1,19 @@
 export default interface GroupDto {
-  id?: string;
-  creatorId?: string;
+  id?: string
+  creatorId?: string
 
-  name: string;
-  description: string;
+  imageUrl: string | null
+  name: string
+  description: string
 
-  lastOpenedAt?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  lastOpenedAt?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export const newGroupDto = (): GroupDto => ({
   id: undefined,
+  imageUrl: null,
   name: "",
   description: "",
-});
+})

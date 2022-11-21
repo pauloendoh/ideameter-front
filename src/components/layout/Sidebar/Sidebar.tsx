@@ -20,9 +20,7 @@ const Sidebar = () => {
   // newest first
   const sortedGroups = useMemo(() => {
     if (!groups) return []
-    return groups.sort((a, b) =>
-      (a.createdAt || "") > (b.createdAt || "") ? -1 : 1
-    )
+    return groups.sort((a, b) => ((a.createdAt || "") > (b.createdAt || "") ? -1 : 1))
   }, [groups])
 
   return (
@@ -49,7 +47,10 @@ const Sidebar = () => {
                 <div>
                   {query.groupId === group.id && <S.SelectedGroupLittleBar />}
                   <IconButton sx={{ width: 64, height: 64 }}>
-                    <Avatar sx={{ width: 64, height: 64 }}>
+                    <Avatar
+                      src={group.imageUrl || group.name}
+                      sx={{ width: 64, height: 64 }}
+                    >
                       {group.name.substring(0, 2)}
                     </Avatar>
                   </IconButton>
