@@ -98,7 +98,9 @@ const GroupDialog = () => {
                 <EditGroupPicture
                   groupName={watch("name")}
                   imageUrl={watch("imageUrl")}
-                  onChangeImageUrl={(value) => setValue("imageUrl", value)}
+                  onChangeImageUrl={(value) =>
+                    setValue("imageUrl", value, { shouldDirty: true })
+                  }
                 />
               </FlexHCenter>
 
