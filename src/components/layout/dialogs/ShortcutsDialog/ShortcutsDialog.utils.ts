@@ -23,7 +23,13 @@ export const shortcutSections: Section[] = [
       { name: "Select range of ideas", shortcut: "Shift+Click" },
     ],
   },
-
+  {
+    title: "Idea dialog",
+    shortcuts: [
+      { name: "Save without closing dialog", shortcut: "Ctrl+S" },
+      { name: "Save and close dialog", shortcut: "Ctrl+Enter" },
+    ],
+  },
   {
     title: "Idea filter",
     shortcuts: [{ name: "Filter ideas assigned to you", shortcut: "Shift + 2" }],

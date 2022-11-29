@@ -8,7 +8,6 @@ import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import urls from "@/utils/urls"
 import {
@@ -22,8 +21,9 @@ import {
   Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useHotkeys } from "react-hotkeys-hook"
 import { MdClose } from "react-icons/md"
 import { format } from "timeago.js"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
@@ -121,9 +121,9 @@ const IdeaDialog = () => {
         onConfirm: () => closeDialog(),
         title: "Discard changes?",
       })
-    } else {
-      closeDialog()
+      return
     }
+    closeDialog()
   }
 
   const saveButtonIsDisabled = useMemo(() => isSubmitting || !formState.isDirty, [
@@ -131,7 +131,26 @@ const IdeaDialog = () => {
     formState.isDirty,
   ])
 
-  const authUser = useAuthStore((s) => s.authUser)
+  const saveWithoutClosing = useCallback(() => {
+    if (saveButtonIsDisabled) return
+    submitSaveIdea(watch(), {
+      onSuccess: (idea) => {
+        reset(idea)
+      },
+    })
+  }, [saveButtonIsDisabled, watch])
+
+  useHotkeys(
+    "ctrl+s",
+    (e) => {
+      saveWithoutClosing()
+    },
+    {
+      preventDefault: true,
+      enableOnFormTags: true,
+    },
+    [saveWithoutClosing]
+  )
 
   return (
     <Dialog
@@ -196,6 +215,7 @@ const IdeaDialog = () => {
                 setValue={setValueDirty}
                 control={control}
                 onSubmit={onSubmit}
+                onSaveWithoutClosing={saveWithoutClosing}
               />
 
               <IdeaDialogRightCol watch={watch} setValue={setValueDirty} />
@@ -221,7 +241,8 @@ const IdeaDialog = () => {
           <DialogTitle>
             <FlexVCenter justifyContent="space-between">
               <SaveCancelButtons
-                disabled={saveButtonIsDisabled}
+                isLoadingAndDisabled={isSubmitting}
+                disabled={!formState.isDirty}
                 onCancel={confirmClose}
               />
 

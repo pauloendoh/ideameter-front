@@ -23,9 +23,10 @@ interface Props {
   setValue: UseFormSetValue<IdeaDto>
   control: Control<IdeaDto>
   onSubmit: (idea: IdeaDto) => void
+  onSaveWithoutClosing: () => void
 }
 
-const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
+const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit, ...props }: Props) => {
   // some stuff to improve performance
   const [localDescription, setLocalDescription] = useState(watch("description"))
   const [canDirty, setCanDirty] = useState(false)
@@ -88,6 +89,12 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit }: Props) => {
     if (e.key === "Enter" && e.ctrlKey) {
       setValue("description", localDescription)
       onSubmit(watch())
+    }
+
+    if (e.key === "s" && e.ctrlKey) {
+      e.preventDefault()
+      setValue("description", localDescription)
+      props.onSaveWithoutClosing()
     }
   }
 

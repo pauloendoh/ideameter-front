@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab"
 import { Box, Button } from "@mui/material"
 import { useHotkeys } from "react-hotkeys-hook"
 import Flex from "../../flexboxes/Flex"
@@ -5,6 +6,7 @@ import Flex from "../../flexboxes/Flex"
 interface Props {
   submitButtonId?: string
   disabled?: boolean
+  isLoadingAndDisabled?: boolean
   onSave?: () => void
   onCancel?: () => void
   saveText?: string
@@ -20,13 +22,14 @@ const SaveCancelButtons = (props: Props) => {
       }
     },
     {
-      enableOnTags: ["INPUT", "SELECT", "TEXTAREA"],
+      enableOnFormTags: ["INPUT", "SELECT", "TEXTAREA"],
     }
   )
 
   return (
     <Flex>
-      <Button
+      <LoadingButton
+        loading={props.isLoadingAndDisabled}
         type="submit"
         variant="contained"
         color="primary"
@@ -35,7 +38,7 @@ const SaveCancelButtons = (props: Props) => {
         onClick={props.onSave}
       >
         {props.saveText || "Save"}
-      </Button>
+      </LoadingButton>
 
       <Box ml={1}>
         <Button onClick={props.onCancel} variant="outlined">
