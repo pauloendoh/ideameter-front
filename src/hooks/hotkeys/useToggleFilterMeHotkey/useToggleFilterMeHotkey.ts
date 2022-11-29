@@ -16,7 +16,7 @@ export const useToggleFilterMeHotkey = () => {
   const { data: groupMembers } = useGroupMembersQuery(groupId)
 
   return useHotkeys(
-    "Shift+2",
+    "shift+digit2",
     () => {
       if (groupMembers && authUser) {
         const authUserMember = groupMembers.find((m) => m.userId === authUser.id)
@@ -24,6 +24,9 @@ export const useToggleFilterMeHotkey = () => {
           changeFilterUsers(pushOrRemove(filter.users, authUserMember.user!, "id"))
         }
       }
+    },
+    {
+      preventDefault: true,
     },
     [filter, tabId, groupMembers]
   )
