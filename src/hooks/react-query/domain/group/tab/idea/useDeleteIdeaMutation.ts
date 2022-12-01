@@ -5,8 +5,8 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import deleteFromArray from "@/utils/array/deleteFromArray"
 import myAxios from "@/utils/axios/myAxios"
 import queryKeys from "@/utils/queryKeys"
+import { socketEvents } from "@/utils/socketEvents"
 import urls from "@/utils/urls"
-import { wsEventNames } from "@/utils/wsEventNames"
 import { useMutation, useQueryClient } from "react-query"
 
 interface Variables {
@@ -18,7 +18,7 @@ const useDeleteIdeaMutation = () => {
   const { groupId } = useRouterQueryString()
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
-  const { sendMessage } = useMySocketEvent(wsEventNames.deleteIdea)
+  const { sendMessage } = useMySocketEvent(socketEvents.deleteIdea)
 
   return useMutation(
     ({ idea }: Variables) =>
@@ -28,12 +28,9 @@ const useDeleteIdeaMutation = () => {
         setSuccessMessage("Idea deleted!")
 
         if (groupId) {
-          queryClient.setQueryData<IdeaDto[]>(
-            queryKeys.groupIdeas(groupId),
-            (curr) => {
-              return deleteFromArray(curr, (i) => i.id === idea.id)
-            }
-          )
+          queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) => {
+            return deleteFromArray(curr, (i) => i.id === idea.id)
+          })
 
           sendMessage({ idea, groupId })
         }

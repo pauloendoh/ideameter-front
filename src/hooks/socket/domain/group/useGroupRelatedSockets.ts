@@ -2,7 +2,7 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { pushOrRemove } from "@/utils/array/pushOrRemove"
 import upsert from "@/utils/array/upsert"
 import queryKeys from "@/utils/queryKeys"
-import { wsEventNames } from "@/utils/wsEventNames"
+import { socketEvents } from "@/utils/socketEvents"
 import { useEffect } from "react"
 import { useQueryClient } from "react-query"
 import { useMySocketEvent } from "../../useMySocketEvent"
@@ -39,7 +39,7 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
   const { lastMessage: lastMessageDeleteIdea } = useMySocketEvent<{
     idea: IdeaDto
     groupId: string
-  }>(wsEventNames.deleteIdea)
+  }>(socketEvents.deleteIdea)
 
   useEffect(() => {
     if (lastMessageDeleteIdea?.groupId) {
@@ -51,7 +51,7 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
   }, [lastMessageDeleteIdea])
 
   const { lastMessage: lastMessageMoveIdeasToTab } = useMySocketEvent<IdeaDto[]>(
-    wsEventNames.moveIdeasToTab
+    socketEvents.moveIdeasToTab
   )
   useEffect(() => {
     if (!lastMessageMoveIdeasToTab) return

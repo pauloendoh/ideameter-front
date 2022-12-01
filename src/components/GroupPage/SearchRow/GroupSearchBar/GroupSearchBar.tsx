@@ -1,5 +1,3 @@
-import Flex from "@/components/_common/flexboxes/Flex"
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
@@ -10,7 +8,7 @@ import textContainsWords from "@/utils/text/textContainsWords"
 
 import { Autocomplete, Box, Popper, useTheme } from "@mui/material"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import SearchBarTabChip from "./SearchBarTabChip/SearchBarTabChip"
+import SearchBarItem from "./SearchBarItem/SearchBarItem"
 
 interface Props {
   test?: string
@@ -51,7 +49,7 @@ const GroupSearchBar = (props: Props) => {
   }, [selectedIdea])
 
   const getTab = useCallback(
-    (tabId: string) => {
+    (tabId: string | null) => {
       return tabs?.find((t) => t.id === tabId)
     },
     [tabs]
@@ -99,25 +97,14 @@ const GroupSearchBar = (props: Props) => {
           if (typeof option === "string") return option
           return option.name
         }}
-        renderOption={(props, idea) => (
-          <FlexVCenter
+        renderOption={(htmlAttributes, idea) => (
+          <SearchBarItem
             key={idea.id}
-            {...(props as any)}
-            sx={{
-              textDecoration: idea.isDone ? "line-through" : undefined,
-              color: idea.isDone ? theme.palette.grey[600] : undefined,
-            }}
-          >
-            <Flex sx={{ width: "100%", justifyContent: "space-between", gap: 1 }}>
-              <FlexVCenter>{idea.name}</FlexVCenter>
-
-              {groupId && idea.tabId && (
-                <Flex title={getTab(idea.tabId)?.name}>
-                  <SearchBarTabChip tab={getTab(idea.tabId)} />
-                </Flex>
-              )}
-            </Flex>
-          </FlexVCenter>
+            idea={idea}
+            htmlAttributes={htmlAttributes}
+            groupId={groupId}
+            tab={getTab(idea.tabId)}
+          />
         )}
       />
     </Box>

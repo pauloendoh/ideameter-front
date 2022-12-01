@@ -4,7 +4,7 @@ import { useMySocketEvent } from "@/hooks/socket/useMySocketEvent"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { NotificationDto } from "@/types/domain/notification/NotificationDto"
 import queryKeys from "@/utils/queryKeys"
-import { wsEventNames } from "@/utils/wsEventNames"
+import { socketEvents } from "@/utils/socketEvents"
 import { Badge, IconButton, Menu } from "@mui/material"
 import React, { useEffect, useMemo } from "react"
 import { MdNotifications } from "react-icons/md"
@@ -20,13 +20,12 @@ const NavbarUserNotifications = () => {
   const { data: notifications } = useNotificationsQuery(false)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (notifications && notifications.length > 0)
-      setAnchorEl(event.currentTarget)
+    if (notifications && notifications.length > 0) setAnchorEl(event.currentTarget)
   }
 
   const { authUser } = useAuthStore()
   const { lastMessage: newNotification } = useMySocketEvent<NotificationDto>(
-    wsEventNames.updateUserNotifications(authUser?.id || "")
+    socketEvents.updateUserNotifications(authUser?.id || "")
   )
   const queryClient = useQueryClient()
 
@@ -36,9 +35,7 @@ const NavbarUserNotifications = () => {
     }
   }, [newNotification])
 
-  const {
-    mutate: submitHideNotificationDots,
-  } = useHideNotificationDotsMutation()
+  const { mutate: submitHideNotificationDots } = useHideNotificationDotsMutation()
 
   const unseenNotificationCount = useMemo(
     () => notifications?.filter((n) => n.showDot).length || 0,
