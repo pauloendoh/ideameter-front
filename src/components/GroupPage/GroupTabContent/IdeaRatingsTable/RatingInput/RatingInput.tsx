@@ -26,21 +26,22 @@ const RatingInput = (props: Props) => {
 
   const isLoading = saveRatingMutation.isLoading || deleteRatingMutation.isLoading
 
+  const containsSubideas = useMemo(
+    () => Boolean(subideas?.find((s) => s.parentId === props.idea.id)),
+    [subideas]
+  )
+
   const myCurrentRating = useMemo(() => {
     if (!groupRatings) return -1
     const userRating = groupRatings.find(
       (rating) => rating.userId === authUser?.id && rating.ideaId === props.idea.id
     )
 
+    if (containsSubideas) return 0
     if (!userRating) return -1
     if (userRating.rating === null) return 0
     return userRating.rating
-  }, [props.idea, groupRatings])
-
-  const containsSubideas = useMemo(
-    () => Boolean(subideas?.find((s) => s.parentId === props.idea.id)),
-    [subideas]
-  )
+  }, [props.idea, groupRatings, containsSubideas])
 
   // I had to use currentRating -1 because MenuItem does not accept value={null}
   const hideBadge = props.idea.isDone || myCurrentRating >= 0 || containsSubideas

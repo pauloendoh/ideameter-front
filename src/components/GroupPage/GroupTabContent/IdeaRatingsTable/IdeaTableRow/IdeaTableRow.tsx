@@ -33,6 +33,10 @@ const IdeaTableRow = (props: Props) => {
 
   const isSubidea = useMemo(() => !!props.ideaRating.idea.parentId, [props.ideaRating])
 
+  const hasSubideas = useMemo(() => props.ideaRating.subideas?.length > 0, [
+    props.ideaRating.subideas,
+  ])
+
   const { idIsSelected } = useMultiSelectIdeas()
   const theme = useTheme()
 
@@ -104,7 +108,7 @@ const IdeaTableRow = (props: Props) => {
       </TableCell>
       {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
         <TableCell key={JSON.stringify(userGroupRating)} align="center">
-          {userGroupRating.rating}
+          {hasSubideas && !userGroupRating.rating ? "-" : userGroupRating.rating}
         </TableCell>
       ))}
 
