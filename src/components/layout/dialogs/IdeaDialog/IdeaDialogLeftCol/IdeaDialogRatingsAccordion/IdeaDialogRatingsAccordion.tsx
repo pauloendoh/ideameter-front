@@ -1,6 +1,5 @@
 import RatingInput from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/RatingInput/RatingInput"
 import UserTableCell from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserTableCell"
-import useIdeaRatingsQueryUtils from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
   AccordionDetails,
@@ -15,6 +14,7 @@ import {
 } from "@mui/material"
 import { useCallback, useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
+import useIdeaRatingsQueryUtils from "../../../../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import S from "./IdeaDialogRatingsAccordion.styles"
 
 interface Props {

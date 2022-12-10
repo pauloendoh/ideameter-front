@@ -3,12 +3,12 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { useNewIdeaHotkey } from "@/hooks/hotkeys/useNewIdeaHotkey/useNewIdeaHotkey"
 import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery"
-import useIdeaRatingsQueryUtils from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material"
 import { useRouter } from "next/router"
+import useIdeaRatingsQueryUtils from "../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import IdeaRatingsTable from "./IdeaRatingsTable/IdeaRatingsTable"
 
 interface Props {
