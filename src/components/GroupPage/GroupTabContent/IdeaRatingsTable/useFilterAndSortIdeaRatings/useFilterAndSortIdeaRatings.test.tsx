@@ -45,8 +45,8 @@ describe("useFilterAndSortIdeaRatings", () => {
     })
   })
 
-  describe("when it is a subideas table, AND you have subideas with avgRating 1,3 and 2, AND you're ordering by createdAt", async () => {
-    test("the avgRating 2 should come first", async () => {
+  describe("when subidea table, AND you have subideas with avgRating 1,3 and 2, AND you're ordering by createdAt", async () => {
+    test("the avgRating 3 should come first", async () => {
       const Test2 = () => {
         const ideaRatings = useFilterAndSortIdeaRatings({
           isSubideasTable: true,
