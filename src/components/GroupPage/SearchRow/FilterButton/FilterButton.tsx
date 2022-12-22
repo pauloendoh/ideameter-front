@@ -3,7 +3,7 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import { Checkbox, Divider, Menu } from "@mui/material"
+import { Checkbox, Divider, Menu, useTheme } from "@mui/material"
 import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
 import S from "./styles"
@@ -44,12 +44,20 @@ const FilterButton = (props: Props) => {
     return labels.sort((a, b) => (a.id > b.id ? 1 : -1))
   }, [labels])
 
+  const theme = useTheme()
+
   return (
     <>
       <DarkButton
         id="filter-btn"
         onClick={handleClick}
         startIcon={<MdFilterAlt />}
+        sx={{
+          background: getFilterCount() > 0 ? theme.palette.secondary.main : undefined,
+          ":hover": {
+            background: getFilterCount() > 0 ? theme.palette.secondary.main : undefined,
+          },
+        }}
         // disabled={isDisabled}
       >
         Filter
@@ -81,9 +89,7 @@ const FilterButton = (props: Props) => {
       >
         <S.MenuItem onClick={() => toggleOnlyHighImpactVoted(routerQuery.tabId!)}>
           <Checkbox checked={filter.onlyHighImpactVoted} name="voted-as-high-impact" />
-          <S.CheckboxLabel>
-            Voted as high impact
-          </S.CheckboxLabel>
+          <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
         </S.MenuItem>
         <Divider />
         <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>

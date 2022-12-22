@@ -1,6 +1,6 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import AssignedToButton from "./AssignedToButton/AssignedToButton"
 import FilterButton from "./FilterButton/FilterButton"
-import FilterByUsersButton from "./FilterByUsersButton/FilterByUsersButton"
 import GroupSearchBar from "./GroupSearchBar/GroupSearchBar"
 import IdeaSortButton from "./IdeaSortButton/IdeaSortButton"
 
@@ -10,7 +10,7 @@ const SearchRow = () => {
       <GroupSearchBar />
       <FlexVCenter gap={2}>
         <IdeaSortButton />
-        <FilterByUsersButton />
+        <AssignedToButton />
         <FilterButton />
       </FlexVCenter>
     </FlexVCenter>

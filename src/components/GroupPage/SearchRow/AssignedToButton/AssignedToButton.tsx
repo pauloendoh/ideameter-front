@@ -4,6 +4,7 @@ import { useToggleFilterMeHotkey } from "@/hooks/hotkeys/useToggleFilterMeHotkey
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
+import { useTheme } from "@mui/material"
 import { CgChevronDown } from "react-icons/cg"
 import UserGroupAvatar from "../../GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 
@@ -12,7 +13,7 @@ interface Props {
 }
 
 // PE 1/3 - melhorar nome?
-const FilterByUsersButton = (props: Props) => {
+const AssignedToButton = (props: Props) => {
   const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog)
   const { groupId, tabId } = useRouterQueryString()
   const [filter, changeUserIds] = useGroupFilterStore((s) => [
@@ -21,9 +22,16 @@ const FilterByUsersButton = (props: Props) => {
   ])
 
   useToggleFilterMeHotkey()
+  const theme = useTheme()
 
   return (
     <DarkButton
+      sx={{
+        background: filter.users.length > 0 ? theme.palette.secondary.main : undefined,
+        ":hover": {
+          background: filter.users.length > 0 ? theme.palette.secondary.main : undefined,
+        },
+      }}
       endIcon={<CgChevronDown />}
       onClick={() => {
         openAssignModal(filter.users, (newValue) => changeUserIds(newValue, tabId))
@@ -51,4 +59,4 @@ const FilterByUsersButton = (props: Props) => {
   )
 }
 
-export default FilterByUsersButton
+export default AssignedToButton
