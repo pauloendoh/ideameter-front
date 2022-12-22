@@ -12,9 +12,9 @@ const useConfirmTabClose = (
       }
     }
 
-    window.addEventListener("beforeunload", handleBeforeUnload)
+    if (window) window.addEventListener("beforeunload", handleBeforeUnload)
 
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload)
+    return () => window?.removeEventListener("beforeunload", handleBeforeUnload)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mustConfirm])
 }

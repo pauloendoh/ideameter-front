@@ -80,7 +80,6 @@ const GroupSearchBar = (props: Props) => {
         }}
         filterOptions={(ideas) => ideas} // disable autocomplete default filter behavior
         //https://github.com/mui/material-ui/issues/33602
-        // @ts-expect-error
         PopperComponent={MyPopper}
         options={filteredIdeas || []}
         renderInput={(params) => (

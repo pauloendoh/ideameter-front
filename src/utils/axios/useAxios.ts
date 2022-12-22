@@ -25,7 +25,8 @@ export const useAxios = (params?: { redirectOn401?: boolean }) => {
     },
     (error) => {
       // unauthenticated -> go to "/"
-      if (error?.response?.status === 401) window.location.href = urls.pages.index
+      if (error?.response?.status === 401 && window)
+        window.location.href = urls.pages.index
 
       if (axios.isAxiosError<{ errors: ValidationError[]; message: string }>(error)) {
         const constraints = error.response?.data?.errors?.[0].constraints
