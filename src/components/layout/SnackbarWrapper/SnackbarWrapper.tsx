@@ -1,34 +1,38 @@
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import { Snackbar } from "@mui/material";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import React from "react";
-import S from "./SnackbarWrapper.styles";
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import { Snackbar } from "@mui/material"
+import MuiAlert, { AlertProps } from "@mui/material/Alert"
+import React from "react"
+import S from "./SnackbarWrapper.styles"
 
 // Zustand version!
 const SnackbarWrapper = () => {
-  const { successMessage, setSuccessMessage, errorMessage, setErrorMessage } =
-    useSnackbarStore();
+  const {
+    successMessage,
+    setSuccessMessage,
+    errorMessage,
+    setErrorMessage,
+  } = useSnackbarStore()
 
   const handleCloseSuccess = (
     event?: Event | React.SyntheticEvent<any, Event>,
     reason?: string
   ) => {
     if (reason === "clickaway") {
-      return;
+      return
     }
 
-    setSuccessMessage("");
-  };
+    setSuccessMessage("")
+  }
 
   const handleCloseError = (
     event?: Event | React.SyntheticEvent<any, Event>,
     reason?: string
   ) => {
     if (reason === "clickaway") {
-      return;
+      return
     }
-    setErrorMessage("");
-  };
+    setErrorMessage("")
+  }
 
   return (
     <S.Root>
@@ -39,7 +43,7 @@ const SnackbarWrapper = () => {
         onClose={handleCloseSuccess}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        <Alert onClose={handleCloseSuccess} severity="success">
+        <Alert onClose={handleCloseSuccess} severity="success" style={{ color: "white" }}>
           {successMessage}
         </Alert>
       </Snackbar>
@@ -56,14 +60,11 @@ const SnackbarWrapper = () => {
         </Alert>
       </Snackbar>
     </S.Root>
-  );
-};
+  )
+}
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+})
 
-export default SnackbarWrapper;
+export default SnackbarWrapper
