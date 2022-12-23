@@ -27,7 +27,7 @@ export const useToggleVoteHotkey = (ideaId: string | null) => {
 
         idea.highImpactVotes = pushOrRemove(
           idea.highImpactVotes,
-          { ideaId: ideaId, userId: authUser!.id },
+          { ideaId, userId: authUser!.id },
           "userId"
         )
         submitSaveIdea(idea)

@@ -8,6 +8,7 @@ import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import urls from "@/utils/urls"
 import {
@@ -31,6 +32,8 @@ import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAcc
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
 import IdeaDialogSubideasAccordion from "./IdeaDialogSubideasAccordion/IdeaDialogSubideasAccordion"
 import IdeaMenu from "./IdeaMenu/IdeaMenu"
+import { useAssignMeFromDialogHotkey } from "./useAssignMeFromDialogHotkey/useAssignMeFromDialogHotkey"
+import { useToggleVoteFromDialog } from "./useToggleVoteFromDialog/useToggleVoteFromDialog"
 
 const ariaLabel = "idea-dialog"
 
@@ -151,6 +154,26 @@ const IdeaDialog = () => {
     },
     [saveWithoutClosing]
   )
+
+  const { authUser } = useAuthStore()
+
+  useAssignMeFromDialogHotkey({
+    dialogIsOpen,
+    authUser,
+    currentAssignedUsers: watch("assignedUsers"),
+    onChange: (newAssignedUsers) => {
+      setValue("assignedUsers", newAssignedUsers, { shouldDirty: true })
+    },
+  })
+
+  useToggleVoteFromDialog({
+    dialogIsOpen,
+    currentVotes: watch("highImpactVotes"),
+    ideaId: watch("id"),
+    userId: authUser!.id,
+    onChange: (newVotes) =>
+      setValueDirty("highImpactVotes", newVotes, { shouldDirty: true }),
+  })
 
   return (
     <Dialog
