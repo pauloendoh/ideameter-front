@@ -1,9 +1,12 @@
+import GroupDto from "../group/GroupDto"
+
 export default interface LabelDto {
   id: string
   createdAt: string
   updatedAt: string
 
   groupId: string
+  group?: GroupDto
 
   name: string
   bgColor: string

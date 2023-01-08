@@ -27,6 +27,8 @@ const urls = {
     groupTab: (groupId: string) => `/group/${groupId}/tab`,
     groupRatings: (groupId: string) => `/group/${groupId}/ratings`,
     groupLabels: (groupId: string) => `/group/${groupId}/labels`,
+    labelsToImport: (groupId: string) => `/group/${groupId}/labels-to-import`,
+    importLabels: (groupId: string) => `/group/${groupId}/import-labels`,
 
     groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
     groupImage: "/group/image",

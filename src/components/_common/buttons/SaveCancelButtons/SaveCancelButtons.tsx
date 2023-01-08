@@ -23,7 +23,8 @@ const SaveCancelButtons = (props: Props) => {
     },
     {
       enableOnFormTags: ["INPUT", "SELECT", "TEXTAREA"],
-    }
+    },
+    [props.disabled, props.onEnabledAndCtrlEnter]
   )
 
   return (

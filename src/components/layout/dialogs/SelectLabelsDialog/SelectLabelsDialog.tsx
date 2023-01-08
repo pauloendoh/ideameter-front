@@ -13,8 +13,9 @@ import {
   IconButton,
   Typography,
 } from "@mui/material"
-import { useMemo } from "react"
-import { MdCheck, MdClose, MdEdit } from "react-icons/md"
+import { useMemo, useState } from "react"
+import { MdAdd, MdCheck, MdClose, MdEdit, MdImportExport } from "react-icons/md"
+import ImportLabelsSection from "./ImportLabelsSection/ImportLabelsSection"
 
 const ariaLabel = "select-labels-dialog"
 
@@ -45,6 +46,8 @@ const SelectLabelsDialog = (props: Props) => {
   const labelIsSelected = (label: LabelDto) => {
     return props.selectedLabels.find((l) => l.id === label.id)
   }
+
+  const [isImporting, setIsImporting] = useState(false)
 
   return (
     <Dialog
@@ -96,9 +99,23 @@ const SelectLabelsDialog = (props: Props) => {
             sx={{ mt: 2 }}
             fullWidth
             onClick={() => openEditLabelDialog(buildLabelDto({ groupId: props.groupId }))}
+            startIcon={<MdAdd />}
           >
-            + Create new label
+            Create new label
           </DarkButton>
+
+          {isImporting ? (
+            <ImportLabelsSection close={() => setIsImporting(false)} />
+          ) : (
+            <DarkButton
+              sx={{ mt: 1 }}
+              fullWidth
+              onClick={() => setIsImporting(true)}
+              startIcon={<MdImportExport />}
+            >
+              Import from other project
+            </DarkButton>
+          )}
         </DialogContent>
       </Box>
     </Dialog>
