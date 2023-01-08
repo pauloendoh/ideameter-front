@@ -14,8 +14,7 @@ interface Props {
   test?: string
 }
 
-// PE 1/3 - rename to <GroupIdeasSearchBox /> ?
-const GroupSearchBar = (props: Props) => {
+const SearchBar = (props: Props) => {
   const { groupId } = useRouterQueryString()
   const { data: groupIdeas, refetch } = useGroupIdeasQuery(groupId!)
 
@@ -60,7 +59,7 @@ const GroupSearchBar = (props: Props) => {
     if (!text) return []
 
     return groupIdeas
-      .filter((i) => textContainsWords(i.name, text))
+      .filter((i) => textContainsWords(i.name, text) || i.id.includes(text))
       .sort((a, b) => {
         if (a.isDone && !b.isDone) return 1
         return -1
@@ -110,4 +109,4 @@ const GroupSearchBar = (props: Props) => {
   )
 }
 
-export default GroupSearchBar
+export default SearchBar
