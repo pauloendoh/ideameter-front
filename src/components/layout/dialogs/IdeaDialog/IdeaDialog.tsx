@@ -144,7 +144,7 @@ const IdeaDialog = () => {
   }, [saveButtonIsDisabled, watch])
 
   useHotkeys(
-    "ctrl+s",
+    "Control+S",
     (e) => {
       saveWithoutClosing()
     },
