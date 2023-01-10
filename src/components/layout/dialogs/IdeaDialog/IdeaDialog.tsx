@@ -144,7 +144,7 @@ const IdeaDialog = () => {
   }, [saveButtonIsDisabled, watch])
 
   useHotkeys(
-    "ctrl+s",
+    "Ctrl+S",
     (e) => {
       saveWithoutClosing()
     },
@@ -152,7 +152,7 @@ const IdeaDialog = () => {
       preventDefault: true,
       enableOnFormTags: true,
     },
-    [saveWithoutClosing]
+    [saveWithoutClosing, watch()]
   )
 
   const { authUser } = useAuthStore()
