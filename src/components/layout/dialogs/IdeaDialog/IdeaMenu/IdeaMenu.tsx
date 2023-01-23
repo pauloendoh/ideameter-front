@@ -52,7 +52,7 @@ const IdeaMenu = (props: Props) => {
       navigator.clipboard.writeText(props.idea.id)
       setSuccessMessage(`Copied: ${props.idea.id}`)
     }
-  }, [navigator])
+  }, [navigator, props.idea])
 
   const handleCopyTitleAndId = useCallback(() => {
     if (navigator) {
@@ -60,7 +60,7 @@ const IdeaMenu = (props: Props) => {
       navigator.clipboard.writeText(text)
       setSuccessMessage(`Copied: ${text}`)
     }
-  }, [navigator])
+  }, [navigator, props.idea])
 
   return (
     <div>
