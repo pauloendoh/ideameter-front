@@ -91,7 +91,11 @@ const TabDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons disabled={isLoading} onCancel={closeDialog} />
+            <SaveCancelButtons
+              disabled={isLoading}
+              onCancel={closeDialog}
+              onEnabledAndCtrlEnter={handleSubmit(onSubmit)}
+            />
           </DialogTitle>
         </form>
       </Box>

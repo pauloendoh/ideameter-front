@@ -19,7 +19,8 @@ const LandingPage = () => {
               "Reset your password"
             ) : (
               <>
-                Ideameter <br /> <Typography variant="body2">Align your ideas</Typography>
+                Ideameter <br />{" "}
+                <Typography variant="body2">Align ideas with your team</Typography>
               </>
             )}
           </Typography>

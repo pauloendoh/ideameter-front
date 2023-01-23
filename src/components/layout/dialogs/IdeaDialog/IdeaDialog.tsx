@@ -146,13 +146,13 @@ const IdeaDialog = () => {
   useHotkeys(
     "Ctrl+S",
     (e) => {
-      saveWithoutClosing()
+      if (dialogIsOpen) saveWithoutClosing()
     },
     {
       preventDefault: true,
       enableOnFormTags: true,
     },
-    [saveWithoutClosing, watch()]
+    [saveWithoutClosing, watch(), dialogIsOpen]
   )
 
   const { authUser } = useAuthStore()
