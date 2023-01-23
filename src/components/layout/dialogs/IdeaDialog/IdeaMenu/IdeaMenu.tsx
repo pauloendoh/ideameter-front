@@ -3,7 +3,7 @@ import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { IconButton, Menu, MenuItem, useTheme } from "@mui/material"
-import React from "react"
+import React, { useCallback } from "react"
 import { MdMoreHoriz } from "react-icons/md"
 
 interface Props {
@@ -47,12 +47,20 @@ const IdeaMenu = (props: Props) => {
     })
   }
 
-  const handleCopyId = () => {
+  const handleCopyId = useCallback(() => {
     if (navigator) {
       navigator.clipboard.writeText(props.idea.id)
       setSuccessMessage(`Copied: ${props.idea.id}`)
     }
-  }
+  }, [navigator])
+
+  const handleCopyTitleAndId = useCallback(() => {
+    if (navigator) {
+      const text = `${props.idea.name} [${props.idea.id}]`
+      navigator.clipboard.writeText(text)
+      setSuccessMessage(`Copied: ${text}`)
+    }
+  }, [navigator])
 
   return (
     <div>
@@ -80,6 +88,7 @@ const IdeaMenu = (props: Props) => {
         }}
       >
         <MenuItem onClick={handleCopyId}>Copy idea ID</MenuItem>
+        <MenuItem onClick={handleCopyTitleAndId}>Copy title + ID</MenuItem>
 
         <MenuItem onClick={handleDelete} style={{ color: theme.palette.error.main }}>
           Delete
