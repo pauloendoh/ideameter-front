@@ -144,13 +144,15 @@ const IdeaDialog = () => {
   }, [saveButtonIsDisabled, watch])
 
   useHotkeys(
-    "Ctrl+S",
+    "ctrl+s",
     (e) => {
-      if (dialogIsOpen) saveWithoutClosing()
+      if (dialogIsOpen) {
+        e.preventDefault()
+        saveWithoutClosing()
+      }
     },
     {
-      preventDefault: true,
-      enableOnFormTags: true,
+      enableOnTags: ["INPUT", "TEXTAREA", "SELECT"],
     },
     [saveWithoutClosing, watch(), dialogIsOpen]
   )
