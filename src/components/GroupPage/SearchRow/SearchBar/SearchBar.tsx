@@ -6,7 +6,7 @@ import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import textContainsWords from "@/utils/text/textContainsWords"
 
-import { Autocomplete, Box, Popper, useTheme } from "@mui/material"
+import { Autocomplete, Box, Popper } from "@mui/material"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import SearchBarItem from "./SearchBarItem/SearchBarItem"
 
@@ -65,8 +65,6 @@ const SearchBar = (props: Props) => {
         return -1
       })
   }, [text, groupIdeas])
-
-  const theme = useTheme()
 
   return (
     <Box onClick={() => refetch()}>

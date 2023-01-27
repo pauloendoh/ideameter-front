@@ -4,6 +4,7 @@ import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import { newGroupDto } from "@/types/domain/group/GroupDto"
 import urls from "@/utils/urls"
 import { Avatar, Drawer, IconButton, Toolbar, Tooltip } from "@mui/material"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useMemo } from "react"
@@ -46,14 +47,20 @@ const Sidebar = () => {
               <Tooltip title={group.name} placement="right">
                 <div>
                   {query.groupId === group.id && <S.SelectedGroupLittleBar />}
-                  <IconButton sx={{ width: 64, height: 64 }}>
-                    <Avatar
-                      src={group.imageUrl || group.name}
-                      sx={{ width: 64, height: 64 }}
-                    >
+                  {group.imageUrl ? (
+                    <Image
+                      src={group.imageUrl}
+                      width="64px"
+                      height="64px"
+                      style={{
+                        borderRadius: 64,
+                      }}
+                    />
+                  ) : (
+                    <Avatar src={group.name} sx={{ width: 64, height: 64 }}>
                       {group.name.substring(0, 2)}
                     </Avatar>
-                  </IconButton>
+                  )}
                 </div>
               </Tooltip>
             </a>
