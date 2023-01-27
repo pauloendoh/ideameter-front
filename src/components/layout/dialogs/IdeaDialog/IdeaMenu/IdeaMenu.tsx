@@ -87,8 +87,8 @@ const IdeaMenu = (props: Props) => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleCopyId}>Copy idea ID</MenuItem>
         <MenuItem onClick={handleCopyTitleAndId}>Copy title + ID</MenuItem>
+        <MenuItem onClick={handleCopyId}>Copy idea ID</MenuItem>
 
         <MenuItem onClick={handleDelete} style={{ color: theme.palette.error.main }}>
           Delete

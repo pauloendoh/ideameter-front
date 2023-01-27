@@ -1,5 +1,6 @@
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import { TableCell, Tooltip } from "@mui/material"
+import { upToNDecimals } from "endoh-utils"
 import { format } from "timeago.js"
 
 interface Props {
@@ -21,7 +22,9 @@ const AvgRatingTableCell = (props: Props) => {
             : ""
         }
       >
-        <div>{props.ideaRating.avgRating}</div>
+        <div>
+          {props.ideaRating.avgRating && upToNDecimals(props.ideaRating.avgRating, 1)}
+        </div>
       </Tooltip>
     </TableCell>
   )
