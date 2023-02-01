@@ -6,8 +6,9 @@ import React, { useMemo } from "react"
 interface Props {
   userId: string
   groupId: string
+  widthAndHeight?: number
+
   avatarProps?: React.ComponentPropsWithRef<typeof Avatar>
-  imageProps?: React.ComponentPropsWithRef<typeof Image>
 }
 
 const UserGroupAvatar = (props: Props) => {
@@ -23,13 +24,12 @@ const UserGroupAvatar = (props: Props) => {
         <Image
           src={user.profile.pictureUrl}
           alt={user.username}
-          width={40}
-          height={40}
+          width={props.widthAndHeight || 40}
+          height={props.widthAndHeight || 40}
           objectFit="cover"
           style={{
-            borderRadius: 40,
+            borderRadius: "50%",
           }}
-          {...props.imageProps}
         />
       ) : (
         <Avatar

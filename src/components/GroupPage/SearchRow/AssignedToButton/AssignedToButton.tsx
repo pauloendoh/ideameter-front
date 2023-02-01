@@ -52,6 +52,7 @@ const AssignedToButton = (props: Props) => {
                   fontSize: 14,
                 },
               }}
+              widthAndHeight={24}
             />
           ))}
       </Flex>
