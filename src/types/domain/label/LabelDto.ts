@@ -10,6 +10,8 @@ export default interface LabelDto {
 
   name: string
   bgColor: string
+
+  position: number
 }
 
 export const buildLabelDto = (p?: Partial<LabelDto>): LabelDto => ({
@@ -21,5 +23,7 @@ export const buildLabelDto = (p?: Partial<LabelDto>): LabelDto => ({
 
   name: "",
   bgColor: "#61bd4f",
+
+  position: 0,
   ...p,
 })

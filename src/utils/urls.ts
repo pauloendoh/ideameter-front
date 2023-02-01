@@ -29,6 +29,7 @@ const urls = {
     groupLabels: (groupId: string) => `/group/${groupId}/labels`,
     labelsToImport: (groupId: string) => `/group/${groupId}/labels-to-import`,
     importLabels: (groupId: string) => `/group/${groupId}/import-labels`,
+    labels: `/labels`,
 
     groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
     groupImage: "/group/image",

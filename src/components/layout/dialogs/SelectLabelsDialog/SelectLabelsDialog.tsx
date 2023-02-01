@@ -1,10 +1,9 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
-import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
+import useSaveLabelsBatchMutation from "@/hooks/react-query/domain/label/useSaveLabelsBatchMutation"
 import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
 import LabelDto, { buildLabelDto } from "@/types/domain/label/LabelDto"
-import { pushOrRemove } from "@/utils/array/pushOrRemove"
 import {
   Box,
   Dialog,
@@ -14,8 +13,10 @@ import {
   Typography,
 } from "@mui/material"
 import { useMemo, useState } from "react"
-import { MdAdd, MdCheck, MdClose, MdEdit, MdImportExport } from "react-icons/md"
+import { DragDropContext, OnDragEndResponder } from "react-beautiful-dnd"
+import { MdAdd, MdClose, MdImportExport } from "react-icons/md"
 import ImportLabelsSection from "./ImportLabelsSection/ImportLabelsSection"
+import SelectLabelList from "./SelectLabelList/SelectLabelList"
 
 const ariaLabel = "select-labels-dialog"
 
@@ -29,25 +30,40 @@ interface Props {
 }
 
 const SelectLabelsDialog = (props: Props) => {
-  const { data: groupLabels } = useGroupLabelsQuery(props.groupId)
   const { openDialog: openEditLabelDialog } = useEditLabelDialogStore()
 
+  const [isImporting, setIsImporting] = useState(false)
+
+  const { data: groupLabels } = useGroupLabelsQuery(props.groupId)
+
   const sortedLabels = useMemo(() => {
-    if (!groupLabels) return []
-    return groupLabels.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    return groupLabels?.sort((a, b) => a.position - b.position) || []
   }, [groupLabels])
 
-  const handleClick = (label: LabelDto) => {
-    const newLabels = pushOrRemove([...props.selectedLabels], label, "id")
+  const { mutate: submitSaveLabelsBatch } = useSaveLabelsBatchMutation()
 
-    props.onChangeSelectedLabels(newLabels)
+  const onDragEnd: OnDragEndResponder = (result) => {
+    console.log({
+      result,
+    })
+
+    const { destination, source } = result
+    const fromIndex = source.index
+    const toIndex = destination?.index
+
+    if (toIndex === undefined) return
+
+    const copiedSortedLabels = [...sortedLabels]
+    const [removed] = copiedSortedLabels.splice(fromIndex, 1)
+    copiedSortedLabels.splice(toIndex, 0, removed)
+
+    const finalSortedLabels = copiedSortedLabels.map((label, index) => ({
+      ...label,
+      position: index + 1,
+    }))
+
+    submitSaveLabelsBatch(finalSortedLabels)
   }
-
-  const labelIsSelected = (label: LabelDto) => {
-    return props.selectedLabels.find((l) => l.id === label.id)
-  }
-
-  const [isImporting, setIsImporting] = useState(false)
 
   return (
     <Dialog
@@ -71,30 +87,14 @@ const SelectLabelsDialog = (props: Props) => {
         </DialogTitle>
 
         <DialogContent>
-          <FlexCol gap={1}>
-            {sortedLabels.map((label) => (
-              <FlexVCenter key={label.id} gap={0.5}>
-                <FlexVCenter
-                  onClick={() => handleClick(label)}
-                  sx={{
-                    flexGrow: 1,
-                    borderRadius: "4px",
-                    padding: "4px 8px",
-                    background: label.bgColor,
-                    cursor: "pointer",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>{label.name}</Typography>
-                  {labelIsSelected(label) && <MdCheck />}
-                </FlexVCenter>
-
-                <IconButton size="small" onClick={() => openEditLabelDialog(label)}>
-                  <MdEdit />
-                </IconButton>
-              </FlexVCenter>
-            ))}
-          </FlexCol>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <SelectLabelList
+              sortedLabels={sortedLabels}
+              groupId={props.groupId}
+              onChangeSelectedLabels={props.onChangeSelectedLabels}
+              selectedLabels={props.selectedLabels}
+            />
+          </DragDropContext>
           <DarkButton
             sx={{ mt: 2 }}
             fullWidth
