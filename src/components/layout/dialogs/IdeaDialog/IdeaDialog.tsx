@@ -24,7 +24,6 @@ import {
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { useHotkeys } from "react-hotkeys-hook"
 import { MdClose } from "react-icons/md"
 import { format } from "timeago.js"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
@@ -33,6 +32,7 @@ import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
 import IdeaDialogSubideasAccordion from "./IdeaDialogSubideasAccordion/IdeaDialogSubideasAccordion"
 import IdeaMenu from "./IdeaMenu/IdeaMenu"
 import { useAssignMeFromDialogHotkey } from "./useAssignMeFromDialogHotkey/useAssignMeFromDialogHotkey"
+import { useSaveIdeaWithoutClosingHotkey } from "./useSaveIdeaWithoutClosingHotkey/useSaveIdeaWithoutClosingHotkey"
 import { useToggleVoteFromDialog } from "./useToggleVoteFromDialog/useToggleVoteFromDialog"
 
 const ariaLabel = "idea-dialog"
@@ -129,10 +129,10 @@ const IdeaDialog = () => {
     closeDialog()
   }
 
-  const saveButtonIsDisabled = useMemo(() => isSubmitting || !formState.isDirty, [
-    isSubmitting,
-    formState.isDirty,
-  ])
+  const saveButtonIsDisabled = useMemo(
+    () => isSubmitting || !formState.isDirty,
+    [isSubmitting, formState.isDirty]
+  )
 
   const saveWithoutClosing = useCallback(() => {
     if (saveButtonIsDisabled) return
@@ -143,19 +143,11 @@ const IdeaDialog = () => {
     })
   }, [saveButtonIsDisabled, watch])
 
-  useHotkeys(
-    "ctrl+s",
-    (e) => {
-      if (dialogIsOpen) {
-        e.preventDefault()
-        saveWithoutClosing()
-      }
-    },
-    {
-      enableOnTags: ["INPUT", "TEXTAREA", "SELECT"],
-    },
-    [saveWithoutClosing, watch(), dialogIsOpen]
-  )
+  useSaveIdeaWithoutClosingHotkey({
+    dialogIsOpen,
+    saveWithoutClosing,
+    ideaDto: watch(),
+  })
 
   const { authUser } = useAuthStore()
 
@@ -206,7 +198,6 @@ const IdeaDialog = () => {
                     multiline
                     placeholder="Idea Title"
                     variant="standard"
-                    onCtrlEnter={() => onSubmit(watch())}
                     required
                     sx={{
                       background: "transparent",
@@ -269,6 +260,7 @@ const IdeaDialog = () => {
                 isLoadingAndDisabled={isSubmitting}
                 disabled={!formState.isDirty}
                 onCancel={confirmClose}
+                onEnabledAndCtrlEnter={() => onSubmit(watch())}
               />
 
               <FlexVCenter gap={1}>
