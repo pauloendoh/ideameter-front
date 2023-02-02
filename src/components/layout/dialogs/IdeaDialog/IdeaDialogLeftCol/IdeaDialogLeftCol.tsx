@@ -84,6 +84,10 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit, ...props }: Pro
     if (e.key === "Escape") return
 
     setCanDirty(true)
+
+    if (e.key === "s" && e.ctrlKey) {
+      e.preventDefault()
+    }
   }
 
   return (
