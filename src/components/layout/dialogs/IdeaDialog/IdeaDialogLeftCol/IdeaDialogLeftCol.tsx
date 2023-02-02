@@ -85,8 +85,16 @@ const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit, ...props }: Pro
 
     setCanDirty(true)
 
+    // I had to add a default function for onCtrlEnter to remove console.error
+    if (e.key === "Enter" && e.ctrlKey) {
+      setValue("description", localDescription)
+      onSubmit(watch())
+    }
+
     if (e.key === "s" && e.ctrlKey) {
       e.preventDefault()
+      setValue("description", localDescription)
+      props.onSaveWithoutClosing()
     }
   }
 
