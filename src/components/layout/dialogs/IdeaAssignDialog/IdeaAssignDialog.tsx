@@ -112,6 +112,7 @@ const IdeaAssignDialog = () => {
                         avatarProps={{
                           sx: { width: 24, height: 24, fontSize: 14 },
                         }}
+                        widthAndHeight={24}
                       />
                     )}
 

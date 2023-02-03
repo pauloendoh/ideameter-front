@@ -73,6 +73,7 @@ const GroupDialogMemberItem = (props: Props) => {
             avatarProps={{
               sx: { width: 32, height: 32, fontSize: 20 },
             }}
+            widthAndHeight={32}
           />
           <FlexVCenter justifyContent="space-between" flexGrow={1}>
             <FlexVCenter gap={2}>

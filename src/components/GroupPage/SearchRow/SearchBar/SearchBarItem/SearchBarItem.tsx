@@ -45,6 +45,7 @@ const SearchBarItem = ({
                 userId={u.id}
                 groupId={groupId!}
                 avatarProps={{ sx: { height: 24, width: 24 } }}
+                widthAndHeight={24}
               />
             ))}
           </Flex>
