@@ -57,26 +57,26 @@ const AssignedIdeasPage = () => {
                   <AssignedIdeasTableHead headers={headers} />
                   <AssignedIdeasTableBody ideas={ideas} showCompleted={showCompleted} />
                 </Table>
-                <TableFooter
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    pr: 2,
-                    py: 1,
-                  }}
-                >
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        defaultChecked={showCompleted}
-                        checked={showCompleted}
-                        onClick={() => setShowCompleted(!showCompleted)}
-                      />
-                    }
-                    label={`Completed ideas`}
-                  />
-                </TableFooter>
               </TableContainer>
+              <TableFooter
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  p: 1,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      defaultChecked={showCompleted}
+                      checked={showCompleted}
+                      onClick={() => setShowCompleted(!showCompleted)}
+                    />
+                  }
+                  label={`Completed ideas`}
+                />
+              </TableFooter>
             </FlexVCenter>
           </Paper>
         </Flex>
