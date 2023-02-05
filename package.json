@@ -37,7 +37,7 @@
     "endoh-utils": "^1.0.12",
     "graphql-request": "^5.1.0",
     "immer": "^9.0.12",
-    "luxon": "^2.5.0",
+    "luxon": "^2.5.2",
     "next": "^12.3.0",
     "nookies": "^2.5.2",
     "query-string": "^7.1.1",
