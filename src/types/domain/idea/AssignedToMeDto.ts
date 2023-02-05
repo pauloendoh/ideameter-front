@@ -3,6 +3,7 @@ export interface AssignedToMeDto {
     id: string
     name: string
     isDone: boolean
+    completedAt: string | null
   }
   group: {
     groupId: string
