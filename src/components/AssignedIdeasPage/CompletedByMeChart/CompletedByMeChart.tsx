@@ -22,7 +22,7 @@ const CompletedByMeChart = (props: Props) => {
       <BarChart
         height={300}
         data={completedIdeasCountLastYear}
-        width={isLargeScreen ? 800 : 480}
+        width={isLargeScreen ? 780 : 480}
         margin={{
           top: 16,
           right: 30,
