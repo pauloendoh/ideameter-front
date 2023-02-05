@@ -38,10 +38,8 @@ const FilterButton = (props: Props) => {
 
   // const isDisabled = useMemo(() => filter.byText?.length > 0, [filter.byText]);
 
-  // PE 1/3 - Check if it's being used in other places
-  const sortedLabelsById = useMemo(() => {
-    if (labels === undefined || labels?.length === 0) return []
-    return labels.sort((a, b) => (a.id > b.id ? 1 : -1))
+  const sortedLabels = useMemo(() => {
+    return labels?.sort((a, b) => (a.position > b.position ? 1 : -1)) || []
   }, [labels])
 
   const theme = useTheme()
@@ -97,9 +95,9 @@ const FilterButton = (props: Props) => {
           <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
         </S.MenuItem>
 
-        {sortedLabelsById.length > 0 && <Divider />}
+        {sortedLabels.length > 0 && <Divider />}
 
-        {sortedLabelsById.map((label) => (
+        {sortedLabels.map((label) => (
           <S.MenuItem
             key={label.id}
             onClick={() => toggleFilterLabelId(label.id, routerQuery.tabId!)}

@@ -16,7 +16,9 @@ interface Props {
 // with props
 type ContainerProps = {
   bgColor: string
+  isDragging: boolean
 }
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -24,20 +26,21 @@ const Container = styled.div`
   border-radius: 4px;
   padding: 4px 8px;
   background: ${(props: ContainerProps) => props.bgColor};
-  cursor: pointer;
+
   justify-content: space-between;
 `
 
 const SelectLabelItem = (props: Props) => {
   return (
     <Draggable draggableId={props.label.id} index={props.index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <FlexVCenter gap={0.5}>
           <Container
             bgColor={props.label.bgColor}
             onClick={() => props.handleClick(props.label)}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            isDragging={snapshot.isDragging}
             ref={provided.innerRef}
           >
             <Typography>{props.label.name}</Typography>

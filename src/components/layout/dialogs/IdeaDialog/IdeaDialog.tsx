@@ -7,6 +7,7 @@ import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSa
 import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
+import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
@@ -169,6 +170,13 @@ const IdeaDialog = () => {
       setValueDirty("highImpactVotes", newVotes, { shouldDirty: true }),
   })
 
+  const { dialogIsOpen: labelsDialogIsOpen } = useEditLabelDialogStore()
+
+  const isDisabled = useMemo(
+    () => isSubmitting || !formState.isDirty || labelsDialogIsOpen,
+    [isSubmitting, formState.isDirty, labelsDialogIsOpen]
+  )
+
   return (
     <Dialog
       onKeyDown={(e) => {
@@ -258,7 +266,7 @@ const IdeaDialog = () => {
             <FlexVCenter justifyContent="space-between">
               <SaveCancelButtons
                 isLoadingAndDisabled={isSubmitting}
-                disabled={!formState.isDirty}
+                disabled={isDisabled}
                 onCancel={confirmClose}
                 onEnabledAndCtrlEnter={() => onSubmit(watch())}
               />

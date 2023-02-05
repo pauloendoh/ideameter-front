@@ -37,7 +37,7 @@ const RatingInput = (props: Props) => {
       (rating) => rating.userId === authUser?.id && rating.ideaId === props.idea.id
     )
 
-    if (containsSubideas) return 0
+    if (containsSubideas && !userRating) return -1
     if (!userRating) return -1
     if (userRating.rating === null) return 0
     return userRating.rating
