@@ -1,12 +1,14 @@
 import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea"
 import { useMySocketEvent } from "@/hooks/socket/useMySocketEvent"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import upsert from "@/utils/array/upsert"
 import { useAxios } from "@/utils/axios/useAxios"
 import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
+import Link from "@mui/material/Link"
 import { useMutation, useQueryClient } from "react-query"
 
 const useSaveIdeaMutation = () => {
@@ -20,6 +22,8 @@ const useSaveIdeaMutation = () => {
 
   const axios = useAxios()
 
+  const { openDialog } = useIdeaDialogStore()
+
   return useMutation(
     (payload: IdeaDto) =>
       axios
@@ -32,9 +36,12 @@ const useSaveIdeaMutation = () => {
     {
       onSuccess: (savedIdea, payload) => {
         if (groupId) {
-          queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) => {
-            return upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
-          })
+          queryClient.setQueryData<IdeaDto[]>(
+            queryKeys.groupIdeas(groupId),
+            (curr) => {
+              return upsert(curr, savedIdea, (i) => i.id === savedIdea.id)
+            }
+          )
         }
 
         if (groupId && payload.parentId)
@@ -45,7 +52,20 @@ const useSaveIdeaMutation = () => {
         if (payload.id === "" && groupId)
           queryClient.invalidateQueries(queryKeys.ratingsByGroup(groupId))
 
-        setSuccessMessage("Idea saved!")
+        setSuccessMessage(
+          <>
+            Idea saved!{" "}
+            <Link
+              sx={(theme) => ({
+                cursor: "pointer",
+                color: theme.palette.text.primary,
+              })}
+              onClick={() => openDialog(savedIdea)}
+            >
+              Open
+            </Link>
+          </>
+        )
 
         sendMessage({ idea: savedIdea, groupId })
         scrollToIdea(savedIdea.id)

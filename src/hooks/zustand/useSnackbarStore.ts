@@ -1,25 +1,24 @@
-import create, { SetState } from "zustand";
+import { ReactNode } from "react"
+import create from "zustand"
 
-interface ISnackBarStore {
-  successMessage: string;
-  setSuccessMessage: (message: string) => void;
+interface IStore {
+  successMessage: ReactNode
+  setSuccessMessage: (message: ReactNode) => void
 
-  errorMessage: string;
-  setErrorMessage: (message: string) => void;
+  errorMessage: ReactNode
+  setErrorMessage: (message: ReactNode) => void
 }
 
-const useSnackbarStore = create<ISnackBarStore>(
-  (set: SetState<ISnackBarStore>) => ({
-    successMessage: "",
-    setSuccessMessage: (message) => {
-      set({ successMessage: message });
-    },
+const useSnackbarStore = create<IStore>((set) => ({
+  successMessage: "",
+  setSuccessMessage: (message) => {
+    set({ successMessage: message })
+  },
 
-    errorMessage: "",
-    setErrorMessage: (message) => {
-      set({ errorMessage: message });
-    },
-  })
-);
+  errorMessage: "",
+  setErrorMessage: (message) => {
+    set({ errorMessage: message })
+  },
+}))
 
-export default useSnackbarStore;
+export default useSnackbarStore

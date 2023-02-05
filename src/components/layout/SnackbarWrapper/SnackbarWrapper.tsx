@@ -6,12 +6,8 @@ import S from "./SnackbarWrapper.styles"
 
 // Zustand version!
 const SnackbarWrapper = () => {
-  const {
-    successMessage,
-    setSuccessMessage,
-    errorMessage,
-    setErrorMessage,
-  } = useSnackbarStore()
+  const { successMessage, setSuccessMessage, errorMessage, setErrorMessage } =
+    useSnackbarStore()
 
   const handleCloseSuccess = (
     event?: Event | React.SyntheticEvent<any, Event>,
@@ -38,19 +34,23 @@ const SnackbarWrapper = () => {
     <S.Root>
       <Snackbar
         id="success-message"
-        open={successMessage.length > 0}
+        open={!!successMessage}
         autoHideDuration={3000}
         onClose={handleCloseSuccess}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        <Alert onClose={handleCloseSuccess} severity="success" style={{ color: "white" }}>
+        <Alert
+          onClose={handleCloseSuccess}
+          severity="success"
+          style={{ color: "white" }}
+        >
           {successMessage}
         </Alert>
       </Snackbar>
 
       <Snackbar
         id="error-message"
-        open={errorMessage.length > 0}
+        open={!!errorMessage}
         autoHideDuration={3000}
         onClose={handleCloseError}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
@@ -63,7 +63,10 @@ const SnackbarWrapper = () => {
   )
 }
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
