@@ -19,6 +19,7 @@ export const shortcutSections: Section[] = [
     shortcuts: [
       { name: "Assign idea to me", shortcut: "A" },
       { name: "Vote idea as high impact", shortcut: "V" },
+      { name: "Select labels", shortcut: "L" },
       { name: "Select idea", shortcut: "Ctrl+Click" },
       { name: "Select range of ideas", shortcut: "Shift+Click" },
     ],
@@ -32,6 +33,8 @@ export const shortcutSections: Section[] = [
   },
   {
     title: "Idea filter",
-    shortcuts: [{ name: "Filter ideas assigned to you", shortcut: "Shift + 2" }],
+    shortcuts: [
+      { name: "Filter ideas assigned to you", shortcut: "Shift + 2" },
+    ],
   },
 ]
