@@ -57,6 +57,7 @@ const RegisterForm = (props: Props) => {
                   type="email"
                   fullWidth
                   required
+                  autoFocus
                   InputLabelProps={{ required: false }}
                   {...field}
                 />

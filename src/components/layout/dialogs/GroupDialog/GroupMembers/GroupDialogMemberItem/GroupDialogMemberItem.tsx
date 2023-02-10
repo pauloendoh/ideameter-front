@@ -65,7 +65,11 @@ const GroupDialogMemberItem = (props: Props) => {
 
   return (
     <ListItem disablePadding>
-      <ListItemButton disableGutters onClick={(e) => handleClick(e)}>
+      <ListItemButton
+        disableGutters
+        onClick={(e) => handleClick(e)}
+        sx={{ p: 1, borderRadius: 0.5 }}
+      >
         <FlexVCenter flexGrow={1} sx={{ gap: 1.5 }}>
           <UserGroupAvatar
             userId={props.userGroup.userId}
@@ -157,7 +161,9 @@ const GroupDialogMemberItem = (props: Props) => {
           }}
         >
           <FlexVCenter gap={1}>
-            <Typography color="red">Remove {props.userGroup.user?.username}</Typography>
+            <Typography color="red">
+              Remove {props.userGroup.user?.username}
+            </Typography>
           </FlexVCenter>
         </MenuItem>
       </Menu>

@@ -10,7 +10,7 @@ interface IIdeaDialogStore {
 
 const useIdeaDialogStore = create<IIdeaDialogStore>((set, get) => ({
   initialValue: buildIdeaDto(),
-  confirmDialogValue: { title: "", onConfirm: () => {} },
+  confirasdmDialogValue: { title: "", onConfirm: () => {} },
   dialogIsOpen: false,
   openDialog: (initialValue) => {
     set({ dialogIsOpen: true, initialValue })

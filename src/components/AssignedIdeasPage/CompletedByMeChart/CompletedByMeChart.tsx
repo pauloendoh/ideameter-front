@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from "@mui/material"
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material"
 import {
   Bar,
   BarChart,
@@ -17,14 +17,22 @@ const CompletedByMeChart = (props: Props) => {
 
   const isLargeScreen = useMediaQuery("(min-width:600px)")
 
+  const theme = useTheme()
+
   return (
-    <Box height={400}>
+    <Box
+      height={400}
+      display="flex"
+      flexDirection={"column"}
+      alignItems="center"
+    >
+      <Typography variant="h5">Completed ideas assigned to you</Typography>
       <BarChart
         height={300}
         data={completedIdeasCountLastYear}
         width={isLargeScreen ? 780 : 480}
         margin={{
-          top: 16,
+          top: 32,
           right: 30,
           left: 20,
           bottom: 20,
@@ -35,7 +43,7 @@ const CompletedByMeChart = (props: Props) => {
         <YAxis />
         <Tooltip />
 
-        <Bar dataKey="count" fill="#8884d8">
+        <Bar dataKey="count" fill={theme.palette.secondary.main}>
           <LabelList
             dataKey="count"
             position="inside"

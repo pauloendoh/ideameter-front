@@ -1,10 +1,10 @@
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useAddMemberMutation from "@/hooks/react-query/domain/group-members/useAddMemberMutation";
-import useSearchUsersQuery from "@/hooks/react-query/domain/user/useSearchUsersQuery";
-import useDebounce from "@/hooks/utils/useDebounce";
-import SimpleUserDto from "@/types/domain/user/SimpleUserDto";
+import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useAddMemberMutation from "@/hooks/react-query/domain/group-members/useAddMemberMutation"
+import useSearchUsersQuery from "@/hooks/react-query/domain/user/useSearchUsersQuery"
+import useDebounce from "@/hooks/utils/useDebounce"
+import SimpleUserDto from "@/types/domain/user/SimpleUserDto"
 import {
   Autocomplete,
   Dialog,
@@ -12,53 +12,54 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-} from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
-import { MdClose } from "react-icons/md";
+} from "@mui/material"
+import { useEffect, useMemo, useState } from "react"
+import { MdClose } from "react-icons/md"
 
 interface Props {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 
-  groupId: string;
-  currentMemberIds: string[];
+  groupId: string
+  currentMemberIds: string[]
 }
 
 const AddMemberDialog = (props: Props) => {
-  const MIN_LENGTH = 3;
+  const MIN_LENGTH = 3
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [value, setValue] = useState<SimpleUserDto | null>(null);
+  const [searchQuery, setSearchQuery] = useState("")
+  const [value, setValue] = useState<SimpleUserDto | null>(null)
 
-  const addMemberMutation = useAddMemberMutation();
-  const debouncedSearchQuery = useDebounce(searchQuery, 200);
-  const { data: userResults, refetch, isFetching } = useSearchUsersQuery(
-    debouncedSearchQuery,
-    MIN_LENGTH
-  );
+  const addMemberMutation = useAddMemberMutation()
+  const debouncedSearchQuery = useDebounce(searchQuery, 200)
+  const {
+    data: userResults,
+    refetch,
+    isFetching,
+  } = useSearchUsersQuery(debouncedSearchQuery, MIN_LENGTH)
 
   useEffect(() => {
-    if (searchQuery === debouncedSearchQuery) refetch();
-  }, [searchQuery, debouncedSearchQuery]);
+    if (searchQuery === debouncedSearchQuery) refetch()
+  }, [searchQuery, debouncedSearchQuery])
 
   const options = useMemo(() => {
-    if (!userResults) return [];
+    if (!userResults) return []
 
     // filter out current members
     return userResults.filter(
       (user) => !props.currentMemberIds.includes(user.id)
-    );
-  }, [userResults, props.currentMemberIds]);
+    )
+  }, [userResults, props.currentMemberIds])
 
   const onSubmit = () => {
-    if (!value) return;
+    if (!value) return
     addMemberMutation.mutate(
       { groupId: props.groupId, memberId: value.id },
       {
         onSuccess: props.onClose,
       }
-    );
-  };
+    )
+  }
 
   return (
     <Dialog
@@ -70,8 +71,8 @@ const AddMemberDialog = (props: Props) => {
     >
       <form
         onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
+          e.preventDefault()
+          onSubmit()
         }}
       >
         <DialogTitle id="add-member-dialog-title">
@@ -96,8 +97,8 @@ const AddMemberDialog = (props: Props) => {
             }
             value={value}
             onChange={(e, newValue) => {
-              if (typeof newValue === "string") return;
-              setValue(newValue);
+              if (typeof newValue === "string") return
+              setValue(newValue)
             }}
             filterOptions={(x) => x}
             renderInput={(params) => (
@@ -108,6 +109,7 @@ const AddMemberDialog = (props: Props) => {
                 label="Search users"
                 size="small"
                 fullWidth
+                autoFocus
               />
             )}
           />
@@ -118,7 +120,7 @@ const AddMemberDialog = (props: Props) => {
         </DialogTitle>
       </form>
     </Dialog>
-  );
-};
+  )
+}
 
-export default AddMemberDialog;
+export default AddMemberDialog

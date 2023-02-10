@@ -51,9 +51,11 @@ const FilterButton = (props: Props) => {
         onClick={handleClick}
         startIcon={<MdFilterAlt />}
         sx={{
-          background: getFilterCount() > 0 ? theme.palette.secondary.main : undefined,
+          background:
+            getFilterCount() > 0 ? theme.palette.secondary.main : undefined,
           ":hover": {
-            background: getFilterCount() > 0 ? theme.palette.secondary.main : undefined,
+            background:
+              getFilterCount() > 0 ? theme.palette.secondary.main : undefined,
           },
         }}
         // disabled={isDisabled}
@@ -82,11 +84,21 @@ const FilterButton = (props: Props) => {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         keepMounted
+        PaperProps={{
+          sx: {
+            width: 280,
+          },
+        }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <S.MenuItem onClick={() => toggleOnlyHighImpactVoted(routerQuery.tabId!)}>
-          <Checkbox checked={filter.onlyHighImpactVoted} name="voted-as-high-impact" />
+        <S.MenuItem
+          onClick={() => toggleOnlyHighImpactVoted(routerQuery.tabId!)}
+        >
+          <Checkbox
+            checked={filter.onlyHighImpactVoted}
+            name="voted-as-high-impact"
+          />
           <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
         </S.MenuItem>
         <Divider />

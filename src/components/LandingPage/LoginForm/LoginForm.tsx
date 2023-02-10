@@ -49,6 +49,7 @@ const LoginForm = (props: Props) => {
                   label="Username or email"
                   fullWidth
                   required
+                  autoFocus
                   InputLabelProps={{ required: false }}
                   {...field}
                 />
@@ -81,7 +82,12 @@ const LoginForm = (props: Props) => {
               Forgot your password?
             </Link>
           </FlexVCenter>
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+          >
             Sign In
           </Button>
         </FlexCol>

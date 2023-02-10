@@ -1,22 +1,22 @@
-import AddMemberDialog from "@/components/layout/dialogs/AddMemberDialog/AddMemberDialog";
-import FlexCircle from "@/components/_common/flexboxes/FlexCircle";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery";
-import { Button, Typography } from "@mui/material";
-import React, { useMemo, useState } from "react";
-import { RiUserAddLine } from "react-icons/ri";
+import AddMemberDialog from "@/components/layout/dialogs/AddMemberDialog/AddMemberDialog"
+import FlexCircle from "@/components/_common/flexboxes/FlexCircle"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
+import { Button, Typography } from "@mui/material"
+import { useMemo, useState } from "react"
+import { RiUserAddLine } from "react-icons/ri"
 
 interface Props {
-  groupId: string;
+  groupId: string
 }
 
 const AddMemberButton = (props: Props) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const { data } = useGroupMembersQuery(props.groupId);
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const { data } = useGroupMembersQuery(props.groupId)
 
   const currentMemberIds = useMemo(() => {
-    return data?.map((member) => member.userId) || [];
-  }, [data]);
+    return data?.map((member) => member.userId) || []
+  }, [data])
 
   return (
     <>
@@ -26,7 +26,9 @@ const AddMemberButton = (props: Props) => {
           color: "inherit",
           display: "flex",
           justifyContent: "left",
-          padding: 0,
+
+          p: 1,
+          borderRadius: 0.5,
         }}
       >
         <FlexVCenter sx={{ gap: 1.5 }}>
@@ -50,7 +52,7 @@ const AddMemberButton = (props: Props) => {
         currentMemberIds={currentMemberIds}
       />
     </>
-  );
-};
+  )
+}
 
-export default AddMemberButton;
+export default AddMemberButton

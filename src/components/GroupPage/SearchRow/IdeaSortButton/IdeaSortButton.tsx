@@ -5,7 +5,7 @@ import {
   findSortOptionByAttribute,
   ideaSortOptionsDivided,
 } from "@/types/domain/idea/ideaSortOptions"
-import { Divider, Menu, MenuItem } from "@mui/material"
+import { Divider, Menu, MenuItem, useTheme } from "@mui/material"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { FaSortAmountDown, FaSortAmountUpAlt } from "react-icons/fa"
 interface Props {
@@ -27,7 +27,10 @@ const IdeaSortButton = (props: Props) => {
     setAnchorEl(null)
   }
 
-  const [sortingBy, setSortingBy] = useIdeaSortStore((s) => [s.sortingBy, s.setSortingBy])
+  const [sortingBy, setSortingBy] = useIdeaSortStore((s) => [
+    s.sortingBy,
+    s.setSortingBy,
+  ])
 
   const selectedSortOption = useMemo(() => {
     return findSortOptionByAttribute(sortingBy.attribute)
@@ -45,12 +48,26 @@ const IdeaSortButton = (props: Props) => {
     setSortingBy(previousSortingByRef.current)
   }, [filter.onlyCompletedIdeas])
 
+  const theme = useTheme()
+  const backgroundColor = useMemo(() => {
+    if (sortingBy.attribute === "avgRating") {
+      return undefined
+    }
+    return theme.palette.secondary.main
+  }, [sortingBy])
+
   return (
     <>
       <DarkButton
         id={ariaLabel}
         onClick={handleOpen}
-        sx={{ paddingLeft: 1.5 }}
+        sx={{
+          paddingLeft: 1.5,
+          background: backgroundColor,
+          ":hover": {
+            background: backgroundColor,
+          },
+        }}
         startIcon={
           sortingBy.order === "desc" ? (
             <FaSortAmountDown size={16} />

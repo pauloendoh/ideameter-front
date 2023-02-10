@@ -12,6 +12,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
+import { upToNDecimals } from "endoh-utils"
 import { useCallback, useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import useIdeaRatingsQueryUtils from "../../../../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
@@ -76,7 +77,9 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
           },
         }}
       >
-        <Typography>Ratings - Avg {ideaRatings.avgRating}</Typography>
+        <Typography>
+          Ratings - Avg {upToNDecimals(Number(ideaRatings.avgRating), 1)}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ px: 0, pb: 0 }}>
         <Table>
@@ -84,7 +87,10 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
             <TableRow>
               <UserTableCell userId={authUser!.id} isYou />
               {ideaRatings.otherUserGroupRatings.map((gr) => (
-                <UserTableCell key={gr.userGroup.userId} userId={gr.userGroup.userId} />
+                <UserTableCell
+                  key={gr.userGroup.userId}
+                  userId={gr.userGroup.userId}
+                />
               ))}
 
               {/* Empty cell to avoid bigger width on the last cell */}

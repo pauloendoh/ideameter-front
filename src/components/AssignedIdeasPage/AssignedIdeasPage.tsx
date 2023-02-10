@@ -28,7 +28,7 @@ const AssignedIdeasPage = () => {
       <Container sx={{ mt: 4, alignItems: "center", justifyContent: "center" }}>
         <AssignedToMeTable />
 
-        <FlexCenter mt={4}>
+        <FlexCenter mt={6}>
           <CompletedByMeChart />
         </FlexCenter>
       </Container>

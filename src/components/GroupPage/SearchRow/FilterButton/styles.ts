@@ -1,19 +1,18 @@
-import { MenuItem, styled } from "@mui/material";
-import { Box } from "@mui/system";
+import { MenuItem, styled, Typography } from "@mui/material"
 
 const S = {
   MenuItem: styled(MenuItem)`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 4;
     padding-top: 0;
     padding-bottom: 0;
   `,
-  CheckboxLabel: styled(Box)`
+  CheckboxLabel: styled(Typography)`
     padding: 4px 8px;
     flex-grow: 1;
-    min-width: 160px;
+    white-space: normal;
   `,
-};
+}
 
-export default S;
+export default S
