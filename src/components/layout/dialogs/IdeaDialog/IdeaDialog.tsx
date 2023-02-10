@@ -9,6 +9,7 @@ import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import urls from "@/utils/urls"
@@ -133,25 +134,7 @@ const IdeaDialog = () => {
     closeDialog()
   }
 
-  const saveButtonIsDisabled = useMemo(
-    () => isSubmitting || !formState.isDirty,
-    [isSubmitting, formState.isDirty]
-  )
-
-  const saveWithoutClosing = useCallback(() => {
-    if (saveButtonIsDisabled) return
-    submitSaveIdea(watch(), {
-      onSuccess: (idea) => {
-        reset(idea)
-      },
-    })
-  }, [saveButtonIsDisabled, watch])
-
-  useSaveIdeaWithoutClosingHotkey({
-    dialogIsOpen,
-    saveWithoutClosing,
-    ideaDto: watch(),
-  })
+  const { dialogIsOpen: subideaDialogIsOpen } = useSubideaDialogStore()
 
   const { authUser } = useAuthStore()
 
@@ -175,10 +158,29 @@ const IdeaDialog = () => {
 
   const { dialogIsOpen: labelsDialogIsOpen } = useEditLabelDialogStore()
 
-  const isDisabled = useMemo(
-    () => isSubmitting || !formState.isDirty || labelsDialogIsOpen,
-    [isSubmitting, formState.isDirty, labelsDialogIsOpen]
+  const saveIsDisabled = useMemo(
+    () =>
+      isSubmitting ||
+      !formState.isDirty ||
+      subideaDialogIsOpen ||
+      labelsDialogIsOpen,
+    [isSubmitting, formState.isDirty, labelsDialogIsOpen, subideaDialogIsOpen]
   )
+
+  const saveWithoutClosing = useCallback(() => {
+    if (saveIsDisabled) return
+    submitSaveIdea(watch(), {
+      onSuccess: (idea) => {
+        reset(idea)
+      },
+    })
+  }, [saveIsDisabled, watch])
+
+  useSaveIdeaWithoutClosingHotkey({
+    dialogIsOpen,
+    saveWithoutClosing,
+    ideaDto: watch(),
+  })
 
   return (
     <Dialog
@@ -270,7 +272,7 @@ const IdeaDialog = () => {
             <FlexVCenter justifyContent="space-between">
               <SaveCancelButtons
                 isLoadingAndDisabled={isSubmitting}
-                disabled={isDisabled}
+                disabled={saveIsDisabled}
                 onCancel={confirmClose}
                 onEnabledAndCtrlEnter={() => onSubmit(watch())}
               />
