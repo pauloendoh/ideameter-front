@@ -1,3 +1,4 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
@@ -11,12 +12,14 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
+import { format } from "timeago.js"
 import SubideaMenu from "./SubideaMenu/SubideaMenu"
 
 const ariaLabel = "subidea-dialog"
@@ -59,11 +62,7 @@ const SubideaDialog = () => {
       onClose={closeDialog}
       fullWidth
       aria-labelledby={ariaLabel}
-      PaperProps={{
-        sx: {
-          maxWidth: 360,
-        },
-      }}
+      maxWidth="sm"
     >
       <Box pb={1}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,10 +121,33 @@ const SubideaDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons
-              disabled={saveMutation.isLoading}
-              onCancel={closeDialog}
-            />
+            <FlexVCenter justifyContent="space-between">
+              <SaveCancelButtons
+                disabled={saveMutation.isLoading}
+                onCancel={closeDialog}
+              />
+
+              <FlexVCenter gap={1}>
+                {watch("creatorId") && (
+                  <>
+                    <UserGroupAvatar
+                      groupId={query.groupId!}
+                      userId={watch("creatorId")}
+                      widthAndHeight={24}
+                    />
+                    <Tooltip
+                      title={new Date(watch("createdAt")).toLocaleDateString()}
+                    >
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Typography>
+                          Created {format(watch("createdAt"))}
+                        </Typography>
+                      </div>
+                    </Tooltip>
+                  </>
+                )}
+              </FlexVCenter>
+            </FlexVCenter>
           </DialogTitle>
         </form>
       </Box>

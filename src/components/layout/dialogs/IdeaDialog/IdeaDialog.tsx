@@ -281,6 +281,7 @@ const IdeaDialog = () => {
                     <UserGroupAvatar
                       groupId={routerQuery.groupId!}
                       userId={watch("creatorId")}
+                      widthAndHeight={24}
                     />
                     <Tooltip
                       title={new Date(watch("createdAt")).toLocaleDateString()}
