@@ -43,12 +43,17 @@ const IdeaNameTableCell = (props: Props) => {
     return !!props.ideaRating.idea.parentId
   }, [props.ideaRating.idea.parentId])
 
+  const sortedLabels = useMemo(
+    () => props.ideaRating.idea.labels.sort((a, b) => a.position - b.position),
+    [props.ideaRating.idea.labels]
+  )
+
   return (
     <TableCell>
       <FlexCol style={{ gap: 8 }}>
-        {props.ideaRating.idea.labels?.length > 0 && (
+        {sortedLabels.length > 0 && (
           <Flex style={{ flexWrap: "wrap", gap: 4 }}>
-            {props.ideaRating.idea.labels.map((label) => (
+            {sortedLabels.map((label) => (
               <div
                 key={label.id}
                 style={{

@@ -21,11 +21,7 @@ const IdeaDialogSelectedLabels = (props: Props) => {
   const [openDialog, setOpenDialog] = useState(false)
 
   const sortedLabels = useMemo(() => {
-    return (
-      props.idea.labels?.sort((a, b) =>
-        a.createdAt.localeCompare(b.createdAt)
-      ) || []
-    )
+    return props.idea.labels?.sort((a, b) => a.position - b.position) || []
   }, [props.idea.labels])
 
   return (

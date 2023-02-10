@@ -1,3 +1,4 @@
+import { useSelectIdeaLabelsHotkey } from "@/hooks/hotkeys/useSelectIdeaLabelsHotkey/useSelectIdeaLabelsHotkey"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
@@ -30,12 +31,17 @@ const IdeaTableRow = (props: Props) => {
 
   useAssignMeHotkey(isHoveringIdeaId)
   useToggleVoteHotkey(isHoveringIdeaId)
+  useSelectIdeaLabelsHotkey(isHoveringIdeaId)
 
-  const isSubidea = useMemo(() => !!props.ideaRating.idea.parentId, [props.ideaRating])
+  const isSubidea = useMemo(
+    () => !!props.ideaRating.idea.parentId,
+    [props.ideaRating]
+  )
 
-  const hasSubideas = useMemo(() => props.ideaRating.subideas?.length > 0, [
-    props.ideaRating.subideas,
-  ])
+  const hasSubideas = useMemo(
+    () => props.ideaRating.subideas?.length > 0,
+    [props.ideaRating.subideas]
+  )
 
   const { idIsSelected } = useMultiSelectIdeas()
   const theme = useTheme()
@@ -108,7 +114,9 @@ const IdeaTableRow = (props: Props) => {
       </TableCell>
       {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
         <TableCell key={JSON.stringify(userGroupRating)} align="center">
-          {hasSubideas && !userGroupRating.rating ? "-" : userGroupRating.rating}
+          {hasSubideas && !userGroupRating.rating
+            ? "-"
+            : userGroupRating.rating}
         </TableCell>
       ))}
 
