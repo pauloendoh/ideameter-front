@@ -94,6 +94,7 @@ const SubideaDialog = () => {
                     size="small"
                     label="Subidea"
                     fullWidth
+                    multiline
                     onCtrlEnter={() => onSubmit(watch())}
                     required
                     {...field}

@@ -210,6 +210,7 @@ const IdeaDialog = () => {
                     fullWidth
                     placeholder="Idea Title"
                     variant="standard"
+                    multiline
                     required
                     sx={{
                       background: "transparent",
