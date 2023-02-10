@@ -1,9 +1,6 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useDeleteGroupMutation from "@/hooks/react-query/domain/group/useDeleteGroupMutation"
 import useConfirmDeleteGroupDialogStore from "@/hooks/zustand/dialogs/useConfirmDeleteGroupDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
-import useAutoScrollStore from "@/hooks/zustand/useAutoScrollStore"
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import GroupDto from "@/types/domain/group/GroupDto"
 import {
   Box,
@@ -11,11 +8,10 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-  Tooltip,
   Typography,
 } from "@mui/material"
 import { useState } from "react"
-import { MdDelete, MdEdit, MdInfo, MdMoreHoriz, MdMouse } from "react-icons/md"
+import { MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md"
 
 interface Props {
   group: GroupDto
@@ -37,14 +33,8 @@ function GroupMoreIcon(props: Props) {
   const deleteMutation = useDeleteGroupMutation()
 
   const { openDialog } = useGroupDialogStore()
-  const { openDialog: openConfirmDeleteGroupDialog } = useConfirmDeleteGroupDialogStore()
-
-  const [autoScrollIsDisabled, toggleAutoScroll] = useAutoScrollStore((s) => [
-    s.isDisabled,
-    s.toggleIsDisabled,
-  ])
-
-  const setSuccessMessage = useSnackbarStore((s) => s.setSuccessMessage)
+  const { openDialog: openConfirmDeleteGroupDialog } =
+    useConfirmDeleteGroupDialogStore()
 
   return (
     <Box>
@@ -86,39 +76,6 @@ function GroupMoreIcon(props: Props) {
           </MenuItem>
         )}
 
-        {props.canEdit && (
-          <MenuItem
-            onClick={(e) => {
-              handleCloseMore()
-              const message = autoScrollIsDisabled
-                ? "Auto-scroll enabled!"
-                : "Auto-scroll disabled!"
-              setSuccessMessage(message)
-              setTimeout(() => {
-                toggleAutoScroll()
-              }, 250) // so it changes the text after closing
-            }}
-          >
-            <ListItemIcon sx={{ width: 16 }}>
-              <MdMouse />
-            </ListItemIcon>
-            <FlexVCenter gap={0.5}>
-              <Typography variant="inherit" noWrap>
-                {autoScrollIsDisabled
-                  ? "Enable auto-scroll for me"
-                  : "Disable auto-scroll for me"}
-              </Typography>
-              <Tooltip
-                title="Auto-scroll: after you save an idea, it will highlight and scroll to the saved idea in the table"
-                arrow
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <MdInfo />
-                </div>
-              </Tooltip>
-            </FlexVCenter>
-          </MenuItem>
-        )}
         {props.showDelete && (
           <MenuItem
             onClick={(e) => {
@@ -131,7 +88,9 @@ function GroupMoreIcon(props: Props) {
             id="delete-decision-button"
             sx={{ color: (theme) => theme.palette.error.main }}
           >
-            <ListItemIcon sx={{ width: 16, color: (theme) => theme.palette.error.main }}>
+            <ListItemIcon
+              sx={{ width: 16, color: (theme) => theme.palette.error.main }}
+            >
               <MdDelete />
             </ListItemIcon>
             <Typography variant="inherit" noWrap>

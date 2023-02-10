@@ -51,7 +51,10 @@ const AssignedToMeTable = (props: Props) => {
         <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader>
             <AssignedIdeasTableHead headers={headers} />
-            <AssignedIdeasTableBody ideas={ideas} showCompleted={showCompleted} />
+            <AssignedIdeasTableBody
+              ideas={ideas}
+              showCompleted={showCompleted}
+            />
           </Table>
         </TableContainer>
         <TableFooter

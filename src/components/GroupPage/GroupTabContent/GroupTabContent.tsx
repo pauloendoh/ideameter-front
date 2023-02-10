@@ -5,6 +5,7 @@ import { useNewIdeaHotkey } from "@/hooks/hotkeys/useNewIdeaHotkey/useNewIdeaHot
 import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
+import useAutoScrollStore from "@/hooks/zustand/useAutoScrollStore"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material"
 import { useRouter } from "next/router"
@@ -34,27 +35,47 @@ const GroupTabContent = (props: Props) => {
 
   useNewIdeaHotkey(props.tabId)
 
+  const [autoScrollIsDisabled, toggleAutoScroll] = useAutoScrollStore((s) => [
+    s.isDisabled,
+    s.toggleIsDisabled,
+  ])
+
   return (
     <FlexCol gap={2}>
       <Box>{ideas && <IdeaRatingsTable ideaRatings={ideaRatings} />}</Box>
 
       <FlexVCenter ml={2} mb={1} justifyContent="space-between">
-        <DarkButton onClick={() => openDialog(buildIdeaDto({ tabId: props.tabId }))}>
+        <DarkButton
+          onClick={() => openDialog(buildIdeaDto({ tabId: props.tabId }))}
+        >
           + New idea
         </DarkButton>
 
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                defaultChecked={filter.onlyCompletedIdeas}
-                checked={filter.onlyCompletedIdeas}
-                onClick={() => toggleOnlyCompletedIdeas(props.tabId)}
-              />
-            }
-            label={`Completed ideas`}
-          />
-        </FormGroup>
+        <FlexVCenter gap={2}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={filter.onlyCompletedIdeas}
+                  checked={filter.onlyCompletedIdeas}
+                  onClick={() => toggleOnlyCompletedIdeas(props.tabId)}
+                />
+              }
+              label={`Completed ideas`}
+            />
+          </FormGroup>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!autoScrollIsDisabled}
+                  onClick={() => toggleAutoScroll()}
+                />
+              }
+              label={`Auto-scroll`}
+            />
+          </FormGroup>
+        </FlexVCenter>
       </FlexVCenter>
     </FlexCol>
   )
