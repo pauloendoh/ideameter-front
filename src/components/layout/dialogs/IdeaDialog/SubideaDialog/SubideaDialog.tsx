@@ -1,10 +1,10 @@
-import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons";
-import FlexCol from "@/components/_common/flexboxes/FlexCol";
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter";
-import MyTextField from "@/components/_common/inputs/MyTextField";
-import useSaveSubideaMutation from "@/hooks/react-query/domain/subidea/useSaveSubideaMutation";
-import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore";
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto";
+import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
+import useSaveSubideaMutation from "@/hooks/react-query/domain/subidea/useSaveSubideaMutation"
+import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import {
   Box,
   Dialog,
@@ -12,46 +12,46 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { MdClose } from "react-icons/md";
-import SubideaMenu from "./SubideaMenu/SubideaMenu";
+} from "@mui/material"
+import { useRouter } from "next/router"
+import { useEffect, useRef } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { MdClose } from "react-icons/md"
+import SubideaMenu from "./SubideaMenu/SubideaMenu"
 
-const ariaLabel = "subidea-dialog";
+const ariaLabel = "subidea-dialog"
 
 const SubideaDialog = () => {
-  const inputRef = useRef<HTMLDivElement>(null);
-  const query = useRouter().query as { groupId: string };
+  const inputRef = useRef<HTMLDivElement>(null)
+  const query = useRouter().query as { groupId: string }
 
-  const saveMutation = useSaveSubideaMutation();
+  const saveMutation = useSaveSubideaMutation()
 
-  const { initialValue, dialogIsOpen, closeDialog } = useSubideaDialogStore();
+  const { initialValue, dialogIsOpen, closeDialog } = useSubideaDialogStore()
 
   const { watch, control, setValue, handleSubmit, reset } = useForm<IdeaDto>({
     defaultValues: initialValue,
-  });
+  })
 
   useEffect(() => {
     if (dialogIsOpen) {
-      reset(initialValue);
+      reset(initialValue)
       setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+        inputRef.current?.focus()
+      }, 100)
     }
-  }, [dialogIsOpen]);
+  }, [dialogIsOpen])
 
   const onSubmit = (values: IdeaDto) => {
     saveMutation.mutate(
       { subidea: values, groupId: query.groupId },
       {
         onSuccess: (savedTab) => {
-          closeDialog();
+          closeDialog()
         },
       }
-    );
-  };
+    )
+  }
 
   return (
     <Dialog
@@ -94,8 +94,6 @@ const SubideaDialog = () => {
                     size="small"
                     label="Subidea"
                     fullWidth
-                    multiline
-                    minRows={2}
                     onCtrlEnter={() => onSubmit(watch())}
                     required
                     {...field}
@@ -132,7 +130,7 @@ const SubideaDialog = () => {
         </form>
       </Box>
     </Dialog>
-  );
-};
+  )
+}
 
-export default SubideaDialog;
+export default SubideaDialog

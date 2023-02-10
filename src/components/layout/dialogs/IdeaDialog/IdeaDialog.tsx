@@ -44,13 +44,16 @@ const IdeaDialog = () => {
   // I had to add this validator because sometimes the dialog was reopening after closing
   const [canOpen, setCanOpen] = useState(true)
 
-  const { mutate: submitSaveIdea, isLoading: isSubmitting } = useSaveIdeaMutation()
+  const { mutate: submitSaveIdea, isLoading: isSubmitting } =
+    useSaveIdeaMutation()
 
-  const { openDialog, initialValue, dialogIsOpen, closeDialog } = useIdeaDialogStore()
+  const { openDialog, initialValue, dialogIsOpen, closeDialog } =
+    useIdeaDialogStore()
 
-  const { watch, control, setValue, handleSubmit, reset, formState } = useForm<IdeaDto>({
-    defaultValues: initialValue,
-  })
+  const { watch, control, setValue, handleSubmit, reset, formState } =
+    useForm<IdeaDto>({
+      defaultValues: initialValue,
+    })
 
   type SetValueParams = Parameters<typeof setValue>
   const setValueDirty = (...p: SetValueParams) => {
@@ -203,7 +206,6 @@ const IdeaDialog = () => {
                   <MyTextField
                     size="small"
                     fullWidth
-                    multiline
                     placeholder="Idea Title"
                     variant="standard"
                     required
@@ -223,7 +225,9 @@ const IdeaDialog = () => {
               />
 
               <FlexVCenter>
-                {watch("id") && <IdeaMenu idea={watch()} afterDelete={closeDialog} />}
+                {watch("id") && (
+                  <IdeaMenu idea={watch()} afterDelete={closeDialog} />
+                )}
 
                 <IconButton onClick={confirmClose}>
                   <MdClose />
@@ -278,9 +282,13 @@ const IdeaDialog = () => {
                       groupId={routerQuery.groupId!}
                       userId={watch("creatorId")}
                     />
-                    <Tooltip title={new Date(watch("createdAt")).toLocaleDateString()}>
+                    <Tooltip
+                      title={new Date(watch("createdAt")).toLocaleDateString()}
+                    >
                       <div style={{ display: "flex", alignItems: "center" }}>
-                        <Typography>Created {format(watch("createdAt"))}</Typography>
+                        <Typography>
+                          Created {format(watch("createdAt"))}
+                        </Typography>
                       </div>
                     </Tooltip>
                   </>
