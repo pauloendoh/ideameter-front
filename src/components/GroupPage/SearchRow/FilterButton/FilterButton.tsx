@@ -64,11 +64,10 @@ const FilterButton = (props: Props) => {
         {getFilterCount() > 0 && (
           <FlexVCenter
             style={{
-              padding: "2px 8px",
+              padding: "0px 8px",
               marginLeft: 8,
               borderRadius: 4,
               background: "#2b2b2b",
-              minHeight: 25,
             }}
           >
             {getFilterCount()}
