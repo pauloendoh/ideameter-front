@@ -5,7 +5,7 @@ import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLink
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
-import { Badge, Box, TableCell, Tooltip } from "@mui/material"
+import { Badge, Box, TableCell, Tooltip, Typography } from "@mui/material"
 import { useMemo } from "react"
 import { MdDescription } from "react-icons/md"
 import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo"
@@ -38,6 +38,10 @@ const IdeaNameTableCell = (props: Props) => {
 
     return notRated.length
   }, [subideasRatings])
+
+  const isSubidea = useMemo(() => {
+    return !!props.ideaRating.idea.parentId
+  }, [props.ideaRating.idea.parentId])
 
   return (
     <TableCell>
@@ -76,7 +80,7 @@ const IdeaNameTableCell = (props: Props) => {
                 {props.ideaRating.idea.name}
               </MyReactLinkify>
 
-              {props.ideaRating.idea.description.length > 0 && (
+              {!isSubidea && props.ideaRating.idea.description.length > 0 && (
                 <Tooltip title="This idea contains a description">
                   <span>
                     <MdDescription
@@ -95,6 +99,19 @@ const IdeaNameTableCell = (props: Props) => {
 
         {hasSubideas && (
           <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
+        )}
+
+        {isSubidea && props.ideaRating.idea.description.length > 0 && (
+          <Flex>
+            <Typography
+              variant="body2"
+              sx={{
+                fontStyle: "italic",
+              }}
+            >
+              {props.ideaRating.idea.description}
+            </Typography>
+          </Flex>
         )}
 
         <FlexVCenter justifyContent="space-between">
