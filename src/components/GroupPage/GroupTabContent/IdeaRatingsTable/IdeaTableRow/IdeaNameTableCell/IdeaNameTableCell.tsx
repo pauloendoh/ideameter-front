@@ -32,7 +32,9 @@ const IdeaNameTableCell = (props: Props) => {
     if (!subideasRatings) return 0
     if (props.ideaRating.idea.isDone) return 0
 
-    const notRated = subideasRatings.filter((r) => r.yourRating === undefined)
+    const notRated = subideasRatings.filter(
+      (sr) => sr.yourRating === undefined && !sr.idea.isDone
+    )
 
     return notRated.length
   }, [subideasRatings])
