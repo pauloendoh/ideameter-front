@@ -15,7 +15,7 @@ export interface IdeaRating {
   idea: IdeaDto
   subideas: IdeaDto[]
   avgRating: number | null
-  yourRating: number | null
+  yourRating: number | null | undefined
   otherUserGroupRatings: OtherUserGroupRating[]
 }
 
@@ -37,7 +37,10 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       if (ideaRatings.length === 0) return null
 
       const validRatings = ideaRatings.filter((r) => r.rating !== null)
-      const sum = validRatings.reduce((partialSum, r) => partialSum + (r.rating || 0), 0)
+      const sum = validRatings.reduce(
+        (partialSum, r) => partialSum + (r.rating || 0),
+        0
+      )
 
       if (sum === 0) return null
       return sum / validRatings.length
@@ -52,14 +55,16 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       idea,
       subideas: subideas?.filter((s) => s.parentId === idea.id) || [],
       yourRating:
-        groupRatings.find((gr) => gr.userId === authUser.id && gr.ideaId === idea.id)
-          ?.rating || null,
+        groupRatings.find(
+          (gr) => gr.userId === authUser.id && gr.ideaId === idea.id
+        )?.rating || null,
       avgRating: getAvgIdeaRating(idea.id),
       otherUserGroupRatings: otherMembers.map((member) => ({
         userGroup: member,
         rating:
           groupRatings.find(
-            (rating) => rating.userId === member.user?.id && rating.ideaId === idea.id
+            (rating) =>
+              rating.userId === member.user?.id && rating.ideaId === idea.id
           )?.rating || null,
       })),
     }))

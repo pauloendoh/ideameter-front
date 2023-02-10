@@ -32,7 +32,9 @@ const IdeaNameTableCell = (props: Props) => {
     if (!subideasRatings) return 0
     if (props.ideaRating.idea.isDone) return 0
 
-    return subideasRatings.filter((r) => r.yourRating === null).length
+    const notRated = subideasRatings.filter((r) => r.yourRating === undefined)
+
+    return notRated.length
   }, [subideasRatings])
 
   return (
@@ -57,7 +59,11 @@ const IdeaNameTableCell = (props: Props) => {
           </Flex>
         )}
         <Box>
-          <Badge color="error" overlap="rectangular" badgeContent={notRatedSubideasCount}>
+          <Badge
+            color="error"
+            overlap="rectangular"
+            badgeContent={notRatedSubideasCount}
+          >
             <span
               style={{
                 whiteSpace: "break-spaces",
@@ -85,7 +91,9 @@ const IdeaNameTableCell = (props: Props) => {
           </Badge>
         </Box>
 
-        {hasSubideas && <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />}
+        {hasSubideas && (
+          <HighestSubideaInfo ideaId={props.ideaRating.idea.id} />
+        )}
 
         <FlexVCenter justifyContent="space-between">
           <Flex gap={0.5} flexWrap="wrap">
@@ -103,7 +111,10 @@ const IdeaNameTableCell = (props: Props) => {
           </Flex>
 
           {props.ideaRating.idea.highImpactVotes?.length > 0 && (
-            <HighImpactVoteIcon groupId={groupId!} ideaRating={props.ideaRating} />
+            <HighImpactVoteIcon
+              groupId={groupId!}
+              ideaRating={props.ideaRating}
+            />
           )}
         </FlexVCenter>
       </FlexCol>
