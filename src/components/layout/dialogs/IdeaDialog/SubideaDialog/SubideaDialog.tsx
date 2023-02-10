@@ -20,6 +20,7 @@ import { useEffect, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import { format } from "timeago.js"
+import IdeaDialogSelectedLabels from "../IdeaDialogSelectedLabels/IdeaDialogSelectedLabels"
 import SubideaMenu from "./SubideaMenu/SubideaMenu"
 
 const ariaLabel = "subidea-dialog"
@@ -99,6 +100,11 @@ const SubideaDialog = () => {
                     inputRef={inputRef}
                   />
                 )}
+              />
+
+              <IdeaDialogSelectedLabels
+                idea={watch()}
+                onChangeSelectedLabels={(labels) => setValue("labels", labels)}
               />
 
               <Controller
