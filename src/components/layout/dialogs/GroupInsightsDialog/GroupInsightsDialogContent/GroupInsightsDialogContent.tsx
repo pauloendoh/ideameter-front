@@ -5,6 +5,7 @@ import Tabs from "@mui/material/Tabs"
 import Typography from "@mui/material/Typography"
 import { useState } from "react"
 import InterestSimilarityTab from "./InterestSimilarityTab/InterestSimilarityTab"
+import MissingRatingsTab from "./MissingRatingsTab/MissingRatingsTab"
 
 interface Props {
   group: GroupDto
@@ -26,14 +27,14 @@ const GroupInsightsDialogContent = (props: Props) => {
           aria-label="basic tabs example"
         >
           <Tab label="Interest similarity" {...a11yProps(0)} />
-          {/* <Tab label="Completed ideas" {...a11yProps(1)} /> */}
+          <Tab label="Missing Ratings" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <InterestSimilarityTab groupId={props.group.id!} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <MissingRatingsTab groupId={props.group.id!} />
       </TabPanel>
     </Box>
   )

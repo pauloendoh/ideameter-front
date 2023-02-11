@@ -15,6 +15,8 @@ const queryKeys = {
   interestSimilarity: (groupId: string) =>
     `/groups/${groupId}/insights/interest-similarity`,
   assignedToMeIdeas: "assigned-to-me",
+  missingRatingsFromGroup: (groupId: string) =>
+    `/groups/${groupId}/insights/missing-ratings`,
 }
 
 export default queryKeys

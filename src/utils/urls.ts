@@ -6,7 +6,8 @@ const urls = {
   pages: {
     index: "/",
     groupId: (groupId: string) => `/group/${groupId}`,
-    groupTab: (groupId: string, tabId: string) => `/group/${groupId}?tabId=${tabId}`,
+    groupTab: (groupId: string, tabId: string) =>
+      `/group/${groupId}?tabId=${tabId}`,
     groupTabIdea: (groupId: string, tabId: string, ideaId: string) =>
       `/group/${groupId}?${stringify({ tabId, ideaId })}`,
   },
@@ -23,7 +24,8 @@ const urls = {
     groupMemberId: (groupdId: string, memberId: string) =>
       `/group/${groupdId}/members/${memberId}`,
     groupAdmin: "/group/admin",
-    groupUser: (groupId: string, userId: string) => `/group/${groupId}/users/${userId}`,
+    groupUser: (groupId: string, userId: string) =>
+      `/group/${groupId}/users/${userId}`,
     groupTab: (groupId: string) => `/group/${groupId}/tab`,
     groupRatings: (groupId: string) => `/group/${groupId}/ratings`,
     groupLabels: (groupId: string) => `/group/${groupId}/labels`,
@@ -59,6 +61,8 @@ const urls = {
     // insights
     interestSimilarity: (groupId: string) =>
       `/groups/${groupId}/insights/interest-similarity`,
+    missingRatingsFromGroup: (groupId: string) =>
+      `/groups/${groupId}/insights/missing-ratings`,
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,

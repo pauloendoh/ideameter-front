@@ -3,6 +3,7 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useInterestSimilarityQuery from "@/types/domain/insights/useInterestSimilarityQuery"
+import useMissingRatingsFromGroupQuery from "@/types/domain/insights/useMissingRatingsFromGroupQuery"
 import { Box, Typography } from "@mui/material"
 
 interface Props {
@@ -11,6 +12,9 @@ interface Props {
 
 const InterestSimilarityTab = (props: Props) => {
   const { data: similarities } = useInterestSimilarityQuery(props.groupId)
+  const { data: missingRatings } = useMissingRatingsFromGroupQuery(
+    props.groupId
+  )
   const authUser = useAuthStore((s) => s.authUser)
 
   if (!similarities) return null

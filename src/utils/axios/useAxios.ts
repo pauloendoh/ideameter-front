@@ -5,7 +5,7 @@ import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import axios from "axios"
 import urls from "../urls"
 
-export const useAxios = (params?: { redirectOn401?: boolean }) => {
+export const useAxios = (showErrorMessage = true) => {
   const localAxios = axios.create()
   localAxios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
@@ -28,7 +28,13 @@ export const useAxios = (params?: { redirectOn401?: boolean }) => {
       if (error?.response?.status === 401 && window)
         window.location.href = urls.pages.index
 
-      if (axios.isAxiosError<{ errors: ValidationError[]; message: string }>(error)) {
+      if (!showErrorMessage) return Promise.reject(error)
+
+      if (
+        axios.isAxiosError<{ errors: ValidationError[]; message: string }>(
+          error
+        )
+      ) {
         const constraints = error.response?.data?.errors?.[0].constraints
         if (constraints) {
           const [key, value] = Object.entries(constraints)[0]
