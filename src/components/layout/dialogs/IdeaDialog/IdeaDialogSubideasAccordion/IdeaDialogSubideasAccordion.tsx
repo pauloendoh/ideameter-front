@@ -43,9 +43,10 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
     return subideaRatings.filter((r) => !r.idea.isDone)
   }, [showCompleted, subideaRatings])
 
-  const completedSubideas = useMemo(() => subideaRatings.filter((r) => r.idea.isDone), [
-    subideaRatings,
-  ])
+  const completedSubideas = useMemo(
+    () => subideaRatings.filter((r) => r.idea.isDone),
+    [subideaRatings]
+  )
 
   const theme = useTheme()
 
@@ -80,7 +81,10 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
         <Typography>Subideas</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ px: 0, pb: 0 }}>
-        <SubideasTable isLoading={isLoading} subideaRatings={visibleSubideaRatings} />
+        <SubideasTable
+          isLoading={isLoading}
+          subideaRatings={visibleSubideaRatings}
+        />
 
         <FlexVCenter justifyContent={"space-between"}>
           <DarkButton
@@ -89,7 +93,7 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
               openSubideaDialog(buildIdeaDto({ parentId: props.ideaId }))
             }}
           >
-            Create subideas
+            + Add subidea
           </DarkButton>
 
           {completedSubideas.length > 0 && (

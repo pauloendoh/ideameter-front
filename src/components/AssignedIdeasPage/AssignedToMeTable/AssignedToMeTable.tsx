@@ -11,25 +11,32 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import AssignedIdeasTableBody from "../AssignedIdeasTableBody/AssignedIdeasTableBody"
-import AssignedIdeasTableHead from "../AssignedIdeasTableHead/AssignedIdeasTableHead"
+import AssignedIdeasTableHead, {
+  Header,
+} from "../AssignedIdeasTableHead/AssignedIdeasTableHead"
 
 type Props = {}
 
-const headers = [
+const headers: Header[] = [
   {
     header: "#",
+    width: 64,
+    align: "center",
   },
   {
     header: "idea",
     width: 360,
+    align: "left",
   },
   {
     header: "Group",
     width: 200,
+    align: "left",
   },
   {
     header: "Tab",
     width: 200,
+    align: "left",
   },
 ]
 

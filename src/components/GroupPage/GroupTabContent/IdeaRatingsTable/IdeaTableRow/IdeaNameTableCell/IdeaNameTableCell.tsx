@@ -112,6 +112,7 @@ const IdeaNameTableCell = (props: Props) => {
               variant="body2"
               sx={{
                 fontStyle: "italic",
+                whiteSpace: "pre-wrap",
               }}
             >
               {props.ideaRating.idea.description}

@@ -35,10 +35,31 @@ export const styles = {
       border: "none",
       borderRadius: "0px 0px 4px 4px",
       color: theme.palette.grey[100],
+      a: {
+        color: theme.palette.primary.main,
+      },
     },
     ".ql-editor": {
       maxHeight: "300px",
       overflowY: "auto",
+    },
+    ".ql-tooltip": {
+      background: theme.palette.grey[900],
+      border: `1px solid ${theme.palette.grey[700]}`,
+      color: theme.palette.grey[100],
+      "> input": {
+        background: theme.palette.grey[800],
+        color: theme.palette.grey[100],
+        "&:focus": {
+          border: `1px solid ${theme.palette.primary.main}`,
+        },
+      },
+      ".ql-action::before": {
+        backgroundColor: theme.palette.primary.main,
+      },
+      ".ql-preview": {
+        color: theme.palette.primary.main,
+      },
     },
   })),
 }

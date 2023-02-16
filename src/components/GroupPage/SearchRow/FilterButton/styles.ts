@@ -3,7 +3,6 @@ import { MenuItem, styled, Typography } from "@mui/material"
 const S = {
   MenuItem: styled(MenuItem)`
     display: flex;
-    align-items: flex-start;
     gap: 4;
     padding-top: 0;
     padding-bottom: 0;
