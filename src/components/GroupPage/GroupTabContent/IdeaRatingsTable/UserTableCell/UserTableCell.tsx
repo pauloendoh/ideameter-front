@@ -30,16 +30,18 @@ const UserTableCell = (props: Props) => {
     authUser?.id
   )
 
-  const isOnline = useMemo(() => {
+  const userStatus = useMemo(() => {
     const user = lastOnlineData?.find((u) => u.userId === props.userId)
-    if (!user) return false
+    if (!user) return undefined
 
     // check last 30 seconds
     const lastOnline = new Date(user.lastOnlineAt)
     const now = new Date()
     const diff = now.getTime() - lastOnline.getTime()
     const diffSeconds = diff / 1000
-    if (diffSeconds < 30) return true
+    if (diffSeconds < 30) return "online"
+
+    if (diffSeconds < 300) return "away"
   }, [lastOnlineData])
 
   return (
@@ -49,7 +51,7 @@ const UserTableCell = (props: Props) => {
           <UserGroupAvatar
             groupId={groupId}
             userId={user.id}
-            isOnline={isOnline}
+            status={userStatus}
           />
         </FlexHCenter>
       )}

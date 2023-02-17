@@ -9,7 +9,7 @@ interface Props {
   widthAndHeight?: number
 
   avatarProps?: React.ComponentPropsWithRef<typeof Avatar>
-  isOnline?: boolean
+  status?: "online" | "away"
 }
 
 const UserGroupAvatar = (props: Props) => {
@@ -22,7 +22,7 @@ const UserGroupAvatar = (props: Props) => {
   return (
     <Tooltip title={user?.username || ""}>
       <div style={{ display: "flex", position: "relative" }}>
-        {props.isOnline && (
+        {props.status && (
           <div
             style={{
               position: "absolute",
@@ -31,10 +31,11 @@ const UserGroupAvatar = (props: Props) => {
               width: 12,
               height: 12,
               borderRadius: "50%",
-              backgroundColor: "green",
+              backgroundColor: props.status === "online" ? "green" : "orange",
               border: "1px solid white",
               zIndex: 1,
             }}
+            title={props.status === "online" ? "Online" : "Away"}
           />
         )}
         {user?.profile?.pictureUrl ? (
