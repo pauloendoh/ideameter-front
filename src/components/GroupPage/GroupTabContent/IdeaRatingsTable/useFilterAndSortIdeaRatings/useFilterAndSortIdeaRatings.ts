@@ -43,7 +43,11 @@ export const useFilterAndSortIdeaRatings = ({
       if (filteringUsers.length > 0) {
         const filteringIds = filteringUsers.map((u) => u.id)
         const currentUserIds = r.idea.assignedUsers.map((u) => u.id)
-        if (!filteringIds.every((filteringId) => currentUserIds.includes(filteringId)))
+        if (
+          !filteringIds.every((filteringId) =>
+            currentUserIds.includes(filteringId)
+          )
+        )
           return false
       }
 
@@ -69,9 +73,11 @@ export const useFilterAndSortIdeaRatings = ({
           if (!foundUserIdeaRating) return true
 
           for (const subidea of ideaRating.subideas) {
+            if (subidea.isDone) return false
             const foundUserSubideaRating =
-              ratings?.find((r) => r.ideaId === subidea.id && r.userId === authUserId) ||
-              null
+              ratings?.find(
+                (r) => r.ideaId === subidea.id && r.userId === authUserId
+              ) || null
 
             if (!foundUserSubideaRating) return true
           }
@@ -88,10 +94,14 @@ export const useFilterAndSortIdeaRatings = ({
       )
 
     if (sortingBy.attribute === "createdAt")
-      result = result.sort((a, b) => b.idea.createdAt.localeCompare(a.idea.createdAt))
+      result = result.sort((a, b) =>
+        b.idea.createdAt.localeCompare(a.idea.createdAt)
+      )
 
     if (sortingBy.attribute === "updatedAt")
-      result = result.sort((a, b) => b.idea.updatedAt.localeCompare(a.idea.updatedAt))
+      result = result.sort((a, b) =>
+        b.idea.updatedAt.localeCompare(a.idea.updatedAt)
+      )
 
     if (sortingBy.attribute === "avgRating") {
       result = sortByAvgRatingDesc(result)
@@ -99,7 +109,10 @@ export const useFilterAndSortIdeaRatings = ({
 
     if (sortingBy.attribute === "requiresYourRating") {
       result = result.sort((a, b) => {
-        if (ideaRequiresYourRating(b.idea.id) && !ideaRequiresYourRating(a.idea.id))
+        if (
+          ideaRequiresYourRating(b.idea.id) &&
+          !ideaRequiresYourRating(a.idea.id)
+        )
           return 1
 
         return -1
