@@ -57,7 +57,7 @@ const IdeaMenu = (props: Props) => {
   const handleCopyTitleAndId = useCallback(() => {
     if (navigator) {
       const text = `${props.idea.name} [${props.idea.id}]`
-      navigator.clipboard.writeText(text)
+      navigator.clipboard.writeText(text.replaceAll('"', "'"))
       setSuccessMessage(`Copied: ${text}`)
     }
   }, [navigator, props.idea])
@@ -90,7 +90,10 @@ const IdeaMenu = (props: Props) => {
         <MenuItem onClick={handleCopyTitleAndId}>Copy title + ID</MenuItem>
         <MenuItem onClick={handleCopyId}>Copy idea ID</MenuItem>
 
-        <MenuItem onClick={handleDelete} style={{ color: theme.palette.error.main }}>
+        <MenuItem
+          onClick={handleDelete}
+          style={{ color: theme.palette.error.main }}
+        >
           Delete
         </MenuItem>
       </Menu>
