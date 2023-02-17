@@ -20,9 +20,11 @@ const urls = {
     ideasAssignedToMe: `ideas/assigned-to-me`,
     group: "/group",
     groupId: (groupId: string) => `/group/${groupId}`,
-    groupMembers: (groupdId: string) => `/group/${groupdId}/members`,
-    groupMemberId: (groupdId: string, memberId: string) =>
-      `/group/${groupdId}/members/${memberId}`,
+    groupMembers: (groupId: string) => `/group/${groupId}/members`,
+    groupMembersLastOnline: (groupId: string, asUserId: string) =>
+      `/group/${groupId}/members-last-online?asUserId=${asUserId}`,
+    groupMemberId: (groupId: string, memberId: string) =>
+      `/group/${groupId}/members/${memberId}`,
     groupAdmin: "/group/admin",
     groupUser: (groupId: string, userId: string) =>
       `/group/${groupId}/users/${userId}`,
