@@ -158,14 +158,21 @@ const IdeaDialog = () => {
 
   const { dialogIsOpen: labelsDialogIsOpen } = useEditLabelDialogStore()
 
-  const saveIsDisabled = useMemo(
-    () =>
+  const saveIsDisabled = useMemo(() => {
+    const dirtyFields = Object.keys(formState.dirtyFields)
+    return (
       isSubmitting ||
-      !formState.isDirty ||
+      dirtyFields.length === 0 ||
       subideaDialogIsOpen ||
-      labelsDialogIsOpen,
-    [isSubmitting, formState.isDirty, labelsDialogIsOpen, subideaDialogIsOpen]
-  )
+      labelsDialogIsOpen
+    )
+  }, [
+    isSubmitting,
+    formState.isDirty,
+    formState.dirtyFields,
+    labelsDialogIsOpen,
+    subideaDialogIsOpen,
+  ])
 
   const saveWithoutClosing = useCallback(() => {
     if (saveIsDisabled) return

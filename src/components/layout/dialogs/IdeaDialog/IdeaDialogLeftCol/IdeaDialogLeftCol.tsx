@@ -26,7 +26,13 @@ interface Props {
   onSaveWithoutClosing: () => void
 }
 
-const IdeaDialogLeftCol = ({ watch, setValue, control, onSubmit, ...props }: Props) => {
+const IdeaDialogLeftCol = ({
+  watch,
+  setValue,
+  control,
+  onSubmit,
+  ...props
+}: Props) => {
   // some stuff to improve performance
   const [localDescription, setLocalDescription] = useState(watch("description"))
   const [canDirty, setCanDirty] = useState(false)
