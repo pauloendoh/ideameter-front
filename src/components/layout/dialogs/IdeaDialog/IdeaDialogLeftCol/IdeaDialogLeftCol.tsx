@@ -131,7 +131,6 @@ const IdeaDialogLeftCol = ({
               setLocalDescription(text)
             }}
             onImageUpload={handleImageUpload}
-            mentions={mentions}
             onKeyDown={handleKeyDown}
           />
         </S.MantineRteContainer>
