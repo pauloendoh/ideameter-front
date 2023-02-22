@@ -4,7 +4,6 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, Grid } from "@mui/material"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
 import CompleteIdeaButton from "./CompleteIdeaButton/CompleteIdeaButton"
-import OnFireDatePicker from "./OnFireDatePicker/OnFireDatePicker"
 import TabSelector from "./TabSelector/TabSelector"
 
 interface Props {
@@ -21,9 +20,9 @@ const IdeaDialogRightCol = (props: Props) => {
         <CompleteIdeaButton watch={props.watch} setValue={props.setValue} />
 
         <Box />
-        <OnFireDatePicker watch={props.watch} setValue={props.setValue} />
+        {/* <OnFireDatePicker watch={props.watch} setValue={props.setValue} />
 
-        <Box />
+        <Box /> */}
 
         <TabSelector
           valueTabId={props.watch("tabId")}

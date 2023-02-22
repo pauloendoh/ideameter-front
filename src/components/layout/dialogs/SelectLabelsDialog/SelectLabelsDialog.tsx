@@ -98,7 +98,9 @@ const SelectLabelsDialog = (props: Props) => {
           <DarkButton
             sx={{ mt: 2 }}
             fullWidth
-            onClick={() => openEditLabelDialog(buildLabelDto({ groupId: props.groupId }))}
+            onClick={() =>
+              openEditLabelDialog(buildLabelDto({ groupId: props.groupId }))
+            }
             startIcon={<MdAdd />}
           >
             Create new label

@@ -1,4 +1,3 @@
-import useImportLabelsDialogStore from "@/hooks/zustand/dialogs/useImportLabelsDialogStore"
 import useSelectLabelsDialogStore from "@/hooks/zustand/dialogs/useSelectLabelsDialogStore"
 import ConfirmDeleteGroupDialog from "../ConfirmDeleteGroupDialog/ConfirmDeleteGroupDialog"
 import ConfirmDeleteTabDialog from "../ConfirmDeleteTabDialog/ConfirmDeleteTabDialog"
@@ -11,7 +10,6 @@ import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
 import IdeaChangesDialog from "../IdeaChangesDialog/IdeaChangesDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
-import ImportLabelsDialog from "../ImportLabelsDialog/ImportLabelsDialog"
 import MoveIdeasToTabDialog from "../MoveIdeasToTabDialog/MoveIdeasToTabDialog"
 import SelectLabelsDialog from "../SelectLabelsDialog/SelectLabelsDialog"
 import ShortcutsDialog from "../ShortcutsDialog/ShortcutsDialog"
@@ -21,7 +19,6 @@ import TransformToSubideaDialog from "../TransformToSubideaDialog/TransformToSub
 // each one is managed by zustand
 // PE 1/3 - use lazy import?
 const GlobalDialogs = () => {
-  const importLabelsDialog = useImportLabelsDialogStore()
   const selectLabelsDialogStore = useSelectLabelsDialogStore()
 
   return (
@@ -41,10 +38,6 @@ const GlobalDialogs = () => {
 
       <GroupInsightsDialog />
       <MoveIdeasToTabDialog />
-      <ImportLabelsDialog
-        closeDialog={importLabelsDialog.closeDialog}
-        dialogIsOpen={importLabelsDialog.dialogIsOpen}
-      />
 
       <SelectLabelsDialog
         groupId={selectLabelsDialogStore.groupId}

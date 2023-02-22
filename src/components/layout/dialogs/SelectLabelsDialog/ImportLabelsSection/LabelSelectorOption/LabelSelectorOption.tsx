@@ -1,4 +1,4 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import Flex from "@/components/_common/flexboxes/Flex"
 import LabelDto from "@/types/domain/label/LabelDto"
 import { Typography } from "@mui/material"
 import { MdCircle } from "react-icons/md"
@@ -19,16 +19,25 @@ const LabelSelectorOption = ({ label, liProps }: Props) => {
         width: "100%",
       }}
     >
-      <FlexVCenter justifyContent="space-between" width="100%">
-        <FlexVCenter gap={1}>
-          <MdCircle style={{ color: label.bgColor }} />
-          <Typography>{label.name}</Typography>
-        </FlexVCenter>
+      <Flex justifyContent="space-between" width="100%">
+        <Flex gap={1}>
+          <MdCircle style={{ color: label.bgColor, width: 24, marginTop: 3 }} />
+          <Typography title={label.name} fontSize={14} noWrap width={120}>
+            {label.name}
+          </Typography>
+        </Flex>
 
-        <Typography fontSize={10} pl={2} fontStyle="italic">
+        <Typography
+          fontSize={10}
+          pl={2}
+          fontStyle="italic"
+          title={label.group?.name || "No group"}
+          noWrap
+          width={80}
+        >
           {label.group?.name || "No group"}
         </Typography>
-      </FlexVCenter>
+      </Flex>
     </li>
   )
 }

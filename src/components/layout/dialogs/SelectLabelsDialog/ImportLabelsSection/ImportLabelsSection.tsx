@@ -8,7 +8,7 @@ import LabelDto from "@/types/domain/label/LabelDto"
 import { Autocomplete, Box, Chip } from "@mui/material"
 import { useRouter } from "next/router"
 import { useMemo, useRef, useState } from "react"
-import LabelSelectorOption from "../../ImportLabelsDialog/LabelSelectorOption/LabelSelectorOption"
+import LabelSelectorOption from "./LabelSelectorOption/LabelSelectorOption"
 
 type Props = {
   close: () => void
@@ -25,7 +25,8 @@ const ImportLabelsSection = (props: Props) => {
     () =>
       labels?.sort(
         (a, b) =>
-          a.group?.name.localeCompare(b.group?.name || "") || a.name.localeCompare(b.name)
+          a.group?.name.localeCompare(b.group?.name || "") ||
+          a.name.localeCompare(b.name)
       ) || [],
     [labels]
   )
@@ -68,7 +69,9 @@ const ImportLabelsSection = (props: Props) => {
 
           setSelectedLabels(labels)
         }}
-        getOptionLabel={(option) => (typeof option === "string" ? option : option.name)}
+        getOptionLabel={(option) =>
+          typeof option === "string" ? option : option.name
+        }
         renderInput={(params) => (
           <MyTextField {...params} label="Import Labels" size="small" />
         )}
