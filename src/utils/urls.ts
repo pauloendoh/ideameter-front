@@ -36,6 +36,7 @@ const urls = {
     labels: `/labels`,
 
     groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
+    ideaChanges: (ideaId: string) => `/idea-changes?ideaId=${ideaId}`,
     groupImage: "/group/image",
     tabId: (tabId: string) => `/tabs/${tabId}`,
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,

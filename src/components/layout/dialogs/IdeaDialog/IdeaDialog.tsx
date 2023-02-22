@@ -21,13 +21,12 @@ import {
   Grid,
   IconButton,
   Tooltip,
-  Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
-import { format } from "timeago.js"
+import ChangedSectionIdeaDialog from "./ChangedSectionIdeaDialog/ChangedSectionIdeaDialog"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
@@ -297,9 +296,12 @@ const IdeaDialog = () => {
                       title={new Date(watch("createdAt")).toLocaleDateString()}
                     >
                       <div style={{ display: "flex", alignItems: "center" }}>
-                        <Typography>
-                          Created {format(watch("createdAt"))}
-                        </Typography>
+                        <ChangedSectionIdeaDialog
+                          createdAt={watch("createdAt")}
+                          ideaId={watch("id")}
+                          ideaTitle={watch("name")}
+                          updatedAt={watch("updatedAt")}
+                        />
                       </div>
                     </Tooltip>
                   </>

@@ -8,6 +8,7 @@ import EditProfileDialog from "../EditProfileDialog/EditProfileDialog"
 import GroupDialog from "../GroupDialog/GroupDialog"
 import GroupInsightsDialog from "../GroupInsightsDialog/GroupInsightsDialog"
 import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
+import IdeaChangesDialog from "../IdeaChangesDialog/IdeaChangesDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
 import ImportLabelsDialog from "../ImportLabelsDialog/ImportLabelsDialog"
@@ -54,6 +55,7 @@ const GlobalDialogs = () => {
       />
 
       <TransformToSubideaDialog />
+      <IdeaChangesDialog />
     </>
   )
 }

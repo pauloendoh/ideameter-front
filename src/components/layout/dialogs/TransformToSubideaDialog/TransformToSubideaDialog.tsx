@@ -13,7 +13,6 @@ import {
   IconButton,
   Typography,
 } from "@mui/material"
-import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
@@ -21,7 +20,6 @@ import { MdClose } from "react-icons/md"
 const ariaLabel = "transform-to-subidea-dialog"
 
 const TransformToSubideaDialog = () => {
-  const router = useRouter()
   const inputRef = useRef<HTMLDivElement>(null)
 
   const { mutate, isLoading } = useTransformToSubideaMutation()
