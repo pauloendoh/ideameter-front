@@ -29,7 +29,7 @@ const ariaLabel = `ratings-accordion`
 const IdeaDialogRatingsAccordion = (props: Props) => {
   const tabRatings = useIdeaRatingsQueryUtils(props.groupId, props.tabId)
 
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   const authUser = useAuthStore((s) => s.authUser)
 
@@ -71,9 +71,11 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
         aria-controls={`${ariaLabel}-head`}
         id={`${ariaLabel}-head`}
         sx={{
+          flexDirection: "row-reverse",
+          gap: 1,
           minHeight: "unset !important",
           ".MuiAccordionSummary-content": {
-            margin: "16px 0 8px !important",
+            margin: "12px 0 8px !important",
           },
         }}
       >

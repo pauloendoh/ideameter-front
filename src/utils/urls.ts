@@ -41,6 +41,8 @@ const urls = {
     tabIdea: (tabId: string) => `/group/any/tab/${tabId}/idea`,
     subideas: (groupId: string) => `/subideas?groupId=${groupId}`,
     subideaId: (id: string) => `/subideas/${id}`,
+    transformToSubidea: (ideaId: string, newParentIdeaTitle: string) =>
+      `/subideas/transform-to-subidea?ideaId=${ideaId}&newParentIdeaTitle=${newParentIdeaTitle}`,
 
     moveIdeasToTab: `/ideas/move-to-tab`,
 

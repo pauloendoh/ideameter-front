@@ -72,9 +72,11 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
         aria-controls={`${ariaLabel}-head`}
         id={`${ariaLabel}-head`}
         sx={{
+          flexDirection: "row-reverse",
+          gap: 1,
           minHeight: "unset !important",
           ".MuiAccordionSummary-content": {
-            margin: "16px 0 8px !important",
+            margin: "12px 0 8px !important",
           },
         }}
       >
