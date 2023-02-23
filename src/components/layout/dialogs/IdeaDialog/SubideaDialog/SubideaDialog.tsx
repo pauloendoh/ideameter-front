@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import { format } from "timeago.js"
@@ -46,16 +46,21 @@ const SubideaDialog = () => {
     }
   }, [dialogIsOpen])
 
-  const onSubmit = (values: IdeaDto) => {
+  const onSubmit = (values: IdeaDto, shouldClose = true) => {
     saveMutation.mutate(
       { subidea: values, groupId: query.groupId },
       {
-        onSuccess: (savedTab) => {
-          closeDialog()
+        onSuccess: (savedSubidea) => {
+          reset(savedSubidea)
+          if (shouldClose) closeDialog()
         },
       }
     )
   }
+
+  const isDisabled = useMemo(() => {
+    return saveMutation.isLoading || !dialogIsOpen
+  }, [saveMutation.isLoading, dialogIsOpen])
 
   return (
     <Dialog
@@ -66,7 +71,7 @@ const SubideaDialog = () => {
       maxWidth="sm"
     >
       <Box pb={1}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((val) => onSubmit(val))}>
           <DialogTitle id={`${ariaLabel}-title`}>
             <FlexVCenter justifyContent="space-between">
               <Typography variant="h5">
@@ -95,7 +100,6 @@ const SubideaDialog = () => {
                     label="Subidea"
                     fullWidth
                     multiline
-                    onCtrlEnter={() => onSubmit(watch())}
                     required
                     {...field}
                     inputRef={inputRef}
@@ -118,7 +122,6 @@ const SubideaDialog = () => {
                     label="Description"
                     multiline
                     minRows={3}
-                    onCtrlEnter={() => onSubmit(watch())}
                     {...field}
                     fullWidth
                   />
@@ -130,8 +133,11 @@ const SubideaDialog = () => {
           <DialogTitle>
             <FlexVCenter justifyContent="space-between">
               <SaveCancelButtons
-                disabled={saveMutation.isLoading}
+                disabled={isDisabled}
                 onCancel={closeDialog}
+                isLoadingAndDisabled={saveMutation.isLoading}
+                onEnableAndCtrlS={() => onSubmit(watch(), false)}
+                onEnabledAndCtrlEnter={() => onSubmit(watch(), true)}
               />
 
               <FlexVCenter gap={1}>

@@ -11,6 +11,7 @@ interface Props {
   onCancel?: () => void
   saveText?: string
   onEnabledAndCtrlEnter?: () => void
+  onEnableAndCtrlS?: () => void
 }
 
 const SaveCancelButtons = (props: Props) => {
@@ -25,6 +26,24 @@ const SaveCancelButtons = (props: Props) => {
       enableOnTags: ["INPUT", "SELECT", "TEXTAREA"],
     },
     [props.disabled, props.onEnabledAndCtrlEnter]
+  )
+
+  useHotkeys(
+    "ctrl+s",
+    (e) => {
+      e.preventDefault()
+      if (
+        !props.disabled &&
+        !props.isLoadingAndDisabled &&
+        props.onEnableAndCtrlS
+      ) {
+        props.onEnableAndCtrlS()
+      }
+    },
+    {
+      enableOnTags: ["INPUT", "SELECT", "TEXTAREA"],
+    },
+    [props]
   )
 
   return (
