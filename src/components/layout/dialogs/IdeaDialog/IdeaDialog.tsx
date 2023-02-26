@@ -159,19 +159,15 @@ const IdeaDialog = () => {
 
   const saveIsDisabled = useMemo(() => {
     const dirtyFields = Object.keys(formState.dirtyFields)
+
     return (
       isSubmitting ||
       dirtyFields.length === 0 ||
+      !formState.isDirty ||
       subideaDialogIsOpen ||
       labelsDialogIsOpen
     )
-  }, [
-    isSubmitting,
-    formState.isDirty,
-    formState.dirtyFields,
-    labelsDialogIsOpen,
-    subideaDialogIsOpen,
-  ])
+  }, [isSubmitting, watch(), labelsDialogIsOpen, subideaDialogIsOpen])
 
   const saveWithoutClosing = useCallback(() => {
     if (saveIsDisabled) return
