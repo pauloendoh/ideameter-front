@@ -11,6 +11,7 @@ export interface IFilter {
   onlyHighImpactVoted: boolean
   requiresYourRating: boolean
   minRatingCount: number
+  minAvgRating: number
 }
 
 export interface IGroupFilterStore {
@@ -27,6 +28,7 @@ export interface IGroupFilterStore {
   toggleOnlyHighImpactVoted: (tabId?: string) => void
   toggleRequiresYourRating: (tabId?: string) => void
   setMinRatingCount: (count: number, tabId?: string) => void
+  setMinAvgRating: (value: number, tabId?: string) => void
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
@@ -37,6 +39,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     onlyHighImpactVoted: false,
     requiresYourRating: false,
     minRatingCount: 0,
+    minAvgRating: 0,
   },
   setFilter: (filter) => set({ filter }),
   getFilterCount: () => {
@@ -45,11 +48,13 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       onlyHighImpactVoted,
       requiresYourRating,
       minRatingCount,
+      minAvgRating,
     } = get().filter
     let count = labelIds.length
     if (onlyHighImpactVoted) count++
     if (requiresYourRating) count++
     if (minRatingCount > 0) count++
+    if (minAvgRating > 0) count++
 
     return count
   },
@@ -156,6 +161,24 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       filter: {
         ...curr.filter,
         minRatingCount: count,
+      },
+    }))
+
+    if (tabId) {
+      const state = get()
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
+    }
+  },
+
+  setMinAvgRating(value, tabId) {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        minAvgRating: value,
       },
     }))
 

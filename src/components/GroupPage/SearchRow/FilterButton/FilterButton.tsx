@@ -28,6 +28,7 @@ const FilterButton = (props: Props) => {
     toggleRequiresYourRating,
     toggleOnlyHighImpactVoted,
     setMinRatingCount,
+    setMinAvgRating,
   } = useGroupFilterStore()
 
   const handleClick = (event: any) => {
@@ -107,17 +108,36 @@ const FilterButton = (props: Props) => {
           <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
         </S.MenuItem>
         <S.MenuItem
-          sx={{ display: "flex", justifyContent: "space-between" }}
-          selected={filter.minRatingCount > 0}
+          sx={{ display: "flex", justifyContent: "space-between", py: "4px" }}
         >
           <Typography>Min. rating count</Typography>
           <MyTextField
             value={filter.minRatingCount}
             type="number"
             sx={{ width: 80 }}
+            focused={filter.minRatingCount > 0}
             onChange={(e) => {
               const value = Math.max(0, parseInt(e.target.value))
               setMinRatingCount(value, routerQuery.tabId!)
+            }}
+          />
+        </S.MenuItem>
+
+        <S.MenuItem
+          sx={{ display: "flex", justifyContent: "space-between", py: "4px" }}
+        >
+          <Typography>Min. average rating</Typography>
+          <MyTextField
+            value={filter.minAvgRating}
+            type="number"
+            inputProps={{
+              step: ".1",
+            }}
+            sx={{ width: 80 }}
+            focused={filter.minAvgRating > 0}
+            onChange={(e) => {
+              const value = Math.max(0, Number(e.target.value))
+              setMinAvgRating(value, routerQuery.tabId!)
             }}
           />
         </S.MenuItem>

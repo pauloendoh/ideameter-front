@@ -32,6 +32,7 @@ export const useFilterAndSortIdeaRatings = ({
       requiresYourRating,
       users: filteringUsers,
       minRatingCount,
+      minAvgRating,
     } = filter
 
     let result = [...ideaRatings]
@@ -95,6 +96,12 @@ export const useFilterAndSortIdeaRatings = ({
         ).length
         const total = otherRatingsCount + (youRated ? 1 : 0)
         return total >= minRatingCount
+      })
+    }
+
+    if (minAvgRating > 0) {
+      result = result.filter((ideaRating) => {
+        return ideaRating.avgRating && ideaRating.avgRating >= minAvgRating
       })
     }
 

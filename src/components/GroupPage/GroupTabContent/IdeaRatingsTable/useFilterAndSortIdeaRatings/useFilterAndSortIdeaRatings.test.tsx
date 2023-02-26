@@ -23,6 +23,7 @@ describe("useFilterAndSortIdeaRatings", () => {
             requiresYourRating: false,
             users: [],
             minRatingCount: 0,
+            minAvgRating: 0,
           },
           ideaRatings: [
             buildIdeaRating({
@@ -59,6 +60,7 @@ describe("useFilterAndSortIdeaRatings", () => {
             requiresYourRating: false,
             users: [],
             minRatingCount: 0,
+            minAvgRating: 0,
           },
           ideaRatings: [
             buildIdeaRating({
