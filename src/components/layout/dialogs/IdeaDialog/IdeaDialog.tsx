@@ -122,8 +122,10 @@ const IdeaDialog = () => {
   useConfirmTabClose(formState.isDirty && dialogIsOpen)
   const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
 
-  const confirmClose = () => {
-    if (formState.isDirty) {
+  const confirmClose = useCallback(() => {
+    // isDirty was not working properly working properly for this case -> https://ideameter.app/group/cl96et2dn29290mxeivi350a3?tabId=cl973yolu31050mwfbmjwx7eh&ideaId=clbye9egt29790mvxnjrs2ha4
+    const dirtyFieldKeys = Object.keys(formState.dirtyFields)
+    if (dirtyFieldKeys.length > 0) {
       openConfirmDialog({
         onConfirm: () => closeDialog(),
         title: "Discard changes?",
@@ -131,7 +133,7 @@ const IdeaDialog = () => {
       return
     }
     closeDialog()
-  }
+  }, [formState.dirtyFields, dialogIsOpen])
 
   const { dialogIsOpen: subideaDialogIsOpen } = useSubideaDialogStore()
 
