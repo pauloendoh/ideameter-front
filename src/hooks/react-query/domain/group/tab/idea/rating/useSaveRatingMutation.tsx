@@ -1,4 +1,5 @@
 import { useScrollToIdea } from "@/hooks/domain/idea/useScrollToIdea"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
@@ -7,6 +8,7 @@ import upsert from "@/utils/array/upsert"
 import myAxios from "@/utils/axios/myAxios"
 import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
+import { Link } from "@mui/material"
 import { useMutation, useQueryClient } from "react-query"
 
 interface ResponseData {
@@ -19,8 +21,16 @@ const useSaveRatingMutation = () => {
   const scrollToIdea = useScrollToIdea()
   const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
+  const { openDialog } = useIdeaDialogStore()
+
   return useMutation(
-    ({ payload }: { payload: RatingDto; groupId: string; parentIdeaId?: string }) =>
+    ({
+      payload,
+    }: {
+      payload: RatingDto
+      groupId: string
+      parentIdeaId?: string
+    }) =>
       myAxios
         .request<ResponseData>({
           url: urls.api.ideaRating(payload.ideaId),
@@ -30,17 +40,36 @@ const useSaveRatingMutation = () => {
         .then((res) => res.data),
     {
       onSuccess: ({ savedRating, idea }, { groupId }) => {
-        queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) => {
-          return upsert(curr, idea, (i) => i.id === idea.id)
-        })
+        queryClient.setQueryData<IdeaDto[]>(
+          queryKeys.groupIdeas(groupId),
+          (curr) => {
+            return upsert(curr, idea, (i) => i.id === idea.id)
+          }
+        )
 
         const groupRatings = queryClient.getQueryData<RatingDto[]>(
           queryKeys.ratingsByGroup(groupId)
         )
         const newGroupRatings = pushOrReplace(groupRatings, savedRating, "id")
-        queryClient.setQueryData(queryKeys.ratingsByGroup(groupId), newGroupRatings)
+        queryClient.setQueryData(
+          queryKeys.ratingsByGroup(groupId),
+          newGroupRatings
+        )
 
-        setSuccessMessage("Rating saved!")
+        setSuccessMessage(
+          <>
+            Rating saved!{" "}
+            <Link
+              sx={(theme) => ({
+                cursor: "pointer",
+                color: theme.palette.text.primary,
+              })}
+              onClick={() => openDialog(idea)}
+            >
+              Open
+            </Link>
+          </>
+        )
 
         scrollToIdea(idea.id)
       },
