@@ -10,6 +10,7 @@ export interface IFilter {
   users: SimpleUserDto[]
   onlyHighImpactVoted: boolean
   requiresYourRating: boolean
+  minRatingCount: number
 }
 
 export interface IGroupFilterStore {
@@ -25,6 +26,7 @@ export interface IGroupFilterStore {
   changeFilterUsers: (users: SimpleUserDto[], tabId?: string) => void
   toggleOnlyHighImpactVoted: (tabId?: string) => void
   toggleRequiresYourRating: (tabId?: string) => void
+  setMinRatingCount: (count: number, tabId?: string) => void
 }
 
 const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
@@ -34,13 +36,20 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     users: [],
     onlyHighImpactVoted: false,
     requiresYourRating: false,
+    minRatingCount: 0,
   },
   setFilter: (filter) => set({ filter }),
   getFilterCount: () => {
-    const { labelIds, onlyHighImpactVoted, requiresYourRating } = get().filter
+    const {
+      labelIds,
+      onlyHighImpactVoted,
+      requiresYourRating,
+      minRatingCount,
+    } = get().filter
     let count = labelIds.length
     if (onlyHighImpactVoted) count++
     if (requiresYourRating) count++
+    if (minRatingCount > 0) count++
 
     return count
   },
@@ -58,7 +67,11 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
     }
   },
 
@@ -79,7 +92,11 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     if (tabId) {
       const state = get()
 
-      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
     }
   },
   changeFilterUsers: (userIds, tabId) => {
@@ -92,7 +109,11 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
     }
   },
   toggleOnlyHighImpactVoted: (tabId) => {
@@ -105,7 +126,11 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
     }
   },
   toggleRequiresYourRating: (tabId) => {
@@ -118,7 +143,29 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
 
     if (tabId) {
       const state = get()
-      nookies.set(null, cookieKeys.groupTabIdeasFilter(tabId), JSON.stringify(state))
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
+    }
+  },
+
+  setMinRatingCount: (count, tabId) => {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        minRatingCount: count,
+      },
+    }))
+
+    if (tabId) {
+      const state = get()
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
     }
   },
 }))

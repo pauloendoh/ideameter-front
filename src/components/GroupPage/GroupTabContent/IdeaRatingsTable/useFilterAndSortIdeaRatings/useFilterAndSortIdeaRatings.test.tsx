@@ -22,6 +22,7 @@ describe("useFilterAndSortIdeaRatings", () => {
             onlyHighImpactVoted: false,
             requiresYourRating: false,
             users: [],
+            minRatingCount: 0,
           },
           ideaRatings: [
             buildIdeaRating({
@@ -57,6 +58,7 @@ describe("useFilterAndSortIdeaRatings", () => {
             onlyHighImpactVoted: false,
             requiresYourRating: false,
             users: [],
+            minRatingCount: 0,
           },
           ideaRatings: [
             buildIdeaRating({

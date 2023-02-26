@@ -1,9 +1,10 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import { Checkbox, Divider, Menu, useTheme } from "@mui/material"
+import { Checkbox, Divider, Menu, Typography, useTheme } from "@mui/material"
 import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
 import S from "./styles"
@@ -26,6 +27,7 @@ const FilterButton = (props: Props) => {
     toggleFilterLabelId,
     toggleRequiresYourRating,
     toggleOnlyHighImpactVoted,
+    setMinRatingCount,
   } = useGroupFilterStore()
 
   const handleClick = (event: any) => {
@@ -103,6 +105,21 @@ const FilterButton = (props: Props) => {
         <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
           <Checkbox checked={filter.requiresYourRating} name="current-goal" />
           <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
+        </S.MenuItem>
+        <S.MenuItem
+          sx={{ display: "flex", justifyContent: "space-between" }}
+          selected={filter.minRatingCount > 0}
+        >
+          <Typography>Min. rating count</Typography>
+          <MyTextField
+            value={filter.minRatingCount}
+            type="number"
+            sx={{ width: 80 }}
+            onChange={(e) => {
+              const value = Math.max(0, parseInt(e.target.value))
+              setMinRatingCount(value, routerQuery.tabId!)
+            }}
+          />
         </S.MenuItem>
 
         {sortedLabels.length > 0 && <Divider />}

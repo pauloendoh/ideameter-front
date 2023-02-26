@@ -31,6 +31,7 @@ export const useFilterAndSortIdeaRatings = ({
       onlyHighImpactVoted,
       requiresYourRating,
       users: filteringUsers,
+      minRatingCount,
     } = filter
 
     let result = [...ideaRatings]
@@ -83,6 +84,17 @@ export const useFilterAndSortIdeaRatings = ({
           }
         }
         return false
+      })
+    }
+
+    if (minRatingCount > 0) {
+      result = result.filter((ideaRating) => {
+        const youRated = ideaRating.yourRating && ideaRating.yourRating > 0
+        const otherRatingsCount = ideaRating.otherUserGroupRatings.filter(
+          (r) => r.rating && r.rating > 0
+        ).length
+        const total = otherRatingsCount + (youRated ? 1 : 0)
+        return total >= minRatingCount
       })
     }
 
