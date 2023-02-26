@@ -100,7 +100,6 @@ const FilterButton = (props: Props) => {
           />
           <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
         </S.MenuItem>
-        <Divider />
         <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
           <Checkbox checked={filter.requiresYourRating} name="current-goal" />
           <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>

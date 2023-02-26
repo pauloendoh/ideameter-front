@@ -10,7 +10,8 @@ type Props = {
   updatedAt: string
 }
 
-const ChangedSectionIdeaDialog = (props: Props) => {
+// PE 1/3 - improve name CreatedUpdatedAtIdeaDialog
+const CreatedUpdatedAtIdeaDialog = (props: Props) => {
   const { openDialog: openIdeaChangesDialog } = useIdeaChangesDialogStore()
 
   const { data: ideaChanges } = useIdeaChangesQuery(props.ideaId)
@@ -38,4 +39,4 @@ const ChangedSectionIdeaDialog = (props: Props) => {
   return <Typography>Created {format(props.createdAt)}</Typography>
 }
 
-export default ChangedSectionIdeaDialog
+export default CreatedUpdatedAtIdeaDialog

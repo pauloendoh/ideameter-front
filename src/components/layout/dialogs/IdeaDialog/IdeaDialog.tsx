@@ -26,7 +26,7 @@ import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
-import ChangedSectionIdeaDialog from "./ChangedSectionIdeaDialog/ChangedSectionIdeaDialog"
+import CreatedUpdatedAtIdeaDialog from "./CreatedUpdatedAtIdeaDialog/CreatedUpdatedAtIdeaDialog"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
@@ -245,7 +245,11 @@ const IdeaDialog = () => {
             </FlexVCenter>
           </DialogTitle>
 
-          <DialogContent>
+          <DialogContent
+            sx={{
+              maxHeight: "calc(100vh - 300px)",
+            }}
+          >
             <Grid container pt={1} spacing={2}>
               <IdeaDialogLeftCol
                 watch={watch}
@@ -296,7 +300,7 @@ const IdeaDialog = () => {
                       title={new Date(watch("createdAt")).toLocaleDateString()}
                     >
                       <div style={{ display: "flex", alignItems: "center" }}>
-                        <ChangedSectionIdeaDialog
+                        <CreatedUpdatedAtIdeaDialog
                           createdAt={watch("createdAt")}
                           ideaId={watch("id")}
                           ideaTitle={watch("name")}

@@ -40,8 +40,11 @@ export const styles = {
       },
     },
     ".ql-editor": {
-      maxHeight: "300px",
+      maxHeight: "calc(100vh - 500px)",
       overflowY: "auto",
+      a: {
+        textDecoration: "underline",
+      },
     },
     ".ql-tooltip": {
       background: theme.palette.grey[900],
