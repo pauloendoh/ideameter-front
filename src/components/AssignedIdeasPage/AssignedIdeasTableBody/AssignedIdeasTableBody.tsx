@@ -13,12 +13,13 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
 
     return ideas.filter((i) => !i.idea.isDone)
   }, [ideas, showCompleted])
+  const theme = useTheme()
+
   return (
     <TableBody>
       {showingIdeas.map(({ group, tab, idea }, index) => {
         const ideaUrl = urls.pages.groupTabIdea(group.groupId, tab.id, idea.id)
 
-        const theme = useTheme()
         return (
           <S.TableRow id={idea.id} key={idea.id} className="idea-table-row">
             <TableCell align="center">{index + 1}</TableCell>
@@ -33,7 +34,10 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
               </NextLink>
             </TableCell>
             <TableCell>
-              <NextLink href={urls.pages.groupTab(group.groupId, tab.id)} passHref>
+              <NextLink
+                href={urls.pages.groupTab(group.groupId, tab.id)}
+                passHref
+              >
                 <Link color={theme.palette.grey[100]}> {tab.name}</Link>
               </NextLink>
             </TableCell>
