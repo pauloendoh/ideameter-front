@@ -12,6 +12,9 @@ interface Props {
   saveText?: string
   onEnabledAndCtrlEnter?: () => void
   onEnableAndCtrlS?: () => void
+  hideCancel?: boolean
+  saveIcon?: React.ReactNode
+  saveWidth?: number
 }
 
 const SaveCancelButtons = (props: Props) => {
@@ -56,15 +59,19 @@ const SaveCancelButtons = (props: Props) => {
         id={props.submitButtonId}
         disabled={props.disabled}
         onClick={props.onSave}
+        startIcon={props.saveIcon}
+        sx={{ width: props.saveWidth }}
       >
         {props.saveText || "Save"}
       </LoadingButton>
 
-      <Box ml={1}>
-        <Button onClick={props.onCancel} variant="outlined">
-          Cancel
-        </Button>
-      </Box>
+      {!props.hideCancel && (
+        <Box ml={1}>
+          <Button onClick={props.onCancel} variant="outlined">
+            Cancel
+          </Button>
+        </Box>
+      )}
     </Flex>
   )
 }

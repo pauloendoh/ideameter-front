@@ -1,4 +1,5 @@
 import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useIdeaChangesQuery from "@/hooks/react-query/domain/idea-change/useIdeaChangesQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaChangesDialogStore from "@/hooks/zustand/dialogs/useIdeaChangesDialogStore"
@@ -20,22 +21,26 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
 
   const { data: ideaChanges } = useIdeaChangesQuery(props.ideaId)
 
+  const mostRecentIdeaChange = useMemo(() => {
+    return ideaChanges?.sort((a, b) => {
+      return a.createdAt > b.createdAt ? -1 : 1
+    })[0]
+  }, [ideaChanges])
+
   const { groupId } = useRouterQueryString()
 
   const date = useMemo(() => {
-    return ideaChanges && ideaChanges.length > 0
-      ? ideaChanges[0].createdAt
-      : props.createdAt
-  }, [ideaChanges, props.createdAt, props.updatedAt])
+    return mostRecentIdeaChange
+      ? mostRecentIdeaChange.createdAt
+      : props.updatedAt
+  }, [mostRecentIdeaChange, props.createdAt])
 
   const imageUserId = useMemo(() => {
-    return ideaChanges && ideaChanges.length > 0
-      ? ideaChanges[0].userId
-      : props.creatorId
-  }, [ideaChanges, props.creatorId])
+    return mostRecentIdeaChange ? mostRecentIdeaChange.userId : props.creatorId
+  }, [mostRecentIdeaChange, props.creatorId])
 
   return (
-    <>
+    <FlexVCenter gap={1}>
       <UserGroupAvatar
         groupId={groupId}
         userId={imageUserId}
@@ -64,7 +69,7 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
           )}
         </div>
       </Tooltip>
-    </>
+    </FlexVCenter>
   )
 }
 

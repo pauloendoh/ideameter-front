@@ -23,8 +23,7 @@ import {
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { MdClose } from "react-icons/md"
-import CreatedUpdatedAtIdeaDialog from "./CreatedUpdatedAtIdeaDialog/CreatedUpdatedAtIdeaDialog"
+import { MdClose, MdSave } from "react-icons/md"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
@@ -202,7 +201,7 @@ const IdeaDialog = () => {
       <Box pb={1}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id={`${ariaLabel}-title`}>
-            <FlexVCenter justifyContent="space-between">
+            <FlexVCenter justifyContent="space-between" gap={2}>
               <Controller
                 name="name"
                 control={control}
@@ -229,7 +228,18 @@ const IdeaDialog = () => {
                 )}
               />
 
-              <FlexVCenter>
+              <FlexVCenter gap={1}>
+                <SaveCancelButtons
+                  isLoadingAndDisabled={isSubmitting}
+                  disabled={saveIsDisabled}
+                  onCancel={confirmClose}
+                  onEnabledAndCtrlEnter={() => onSubmit(watch())}
+                  hideCancel
+                  saveText="Save and close"
+                  saveWidth={150}
+                  saveIcon={<MdSave />}
+                />
+
                 {watch("id") && (
                   <IdeaMenu idea={watch()} afterDelete={closeDialog} />
                 )}
@@ -274,29 +284,6 @@ const IdeaDialog = () => {
               </Box>
             )}
           </DialogContent>
-
-          <DialogTitle>
-            <FlexVCenter justifyContent="space-between">
-              <SaveCancelButtons
-                isLoadingAndDisabled={isSubmitting}
-                disabled={saveIsDisabled}
-                onCancel={confirmClose}
-                onEnabledAndCtrlEnter={() => onSubmit(watch())}
-              />
-
-              <FlexVCenter gap={1}>
-                {watch("creatorId") && (
-                  <CreatedUpdatedAtIdeaDialog
-                    createdAt={watch("createdAt")}
-                    creatorId={watch("creatorId")}
-                    ideaId={watch("id")}
-                    ideaTitle={watch("name")}
-                    updatedAt={watch("updatedAt")}
-                  />
-                )}
-              </FlexVCenter>
-            </FlexVCenter>
-          </DialogTitle>
         </form>
       </Box>
     </Dialog>

@@ -1,8 +1,8 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
-import Txt from "@/components/_common/text/Txt"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, Grid } from "@mui/material"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
+import CreatedUpdatedAtIdeaDialog from "../CreatedUpdatedAtIdeaDialog/CreatedUpdatedAtIdeaDialog"
 import CompleteIdeaButton from "./CompleteIdeaButton/CompleteIdeaButton"
 import TabSelector from "./TabSelector/TabSelector"
 
@@ -15,7 +15,17 @@ const IdeaDialogRightCol = (props: Props) => {
   return (
     <Grid item xs={4}>
       <FlexCol gap={1}>
-        <Txt>Add to idea</Txt>
+        {props.watch("creatorId") && (
+          <CreatedUpdatedAtIdeaDialog
+            createdAt={props.watch("createdAt")}
+            creatorId={props.watch("creatorId")}
+            ideaId={props.watch("id")}
+            ideaTitle={props.watch("name")}
+            updatedAt={props.watch("updatedAt")}
+          />
+        )}
+
+        <Box />
 
         <CompleteIdeaButton watch={props.watch} setValue={props.setValue} />
 
