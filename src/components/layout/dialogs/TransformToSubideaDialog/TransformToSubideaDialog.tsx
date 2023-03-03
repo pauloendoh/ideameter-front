@@ -2,6 +2,7 @@ import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/Sa
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useTransformToSubideaMutation from "@/hooks/react-query/domain/subidea/useTransformToSubideaMutation"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useTransformToSubideadialogStore, {
   IInitialValue,
 } from "@/hooks/zustand/dialogs/useTransformToSubideadialogStore"
@@ -26,7 +27,7 @@ const TransformToSubideaDialog = () => {
   const { initialValue, dialogIsOpen, closeDialog } =
     useTransformToSubideadialogStore()
 
-  const { watch, control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: initialValue,
   })
 
@@ -40,10 +41,14 @@ const TransformToSubideaDialog = () => {
     }
   }, [dialogIsOpen])
 
+  const { openDialog: openIdeaDialog } = useIdeaDialogStore()
+
   const onSubmit = (values: IInitialValue) => {
     mutate(values, {
-      onSuccess: (savedTab) => {
+      onSuccess: (saved) => {
         closeDialog()
+        openIdeaDialog(saved)
+        initialValue.afterClose()
       },
     })
   }

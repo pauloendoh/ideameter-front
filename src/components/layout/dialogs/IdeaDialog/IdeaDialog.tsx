@@ -1,5 +1,5 @@
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import Flex from "@/components/_common/flexboxes/Flex"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
@@ -201,7 +201,7 @@ const IdeaDialog = () => {
       <Box pb={1}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id={`${ariaLabel}-title`}>
-            <FlexVCenter justifyContent="space-between" gap={2}>
+            <Flex justifyContent="space-between" gap={2}>
               <Controller
                 name="name"
                 control={control}
@@ -228,27 +228,31 @@ const IdeaDialog = () => {
                 )}
               />
 
-              <FlexVCenter gap={1}>
-                <SaveCancelButtons
-                  isLoadingAndDisabled={isSubmitting}
-                  disabled={saveIsDisabled}
-                  onCancel={confirmClose}
-                  onEnabledAndCtrlEnter={() => onSubmit(watch())}
-                  hideCancel
-                  saveText="Save and close"
-                  saveWidth={150}
-                  saveIcon={<MdSave />}
-                />
+              <Flex gap={1}>
+                <div>
+                  <SaveCancelButtons
+                    isLoadingAndDisabled={isSubmitting}
+                    disabled={saveIsDisabled}
+                    onCancel={confirmClose}
+                    onEnabledAndCtrlEnter={() => onSubmit(watch())}
+                    hideCancel
+                    saveText="Save and close"
+                    saveWidth={150}
+                    saveIcon={<MdSave />}
+                  />
+                </div>
 
                 {watch("id") && (
                   <IdeaMenu idea={watch()} afterDelete={closeDialog} />
                 )}
 
-                <IconButton onClick={confirmClose}>
-                  <MdClose />
-                </IconButton>
-              </FlexVCenter>
-            </FlexVCenter>
+                <div>
+                  <IconButton onClick={confirmClose}>
+                    <MdClose />
+                  </IconButton>
+                </div>
+              </Flex>
+            </Flex>
           </DialogTitle>
 
           <DialogContent

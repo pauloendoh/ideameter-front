@@ -1,4 +1,6 @@
 import useDeleteIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useDeleteIdeaMutation"
+import useSubideasQueryUtils from "@/hooks/react-query/domain/subidea/useSubideasQueryUtils"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useTransformToSubideadialogStore from "@/hooks/zustand/dialogs/useTransformToSubideadialogStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
@@ -66,6 +68,11 @@ const IdeaMenu = (props: Props) => {
   const { openDialog: openTransformToSubideaDialog } =
     useTransformToSubideadialogStore()
 
+  const { groupId } = useRouterQueryString()
+  const { data: subideas } = useSubideasQueryUtils(groupId, {
+    ideaId: props.idea.id,
+  })
+
   return (
     <div>
       <IconButton
@@ -93,16 +100,19 @@ const IdeaMenu = (props: Props) => {
       >
         <MenuItem onClick={handleCopyTitleAndId}>Copy title + ID</MenuItem>
         <MenuItem onClick={handleCopyId}>Copy idea ID</MenuItem>
-        {/* <MenuItem
-          onClick={() => {
-            openTransformToSubideaDialog({
-              ideaId: props.idea.id,
-              newParentIdeaTitle: "",
-            })
-          }}
-        >
-          Transform to Subidea
-        </MenuItem> */}
+        {subideas?.length === 0 && (
+          <MenuItem
+            onClick={() => {
+              openTransformToSubideaDialog({
+                ideaId: props.idea.id,
+                newParentIdeaTitle: "",
+                afterClose: handleClose,
+              })
+            }}
+          >
+            Transform to Subidea
+          </MenuItem>
+        )}
 
         <MenuItem
           onClick={handleDelete}

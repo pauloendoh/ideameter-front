@@ -3,6 +3,7 @@ import create from "zustand"
 export interface IInitialValue {
   newParentIdeaTitle: string
   ideaId: string
+  afterClose: () => void
 }
 
 interface IStore {
@@ -16,6 +17,7 @@ const useTransformToSubideadialogStore = create<IStore>((set, get) => ({
   initialValue: {
     ideaId: "",
     newParentIdeaTitle: "",
+    afterClose: () => {},
   },
   dialogIsOpen: false,
   openDialog: (initialValue) => {
