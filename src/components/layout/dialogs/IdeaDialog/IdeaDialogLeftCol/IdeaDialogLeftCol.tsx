@@ -73,17 +73,17 @@ const IdeaDialogLeftCol = ({
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@"],
       source: (searchTerm: any, renderList: any, mentionChar: any) => {
-        const list =
+        const mentionOptions =
           groupMembers
             ?.filter((m) => m.userId !== authUser?.id)
             .map((m) => ({ id: m.userId, value: m.user?.username || "" })) || []
-        const includesSearchTerm = list.filter((item) =>
+        const includesSearchTerm = mentionOptions.filter((item) =>
           item.value.toLowerCase().includes(searchTerm.toLowerCase())
         )
         renderList(includesSearchTerm)
       },
     }),
-    [groupMembers, authUser]
+    [] // leave empty; if you add groupMembers, the rte will disappear on window focus
   )
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -132,6 +132,7 @@ const IdeaDialogLeftCol = ({
             }}
             onImageUpload={handleImageUpload}
             onKeyDown={handleKeyDown}
+            mentions={mentions}
           />
         </S.MantineRteContainer>
       </FlexCol>
