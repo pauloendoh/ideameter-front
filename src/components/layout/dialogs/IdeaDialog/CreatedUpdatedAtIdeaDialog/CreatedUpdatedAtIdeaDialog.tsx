@@ -51,7 +51,6 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
           {ideaChanges && ideaChanges.length > 0 ? (
             <Typography
               sx={(theme) => ({
-                color: theme.palette.primary.main,
                 cursor: "pointer",
                 textDecoration: "underline",
               })}
