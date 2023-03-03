@@ -1,4 +1,3 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
@@ -20,7 +19,6 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  Tooltip,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -288,25 +286,13 @@ const IdeaDialog = () => {
 
               <FlexVCenter gap={1}>
                 {watch("creatorId") && (
-                  <>
-                    <UserGroupAvatar
-                      groupId={routerQuery.groupId!}
-                      userId={watch("creatorId")}
-                      widthAndHeight={24}
-                    />
-                    <Tooltip
-                      title={new Date(watch("createdAt")).toLocaleDateString()}
-                    >
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <CreatedUpdatedAtIdeaDialog
-                          createdAt={watch("createdAt")}
-                          ideaId={watch("id")}
-                          ideaTitle={watch("name")}
-                          updatedAt={watch("updatedAt")}
-                        />
-                      </div>
-                    </Tooltip>
-                  </>
+                  <CreatedUpdatedAtIdeaDialog
+                    createdAt={watch("createdAt")}
+                    creatorId={watch("creatorId")}
+                    ideaId={watch("id")}
+                    ideaTitle={watch("name")}
+                    updatedAt={watch("updatedAt")}
+                  />
                 )}
               </FlexVCenter>
             </FlexVCenter>

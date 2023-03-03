@@ -54,6 +54,11 @@ const UserGroupAvatar = (props: Props) => {
             src={user?.profile?.pictureUrl}
             alt={user?.username}
             {...props.avatarProps}
+            sx={{
+              width: props.widthAndHeight || 40,
+              height: props.widthAndHeight || 40,
+              ...(props.avatarProps?.sx || {}),
+            }}
           >
             {user?.username[0]?.toUpperCase()}
           </Avatar>

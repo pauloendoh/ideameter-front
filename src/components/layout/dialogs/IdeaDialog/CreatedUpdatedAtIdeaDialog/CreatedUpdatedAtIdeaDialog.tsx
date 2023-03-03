@@ -1,6 +1,9 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import useIdeaChangesQuery from "@/hooks/react-query/domain/idea-change/useIdeaChangesQuery"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaChangesDialogStore from "@/hooks/zustand/dialogs/useIdeaChangesDialogStore"
-import { Typography } from "@mui/material"
+import { Tooltip, Typography } from "@mui/material"
+import { useMemo } from "react"
 import { format } from "timeago.js"
 
 type Props = {
@@ -8,6 +11,7 @@ type Props = {
   ideaTitle: string
   createdAt: string
   updatedAt: string
+  creatorId: string
 }
 
 // PE 1/3 - improve name CreatedUpdatedAtIdeaDialog
@@ -16,27 +20,52 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
 
   const { data: ideaChanges } = useIdeaChangesQuery(props.ideaId)
 
-  if (ideaChanges && ideaChanges.length > 0) {
-    return (
-      <Typography
-        sx={(theme) => ({
-          color: theme.palette.primary.main,
-          cursor: "pointer",
-          textDecoration: "underline",
-        })}
-        onClick={() =>
-          openIdeaChangesDialog({
-            ideaId: props.ideaId,
-            ideaTitle: props.ideaTitle,
-          })
-        }
-      >
-        Updated {format(props.updatedAt)}
-      </Typography>
-    )
-  }
+  const { groupId } = useRouterQueryString()
 
-  return <Typography>Created {format(props.createdAt)}</Typography>
+  const date = useMemo(() => {
+    return ideaChanges && ideaChanges.length > 0
+      ? ideaChanges[0].createdAt
+      : props.createdAt
+  }, [ideaChanges, props.createdAt, props.updatedAt])
+
+  const imageUserId = useMemo(() => {
+    return ideaChanges && ideaChanges.length > 0
+      ? ideaChanges[0].userId
+      : props.creatorId
+  }, [ideaChanges, props.creatorId])
+
+  return (
+    <>
+      <UserGroupAvatar
+        groupId={groupId}
+        userId={imageUserId}
+        widthAndHeight={24}
+      />
+      <Tooltip title={new Date(date).toLocaleString()}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {ideaChanges && ideaChanges.length > 0 ? (
+            <Typography
+              sx={(theme) => ({
+                color: theme.palette.primary.main,
+                cursor: "pointer",
+                textDecoration: "underline",
+              })}
+              onClick={() =>
+                openIdeaChangesDialog({
+                  ideaId: props.ideaId,
+                  ideaTitle: props.ideaTitle,
+                })
+              }
+            >
+              Updated {format(date)}
+            </Typography>
+          ) : (
+            <Typography>Created {format(props.createdAt)}</Typography>
+          )}
+        </div>
+      </Tooltip>
+    </>
+  )
 }
 
 export default CreatedUpdatedAtIdeaDialog

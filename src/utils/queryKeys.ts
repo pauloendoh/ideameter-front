@@ -12,6 +12,7 @@ const queryKeys = {
   ratingsByGroup: (groupId: string) => `/idea-rating?groupId=${groupId}`,
 
   subideas: (groupId: string) => ["subideas", "group", groupId],
+  ideaChanges: (ideaId: string) => ["idea-changes", ideaId],
 
   notifications: "/notifications",
   interestSimilarity: (groupId: string) =>

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 
-type UrlQueryParams = { groupId?: string; tabId?: string; ideaId?: string }
+type UrlQueryParams = { groupId: string; tabId: string; ideaId: string }
 
 export const useRouterQueryString = () => {
   const router = useRouter()

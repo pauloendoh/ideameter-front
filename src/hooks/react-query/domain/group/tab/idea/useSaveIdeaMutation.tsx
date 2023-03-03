@@ -67,6 +67,8 @@ const useSaveIdeaMutation = () => {
           </>
         )
 
+        queryClient.invalidateQueries(queryKeys.ideaChanges(savedIdea.id))
+
         sendMessage({ idea: savedIdea, groupId })
         scrollToIdea(savedIdea.id)
       },

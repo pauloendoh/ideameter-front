@@ -6,7 +6,7 @@ import { useQuery } from "react-query"
 const useIdeaChangesQuery = (ideaId: string) => {
   const axios = useAxios()
   return useQuery(
-    queryKeys.subideas(ideaId),
+    queryKeys.ideaChanges(ideaId),
     () =>
       axios
         .get<IdeaChangeDto[]>(urls.api.ideaChanges(ideaId))
