@@ -1,6 +1,7 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
+import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
@@ -17,6 +18,8 @@ const FilterButton = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const routerQuery = useRouterQueryString()
+
+  const { data: groupMembers } = useGroupMembersQuery(routerQuery.groupId)
 
   const { data: labels } = useGroupLabelsQuery(routerQuery.groupId!)
 
@@ -107,18 +110,29 @@ const FilterButton = (props: Props) => {
           <Checkbox checked={filter.requiresYourRating} name="current-goal" />
           <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
         </S.MenuItem>
+
         <S.MenuItem
           sx={{ display: "flex", justifyContent: "space-between", py: "4px" }}
         >
-          <Typography>Min. rating count</Typography>
+          <Typography>Min. average</Typography>
           <MyTextField
-            value={filter.minRatingCount}
+            value={filter.minAvgRating}
             type="number"
-            sx={{ width: 80 }}
-            focused={filter.minRatingCount > 0}
+            inputProps={{
+              step: ".1",
+            }}
+            sx={{
+              width: 80,
+              "input[type=number]::-webkit-inner-spin-button": {
+                opacity: 1,
+              },
+            }}
+            focused={filter.minAvgRating > 0}
             onChange={(e) => {
-              const value = Math.max(0, parseInt(e.target.value))
-              setMinRatingCount(value, routerQuery.tabId!)
+              const value = Math.max(0, Number(e.target.value))
+              const finalValue = value > 3 ? 3 : value
+
+              setMinAvgRating(finalValue, routerQuery.tabId!)
             }}
           />
         </S.MenuItem>
@@ -126,18 +140,24 @@ const FilterButton = (props: Props) => {
         <S.MenuItem
           sx={{ display: "flex", justifyContent: "space-between", py: "4px" }}
         >
-          <Typography>Min. average rating</Typography>
+          <Typography>Min. count</Typography>
           <MyTextField
-            value={filter.minAvgRating}
+            value={filter.minRatingCount}
             type="number"
-            inputProps={{
-              step: ".1",
+            sx={{
+              width: 80,
+              "input[type=number]::-webkit-inner-spin-button": {
+                opacity: 1,
+              },
             }}
-            sx={{ width: 80 }}
-            focused={filter.minAvgRating > 0}
+            focused={filter.minRatingCount > 0}
             onChange={(e) => {
               const value = Math.max(0, Number(e.target.value))
-              setMinAvgRating(value, routerQuery.tabId!)
+              const finalValue =
+                groupMembers?.length && value > groupMembers.length
+                  ? groupMembers.length
+                  : value
+              setMinRatingCount(finalValue, routerQuery.tabId!)
             }}
           />
         </S.MenuItem>
