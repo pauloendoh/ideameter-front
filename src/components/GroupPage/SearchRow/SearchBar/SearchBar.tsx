@@ -59,7 +59,13 @@ const SearchBar = (props: Props) => {
     if (!text) return []
 
     return groupIdeas
-      .filter((i) => textContainsWords(i.name, text) || i.id.includes(text))
+      .filter(
+        (i) =>
+          textContainsWords(i.name, text) ||
+          i.id.includes(text) ||
+          textContainsWords(i.description, text)
+      )
+
       .sort((a, b) => {
         if (a.isDone && !b.isDone) return 1
         return -1
@@ -84,9 +90,9 @@ const SearchBar = (props: Props) => {
             {...params}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            label="Search ideas"
+            label="Search ideas by title, description or id"
             size="small"
-            sx={{ width: 200 }}
+            sx={{ width: 320 }}
           />
         )}
         getOptionLabel={(option) => {
