@@ -8,14 +8,7 @@ import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import textContainsWords from "@/utils/text/textContainsWords"
 
-import {
-  Autocomplete,
-  Box,
-  FormControl,
-  MenuItem,
-  Popper,
-  Select,
-} from "@mui/material"
+import { Autocomplete, Box, Popper } from "@mui/material"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { MdSearch } from "react-icons/md"
 import SearchBarIdeaOption from "./SearchBarIdeaOption/SearchBarIdeaOption"
@@ -135,13 +128,6 @@ const SearchBar = () => {
               }
               size="small"
               sx={{ width: 260 }}
-              InputProps={{
-                ...params.InputProps,
-
-                style: {
-                  borderRadius: "4px 0px 0px 4px",
-                },
-              }}
             />
           )}
           getOptionLabel={(option) => {
@@ -168,7 +154,7 @@ const SearchBar = () => {
           }
         />
 
-        <FormControl
+        {/* <FormControl
           variant="outlined"
           size="small"
           style={{
@@ -187,7 +173,7 @@ const SearchBar = () => {
             <MenuItem value={"ideas" as SearchType}>Ideas</MenuItem>
             <MenuItem value={"subideas" as SearchType}>Subideas</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
       </FlexVCenter>
     </Box>
   )
