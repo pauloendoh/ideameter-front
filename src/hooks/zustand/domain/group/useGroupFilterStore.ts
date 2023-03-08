@@ -23,6 +23,7 @@ export interface IGroupFilterStore {
 
   // ↓ ↓ ↓ saves tab ideas store in cookie after changing
   toggleFilterLabelId: (id: string, tabId?: string) => void
+  setFilterLabelIds: (ids: string[], tabId?: string) => void
   toggleOnlyCompletedIdeas: (tabId?: string) => void
   changeFilterUsers: (users: SimpleUserDto[], tabId?: string) => void
   toggleOnlyHighImpactVoted: (tabId?: string) => void
@@ -67,6 +68,25 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       filter: {
         ...filter,
         labelIds: newLabelIds,
+      },
+    })
+
+    if (tabId) {
+      const state = get()
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
+    }
+  },
+
+  setFilterLabelIds: (ids, tabId) => {
+    const { filter } = get()
+    set({
+      filter: {
+        ...filter,
+        labelIds: ids,
       },
     })
 

@@ -5,9 +5,17 @@ import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGr
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import { Checkbox, Divider, Menu, Typography, useTheme } from "@mui/material"
+import {
+  Box,
+  Checkbox,
+  Divider,
+  Menu,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
+import LabelsSelector from "./LabelsSelector/LabelsSelector"
 import S from "./styles"
 
 interface Props {
@@ -28,6 +36,7 @@ const FilterButton = (props: Props) => {
     getFilterCount,
     labelIdIsInFilter,
     toggleFilterLabelId,
+    setFilterLabelIds,
     toggleRequiresYourRating,
     toggleOnlyHighImpactVoted,
     setMinRatingCount,
@@ -164,23 +173,12 @@ const FilterButton = (props: Props) => {
 
         {sortedLabels.length > 0 && <Divider />}
 
-        {sortedLabels.map((label) => (
-          <S.MenuItem
-            key={label.id}
-            onClick={() => toggleFilterLabelId(label.id, routerQuery.tabId!)}
-          >
-            <Checkbox checked={labelIdIsInFilter(label.id)} name={label.name} />
-
-            <S.CheckboxLabel
-              style={{
-                background: label.bgColor,
-                borderRadius: 4,
-              }}
-            >
-              {label.name}
-            </S.CheckboxLabel>
-          </S.MenuItem>
-        ))}
+        <Box px={1} mt={1}>
+          <LabelsSelector
+            selectedLabelIds={filter.labelIds}
+            onChange={setFilterLabelIds}
+          />
+        </Box>
       </Menu>
     </>
   )
