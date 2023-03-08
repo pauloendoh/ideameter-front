@@ -1,3 +1,4 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
@@ -8,6 +9,7 @@ import textContainsWords from "@/utils/text/textContainsWords"
 
 import { Autocomplete, Box, Popper } from "@mui/material"
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { MdSearch } from "react-icons/md"
 import SearchBarItem from "./SearchBarItem/SearchBarItem"
 
 interface Props {
@@ -90,7 +92,12 @@ const SearchBar = (props: Props) => {
             {...params}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            label="Search ideas by title, description or id"
+            label={
+              <FlexVCenter gap={1}>
+                <MdSearch />
+                <span>Idea title, ID or description</span>
+              </FlexVCenter>
+            }
             size="small"
             sx={{ width: 320 }}
           />

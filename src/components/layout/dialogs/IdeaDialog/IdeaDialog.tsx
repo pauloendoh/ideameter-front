@@ -257,7 +257,7 @@ const IdeaDialog = () => {
 
           <DialogContent
             sx={{
-              maxHeight: "calc(100vh - 300px)",
+              maxHeight: "calc(100vh - 256px)",
             }}
           >
             <Grid container pt={1} spacing={2}>

@@ -6,21 +6,20 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
   Button,
   Divider,
+  Link as MUILink,
   Menu,
   MenuItem,
   Typography,
-  Link as MUILink,
 } from "@mui/material"
+import Link from "next/link"
+import { useRouter } from "next/router"
 import { forwardRef, useState } from "react"
 import {
-  MdAssignment,
   MdEdit,
   MdExitToApp,
   MdOutlineAssignmentInd,
   MdOutlineKeyboard,
 } from "react-icons/md"
-import { useRouter } from "next/router"
-import Link from "next/link"
 
 const NavbarUserMenu = () => {
   const router = useRouter()
@@ -35,7 +34,9 @@ const NavbarUserMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     setAnchorEl(event.currentTarget)
     event.preventDefault()
     event.stopPropagation()
@@ -60,7 +61,22 @@ const NavbarUserMenu = () => {
 
   return (
     <div>
-      <Button onClick={(e) => handleClick(e)}>{authUser?.username}</Button>
+      <Button onClick={(e) => handleClick(e)}>
+        {authUser?.profile?.pictureUrl ? (
+          <img
+            src={authUser.profile.pictureUrl}
+            alt="Profile picture"
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+        ) : (
+          authUser?.username
+        )}
+      </Button>
       <Menu
         id="navbar-user-menu"
         anchorEl={anchorEl}
