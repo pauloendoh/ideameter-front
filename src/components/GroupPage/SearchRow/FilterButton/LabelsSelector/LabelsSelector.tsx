@@ -36,6 +36,9 @@ const LabelsSelector = (props: Props) => {
       id="tags-standard"
       options={sortedLabels}
       value={value}
+      onKeyDown={(e) => {
+        e.stopPropagation()
+      }}
       onChange={(e, values) => {
         if (typeof values === "string") return
         const labels = values as LabelDto[]
