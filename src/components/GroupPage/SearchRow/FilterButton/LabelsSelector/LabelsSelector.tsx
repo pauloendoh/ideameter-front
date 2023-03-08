@@ -39,6 +39,7 @@ const LabelsSelector = (props: Props) => {
       onKeyDown={(e) => {
         e.stopPropagation()
       }}
+      disableCloseOnSelect
       onChange={(e, values) => {
         if (typeof values === "string") return
         const labels = values as LabelDto[]
