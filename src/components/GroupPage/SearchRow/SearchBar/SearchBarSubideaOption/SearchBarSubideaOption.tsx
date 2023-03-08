@@ -2,7 +2,7 @@ import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
-import { useTheme } from "@mui/material"
+import { Typography, useTheme } from "@mui/material"
 import { HTMLAttributes, useMemo } from "react"
 
 interface Props {
@@ -20,9 +20,10 @@ const SearchBarSubideaOption = ({ htmlAttributes, idea, groupId }: Props) => {
   )
 
   return (
-    <Flex {...(htmlAttributes as any)}>
+    <Flex {...(htmlAttributes as any)} width="100%">
       <FlexCol alignItems="flex-start" width="100%">
         <Flex
+          width="100%"
           sx={{
             textDecoration: idea.isDone ? "line-through" : undefined,
             color: idea.isDone ? theme.palette.grey[600] : undefined,
@@ -31,14 +32,18 @@ const SearchBarSubideaOption = ({ htmlAttributes, idea, groupId }: Props) => {
           {idea.name}
         </Flex>
 
-        <Flex
-          justifyContent={"flex-end"}
-          width="100%"
-          sx={{
-            fontStyle: "italic",
-          }}
-        >
-          {parentIdea?.name}
+        <Flex justifyContent={"flex-end"} width="100%">
+          <Typography
+            sx={{
+              fontStyle: "italic",
+              color: theme.palette.grey[600],
+              width: 180,
+            }}
+            title={parentIdea?.name}
+            noWrap
+          >
+            {parentIdea?.name}
+          </Typography>
         </Flex>
       </FlexCol>
     </Flex>

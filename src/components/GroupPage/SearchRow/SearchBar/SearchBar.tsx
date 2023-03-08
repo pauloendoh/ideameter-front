@@ -162,6 +162,7 @@ const SearchBar = () => {
                 idea={idea}
                 htmlAttributes={htmlAttributes}
                 groupId={groupId}
+                tab={getTab(idea.tabId)}
               />
             )
           }
