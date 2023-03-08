@@ -30,27 +30,37 @@ const HighestSubideaInfo = (props: Props) => {
       .filter((r) => !r.idea.isDone)
   }, [ideaSubideaRatings])
 
+  const otherHighestSubideas = useMemo(() => {
+    const [x, ...other] = highestSubideas
+    return other
+  }, [highestSubideas])
+
+  const othersLabel = useMemo(() => {
+    if (otherHighestSubideas.length === 0) return ""
+    if (otherHighestSubideas.length === 1) return "+1 other"
+    return `+${otherHighestSubideas.length} others`
+  }, [otherHighestSubideas])
+
   if (ideaSubideaRatings.length === 0 || highestSubideas.length === 0)
     return null
 
   return (
     <FlexCol gap={1}>
-      {highestSubideas.map((subidea) => (
-        <Box key={subidea.idea.id} sx={{ fontStyle: "italic" }}>
-          {subidea.idea.name}
-          <span
-            style={{
-              background: "#535353",
-              fontStyle: "normal",
-              padding: "0px 4px",
-              borderRadius: 4,
-              marginLeft: 8,
-            }}
-          >
-            {upToNDecimals(Number(subidea.avgRating), 1)}
-          </span>
-        </Box>
-      ))}
+      <Box sx={{ fontStyle: "italic" }}>
+        {highestSubideas[0].idea.name}
+        <span
+          style={{
+            background: "#535353",
+            fontStyle: "normal",
+            padding: "0px 4px",
+            borderRadius: 4,
+            marginLeft: 8,
+          }}
+        >
+          {upToNDecimals(Number(highestSubideas[0].avgRating), 1)}
+        </span>
+      </Box>
+      <i>{otherHighestSubideas.length > 0 && othersLabel}</i>
     </FlexCol>
   )
 }
