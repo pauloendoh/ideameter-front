@@ -40,7 +40,7 @@ export const styles = {
       },
     },
     ".ql-editor": {
-      maxHeight: "calc(100vh - 500px)",
+      maxHeight: "calc(100vh - 550px)",
       overflowY: "auto",
       a: {
         textDecoration: "underline",
