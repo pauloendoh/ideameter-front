@@ -5,7 +5,7 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
 import pushOrReplace from "@/utils/array/pushOrReplace"
 import upsert from "@/utils/array/upsert"
-import myAxios from "@/utils/axios/myAxios"
+import { useAxios } from "@/utils/axios/useAxios"
 import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
 import { Link } from "@mui/material"
@@ -23,6 +23,7 @@ const useSaveRatingMutation = () => {
 
   const { openDialog } = useIdeaDialogStore()
 
+  const axios = useAxios()
   return useMutation(
     ({
       payload,
@@ -31,7 +32,7 @@ const useSaveRatingMutation = () => {
       groupId: string
       parentIdeaId?: string
     }) =>
-      myAxios
+      axios
         .request<ResponseData>({
           url: urls.api.ideaRating(payload.ideaId),
           data: payload,
@@ -72,9 +73,6 @@ const useSaveRatingMutation = () => {
         )
 
         scrollToIdea(idea.id)
-      },
-      onError: (err) => {
-        setErrorMessage(JSON.stringify(err))
       },
     }
   )
