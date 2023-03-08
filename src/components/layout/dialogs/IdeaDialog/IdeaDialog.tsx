@@ -61,8 +61,8 @@ const IdeaDialog = () => {
   const router = useRouter()
 
   useEffect(() => {
-    reset(initialValue)
-  }, [initialValue])
+    if (dialogIsOpen) reset(initialValue)
+  }, [initialValue, dialogIsOpen])
 
   useEffect(() => {
     if (dialogIsOpen) {
@@ -166,7 +166,13 @@ const IdeaDialog = () => {
       subideaDialogIsOpen ||
       labelsDialogIsOpen
     )
-  }, [isSubmitting, watch(), labelsDialogIsOpen, subideaDialogIsOpen])
+  }, [
+    isSubmitting,
+    watch(),
+    labelsDialogIsOpen,
+    subideaDialogIsOpen,
+    formState,
+  ])
 
   const saveWithoutClosing = useCallback(() => {
     if (saveIsDisabled) return
