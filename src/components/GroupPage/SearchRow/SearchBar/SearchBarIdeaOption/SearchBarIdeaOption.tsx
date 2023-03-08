@@ -14,7 +14,7 @@ interface Props {
   tab?: TabDto
 }
 
-const SearchBarItem = ({
+const SearchBarIdeaOption = ({
   htmlAttributes,
   idea,
 
@@ -55,4 +55,4 @@ const SearchBarItem = ({
   )
 }
 
-export default SearchBarItem
+export default SearchBarIdeaOption
