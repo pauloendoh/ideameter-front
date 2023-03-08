@@ -149,3 +149,9 @@ const IdeaDialogLeftCol = ({
 }
 
 export default IdeaDialogLeftCol
+
+async function x() {
+  return 1
+}
+
+const t = x().catch(() => undefined)

@@ -49,6 +49,7 @@ const GroupTabItem = (props: Props) => {
     const ideasUserMustRate = ideasWithoutSubideas
       .filter((i) => !userRatedIdeaIds.includes(i.id))
       .filter((i) => !i.isDone)
+      .filter((i) => i.ratingsAreEnabled)
 
     // =====
 

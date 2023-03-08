@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { useAssignMeHotkey } from "../../../../../hooks/hotkeys/useAssignMeHotkey/useAssignMeHotkey"
 import { useToggleVoteHotkey } from "../../../../../hooks/hotkeys/useToggleVoteHotkey/useToggleVoteHotkey"
+import DisabledRatingsIcon from "../RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
 import RatingInput from "../RatingInput/RatingInput"
 import useMultiSelectIdeas from "../useMultiSelectIdeas/useMultiSelectIdeas"
 import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell"
@@ -110,13 +111,18 @@ const IdeaTableRow = (props: Props) => {
           groupId={query.groupId}
           parentId={props.ideaRating.idea.parentId}
           hideInput={!isHoveringIdeaId}
+          isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
         />
       </TableCell>
       {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
         <TableCell key={JSON.stringify(userGroupRating)} align="center">
-          {hasSubideas && !userGroupRating.rating
-            ? "-"
-            : userGroupRating.rating}
+          {props.ideaRating.idea.ratingsAreEnabled === false ? (
+            <DisabledRatingsIcon />
+          ) : hasSubideas && !userGroupRating.rating ? (
+            "-"
+          ) : (
+            userGroupRating.rating
+          )}
         </TableCell>
       ))}
 

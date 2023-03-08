@@ -278,6 +278,13 @@ const IdeaDialog = () => {
                   groupId={routerQuery.groupId}
                   tabId={String(watch("tabId"))}
                   ideaId={watch("id")}
+                  initialRatingsAreEnabled={
+                    formState.defaultValues?.ratingsAreEnabled ?? true
+                  }
+                  ratingsAreEnabled={watch("ratingsAreEnabled")}
+                  onChangeRatingsAreEnabled={(value) =>
+                    setValueDirty("ratingsAreEnabled", value)
+                  }
                 />
               </Box>
             )}

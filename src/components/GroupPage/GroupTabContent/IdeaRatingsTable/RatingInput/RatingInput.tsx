@@ -8,12 +8,14 @@ import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { newRatingDto } from "@/types/domain/group/tab/idea/rating/RatingDto"
 import { Badge, NativeSelect } from "@mui/material"
 import { useMemo } from "react"
+import DisabledRatingsIcon from "./DisabledRatingsIcon/DisabledRatingsIcon"
 
 interface Props {
   idea: IdeaDto
   groupId: string
   parentId?: string
   hideInput?: boolean
+  isDisabled?: boolean
 }
 
 const RatingInput = (props: Props) => {
@@ -24,7 +26,8 @@ const RatingInput = (props: Props) => {
 
   const { data: subideas } = useSubideasQuery(props.groupId)
 
-  const isLoading = saveRatingMutation.isLoading || deleteRatingMutation.isLoading
+  const isLoading =
+    saveRatingMutation.isLoading || deleteRatingMutation.isLoading
 
   const containsSubideas = useMemo(
     () => Boolean(subideas?.find((s) => s.parentId === props.idea.id)),
@@ -34,7 +37,8 @@ const RatingInput = (props: Props) => {
   const myCurrentRating = useMemo(() => {
     if (!groupRatings) return -1
     const userRating = groupRatings.find(
-      (rating) => rating.userId === authUser?.id && rating.ideaId === props.idea.id
+      (rating) =>
+        rating.userId === authUser?.id && rating.ideaId === props.idea.id
     )
 
     if (containsSubideas && !userRating) return -1
@@ -44,7 +48,11 @@ const RatingInput = (props: Props) => {
   }, [props.idea, groupRatings, containsSubideas])
 
   // I had to use currentRating -1 because MenuItem does not accept value={null}
-  const hideBadge = props.idea.isDone || myCurrentRating >= 0 || containsSubideas
+  const hideBadge =
+    props.idea.isDone ||
+    myCurrentRating >= 0 ||
+    containsSubideas ||
+    props.isDisabled
 
   const handleChange = (newValue: number) => {
     if (newValue === -1) {
@@ -66,7 +74,9 @@ const RatingInput = (props: Props) => {
 
   return (
     <Badge color="error" variant={hideBadge ? "standard" : "dot"}>
-      {props.hideInput ? (
+      {props.isDisabled ? (
+        <DisabledRatingsIcon />
+      ) : props.hideInput ? (
         <FlexVCenter sx={{ width: 64, justifyContent: "center" }}>
           {myCurrentRating === 0 && "-"}
           {myCurrentRating > 0 && myCurrentRating}

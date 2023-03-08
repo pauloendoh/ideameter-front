@@ -1,9 +1,12 @@
+import DisabledRatingsIcon from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
 import RatingInput from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/RatingInput/RatingInput"
 import UserTableCell from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserTableCell"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
   AccordionDetails,
   AccordionSummary,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -22,6 +25,9 @@ interface Props {
   ideaId: string
   groupId: string
   tabId: string
+  initialRatingsAreEnabled: boolean
+  ratingsAreEnabled: boolean
+  onChangeRatingsAreEnabled: (ratingsAreEnabled: boolean) => void
 }
 
 const ariaLabel = `ratings-accordion`
@@ -44,8 +50,41 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
   // It was not re-rendering when the props.ideaId was changing!
   const LocalRatingInput = useCallback(() => {
     if (!ideaRatings) return null
-    return <RatingInput idea={ideaRatings.idea} groupId={props.groupId} />
-  }, [props.ideaId, ideaRatings?.idea, props.groupId])
+    return (
+      <RatingInput
+        idea={ideaRatings.idea}
+        groupId={props.groupId}
+        isDisabled={!props.ratingsAreEnabled}
+      />
+    )
+  }, [
+    props.ideaId,
+    ideaRatings?.idea,
+    props.groupId,
+    props.initialRatingsAreEnabled,
+  ])
+
+  const buttonLabel = useMemo(() => {
+    const initialEnabled = props.initialRatingsAreEnabled
+    const currentEnabled = props.ratingsAreEnabled
+
+    if (initialEnabled && currentEnabled) return "Clear and disable ratings"
+    if (initialEnabled && !currentEnabled)
+      return "Ratings will be cleared and disabled after saving. Click to undo."
+
+    if (!initialEnabled && !currentEnabled)
+      return "Ratings are disabled. Click to re-enable"
+    if (!initialEnabled && currentEnabled)
+      return "Ratings will be enabled after saving. Click to undo."
+  }, [props.ratingsAreEnabled, props.initialRatingsAreEnabled])
+
+  const titleLabel = useMemo(() => {
+    if (props.ratingsAreEnabled && ideaRatings) {
+      return `Ratings - Avg ${upToNDecimals(Number(ideaRatings.avgRating), 1)}`
+    }
+
+    return "Ratings disabled"
+  }, [props.ratingsAreEnabled, ideaRatings])
 
   if (!ideaRatings) return null
 
@@ -79,9 +118,23 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
           },
         }}
       >
-        <Typography>
-          Ratings - Avg {upToNDecimals(Number(ideaRatings.avgRating), 1)}
-        </Typography>
+        <FlexVCenter flex={1}>
+          <Typography flex={1}>{titleLabel}</Typography>
+          <Button
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation()
+              props.onChangeRatingsAreEnabled(!props.ratingsAreEnabled)
+            }}
+            variant={
+              props.initialRatingsAreEnabled !== props.ratingsAreEnabled
+                ? "contained"
+                : "text"
+            }
+          >
+            {buttonLabel}
+          </Button>
+        </FlexVCenter>
       </AccordionSummary>
       <AccordionDetails sx={{ px: 0, pb: 0 }}>
         <Table>
@@ -106,7 +159,11 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
               </TableCell>
               {ideaRatings.otherUserGroupRatings.map((userGroupRating) => (
                 <TableCell key={JSON.stringify(userGroupRating)} align="center">
-                  {userGroupRating.rating}
+                  {!props.initialRatingsAreEnabled ? (
+                    <DisabledRatingsIcon />
+                  ) : (
+                    userGroupRating.rating
+                  )}
                 </TableCell>
               ))}
 
