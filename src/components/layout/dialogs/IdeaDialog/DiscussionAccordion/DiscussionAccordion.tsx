@@ -46,9 +46,9 @@ const DiscussionAccordion = (props: Props) => {
   }, [comments])
 
   const accordionLabel = useMemo(() => {
-    if (sortedComments.length === 0) return "Discussion"
-    if (sortedComments.length === 1) return "Discussion - 1 comment"
-    return `Discussion - ${sortedComments.length} comments`
+    if (sortedComments.length === 0) return "Discussion · 0 comments"
+    if (sortedComments.length === 1) return "Discussion · 1 comment"
+    return `Discussion · ${sortedComments.length} comments`
   }, [sortedComments.length])
 
   return (
