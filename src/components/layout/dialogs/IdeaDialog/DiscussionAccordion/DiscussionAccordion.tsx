@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import CommentInput from "./CommentInput/CommentInput"
 import UserComment from "./UserComment/UserComment"
@@ -36,6 +36,12 @@ const DiscussionAccordion = (props: Props) => {
   const { authUser } = useAuthStore()
 
   const { data: comments } = useIdeaCommentsQuery(props.ideaId)
+
+  const sortedComments = useMemo(() => {
+    return comments?.sort((a, b) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    })
+  }, [comments])
 
   return (
     <Accordion

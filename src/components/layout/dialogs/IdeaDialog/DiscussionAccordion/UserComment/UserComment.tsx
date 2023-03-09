@@ -17,7 +17,7 @@ const UserComment = (props: Props) => {
       <div>
         <UserGroupAvatar
           groupId={props.groupId}
-          userId={props.comment.user?.id!}
+          userId={props.comment.userId}
         />
       </div>
 
