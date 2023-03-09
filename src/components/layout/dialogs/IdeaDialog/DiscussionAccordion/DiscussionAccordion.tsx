@@ -38,9 +38,11 @@ const DiscussionAccordion = (props: Props) => {
   const { data: comments } = useIdeaCommentsQuery(props.ideaId)
 
   const sortedComments = useMemo(() => {
-    return comments?.sort((a, b) => {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    })
+    return (
+      comments?.sort((a, b) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      }) || []
+    )
   }, [comments])
 
   return (
@@ -113,7 +115,7 @@ const DiscussionAccordion = (props: Props) => {
             </Flex>
 
             <FlexCol gap={4} mt={4}>
-              {comments?.map((comment) => (
+              {sortedComments.map((comment) => (
                 <UserComment
                   key={comment.id}
                   comment={comment}
