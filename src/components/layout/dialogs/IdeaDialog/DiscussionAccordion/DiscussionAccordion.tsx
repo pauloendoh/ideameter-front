@@ -25,7 +25,7 @@ interface Props {
 const ariaLabel = `discussion-accordion`
 
 const DiscussionAccordion = (props: Props) => {
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
 
   const theme = useTheme()
 
@@ -44,6 +44,12 @@ const DiscussionAccordion = (props: Props) => {
       }) || []
     )
   }, [comments])
+
+  const accordionLabel = useMemo(() => {
+    if (sortedComments.length === 0) return "Discussion"
+    if (sortedComments.length === 1) return "Discussion - 1 comment"
+    return `Discussion - ${sortedComments.length} comments`
+  }, [sortedComments.length])
 
   return (
     <Accordion
@@ -75,7 +81,7 @@ const DiscussionAccordion = (props: Props) => {
           },
         }}
       >
-        <Typography>Discussion</Typography>
+        <Typography>{accordionLabel}</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ px: 0, pb: 0 }}>
         <Grid
