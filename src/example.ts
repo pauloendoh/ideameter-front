@@ -5,4 +5,4 @@ import useTransformToSubideadialogStore from "./hooks/zustand/dialogs/useTransfo
 const hookTest = useFilterAndSortIdeaRatings
 const dialogStore = useTransformToSubideadialogStore
 
-const reactQuery = useIdeaChangesQuery
+const query = useIdeaChangesQuery

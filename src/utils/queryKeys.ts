@@ -20,6 +20,7 @@ const queryKeys = {
   assignedToMeIdeas: "assigned-to-me",
   missingRatingsFromGroup: (groupId: string) =>
     `/groups/${groupId}/insights/missing-ratings`,
+  ideaComments: (ideaId: string) => ["comments", ideaId],
 }
 
 export default queryKeys

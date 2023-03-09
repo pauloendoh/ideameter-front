@@ -89,7 +89,7 @@ const IdeaChangesDialog = () => {
                 opacity: 0.5,
               }}
             />
-            <FlexCol flexGrow={1}>
+            <FlexCol flexGrow={1} width="60%">
               {selectedIdeaChange && (
                 <IdeaChangeDialogDetailsRight ideaChange={selectedIdeaChange} />
               )}

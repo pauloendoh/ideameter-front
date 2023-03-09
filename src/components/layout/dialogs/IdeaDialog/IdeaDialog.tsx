@@ -24,6 +24,7 @@ import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose, MdSave } from "react-icons/md"
+import DiscussionAccordion from "./DiscussionAccordion/DiscussionAccordion"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
 import IdeaDialogRightCol from "./IdeaDialogRightCol/IdeaDialogRightCol"
@@ -298,6 +299,12 @@ const IdeaDialog = () => {
             {watch("id") && (
               <Box mt={4}>
                 <IdeaDialogSubideasAccordion ideaId={watch("id")} />
+              </Box>
+            )}
+
+            {watch("id") && (
+              <Box mt={4}>
+                <DiscussionAccordion ideaId={watch("id")} />
               </Box>
             )}
           </DialogContent>
