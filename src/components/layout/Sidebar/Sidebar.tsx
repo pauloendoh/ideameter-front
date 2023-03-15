@@ -3,7 +3,7 @@ import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import { newGroupDto } from "@/types/domain/group/GroupDto"
 import urls from "@/utils/urls"
-import { Avatar, Drawer, IconButton, Toolbar, Tooltip } from "@mui/material"
+import { Avatar, IconButton, Toolbar, Tooltip } from "@mui/material"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -21,11 +21,13 @@ const Sidebar = () => {
   // newest first
   const sortedGroups = useMemo(() => {
     if (!groups) return []
-    return groups.sort((a, b) => ((a.createdAt || "") > (b.createdAt || "") ? -1 : 1))
+    return groups.sort((a, b) =>
+      (a.createdAt || "") > (b.createdAt || "") ? -1 : 1
+    )
   }, [groups])
 
   return (
-    <Drawer
+    <S.Drawer
       variant="persistent"
       open
       anchor="left"
@@ -75,13 +77,18 @@ const Sidebar = () => {
         >
           <IconButton
             onClick={() => openDialog(newGroupDto())}
-            sx={{ background: "#3E3E3E", width: 64, height: 64 }}
+            sx={{
+              background: "#3E3E3E",
+              width: 64,
+              height: 64,
+              marginBottom: 5,
+            }}
           >
             <MdAdd fontSize="24px" />
           </IconButton>
         </Tooltip>
       </FlexCol>
-    </Drawer>
+    </S.Drawer>
   )
 }
 

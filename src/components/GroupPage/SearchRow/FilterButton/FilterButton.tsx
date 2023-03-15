@@ -129,6 +129,9 @@ const FilterButton = (props: Props) => {
             type="number"
             inputProps={{
               step: ".1",
+              onKeyDown: (e) => {
+                e.stopPropagation()
+              },
             }}
             sx={{
               width: 80,
@@ -138,7 +141,9 @@ const FilterButton = (props: Props) => {
             }}
             focused={filter.minAvgRating > 0}
             onChange={(e) => {
-              const value = Math.max(0, Number(e.target.value))
+              let text = e.target.value
+
+              const value = Math.max(0, Number(text))
               const finalValue = value > 3 ? 3 : value
 
               setMinAvgRating(finalValue, routerQuery.tabId!)

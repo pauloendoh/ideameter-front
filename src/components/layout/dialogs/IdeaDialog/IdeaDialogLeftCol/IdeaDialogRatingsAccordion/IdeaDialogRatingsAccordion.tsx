@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material"
 import { upToNDecimals } from "endoh-utils"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import useIdeaRatingsQueryUtils from "../../../../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import S from "./IdeaDialogRatingsAccordion.styles"
@@ -35,7 +35,10 @@ const ariaLabel = `ratings-accordion`
 const IdeaDialogRatingsAccordion = (props: Props) => {
   const tabRatings = useIdeaRatingsQueryUtils(props.groupId, props.tabId)
 
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(props.initialRatingsAreEnabled)
+  useEffect(() => {
+    setExpanded(props.initialRatingsAreEnabled)
+  }, [props.initialRatingsAreEnabled])
 
   const authUser = useAuthStore((s) => s.authUser)
 

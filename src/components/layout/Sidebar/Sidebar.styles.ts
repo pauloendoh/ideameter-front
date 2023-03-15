@@ -1,6 +1,14 @@
-import { Box, styled } from "@mui/material";
+import { Box, Drawer, styled } from "@mui/material"
 
 const S = {
+  Drawer: styled(Drawer)(({ theme }) => ({
+    ".MuiBox-root": {
+      overflowY: "hidden",
+      ":hover": {
+        overflowY: "auto !important",
+      },
+    },
+  })),
   SelectedGroupLittleBar: styled(Box)`
     position: absolute;
     height: 100%;
@@ -10,6 +18,6 @@ const S = {
     left: -20px;
     background: ${({ theme }) => theme.palette.primary.main};
   `,
-};
+}
 
-export default S;
+export default S

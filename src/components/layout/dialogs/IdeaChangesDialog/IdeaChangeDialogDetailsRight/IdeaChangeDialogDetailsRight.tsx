@@ -1,7 +1,7 @@
-import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import { IdeaChangeDto } from "@/hooks/react-query/domain/idea-change/useIdeaChangesQuery"
 import { Box, Typography } from "@mui/material"
 import { useMemo } from "react"
+import { S } from "./styles"
 
 type Props = {
   ideaChange: IdeaChangeDto
@@ -15,7 +15,7 @@ const IdeaChangeDialogDetailsRight = (props: Props) => {
     return "Title"
   }, [props.ideaChange.changeType])
   return (
-    <FlexCol mt={5}>
+    <S.FlexCol mt={5}>
       <Typography fontSize={20}>{title}</Typography>
       <Box mt={1}>
         <Typography fontSize={12}>New</Typography>
@@ -65,7 +65,7 @@ const IdeaChangeDialogDetailsRight = (props: Props) => {
           />
         </Box>
       )}
-    </FlexCol>
+    </S.FlexCol>
   )
 }
 

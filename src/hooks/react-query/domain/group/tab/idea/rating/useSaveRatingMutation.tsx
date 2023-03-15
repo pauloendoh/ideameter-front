@@ -60,15 +60,17 @@ const useSaveRatingMutation = () => {
         setSuccessMessage(
           <>
             Rating saved!{" "}
-            <Link
-              sx={(theme) => ({
-                cursor: "pointer",
-                color: theme.palette.text.primary,
-              })}
-              onClick={() => openDialog(idea)}
-            >
-              Open
-            </Link>
+            {idea.parentId ? null : (
+              <Link
+                sx={(theme) => ({
+                  cursor: "pointer",
+                  color: theme.palette.text.primary,
+                })}
+                onClick={() => openDialog(idea)}
+              >
+                Open
+              </Link>
+            )}
           </>
         )
 
