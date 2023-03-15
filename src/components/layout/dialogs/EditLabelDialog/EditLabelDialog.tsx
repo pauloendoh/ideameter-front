@@ -4,6 +4,7 @@ import FlexCenter from "@/components/_common/flexboxes/FlexCenter"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
+import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useDeleteLabelMutation from "@/hooks/react-query/domain/label/useDeleteLabelMutation"
 import useSaveLabelMutation from "@/hooks/react-query/domain/label/useSaveLabelMutation"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
@@ -58,9 +59,20 @@ const EditLabelDialog = () => {
     })
   }
 
+  const { data: allIdeas } = useGroupIdeasQuery(initialValue.groupId!)
+
   const handleDelete = (id: string) => {
+    const ideasWithLabel = allIdeas?.filter((idea) =>
+      idea.labels?.some((label) => label.id === id)
+    )
+
+    const description = ideasWithLabel?.length
+      ? `There are ${ideasWithLabel?.length} ideas with this label. Deleting this label will remove it from those ideas.`
+      : "Are you sure you want to delete this label?"
+
     openConfirmDialog({
       title: "Delete this label?",
+      description,
       onConfirm: () => {
         deleteLabelMutation(id, {
           onSuccess: closeDialog,

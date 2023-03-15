@@ -175,13 +175,13 @@ const FilterButton = (props: Props) => {
           <LabelsSelector
             selectedLabelIds={filter.labelIds}
             onChange={setFilterLabelIds}
-            inputLabel="Filter by labels"
+            inputLabel="Include labels"
           />
 
           <LabelsSelector
             selectedLabelIds={filter.excludeLabelIds}
             onChange={setFilterOutLabelIds}
-            inputLabel="Filter out labels"
+            inputLabel="Exclude labels"
           />
         </FlexCol>
       </Menu>

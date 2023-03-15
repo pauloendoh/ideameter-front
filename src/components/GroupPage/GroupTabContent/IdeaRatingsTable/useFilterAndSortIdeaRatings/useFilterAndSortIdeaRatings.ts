@@ -154,7 +154,7 @@ export const useFilterAndSortIdeaRatings = ({
         return selectedLabelIds.every((id) => labelIds.includes(id))
       })
 
-    if (excludeLabelIds.length > 0)
+    if (excludeLabelIds?.length > 0)
       result = result.filter((r) => {
         const labelIds = r.idea.labels.map((l) => l.id)
         return !excludeLabelIds.some((id) => labelIds.includes(id))
