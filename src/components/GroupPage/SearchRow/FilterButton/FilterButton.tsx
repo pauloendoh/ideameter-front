@@ -1,18 +1,12 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import {
-  Box,
-  Checkbox,
-  Divider,
-  Menu,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import { Checkbox, Divider, Menu, Typography, useTheme } from "@mui/material"
 import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
 import LabelsSelector from "./LabelsSelector/LabelsSelector"
@@ -34,13 +28,12 @@ const FilterButton = (props: Props) => {
   const {
     filter,
     getFilterCount,
-    labelIdIsInFilter,
-    toggleFilterLabelId,
     setFilterLabelIds,
     toggleRequiresYourRating,
     toggleOnlyHighImpactVoted,
     setMinRatingCount,
     setMinAvgRating,
+    setExcludeLabelIds: setFilterOutLabelIds,
   } = useGroupFilterStore()
 
   const handleClick = (event: any) => {
@@ -178,12 +171,19 @@ const FilterButton = (props: Props) => {
 
         {sortedLabels.length > 0 && <Divider />}
 
-        <Box px={1} mt={1}>
+        <FlexCol px={1} mt={1} gap={1}>
           <LabelsSelector
             selectedLabelIds={filter.labelIds}
             onChange={setFilterLabelIds}
+            inputLabel="Filter by labels"
           />
-        </Box>
+
+          <LabelsSelector
+            selectedLabelIds={filter.excludeLabelIds}
+            onChange={setFilterOutLabelIds}
+            inputLabel="Filter out labels"
+          />
+        </FlexCol>
       </Menu>
     </>
   )

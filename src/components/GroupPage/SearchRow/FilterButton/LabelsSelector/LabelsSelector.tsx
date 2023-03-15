@@ -8,8 +8,9 @@ import { useMemo } from "react"
 import LabelSelectorOption from "./LabelSelectorOption/LabelSelectorOption"
 
 interface Props {
-  selectedLabelIds: string[]
+  selectedLabelIds?: string[]
   onChange: (labelIds: string[]) => void
+  inputLabel?: string
 }
 
 const LabelsSelector = (props: Props) => {
@@ -26,7 +27,7 @@ const LabelsSelector = (props: Props) => {
 
   const value = useMemo(() => {
     return sortedLabels?.filter((label) =>
-      props.selectedLabelIds.includes(label.id)
+      props.selectedLabelIds?.includes(label.id)
     )
   }, [props.selectedLabelIds, sortedLabels])
 
@@ -52,7 +53,11 @@ const LabelsSelector = (props: Props) => {
         typeof option === "string" ? option : option.name
       }
       renderInput={(params) => (
-        <MyTextField {...params} label="Labels" size="small" />
+        <MyTextField
+          {...params}
+          label={props.inputLabel || "Labels"}
+          size="small"
+        />
       )}
       renderOption={(liProps, label) => (
         <LabelSelectorOption liProps={liProps} label={label} />

@@ -27,6 +27,7 @@ export const useFilterAndSortIdeaRatings = ({
   const filteredAndSortedIdeaRatings = useMemo(() => {
     const {
       labelIds: selectedLabelIds,
+      excludeLabelIds,
       onlyCompletedIdeas,
       onlyHighImpactVoted,
       requiresYourRating,
@@ -151,6 +152,12 @@ export const useFilterAndSortIdeaRatings = ({
       result = result.filter((r) => {
         const labelIds = r.idea.labels.map((l) => l.id)
         return selectedLabelIds.every((id) => labelIds.includes(id))
+      })
+
+    if (excludeLabelIds.length > 0)
+      result = result.filter((r) => {
+        const labelIds = r.idea.labels.map((l) => l.id)
+        return !excludeLabelIds.some((id) => labelIds.includes(id))
       })
 
     return result

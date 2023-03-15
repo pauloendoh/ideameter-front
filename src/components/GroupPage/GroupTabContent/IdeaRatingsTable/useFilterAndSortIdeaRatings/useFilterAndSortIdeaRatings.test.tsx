@@ -18,6 +18,7 @@ describe("useFilterAndSortIdeaRatings", () => {
           authUserId: "",
           filter: {
             labelIds: [labelId],
+            excludeLabelIds: [],
             onlyCompletedIdeas: false,
             onlyHighImpactVoted: false,
             requiresYourRating: false,
@@ -55,6 +56,7 @@ describe("useFilterAndSortIdeaRatings", () => {
           authUserId: "",
           filter: {
             labelIds: [],
+            excludeLabelIds: [],
             onlyCompletedIdeas: false,
             onlyHighImpactVoted: false,
             requiresYourRating: false,

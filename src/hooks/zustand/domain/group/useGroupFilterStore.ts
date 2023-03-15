@@ -6,6 +6,7 @@ import create from "zustand"
 
 export interface IFilter {
   labelIds: string[]
+  excludeLabelIds: string[]
   onlyCompletedIdeas: boolean
   users: SimpleUserDto[]
   onlyHighImpactVoted: boolean
@@ -24,6 +25,7 @@ export interface IGroupFilterStore {
   // ↓ ↓ ↓ saves tab ideas store in cookie after changing
   toggleFilterLabelId: (id: string, tabId?: string) => void
   setFilterLabelIds: (ids: string[], tabId?: string) => void
+  setExcludeLabelIds: (ids: string[], tabId?: string) => void
   toggleOnlyCompletedIdeas: (tabId?: string) => void
   changeFilterUsers: (users: SimpleUserDto[], tabId?: string) => void
   toggleOnlyHighImpactVoted: (tabId?: string) => void
@@ -36,6 +38,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
   filter: {
     onlyCompletedIdeas: false,
     labelIds: [],
+    excludeLabelIds: [],
     users: [],
     onlyHighImpactVoted: false,
     requiresYourRating: false,
@@ -46,12 +49,15 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
   getFilterCount: () => {
     const {
       labelIds,
+      excludeLabelIds,
+
       onlyHighImpactVoted,
       requiresYourRating,
       minRatingCount,
       minAvgRating,
     } = get().filter
-    let count = labelIds.length
+    let count = labelIds?.length + excludeLabelIds?.length
+
     if (onlyHighImpactVoted) count++
     if (requiresYourRating) count++
     if (minRatingCount > 0) count++
@@ -87,6 +93,25 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       filter: {
         ...filter,
         labelIds: ids,
+      },
+    })
+
+    if (tabId) {
+      const state = get()
+      nookies.set(
+        null,
+        cookieKeys.groupTabIdeasFilter(tabId),
+        JSON.stringify(state)
+      )
+    }
+  },
+
+  setExcludeLabelIds: (ids, tabId) => {
+    const { filter } = get()
+    set({
+      filter: {
+        ...filter,
+        excludeLabelIds: ids,
       },
     })
 
