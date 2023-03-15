@@ -39,6 +39,7 @@ export const useFilterAndSortIdeaRatings = ({
     let result = [...ideaRatings]
 
     result = result.filter((r) => {
+      if (r.idea.isArchived) return false
       if (r.idea.parentId) return true // subideas must always appear
       if (onlyCompletedIdeas && !r.idea.isDone) return false
       if (!onlyCompletedIdeas && r.idea.isDone) return false

@@ -21,6 +21,7 @@ const queryKeys = {
   missingRatingsFromGroup: (groupId: string) =>
     `/groups/${groupId}/insights/missing-ratings`,
   ideaComments: (ideaId: string) => ["comments", ideaId],
+  archivedIdeas: (groupId: string) => `/archived-ideas?groupId=${groupId}`,
 }
 
 export default queryKeys

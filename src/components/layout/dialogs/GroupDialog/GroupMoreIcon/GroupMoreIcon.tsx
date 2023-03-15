@@ -1,4 +1,5 @@
 import useDeleteGroupMutation from "@/hooks/react-query/domain/group/useDeleteGroupMutation"
+import useArchivedIdeasDialogStore from "@/hooks/zustand/dialogs/useArchivedIdeasDialogStore"
 import useConfirmDeleteGroupDialogStore from "@/hooks/zustand/dialogs/useConfirmDeleteGroupDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import GroupDto from "@/types/domain/group/GroupDto"
@@ -11,7 +12,7 @@ import {
   Typography,
 } from "@mui/material"
 import { useState } from "react"
-import { MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md"
+import { MdArchive, MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md"
 
 interface Props {
   group: GroupDto
@@ -35,6 +36,8 @@ function GroupMoreIcon(props: Props) {
   const { openDialog } = useGroupDialogStore()
   const { openDialog: openConfirmDeleteGroupDialog } =
     useConfirmDeleteGroupDialogStore()
+
+  const { openDialog: openArchivedIdeasDialog } = useArchivedIdeasDialogStore()
 
   return (
     <Box>
@@ -61,19 +64,34 @@ function GroupMoreIcon(props: Props) {
         }}
       >
         {props.canEdit && (
-          <MenuItem
-            onClick={(e) => {
-              handleCloseMore()
-              openDialog(props.group)
-            }}
-          >
-            <ListItemIcon sx={{ width: 16 }}>
-              <MdEdit />
-            </ListItemIcon>
-            <Typography variant="inherit" noWrap>
-              Edit group
-            </Typography>{" "}
-          </MenuItem>
+          <>
+            <MenuItem
+              onClick={(e) => {
+                handleCloseMore()
+                openDialog(props.group)
+              }}
+            >
+              <ListItemIcon sx={{ width: 16 }}>
+                <MdEdit />
+              </ListItemIcon>
+              <Typography variant="inherit" noWrap>
+                Edit
+              </Typography>{" "}
+            </MenuItem>
+            <MenuItem
+              onClick={(e) => {
+                handleCloseMore()
+                openArchivedIdeasDialog()
+              }}
+            >
+              <ListItemIcon sx={{ width: 16 }}>
+                <MdArchive />
+              </ListItemIcon>
+              <Typography variant="inherit" noWrap>
+                Archived ideas
+              </Typography>{" "}
+            </MenuItem>
+          </>
         )}
 
         {props.showDelete && (

@@ -1,5 +1,6 @@
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import Flex from "@/components/_common/flexboxes/Flex"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
@@ -20,10 +21,11 @@ import {
   Grid,
   IconButton,
 } from "@mui/material"
+import Typography from "@mui/material/Typography"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { MdClose, MdSave } from "react-icons/md"
+import { MdArchive, MdClose, MdSave } from "react-icons/md"
 import DiscussionAccordion from "./DiscussionAccordion/DiscussionAccordion"
 import IdeaDialogLeftCol from "./IdeaDialogLeftCol/IdeaDialogLeftCol"
 import IdeaDialogRatingsAccordion from "./IdeaDialogLeftCol/IdeaDialogRatingsAccordion/IdeaDialogRatingsAccordion"
@@ -205,6 +207,18 @@ const IdeaDialog = () => {
       maxWidth="xl"
       aria-labelledby={ariaLabel}
     >
+      {initialValue.isArchived && (
+        <FlexVCenter
+          sx={{
+            gap: 0.5,
+            p: 2,
+            background: (theme) => theme.palette.warning.main,
+          }}
+        >
+          <MdArchive fontSize={24} />
+          <Typography fontSize={24}>This idea is archived</Typography>
+        </FlexVCenter>
+      )}
       <Box pb={1}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id={`${ariaLabel}-title`}>

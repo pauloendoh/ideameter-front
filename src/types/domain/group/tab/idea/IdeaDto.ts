@@ -8,6 +8,7 @@ export default interface IdeaDto {
   createdAt: string
   updatedAt: string
   creatorId: string
+  isArchived: boolean
 
   tab?: TabDto
   tabId: string | null
@@ -31,6 +32,8 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   createdAt: "",
   updatedAt: "",
   creatorId: "",
+  isArchived: false,
+
   tabId: "",
   name: "",
   description: "",

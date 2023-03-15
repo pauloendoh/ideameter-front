@@ -1,4 +1,5 @@
 import useSelectLabelsDialogStore from "@/hooks/zustand/dialogs/useSelectLabelsDialogStore"
+import ArchivedIdeasDialog from "../ArchivedIdeasDialog/ArchivedIdeasDialog"
 import ConfirmDeleteGroupDialog from "../ConfirmDeleteGroupDialog/ConfirmDeleteGroupDialog"
 import ConfirmDeleteTabDialog from "../ConfirmDeleteTabDialog/ConfirmDeleteTabDialog"
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog"
@@ -49,6 +50,7 @@ const GlobalDialogs = () => {
 
       <TransformToSubideaDialog />
       <IdeaChangesDialog />
+      <ArchivedIdeasDialog />
     </>
   )
 }
