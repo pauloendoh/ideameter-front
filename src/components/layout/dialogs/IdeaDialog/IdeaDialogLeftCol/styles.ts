@@ -45,11 +45,15 @@ export const styles = {
       a: {
         textDecoration: "underline",
       },
+      p: {
+        marginBottom: 0,
+      },
     },
     ".ql-tooltip": {
       background: theme.palette.grey[900],
       border: `1px solid ${theme.palette.grey[700]}`,
       color: theme.palette.grey[100],
+
       "> input": {
         background: theme.palette.grey[800],
         color: theme.palette.grey[100],
