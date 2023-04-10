@@ -11,12 +11,10 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
 
   const otherMembers = useOtherMembersQueryUtils(groupId)
 
-  const { data: subideas, isLoading: loadingSubideas } = useSubideasQueryUtils(
+  const { data: subideas, isLoading: loadingSubideas } = useSubideasQueryUtils({
     groupId,
-    {
-      ideaId: parentId,
-    }
-  )
+    ideaId: parentId,
+  })
 
   const isLoading = loadingSubideas || loadingRatings
 

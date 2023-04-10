@@ -21,7 +21,6 @@ interface Props {
   showDelete?: boolean
 }
 
-// PE 1/3 - rename to GroupMenu ?
 function GroupMoreIcon(props: Props) {
   const [anchorEl, setAnchorEl] = useState(null)
   const handleOpenMore = (event: any) => {

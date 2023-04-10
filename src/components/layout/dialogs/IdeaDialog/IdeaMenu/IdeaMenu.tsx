@@ -69,7 +69,8 @@ const IdeaMenu = (props: Props) => {
     useTransformToSubideadialogStore()
 
   const { groupId } = useRouterQueryString()
-  const { data: subideas } = useSubideasQueryUtils(groupId, {
+  const { data: subideas } = useSubideasQueryUtils({
+    groupId,
     ideaId: props.idea.id,
   })
 

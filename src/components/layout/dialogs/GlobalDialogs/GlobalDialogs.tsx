@@ -18,7 +18,6 @@ import TabDialog from "../TabDialog/TabDialog"
 import TransformToSubideaDialog from "../TransformToSubideaDialog/TransformToSubideaDialog"
 
 // each one is managed by zustand
-// PE 1/3 - use lazy import?
 const GlobalDialogs = () => {
   const selectLabelsDialogStore = useSelectLabelsDialogStore()
 

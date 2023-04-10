@@ -12,8 +12,7 @@ interface Props {
   test?: string
 }
 
-// PE 1/3 - melhorar nome?
-const AssignedToButton = (props: Props) => {
+const AssignedUsersButton = (props: Props) => {
   const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog)
   const { groupId, tabId } = useRouterQueryString()
   const [filter, changeUserIds] = useGroupFilterStore((s) => [
@@ -27,14 +26,18 @@ const AssignedToButton = (props: Props) => {
   return (
     <DarkButton
       sx={{
-        background: filter.users.length > 0 ? theme.palette.secondary.main : undefined,
+        background:
+          filter.users.length > 0 ? theme.palette.secondary.main : undefined,
         ":hover": {
-          background: filter.users.length > 0 ? theme.palette.secondary.main : undefined,
+          background:
+            filter.users.length > 0 ? theme.palette.secondary.main : undefined,
         },
       }}
       endIcon={<CgChevronDown />}
       onClick={() => {
-        openAssignModal(filter.users, (newValue) => changeUserIds(newValue, tabId))
+        openAssignModal(filter.users, (newValue) =>
+          changeUserIds(newValue, tabId)
+        )
       }}
     >
       <Flex gap={1}>
@@ -60,4 +63,4 @@ const AssignedToButton = (props: Props) => {
   )
 }
 
-export default AssignedToButton
+export default AssignedUsersButton
