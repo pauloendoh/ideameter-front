@@ -77,6 +77,7 @@ const SearchBar = () => {
           textContainsWords(i.description, text)
       )
       .sort((a, b) => {
+        if (a.isArchived && !b.isArchived) return 1
         if (a.isDone && !b.isDone) return 1
         return -1
       })

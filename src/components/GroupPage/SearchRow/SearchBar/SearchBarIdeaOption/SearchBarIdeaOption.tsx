@@ -1,10 +1,10 @@
 import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
-import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import TabDto from "@/types/domain/group/tab/TabDto"
+import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { useTheme } from "@mui/material"
-import { HTMLAttributes } from "react"
+import { HTMLAttributes, useMemo } from "react"
 import SearchBarTabChip from "../SearchBarTabChip/SearchBarTabChip"
 
 interface Props {
@@ -23,16 +23,25 @@ const SearchBarIdeaOption = ({
 }: Props) => {
   const theme = useTheme()
 
+  const isDoneOrArchived = useMemo(
+    () => idea.isDone || idea.isArchived,
+    [idea.isDone, idea.isArchived]
+  )
+
   return (
     <Flex
       {...(htmlAttributes as any)}
       sx={{
-        textDecoration: idea.isDone ? "line-through" : undefined,
-        color: idea.isDone ? theme.palette.grey[600] : undefined,
+        textDecoration: isDoneOrArchived ? "line-through" : undefined,
+        color: isDoneOrArchived ? theme.palette.grey[600] : undefined,
       }}
     >
       <Flex sx={{ width: "100%", justifyContent: "space-between", gap: 1 }}>
-        <Flex>{idea.name}</Flex>
+        <Flex>
+          {idea.isDone && "✅ "}
+          {idea.isArchived && "🗃️ "}
+          {idea.name}
+        </Flex>
 
         <FlexCol width="100px">
           <Flex title={tab?.name}>
