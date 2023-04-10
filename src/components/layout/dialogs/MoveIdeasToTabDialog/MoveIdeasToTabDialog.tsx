@@ -2,6 +2,7 @@ import useMultiSelectIdeas from "@/components/GroupPage/GroupTabContent/IdeaRati
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
+import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import useMoveIdeasToTabMutation from "@/hooks/react-query/domain/idea/useMoveIdeasToTabMutation"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useMoveIdeasToTabDialogStore from "@/hooks/zustand/dialogs/useMoveIdeasToTabDialogStore"
@@ -18,7 +19,7 @@ import {
   Select,
   Typography,
 } from "@mui/material"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 
@@ -26,7 +27,8 @@ const ariaLabel = "move-ideas-to-tab-dialog"
 
 const MoveIdeasToTabDialog = () => {
   const { mutate: submitMove } = useMoveIdeasToTabMutation()
-  const { initialValue, dialogIsOpen, closeDialog } = useMoveIdeasToTabDialogStore()
+  const { initialValue, dialogIsOpen, closeDialog } =
+    useMoveIdeasToTabDialogStore()
 
   const { clearSelectedIds } = useMultiSelectIdeas()
 
@@ -35,7 +37,12 @@ const MoveIdeasToTabDialog = () => {
   })
 
   const { groupId } = useRouterQueryString()
-  const { data: tabs } = useGroupTabsQuery(groupId!)
+
+  const { data: groups } = useGroupsQuery()
+
+  const [selectedGroupId, setSelectedGroupId] = useState(groupId)
+
+  const { data: tabs } = useGroupTabsQuery(selectedGroupId)
 
   useEffect(() => {
     if (dialogIsOpen) {
@@ -78,6 +85,26 @@ const MoveIdeasToTabDialog = () => {
 
           <DialogContent>
             <FormControl sx={{ mt: 1 }} fullWidth size="small">
+              <InputLabel id={"group-selector-label"}>Group</InputLabel>
+              <Select
+                labelId={"group-selector-label"}
+                id={"group-selector-select"}
+                label="Tab"
+                size="small"
+                value={selectedGroupId}
+                onChange={(e) => {
+                  setSelectedGroupId(e.target.value as string)
+                }}
+              >
+                {groups?.map((group) => (
+                  <MenuItem key={group.id} value={group.id}>
+                    {group.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl sx={{ mt: 1 }} fullWidth size="small">
               <InputLabel id={ariaLabel + "-label"}>Tab</InputLabel>
               <Select
                 labelId={ariaLabel + "-label"}
@@ -99,7 +126,10 @@ const MoveIdeasToTabDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons disabled={saveIsDisabled} onCancel={closeDialog} />
+            <SaveCancelButtons
+              disabled={saveIsDisabled}
+              onCancel={closeDialog}
+            />
           </DialogTitle>
         </form>
       </Box>

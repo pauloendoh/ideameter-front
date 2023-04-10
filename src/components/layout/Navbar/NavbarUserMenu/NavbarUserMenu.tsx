@@ -1,5 +1,5 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
-import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogout"
+import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogoutAndPushIndex"
 import useEditProfileDialogStore from "@/hooks/zustand/dialogs/useEditProfileDialogStore"
 import useShortcutsDialogStore from "@/hooks/zustand/dialogs/useShortcutsDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"

@@ -1,29 +1,29 @@
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore";
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto";
-import myAxios from "@/utils/axios/myAxios";
-import urls from "@/utils/urls";
-import { useRouter } from "next/router";
-import nookies from "nookies";
-import { useState } from "react";
-import { useLogoutAndPushIndex } from "./useLogout";
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
+import myAxios from "@/utils/axios/myAxios"
+import urls from "@/utils/urls"
+import { useRouter } from "next/router"
+import nookies from "nookies"
+import { useState } from "react"
+import { useLogoutAndPushIndex } from "./useLogoutAndPushIndex"
 
 const useCheckAuthOrLogout = () => {
-  const logout = useLogoutAndPushIndex();
-  const router = useRouter();
+  const logout = useLogoutAndPushIndex()
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
   const routerQuery = router.query as {
-    oauthToken?: string;
-    userId?: string;
-  };
+    oauthToken?: string
+    userId?: string
+  }
 
-  const { setAuthUser } = useAuthStore();
-  const { setErrorMessage } = useSnackbarStore();
+  const { setAuthUser } = useAuthStore()
+  const { setErrorMessage } = useSnackbarStore()
 
   const checkAuthOrLogout = () => {
-    const userCookieStr = nookies.get(null).user;
+    const userCookieStr = nookies.get(null).user
     // const googleSession = getCookie('endoh_google_session')
 
     if (!userCookieStr) {
@@ -41,28 +41,28 @@ const useCheckAuthOrLogout = () => {
       //     });
       // }
 
-      return setLoading(false);
+      return setLoading(false)
     } else {
       // Regular login
-      const user: AuthUserGetDto = JSON.parse(userCookieStr);
+      const user: AuthUserGetDto = JSON.parse(userCookieStr)
       if (new Date(user.expiresAt) <= new Date()) {
-        logout();
-        return setLoading(false);
+        logout()
+        return setLoading(false)
       }
 
       myAxios
         .get<AuthUserGetDto>(urls.api.me)
         .then((res) => {
-          setAuthUser(res.data);
+          setAuthUser(res.data)
         })
         .catch(() => {
-          logout();
+          logout()
         })
-        .finally(() => setLoading(false));
+        .finally(() => setLoading(false))
     }
-  };
+  }
 
-  return { checkAuthOrLogout, loading };
-};
+  return { checkAuthOrLogout, loading }
+}
 
-export default useCheckAuthOrLogout;
+export default useCheckAuthOrLogout
