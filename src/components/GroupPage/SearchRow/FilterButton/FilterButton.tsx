@@ -6,9 +6,17 @@ import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGr
 import useGroupLabelsQuery from "@/hooks/react-query/domain/label/useGroupLabelsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import { Checkbox, Divider, Menu, Typography, useTheme } from "@mui/material"
+import {
+  Badge,
+  Checkbox,
+  Divider,
+  Menu,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
+import { useTabRateCount } from "../../GroupTabs/GroupTabItem/useTabRateCount/useTabRateCount"
 import LabelsSelector from "./LabelsSelector/LabelsSelector"
 import S from "./styles"
 
@@ -52,8 +60,13 @@ const FilterButton = (props: Props) => {
 
   const theme = useTheme()
 
+  const tabRateCount = useTabRateCount({
+    groupId: routerQuery.groupId,
+    tabId: routerQuery.tabId,
+  })
+
   return (
-    <>
+    <Badge color="error" variant={tabRateCount > 0 ? "dot" : "standard"}>
       <DarkButton
         id="filter-btn"
         onClick={handleClick}
@@ -110,7 +123,19 @@ const FilterButton = (props: Props) => {
         </S.MenuItem>
         <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
           <Checkbox checked={filter.requiresYourRating} name="current-goal" />
-          <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
+          <Badge
+            color="error"
+            variant={tabRateCount > 0 ? "dot" : "standard"}
+            componentsProps={{
+              badge: {
+                style: {
+                  top: 8,
+                },
+              },
+            }}
+          >
+            <S.CheckboxLabel>Requires your rating</S.CheckboxLabel>
+          </Badge>
         </S.MenuItem>
 
         <S.MenuItem
@@ -185,7 +210,7 @@ const FilterButton = (props: Props) => {
           />
         </FlexCol>
       </Menu>
-    </>
+    </Badge>
   )
 }
 
