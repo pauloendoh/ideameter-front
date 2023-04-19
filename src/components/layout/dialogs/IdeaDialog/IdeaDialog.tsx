@@ -207,7 +207,7 @@ const IdeaDialog = () => {
       maxWidth="xl"
       aria-labelledby={ariaLabel}
     >
-      {initialValue.isArchived && (
+      {watch("isArchived") && (
         <FlexVCenter
           sx={{
             gap: 0.5,

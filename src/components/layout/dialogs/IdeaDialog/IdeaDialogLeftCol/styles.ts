@@ -40,6 +40,7 @@ export const styles = {
       },
     },
     ".ql-editor": {
+      minHeight: "80px",
       maxHeight: "calc(100vh - 550px)",
       overflowY: "auto",
       a: {

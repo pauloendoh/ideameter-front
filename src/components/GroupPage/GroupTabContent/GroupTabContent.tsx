@@ -48,7 +48,7 @@ const GroupTabContent = (props: Props) => {
         <DarkButton
           onClick={() => openDialog(buildIdeaDto({ tabId: props.tabId }))}
         >
-          + New idea
+          + New idea (q)
         </DarkButton>
 
         <FlexVCenter gap={2}>
