@@ -1,4 +1,3 @@
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { useAxios } from "@/utils/axios/useAxios"
 import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
@@ -8,7 +7,6 @@ import { IdeaHighlightDto } from "./types/IdeaHighlightDto"
 
 const useToggleIdeaHighlightMutation = () => {
   const queryClient = useQueryClient()
-  const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
   const axios = useAxios()
 
