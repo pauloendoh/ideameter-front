@@ -1,4 +1,4 @@
-interface IdeaHighlightDto {
+export interface IdeaHighlightDto {
   userId: string
   ideaId: string
   createdAt: string
