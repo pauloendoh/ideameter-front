@@ -4,6 +4,7 @@ import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
 import { deleteFromArray, upsert } from "endoh-utils"
 import { useMutation, useQueryClient } from "react-query"
+import { IdeaHighlightDto } from "./types/IdeaHighlightDto"
 
 const useToggleIdeaHighlightMutation = () => {
   const queryClient = useQueryClient()
