@@ -54,7 +54,7 @@ const HighlightableIdeasPage = (props: Props) => {
             </Typography>
             <TableContainer
               sx={{
-                maxHeight: "calc(100vh - 200px)",
+                maxHeight: "calc(100vh - 240px)",
               }}
             >
               <Table stickyHeader>
