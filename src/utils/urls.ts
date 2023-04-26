@@ -10,6 +10,7 @@ const urls = {
       `/group/${groupId}?tabId=${tabId}`,
     groupTabIdea: (groupId: string, tabId: string, ideaId: string) =>
       `/group/${groupId}?${stringify({ tabId, ideaId })}`,
+    ideaHighlights: "/idea-highlights",
   },
   api: {
     register: "/auth/register",
@@ -71,6 +72,11 @@ const urls = {
       `/groups/${groupId}/insights/interest-similarity`,
     missingRatingsFromGroup: (groupId: string) =>
       `/groups/${groupId}/insights/missing-ratings`,
+
+    highlightableIdeas: "/highlightable-ideas",
+    ideaHighlights: "/idea-highlights",
+    toggleIdeaHighlight: (ideaId: string) =>
+      `/toggle-idea-highlight?ideaId=${ideaId}`,
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,
