@@ -3,7 +3,6 @@ import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogoutAndPushIndex
 import useEditProfileDialogStore from "@/hooks/zustand/dialogs/useEditProfileDialogStore"
 import useShortcutsDialogStore from "@/hooks/zustand/dialogs/useShortcutsDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import urls from "@/utils/urls"
 import {
   Button,
   Divider,
@@ -15,7 +14,6 @@ import {
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { forwardRef, useState } from "react"
-import { GiStarsStack } from "react-icons/gi"
 import {
   MdEdit,
   MdExitToApp,
@@ -121,14 +119,14 @@ const NavbarUserMenu = () => {
           <AssignedIdeaItem />
         </Link>
 
-        <Link href={urls.pages.ideaHighlights} passHref>
+        {/* <Link href={urls.pages.ideaHighlights} passHref>
           <MenuItem>
             <FlexVCenter gap={1}>
               <GiStarsStack />
               <Typography>Idea highlights</Typography>
             </FlexVCenter>
           </MenuItem>
-        </Link>
+        </Link> */}
 
         <Divider />
 
