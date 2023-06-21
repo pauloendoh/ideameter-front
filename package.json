@@ -54,7 +54,6 @@
     "sharp": "^0.31.3",
     "socket.io-react-hook": "^1.0.17",
     "timeago.js": "^4.0.2",
-    "usehooks-ts": "^2.5.2",
     "vite-tsconfig-paths": "^3.5.1",
     "vitest": "^0.26.2",
     "zustand": "^4.0.0-rc.1"

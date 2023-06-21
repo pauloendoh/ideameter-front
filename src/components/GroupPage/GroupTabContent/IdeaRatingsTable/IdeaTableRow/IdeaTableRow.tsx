@@ -6,7 +6,7 @@ import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore
 import { useIntersection } from "@mantine/hooks"
 import { Checkbox, TableCell, TableRow, useTheme } from "@mui/material"
 import { useRouter } from "next/router"
-import { useMemo, useRef, useState } from "react"
+import { useMemo, useState } from "react"
 import { useAssignMeHotkey } from "../../../../../hooks/hotkeys/useAssignMeHotkey/useAssignMeHotkey"
 import { useToggleVoteHotkey } from "../../../../../hooks/hotkeys/useToggleVoteHotkey/useToggleVoteHotkey"
 import DisabledRatingsIcon from "../RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
@@ -48,11 +48,7 @@ const IdeaTableRow = (props: Props) => {
   const { idIsSelected } = useMultiSelectIdeas()
   const theme = useTheme()
 
-  const rowRef = useRef<HTMLTableRowElement>(null)
-  const { entry } = useIntersection({
-    root: rowRef.current,
-    threshold: 0.5,
-  })
+  const { ref: rowRef, entry } = useIntersection()
 
   return (
     <TableRow
