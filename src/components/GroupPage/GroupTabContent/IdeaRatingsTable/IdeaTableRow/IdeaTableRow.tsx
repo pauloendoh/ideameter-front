@@ -3,7 +3,6 @@ import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSa
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
-import { useIntersection } from "@mantine/hooks"
 import { Checkbox, TableCell, TableRow, useTheme } from "@mui/material"
 import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
@@ -48,11 +47,8 @@ const IdeaTableRow = (props: Props) => {
   const { idIsSelected } = useMultiSelectIdeas()
   const theme = useTheme()
 
-  const { ref: rowRef, entry } = useIntersection()
-
   return (
     <TableRow
-      ref={rowRef}
       id={`idea-${props.ideaRating.idea.id}`}
       className="idea-table-row"
       hover
@@ -114,7 +110,6 @@ const IdeaTableRow = (props: Props) => {
           idea={props.ideaRating.idea}
           groupId={query.groupId}
           parentId={props.ideaRating.idea.parentId}
-          hideInput={entry?.isIntersecting === false}
           isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
         />
       </TableCell>

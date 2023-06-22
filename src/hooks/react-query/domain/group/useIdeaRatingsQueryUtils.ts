@@ -1,6 +1,6 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import IdeaDto, { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import UserGroupDto from "@/types/domain/group/UserGroupDto"
+import IdeaDto, { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { useCallback, useMemo } from "react"
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils"
 import useSubideasQuery from "../subidea/useSubideasQuery"
@@ -36,7 +36,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       const ideaRatings = groupRatings.filter((r) => r.ideaId === ideaId)
       if (ideaRatings.length === 0) return null
 
-      const validRatings = ideaRatings.filter((r) => r.rating !== null)
+      const validRatings = ideaRatings.filter((r) => r.rating && r.rating > 0)
       const sum = validRatings.reduce(
         (partialSum, r) => partialSum + (r.rating || 0),
         0

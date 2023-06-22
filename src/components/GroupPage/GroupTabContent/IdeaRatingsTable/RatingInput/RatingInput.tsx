@@ -63,10 +63,8 @@ const RatingInput = (props: Props) => {
       return
     }
 
-    const valueToSave = newValue === 0 ? null : newValue
-
     saveRatingMutation.mutate({
-      payload: newRatingDto(props.idea.id, valueToSave),
+      payload: newRatingDto(props.idea.id, newValue),
       groupId: props.groupId,
       parentIdeaId: props.idea.parentId,
     })
@@ -74,9 +72,9 @@ const RatingInput = (props: Props) => {
 
   return (
     <Badge color="error" variant={hideBadge ? "standard" : "dot"}>
-      {props.isDisabled ? (
-        <DisabledRatingsIcon />
-      ) : props.hideInput ? (
+      {props.isDisabled && <DisabledRatingsIcon />}
+
+      {!props.isDisabled && props.hideInput ? (
         <FlexVCenter sx={{ width: 64, justifyContent: "center" }}>
           {myCurrentRating === 0 && "-"}
           {myCurrentRating > 0 && myCurrentRating}
