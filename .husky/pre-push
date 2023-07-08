@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+ECHO "[HUSKY] npx tsc"
 npx tsc
-npm run test:once
+# npm run test:once

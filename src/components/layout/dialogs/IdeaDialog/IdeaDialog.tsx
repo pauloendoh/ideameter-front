@@ -100,7 +100,7 @@ const IdeaDialog = () => {
         setCanOpen(true)
       }, 250) // I had to add this delay because it was having some weird behavior where the dialog seemed to stay open even when it was not visible
     }
-  }, [dialogIsOpen])
+  }, [dialogIsOpen, initialValue.id, routerQuery.groupId])
 
   const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
 
