@@ -5,7 +5,8 @@ import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
 import { Checkbox, TableCell, TableRow, useTheme } from "@mui/material"
 import { useRouter } from "next/router"
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
+import { ItemProps } from "react-virtuoso"
 import { useAssignMeHotkey } from "../../../../../hooks/hotkeys/useAssignMeHotkey/useAssignMeHotkey"
 import { useToggleVoteHotkey } from "../../../../../hooks/hotkeys/useToggleVoteHotkey/useToggleVoteHotkey"
 import DisabledRatingsIcon from "../RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
@@ -18,117 +19,124 @@ interface Props {
   rowNumber: number
   onCtrlClick: () => void
   onShiftClick: () => void
+  virtuosoProps: ItemProps<IdeaRating>
 }
 
-const IdeaTableRow = (props: Props) => {
-  const router = useRouter()
-  const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog)
-  const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
-  const query = router.query as { groupId: string }
+const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
+  (props, ref) => {
+    const router = useRouter()
+    const openIdeaDialog = useIdeaDialogStore((s) => s.openDialog)
+    const openSubideaDialog = useSubideaDialogStore((s) => s.openDialog)
+    const query = router.query as { groupId: string }
 
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation()
+    const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
-  const [isHoveringIdeaId, setHoveringIdeaId] = useState<string | null>(null)
+    const [isHoveringIdeaId, setHoveringIdeaId] = useState<string | null>(null)
 
-  useAssignMeHotkey(isHoveringIdeaId)
-  useToggleVoteHotkey(isHoveringIdeaId)
-  useSelectIdeaLabelsHotkey(isHoveringIdeaId)
+    useAssignMeHotkey(isHoveringIdeaId)
+    useToggleVoteHotkey(isHoveringIdeaId)
+    useSelectIdeaLabelsHotkey(isHoveringIdeaId)
 
-  const isSubidea = useMemo(
-    () => !!props.ideaRating.idea.parentId,
-    [props.ideaRating]
-  )
+    const isSubidea = useMemo(
+      () => !!props.ideaRating.idea.parentId,
+      [props.ideaRating]
+    )
 
-  const hasSubideas = useMemo(
-    () => props.ideaRating.subideas?.length > 0,
-    [props.ideaRating.subideas]
-  )
+    const hasSubideas = useMemo(
+      () => props.ideaRating.subideas?.length > 0,
+      [props.ideaRating.subideas]
+    )
 
-  const { idIsSelected } = useMultiSelectIdeas()
-  const theme = useTheme()
+    const { idIsSelected } = useMultiSelectIdeas()
+    const theme = useTheme()
 
-  return (
-    <TableRow
-      id={`idea-${props.ideaRating.idea.id}`}
-      className="idea-table-row"
-      hover
-      onMouseEnter={() => {
-        setHoveringIdeaId(props.ideaRating.idea.id)
-      }}
-      onMouseLeave={() => {
-        setHoveringIdeaId(null)
-      }}
-      sx={{
-        ":hover": {
-          cursor: "pointer",
-        },
-        background: idIsSelected(props.ideaRating.idea.id)
-          ? `${theme.palette.grey[700]} !important`
-          : undefined,
-      }}
-      onClick={(e) => {
-        if (isSubidea) {
-          openSubideaDialog(props.ideaRating.idea)
-          return
-        }
+    return (
+      <TableRow
+        {...props.virtuosoProps}
+        ref={ref}
+        id={`idea-${props.ideaRating.idea.id}`}
+        className="idea-table-row"
+        hover
+        onMouseEnter={() => {
+          setHoveringIdeaId(props.ideaRating.idea.id)
+        }}
+        onMouseLeave={() => {
+          setHoveringIdeaId(null)
+        }}
+        sx={{
+          ":hover": {
+            cursor: "pointer",
+          },
+          background: idIsSelected(props.ideaRating.idea.id)
+            ? `${theme.palette.grey[700]} !important`
+            : undefined,
+        }}
+        onClick={(e) => {
+          if (isSubidea) {
+            openSubideaDialog(props.ideaRating.idea)
+            return
+          }
 
-        if (e.ctrlKey) {
-          e.preventDefault()
-          props.onCtrlClick()
-          return
-        }
+          if (e.ctrlKey) {
+            e.preventDefault()
+            props.onCtrlClick()
+            return
+          }
 
-        if (e.shiftKey) {
-          e.preventDefault()
+          if (e.shiftKey) {
+            e.preventDefault()
 
-          props.onShiftClick()
-          return
-        }
+            props.onShiftClick()
+            return
+          }
 
-        openIdeaDialog(props.ideaRating.idea)
-      }}
-    >
-      <TableCell align="center">{props.rowNumber}</TableCell>
-      <IdeaNameTableCell ideaRating={props.ideaRating} />
+          openIdeaDialog(props.ideaRating.idea)
+        }}
+      >
+        <TableCell align="center">{props.rowNumber}</TableCell>
+        <IdeaNameTableCell ideaRating={props.ideaRating} />
 
-      <TableCell>
-        <Checkbox
-          checked={props.ideaRating.idea.isDone}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => {
-            submitSaveIdea({
-              ...props.ideaRating.idea,
-              isDone: e.target.checked,
-            })
-          }}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-      </TableCell>
-      <AvgRatingTableCell ideaRating={props.ideaRating} />
-      <TableCell align="center">
-        <RatingInput
-          idea={props.ideaRating.idea}
-          groupId={query.groupId}
-          parentId={props.ideaRating.idea.parentId}
-          isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
-        />
-      </TableCell>
-      {props.ideaRating.otherUserGroupRatings.map((userGroupRating, index) => (
-        <TableCell key={JSON.stringify(userGroupRating)} align="center">
-          {props.ideaRating.idea.ratingsAreEnabled === false ? (
-            <DisabledRatingsIcon />
-          ) : hasSubideas && !userGroupRating.rating ? (
-            "-"
-          ) : (
-            userGroupRating.rating
-          )}
+        <TableCell>
+          <Checkbox
+            checked={props.ideaRating.idea.isDone}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => {
+              submitSaveIdea({
+                ...props.ideaRating.idea,
+                isDone: e.target.checked,
+              })
+            }}
+            inputProps={{ "aria-label": "controlled" }}
+          />
         </TableCell>
-      ))}
+        <AvgRatingTableCell ideaRating={props.ideaRating} />
+        <TableCell align="center">
+          <RatingInput
+            idea={props.ideaRating.idea}
+            groupId={query.groupId}
+            parentId={props.ideaRating.idea.parentId}
+            isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
+          />
+        </TableCell>
+        {props.ideaRating.otherUserGroupRatings.map(
+          (userGroupRating, index) => (
+            <TableCell key={JSON.stringify(userGroupRating)} align="center">
+              {props.ideaRating.idea.ratingsAreEnabled === false ? (
+                <DisabledRatingsIcon />
+              ) : hasSubideas && !userGroupRating.rating ? (
+                "-"
+              ) : (
+                userGroupRating.rating
+              )}
+            </TableCell>
+          )
+        )}
 
-      {/* Empty cell to avoid bigger width on the last cell */}
-      <TableCell></TableCell>
-    </TableRow>
-  )
-}
+        {/* Empty cell to avoid bigger width on the last cell */}
+        <TableCell></TableCell>
+      </TableRow>
+    )
+  }
+)
 
 export default IdeaTableRow

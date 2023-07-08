@@ -49,7 +49,7 @@ const IdeaNameTableCell = (props: Props) => {
   )
 
   return (
-    <TableCell>
+    <TableCell width="360px">
       <FlexCol style={{ gap: 8 }}>
         {sortedLabels.length > 0 && (
           <Flex style={{ flexWrap: "wrap", gap: 4 }}>

@@ -4,13 +4,23 @@ import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import useIdeaSortStore from "@/hooks/zustand/domain/group/useIdeaSortStore"
-import { TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
-import S from "./IdeaTable.styles"
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableProps,
+  TableRow,
+} from "@mui/material"
+import React, { useMemo, useRef } from "react"
+import { ItemProps, TableVirtuoso, TableVirtuosoHandle } from "react-virtuoso"
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow"
+import UserTableCell from "./UserTableCell/UserTableCell"
 import { useFilterAndSortIdeaRatings } from "./useFilterAndSortIdeaRatings/useFilterAndSortIdeaRatings"
 import { useIdeaRequiresYourRating } from "./useIdeaRequiresYourRating"
 import useMultiSelectIdeas from "./useMultiSelectIdeas/useMultiSelectIdeas"
-import UserTableCell from "./UserTableCell/UserTableCell"
 
 interface Props {
   ideaRatings: IdeaRating[]
@@ -23,7 +33,10 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
   const { groupId } = useRouterQueryString()
   const { data: ratings } = useRatingsQuery(groupId!)
 
-  const ideaRequiresYourRating = useIdeaRequiresYourRating(props.ideaRatings, ratings)
+  const ideaRequiresYourRating = useIdeaRequiresYourRating(
+    props.ideaRatings,
+    ratings
+  )
 
   const filter = useGroupFilterStore((s) => s.filter)
 
@@ -41,12 +54,64 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
 
   const { onCtrlClick, onShiftClick } = useMultiSelectIdeas()
 
+  const ref = useRef<TableVirtuosoHandle>(null)
+
+  const TableComponents = useMemo(() => {
+    return {
+      Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
+        <TableContainer {...props} ref={ref} />
+      )),
+      Table: (props: TableProps) => (
+        <Table {...props} style={{ borderCollapse: "separate" }} />
+      ),
+      TableHead: TableHead,
+      TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+        <TableBody {...props} ref={ref} />
+      )),
+      TableRow: React.forwardRef<HTMLTableRowElement, ItemProps<IdeaRating>>(
+        (itemProps, ref) => (
+          <IdeaTableRow
+            key={itemProps.item.idea.id + itemProps.item.idea.updatedAt}
+            ideaRating={itemProps.item}
+            rowNumber={itemProps["data-index"] + 1}
+            onCtrlClick={() => {
+              onCtrlClick(itemProps.item.idea.id)
+            }}
+            onShiftClick={() =>
+              onShiftClick(
+                visibleIdeaRatings.map((r) => r.idea.id),
+                itemProps.item.idea.id
+              )
+            }
+            virtuosoProps={itemProps}
+            ref={ref}
+          />
+        )
+      ),
+    }
+  }, [])
+
   if (props.ideaRatings.length === 0) return <div></div>
 
   return (
-    <TableContainer sx={{ maxHeight: "calc(100vh - 376px)" }}>
-      <S.Table stickyHeader>
-        <S.TableHead>
+    <Box
+      sx={{
+        "td, th": {
+          padding: 1,
+        },
+        th: {
+          backgroundColor: "#2b2b2b",
+        },
+      }}
+    >
+      <TableVirtuoso
+        ref={ref}
+        style={{
+          height: "calc(100vh - 400px)",
+        }}
+        data={visibleIdeaRatings}
+        components={TableComponents}
+        fixedHeaderContent={() => (
           <TableRow>
             <TableCell align="center" width="64px">
               #
@@ -63,30 +128,12 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
                 userId={otherRating.userGroup.userId}
               />
             ))}
-
             {/* Empty cell to avoid bigger width on the last cell */}
             <TableCell></TableCell>
           </TableRow>
-        </S.TableHead>
-
-        <TableBody>
-          {visibleIdeaRatings.map((ideaRating, index) => (
-            <IdeaTableRow
-              key={ideaRating.idea.id + ideaRating.idea.updatedAt}
-              ideaRating={ideaRating}
-              rowNumber={index + 1}
-              onCtrlClick={() => onCtrlClick(ideaRating.idea.id)}
-              onShiftClick={() =>
-                onShiftClick(
-                  visibleIdeaRatings.map((r) => r.idea.id),
-                  ideaRating.idea.id
-                )
-              }
-            />
-          ))}
-        </TableBody>
-      </S.Table>
-    </TableContainer>
+        )}
+      />
+    </Box>
   )
 }
 
