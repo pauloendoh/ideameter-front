@@ -105,13 +105,13 @@ const IdeaDialog = () => {
   const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
 
   useEffect(() => {
-    if (groupIdeas && routerQuery.ideaId) {
+    if (groupIdeas && routerQuery.ideaId && router.isReady) {
       const foundIdea = groupIdeas.find((i) => i.id === routerQuery.ideaId)
       if (foundIdea && !dialogIsOpen && canOpen) {
         openDialog(foundIdea)
       }
     }
-  }, [groupIdeas, routerQuery.ideaId]) // don't add dialogIsOpen or dontReopen, otherwise it will keep opening while closing the dialog
+  }, [groupIdeas, router.isReady, routerQuery.ideaId]) // don't add dialogIsOpen or dontReopen, otherwise it will keep opening while closing the dialog
 
   const onSubmit = (values: IdeaDto) => {
     submitSaveIdea(values, {
