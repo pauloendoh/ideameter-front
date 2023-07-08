@@ -3,11 +3,11 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import { Button, Tooltip, Typography, useTheme } from "@mui/material"
+import { Tooltip, Typography, useTheme } from "@mui/material"
 import { deleteFromArray } from "endoh-utils"
 import { useCallback, useMemo } from "react"
-import { MdOfflineBolt } from "react-icons/md"
 import UserGroupAvatar from "../../../UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import HighImpactVoteButton from "./HighImpactVoteButton/HighImpactVoteButton"
 
 type Props = {
   ideaRating: IdeaRating
@@ -24,7 +24,9 @@ const HighImpactVoteIcon = (props: Props) => {
   const youVotedHighImpact = useMemo(
     () =>
       Boolean(
-        props.ideaRating.idea.highImpactVotes?.find((v) => v.userId === authUser!.id)
+        props.ideaRating.idea.highImpactVotes?.find(
+          (v) => v.userId === authUser!.id
+        )
       ),
     [props.ideaRating.idea.highImpactVotes, authUser]
   )
@@ -75,29 +77,14 @@ const HighImpactVoteIcon = (props: Props) => {
       }
     >
       {/* had to use div instead of FlexVCenter due to tooltip */}
-
-      <Button
-        size="small"
-        style={{ display: "flex", alignItems: "center", gap: 4, color: "unset" }}
+      <HighImpactVoteButton
+        count={props.ideaRating.idea.highImpactVotes.length}
+        youVoted={youVotedHighImpact}
         onClick={(e) => {
           e.stopPropagation()
           toggleHighImpactVote()
         }}
-      >
-        <MdOfflineBolt
-          fontSize={18}
-          style={{
-            color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
-          }}
-        />
-        <Typography
-          style={{
-            color: youVotedHighImpact ? theme.palette.secondary.main : undefined,
-          }}
-        >
-          {props.ideaRating.idea.highImpactVotes.length}
-        </Typography>
-      </Button>
+      />
     </Tooltip>
   )
 }
