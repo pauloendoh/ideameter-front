@@ -92,7 +92,13 @@ const IdeaDialog = () => {
       }, 250)
     }
 
-    if (!dialogIsOpen && hasOpenedOnce && initialValue.id) {
+    if (!dialogIsOpen && initialValue.id) {
+      alert(
+        JSON.stringify({
+          id: initialValue.id,
+          dialogIsOpen,
+        })
+      )
       setCanOpen(false)
       setTimeout(() => {
         if (routerQuery.groupId && routerQuery.tabId) {
