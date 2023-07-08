@@ -92,7 +92,8 @@ const IdeaDialog = () => {
       }, 250)
     }
 
-    if (!dialogIsOpen && initialValue.id) {
+    // After closing...
+    if (!dialogIsOpen && hasOpenedOnce && initialValue.id) {
       alert(
         JSON.stringify({
           id: initialValue.id,
@@ -111,7 +112,7 @@ const IdeaDialog = () => {
         setCanOpen(true)
       }, 250) // I had to add this delay because it was having some weird behavior where the dialog seemed to stay open even when it was not visible
     }
-  }, [dialogIsOpen, hasOpenedOnce])
+  }, [dialogIsOpen])
 
   const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
 
