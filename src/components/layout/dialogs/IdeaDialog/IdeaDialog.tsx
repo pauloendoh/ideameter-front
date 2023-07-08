@@ -67,11 +67,6 @@ const IdeaDialog = () => {
     if (dialogIsOpen) reset(initialValue)
   }, [initialValue, dialogIsOpen])
 
-  const [hasOpenedOnce, setHasOpenedOnce] = useState(false)
-  useEffect(() => {
-    if (dialogIsOpen) setHasOpenedOnce(true)
-  }, [dialogIsOpen])
-
   useEffect(() => {
     if (dialogIsOpen) {
       // makes sure that the URL will change when you open an idea
@@ -92,17 +87,11 @@ const IdeaDialog = () => {
       }, 250)
     }
 
-    // After closing...
-    if (!dialogIsOpen && hasOpenedOnce && initialValue.id) {
-      alert(
-        JSON.stringify({
-          id: initialValue.id,
-          dialogIsOpen,
-        })
-      )
+    if (!dialogIsOpen && initialValue.id) {
       setCanOpen(false)
       setTimeout(() => {
         if (routerQuery.groupId && routerQuery.tabId) {
+          console.log("IdeaDialog.tsx")
           router.push(
             urls.pages.groupTab(routerQuery.groupId, routerQuery.tabId),
             undefined,

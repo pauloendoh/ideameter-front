@@ -19,7 +19,8 @@ const TabMenuOptions = (props: Props) => {
   const router = useRouter()
   const { openDialog } = useTabDialogStore()
   const deleteTabMutation = useDeleteTabMutation()
-  const { openDialog: openConfirmDeleteTabDialog } = useConfirmDeleteTabDialogStore()
+  const { openDialog: openConfirmDeleteTabDialog } =
+    useConfirmDeleteTabDialogStore()
   const { data: groupTabs } = useGroupTabsQuery(props.tab.groupId)
 
   const [anchorEl, setAnchorEl] = React.useState<null | SVGElement>(null)
@@ -45,6 +46,7 @@ const TabMenuOptions = (props: Props) => {
           if (groupTabs && groupTabs.length > 0) {
             const otherTab = groupTabs[0]
 
+            console.log("TabMenuOptions.tsx")
             router.push(urls.pages.groupTab(otherTab.groupId, otherTab.id))
           }
         },
@@ -94,7 +96,10 @@ const TabMenuOptions = (props: Props) => {
             handleDelete()
           }}
         >
-          <FlexVCenter gap={1} sx={{ color: (theme) => theme.palette.error.main }}>
+          <FlexVCenter
+            gap={1}
+            sx={{ color: (theme) => theme.palette.error.main }}
+          >
             <MdDelete />
             <Typography>Delete tab</Typography>
           </FlexVCenter>
