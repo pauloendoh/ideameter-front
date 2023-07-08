@@ -67,6 +67,11 @@ const IdeaDialog = () => {
     if (dialogIsOpen) reset(initialValue)
   }, [initialValue, dialogIsOpen])
 
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(false)
+  useEffect(() => {
+    if (dialogIsOpen) setHasOpenedOnce(true)
+  }, [dialogIsOpen])
+
   useEffect(() => {
     if (dialogIsOpen) {
       // makes sure that the URL will change when you open an idea
@@ -87,7 +92,7 @@ const IdeaDialog = () => {
       }, 250)
     }
 
-    if (!dialogIsOpen && initialValue.id) {
+    if (!dialogIsOpen && hasOpenedOnce && initialValue.id) {
       setCanOpen(false)
       setTimeout(() => {
         if (routerQuery.groupId && routerQuery.tabId) {
@@ -100,7 +105,7 @@ const IdeaDialog = () => {
         setCanOpen(true)
       }, 250) // I had to add this delay because it was having some weird behavior where the dialog seemed to stay open even when it was not visible
     }
-  }, [dialogIsOpen])
+  }, [dialogIsOpen, hasOpenedOnce])
 
   const { data: groupIdeas } = useGroupIdeasQuery(routerQuery.groupId!)
 
