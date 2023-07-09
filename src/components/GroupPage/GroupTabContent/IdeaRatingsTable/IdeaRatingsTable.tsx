@@ -15,7 +15,12 @@ import {
   TableRow,
 } from "@mui/material"
 import React, { useMemo, useRef } from "react"
-import { ItemProps, TableVirtuoso, TableVirtuosoHandle } from "react-virtuoso"
+import {
+  ItemProps,
+  TableComponents,
+  TableVirtuoso,
+  TableVirtuosoHandle,
+} from "react-virtuoso"
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow"
 import UserTableCell from "./UserTableCell/UserTableCell"
 import { useFilterAndSortIdeaRatings } from "./useFilterAndSortIdeaRatings/useFilterAndSortIdeaRatings"
@@ -27,6 +32,7 @@ interface Props {
   isSubideasTable?: boolean
 }
 
+// PE 1/3 - IdeaTable
 const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
 
@@ -56,7 +62,7 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
 
   const ref = useRef<TableVirtuosoHandle>(null)
 
-  const TableComponents = useMemo(() => {
+  const tableComponents = useMemo<TableComponents<IdeaRating, any>>(() => {
     return {
       Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
         <TableContainer {...props} ref={ref} />
@@ -110,7 +116,7 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
           height: "calc(100vh - 400px)",
         }}
         data={visibleIdeaRatings}
-        components={TableComponents}
+        components={tableComponents}
         fixedHeaderContent={() => (
           <TableRow>
             <TableCell align="center" width="64px">

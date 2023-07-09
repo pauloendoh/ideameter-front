@@ -9,7 +9,7 @@ import {
   TableFooter,
   Typography,
 } from "@mui/material"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import AssignedIdeasTableBody from "../AssignedIdeasTableBody/AssignedIdeasTableBody"
 import AssignedIdeasTableHead, {
   Header,
@@ -41,9 +41,26 @@ const headers: Header[] = [
 ]
 
 const AssignedToMeTable = (props: Props) => {
-  const { data: ideas, isSuccess } = useAssignedToMeQuery()
+  const { data, isSuccess } = useAssignedToMeQuery()
 
   const [showCompleted, setShowCompleted] = useState(false)
+
+  const sortedIdeas = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    let ideas = showCompleted
+      ? data.filter((i) => i.idea.isDone)
+      : data.filter((i) => !i.idea.isDone)
+
+    return ideas.sort((a, b) => {
+      // sort by group name asc
+      if (a.group.name > b.group.name) return 1
+
+      return -1
+    })
+  }, [data, showCompleted])
 
   if (!isSuccess) {
     return null
@@ -59,7 +76,7 @@ const AssignedToMeTable = (props: Props) => {
           <Table stickyHeader>
             <AssignedIdeasTableHead headers={headers} />
             <AssignedIdeasTableBody
-              ideas={ideas}
+              ideas={sortedIdeas}
               showCompleted={showCompleted}
             />
           </Table>

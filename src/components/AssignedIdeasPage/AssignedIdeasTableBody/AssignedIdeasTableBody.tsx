@@ -1,23 +1,18 @@
+import { useMuiTheme } from "@/hooks/utils/useMuiTheme"
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
 import urls from "@/utils/urls"
-import { Link, TableBody, TableCell, useTheme } from "@mui/material"
+import { Link, TableBody, TableCell } from "@mui/material"
 import NextLink from "next/link"
-import { useMemo } from "react"
 import S from "./AssignedIdeasTableBody.styles"
 
 type Props = { ideas: AssignedToMeDto[]; showCompleted: boolean }
 
 const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
-  const showingIdeas = useMemo(() => {
-    if (showCompleted) return ideas.filter((i) => i.idea.isDone)
-
-    return ideas.filter((i) => !i.idea.isDone)
-  }, [ideas, showCompleted])
-  const theme = useTheme()
+  const theme = useMuiTheme()
 
   return (
     <TableBody>
-      {showingIdeas.map(({ group, tab, idea }, index) => {
+      {ideas.map(({ group, tab, idea }, index) => {
         const ideaUrl = urls.pages.groupTabIdea(group.groupId, tab.id, idea.id)
 
         return (
