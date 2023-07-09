@@ -33,7 +33,7 @@ interface Props {
 }
 
 // PE 1/3 - IdeaTable
-const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
+const IdeaRatingsTable = ({ ...props }: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
 
   const { groupId } = useRouterQueryString()
@@ -55,7 +55,7 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
     ideaRequiresYourRating,
     authUserId: authUser!.id,
     filter,
-    isSubideasTable,
+    isSubideasTable: props.isSubideasTable,
   })
 
   const { onCtrlClick, onShiftClick } = useMultiSelectIdeas()
@@ -67,9 +67,7 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
       Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
         <TableContainer {...props} ref={ref} />
       )),
-      Table: (props: TableProps) => (
-        <Table {...props} style={{ borderCollapse: "separate" }} />
-      ),
+      Table: (props: TableProps) => <Table {...props} />,
       TableHead: TableHead,
       TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
         <TableBody {...props} ref={ref} />
@@ -99,25 +97,63 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
 
   if (props.ideaRatings.length === 0) return <div></div>
 
-  return (
-    <Box
-      sx={{
-        "td, th": {
-          padding: 1,
-        },
-        th: {
-          backgroundColor: "#2b2b2b",
-        },
-      }}
-    >
-      <TableVirtuoso
-        ref={ref}
-        style={{
-          height: "calc(100vh - 400px)",
+  if (!props.isSubideasTable)
+    return (
+      <Box
+        sx={{
+          "td, th": {
+            padding: 1,
+          },
+          th: {
+            backgroundColor: "#2b2b2b",
+          },
         }}
-        data={visibleIdeaRatings}
-        components={tableComponents}
-        fixedHeaderContent={() => (
+      >
+        <TableVirtuoso
+          ref={ref}
+          style={{
+            height: "calc(100vh - 400px)",
+          }}
+          data={visibleIdeaRatings}
+          components={tableComponents}
+          fixedHeaderContent={() => (
+            <TableRow>
+              <TableCell align="center" width="64px">
+                #
+              </TableCell>
+              <TableCell width="360px">Idea</TableCell>
+              <TableCell width="64px">Done</TableCell>
+              <TableCell align="center" width="64px">
+                Avg
+              </TableCell>
+              <UserTableCell userId={authUser!.id} />
+              {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
+                <UserTableCell
+                  key={JSON.stringify(otherRating)}
+                  userId={otherRating.userGroup.userId}
+                />
+              ))}
+              {/* Empty cell to avoid bigger width on the last cell */}
+              <TableCell></TableCell>
+            </TableRow>
+          )}
+        />
+      </Box>
+    )
+
+  return (
+    <TableContainer>
+      <Table
+        sx={{
+          "td, th": {
+            padding: 1,
+          },
+          th: {
+            backgroundColor: "#2b2b2b",
+          },
+        }}
+      >
+        <TableHead>
           <TableRow>
             <TableCell align="center" width="64px">
               #
@@ -137,9 +173,27 @@ const IdeaRatingsTable = ({ isSubideasTable = false, ...props }: Props) => {
             {/* Empty cell to avoid bigger width on the last cell */}
             <TableCell></TableCell>
           </TableRow>
-        )}
-      />
-    </Box>
+        </TableHead>
+        <TableBody>
+          {visibleIdeaRatings.map((ideaRating, index) => (
+            <IdeaTableRow
+              key={ideaRating.idea.id + ideaRating.idea.updatedAt}
+              ideaRating={ideaRating}
+              rowNumber={index + 1}
+              onCtrlClick={() => {
+                onCtrlClick(ideaRating.idea.id)
+              }}
+              onShiftClick={() =>
+                onShiftClick(
+                  visibleIdeaRatings.map((r) => r.idea.id),
+                  ideaRating.idea.id
+                )
+              }
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 

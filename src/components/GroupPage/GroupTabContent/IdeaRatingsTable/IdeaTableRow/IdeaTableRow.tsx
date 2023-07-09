@@ -19,7 +19,7 @@ interface Props {
   rowNumber: number
   onCtrlClick: () => void
   onShiftClick: () => void
-  virtuosoProps: ItemProps<IdeaRating>
+  virtuosoProps?: ItemProps<IdeaRating>
 }
 
 const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(

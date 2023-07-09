@@ -1,7 +1,6 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils"
 import { Box } from "@mui/material"
-import { upToNDecimals } from "endoh-utils"
 import { useRouter } from "next/router"
 import { useMemo } from "react"
 
@@ -51,13 +50,13 @@ const HighestSubideaInfo = (props: Props) => {
         <span
           style={{
             background: "#535353",
-            fontStyle: "normal",
             padding: "0px 4px",
             borderRadius: 4,
             marginLeft: 8,
+            fontStyle: "italic",
           }}
         >
-          {upToNDecimals(Number(highestSubideas[0].avgRating), 1)}
+          Highest subidea
         </span>
       </Box>
       <i>{otherHighestSubideas.length > 0 && othersLabel}</i>
