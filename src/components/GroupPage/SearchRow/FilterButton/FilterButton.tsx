@@ -18,6 +18,7 @@ import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
 import { useTabRateCount } from "../../GroupTabs/GroupTabItem/useTabRateCount/useTabRateCount"
 import LabelsSelector from "./LabelsSelector/LabelsSelector"
+import VotedHighImpactSelector from "./VotedHighImpactSelector/VotedHighImpactSelector"
 import S from "./styles"
 
 interface Props {
@@ -38,10 +39,10 @@ const FilterButton = (props: Props) => {
     getFilterCount,
     setFilterLabelIds,
     toggleRequiresYourRating,
-    toggleOnlyHighImpactVoted,
     setMinRatingCount,
     setMinAvgRating,
     setExcludeLabelIds: setFilterOutLabelIds,
+    setVotedHighImpactBy,
   } = useGroupFilterStore()
 
   const handleClick = (event: any) => {
@@ -100,7 +101,6 @@ const FilterButton = (props: Props) => {
       <Menu
         id="skillbase-filter-menu"
         anchorEl={anchorEl}
-        // getContentAnchorEl={null}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         keepMounted
@@ -112,15 +112,6 @@ const FilterButton = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <S.MenuItem
-          onClick={() => toggleOnlyHighImpactVoted(routerQuery.tabId!)}
-        >
-          <Checkbox
-            checked={filter.onlyHighImpactVoted}
-            name="voted-as-high-impact"
-          />
-          <S.CheckboxLabel>Voted as high impact</S.CheckboxLabel>
-        </S.MenuItem>
         <S.MenuItem onClick={() => toggleRequiresYourRating(routerQuery.tabId)}>
           <Checkbox checked={filter.requiresYourRating} name="current-goal" />
           <Badge
@@ -193,6 +184,16 @@ const FilterButton = (props: Props) => {
             }}
           />
         </S.MenuItem>
+
+        <Divider />
+        <FlexCol px={1} my={1} gap={1}>
+          <VotedHighImpactSelector
+            onChange={(value) => {
+              setVotedHighImpactBy(value)
+            }}
+            selectedUserId={filter.votedHighImpactBy}
+          />
+        </FlexCol>
 
         {sortedLabels.length > 0 && <Divider />}
 

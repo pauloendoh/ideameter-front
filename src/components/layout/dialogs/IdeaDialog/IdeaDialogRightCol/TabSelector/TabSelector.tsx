@@ -35,7 +35,9 @@ const TabSelector = (props: Props) => {
         props.onChange(tab.id)
       }}
       getOptionLabel={(option) => option.name}
-      renderInput={(params) => <MyTextField {...params} label="Tab" size="small" />}
+      renderInput={(params) => (
+        <MyTextField {...params} label="Tab" size="small" />
+      )}
       // renderOption={(label) => (
       //   <LabelsSelectorV2Option
       //     label={label}

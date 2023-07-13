@@ -29,11 +29,12 @@ export const useFilterAndSortIdeaRatings = ({
       labelIds: selectedLabelIds,
       excludeLabelIds,
       onlyCompletedIdeas,
-      onlyHighImpactVoted,
+
       requiresYourRating,
       users: filteringUsers,
       minRatingCount,
       minAvgRating,
+      votedHighImpactBy,
     } = filter
 
     let result = [...ideaRatings]
@@ -62,10 +63,20 @@ export const useFilterAndSortIdeaRatings = ({
       return sortByAvgRatingDesc(result)
     }
 
-    if (onlyHighImpactVoted)
-      result = result.filter(
-        (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0 // subideas must always appear in their table
-      )
+    if (votedHighImpactBy) {
+      result =
+        votedHighImpactBy === "any"
+          ? result.filter(
+              (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0
+            )
+          : result.filter(
+              (r) =>
+                r.idea.parentId ||
+                r.idea.highImpactVotes?.some(
+                  (v) => v.userId === votedHighImpactBy
+                )
+            )
+    }
 
     if (requiresYourRating) {
       result = result.filter((ideaRating) => {

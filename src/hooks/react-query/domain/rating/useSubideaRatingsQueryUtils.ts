@@ -24,7 +24,7 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
       const ideaRatings = ratings.filter((r) => r.ideaId === subideaId)
       if (ideaRatings.length === 0) return null
 
-      const validRatings = ideaRatings.filter((r) => r.rating !== null)
+      const validRatings = ideaRatings.filter((r) => r.rating && r.rating > 0)
       const sum = validRatings.reduce(
         (partialSum, r) => partialSum + (r.rating || 0),
         0

@@ -9,13 +9,13 @@ export interface IFilter {
   excludeLabelIds: string[]
   onlyCompletedIdeas: boolean
   users: SimpleUserDto[]
-  onlyHighImpactVoted: boolean
+  votedHighImpactBy: string | null
   requiresYourRating: boolean
   minRatingCount: number
   minAvgRating: number
 }
 
-export interface IGroupFilterStore {
+export interface IStore {
   filter: IFilter
   setFilter: (filter: IFilter) => void
 
@@ -28,13 +28,13 @@ export interface IGroupFilterStore {
   setExcludeLabelIds: (ids: string[], tabId?: string) => void
   toggleOnlyCompletedIdeas: (tabId?: string) => void
   changeFilterUsers: (users: SimpleUserDto[], tabId?: string) => void
-  toggleOnlyHighImpactVoted: (tabId?: string) => void
   toggleRequiresYourRating: (tabId?: string) => void
   setMinRatingCount: (count: number, tabId?: string) => void
   setMinAvgRating: (value: number, tabId?: string) => void
+  setVotedHighImpactBy: (userId: string | null) => void
 }
 
-const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
+const useGroupFilterStore = create<IStore>((set, get) => ({
   filter: {
     onlyCompletedIdeas: false,
     labelIds: [],
@@ -44,24 +44,24 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
     requiresYourRating: false,
     minRatingCount: 0,
     minAvgRating: 0,
+    votedHighImpactBy: null,
   },
   setFilter: (filter) => set({ filter }),
   getFilterCount: () => {
     const {
       labelIds,
       excludeLabelIds,
-
-      onlyHighImpactVoted,
+      votedHighImpactBy,
       requiresYourRating,
       minRatingCount,
       minAvgRating,
     } = get().filter
     let count = labelIds?.length + excludeLabelIds?.length
 
-    if (onlyHighImpactVoted) count++
     if (requiresYourRating) count++
     if (minRatingCount > 0) count++
     if (minAvgRating > 0) count++
+    if (votedHighImpactBy) count++
 
     return count
   },
@@ -166,23 +166,7 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
       )
     }
   },
-  toggleOnlyHighImpactVoted: (tabId) => {
-    set((curr) => ({
-      filter: {
-        ...curr.filter,
-        onlyHighImpactVoted: !curr.filter.onlyHighImpactVoted,
-      },
-    }))
 
-    if (tabId) {
-      const state = get()
-      nookies.set(
-        null,
-        cookieKeys.groupTabIdeasFilter(tabId),
-        JSON.stringify(state)
-      )
-    }
-  },
   toggleRequiresYourRating: (tabId) => {
     set((curr) => ({
       filter: {
@@ -235,6 +219,15 @@ const useGroupFilterStore = create<IGroupFilterStore>((set, get) => ({
         JSON.stringify(state)
       )
     }
+  },
+
+  setVotedHighImpactBy(userId) {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        votedHighImpactBy: userId,
+      },
+    }))
   },
 }))
 

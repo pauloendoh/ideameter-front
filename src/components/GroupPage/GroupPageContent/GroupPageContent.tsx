@@ -1,6 +1,6 @@
-import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon"
-import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
+import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon"
 import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
@@ -9,7 +9,7 @@ import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupInsightsDialogStore from "@/hooks/zustand/dialogs/useGroupInsightsDialogStore"
 import useTabDialogStore from "@/hooks/zustand/dialogs/useTabDialogStore"
 import useGroupFilterStore, {
-  IGroupFilterStore,
+  IStore,
   resetGroupFilterStore,
 } from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import useSelectedIdeasStore from "@/hooks/zustand/domain/idea/useSelectedIdeasStore"
@@ -96,7 +96,7 @@ const GroupPageContent = (props: Props) => {
     if (tabId) {
       const cookieStr = nookies.get(null)[cookieKeys.groupTabIdeasFilter(tabId)]
       if (cookieStr) {
-        const filterStore: IGroupFilterStore = JSON.parse(cookieStr)
+        const filterStore: IStore = JSON.parse(cookieStr)
         if (
           // you need to add here when you create new filters, so the cookie doesn't mess it up
           filterStore.filter.onlyCompletedIdeas !== undefined &&
@@ -110,7 +110,9 @@ const GroupPageContent = (props: Props) => {
     resetGroupFilterStore()
   }, [tabId])
 
-  const openGroupInsightsDialog = useGroupInsightsDialogStore((s) => s.openDialog)
+  const openGroupInsightsDialog = useGroupInsightsDialogStore(
+    (s) => s.openDialog
+  )
 
   const selectedIdeaIds = useSelectedIdeasStore((s) => s.selectedIdeaIds)
 
@@ -132,7 +134,11 @@ const GroupPageContent = (props: Props) => {
             <FlexVCenter justifyContent="space-between">
               <FlexVCenter gap={1}>
                 <Typography variant="h5">{selectedGroup.name}</Typography>
-                <GroupMoreIcon group={selectedGroup} onAfterDelete={() => {}} canEdit />
+                <GroupMoreIcon
+                  group={selectedGroup}
+                  onAfterDelete={() => {}}
+                  canEdit
+                />
               </FlexVCenter>
               <Button onClick={() => openGroupInsightsDialog(selectedGroup)}>
                 Insights
@@ -140,14 +146,18 @@ const GroupPageContent = (props: Props) => {
             </FlexVCenter>
 
             <Paper sx={{ mt: 2, width: "100%", background: "#2B2B2B" }}>
-              <FlexVCenter sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}>
+              <FlexVCenter
+                sx={{ px: 1, pt: 1, pb: 2, justifyContent: "space-between" }}
+              >
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Tooltip
                     open={sortedGroupTabs.length === 0 ? true : undefined}
                     arrow
                     title="Add tab"
                   >
-                    <IconButton onClick={() => openDialog(buildTabDto({ groupId }))}>
+                    <IconButton
+                      onClick={() => openDialog(buildTabDto({ groupId }))}
+                    >
                       <MdAdd />
                     </IconButton>
                   </Tooltip>
@@ -161,7 +171,9 @@ const GroupPageContent = (props: Props) => {
                 <SearchRow />
               )}
 
-              {tabId && groupId && <GroupTabContent tabId={tabId} groupId={groupId} />}
+              {tabId && groupId && (
+                <GroupTabContent tabId={tabId} groupId={groupId} />
+              )}
             </Paper>
           </Box>
         )}
