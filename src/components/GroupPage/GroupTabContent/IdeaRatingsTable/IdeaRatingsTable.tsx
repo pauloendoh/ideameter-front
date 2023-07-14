@@ -5,7 +5,6 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import useIdeaSortStore from "@/hooks/zustand/domain/group/useIdeaSortStore"
 import {
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -14,13 +13,9 @@ import {
   TableProps,
   TableRow,
 } from "@mui/material"
+import { useVirtual } from "@tanstack/react-virtual"
 import React, { useMemo, useRef } from "react"
-import {
-  ItemProps,
-  TableComponents,
-  TableVirtuoso,
-  TableVirtuosoHandle,
-} from "react-virtuoso"
+import { ItemProps, TableComponents, TableVirtuosoHandle } from "react-virtuoso"
 import IdeaTableRow from "./IdeaTableRow/IdeaTableRow"
 import UserTableCell from "./UserTableCell/UserTableCell"
 import { useFilterAndSortIdeaRatings } from "./useFilterAndSortIdeaRatings/useFilterAndSortIdeaRatings"
@@ -95,55 +90,75 @@ const IdeaRatingsTable = ({ ...props }: Props) => {
     }
   }, [])
 
+  const tableContainerRef = useRef<HTMLDivElement>(null)
+  const rowVirtualizer = useVirtual({
+    parentRef: tableContainerRef,
+    size: visibleIdeaRatings.length,
+    overscan: 10,
+  })
+
+  const { virtualItems: virtualRows, totalSize } = rowVirtualizer
+  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0
+  const paddingBottom =
+    virtualRows.length > 0
+      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
+      : 0
+
   if (props.ideaRatings.length === 0) return <div></div>
 
-  if (!props.isSubideasTable)
-    return (
-      <Box
-        sx={{
-          "td, th": {
-            padding: 1,
-          },
-          th: {
-            backgroundColor: "#2b2b2b",
-          },
-        }}
-      >
-        <TableVirtuoso
-          ref={ref}
-          style={{
-            height: "calc(100vh - 400px)",
-          }}
-          data={visibleIdeaRatings}
-          components={tableComponents}
-          fixedHeaderContent={() => (
-            <TableRow>
-              <TableCell align="center" width="64px">
-                #
-              </TableCell>
-              <TableCell width="360px">Idea</TableCell>
-              <TableCell width="64px">Done</TableCell>
-              <TableCell align="center" width="64px">
-                Avg
-              </TableCell>
-              <UserTableCell userId={authUser!.id} />
-              {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
-                <UserTableCell
-                  key={JSON.stringify(otherRating)}
-                  userId={otherRating.userGroup.userId}
-                />
-              ))}
-              {/* Empty cell to avoid bigger width on the last cell */}
-              <TableCell></TableCell>
-            </TableRow>
-          )}
-        />
-      </Box>
-    )
+  // if (!props.isSubideasTable)
+  //   return (
+  //     <Box
+  //       sx={{
+  //         "td, th": {
+  //           padding: 1,
+  //         },
+  //         th: {
+  //           backgroundColor: "#2b2b2b",
+  //         },
+  //       }}
+  //     >
+  //       <TableVirtuoso
+  //         ref={ref}
+  //         style={{
+  //           height: "calc(100vh - 400px)",
+  //         }}
+  //         data={visibleIdeaRatings}
+  //         components={tableComponents}
+  //         fixedHeaderContent={() => (
+  //           <TableRow>
+  //             <TableCell align="center" width="64px">
+  //               #
+  //             </TableCell>
+  //             <TableCell width="360px">Idea</TableCell>
+  //             <TableCell width="64px">Done</TableCell>
+  //             <TableCell align="center" width="64px">
+  //               Avg
+  //             </TableCell>
+  //             <UserTableCell userId={authUser!.id} />
+  //             {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
+  //               <UserTableCell
+  //                 key={JSON.stringify(otherRating)}
+  //                 userId={otherRating.userGroup.userId}
+  //               />
+  //             ))}
+  //             {/* Empty cell to avoid bigger width on the last cell */}
+  //             <TableCell></TableCell>
+  //           </TableRow>
+  //         )}
+  //       />
+  //     </Box>
+  //   )
 
   return (
-    <TableContainer>
+    <TableContainer
+      ref={tableContainerRef}
+      sx={{
+        maxHeight: props.isSubideasTable ? undefined : "calc(100vh - 340px)",
+      }}
+    >
       <Table
+        stickyHeader
         sx={{
           "td, th": {
             padding: 1,
@@ -175,22 +190,32 @@ const IdeaRatingsTable = ({ ...props }: Props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {visibleIdeaRatings.map((ideaRating, index) => (
-            <IdeaTableRow
-              key={ideaRating.idea.id + ideaRating.idea.updatedAt}
-              ideaRating={ideaRating}
-              rowNumber={index + 1}
-              onCtrlClick={() => {
-                onCtrlClick(ideaRating.idea.id)
-              }}
-              onShiftClick={() =>
-                onShiftClick(
-                  visibleIdeaRatings.map((r) => r.idea.id),
-                  ideaRating.idea.id
-                )
-              }
-            />
-          ))}
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: paddingTop }} />
+            </tr>
+          )}
+          {virtualRows.map((virtualRow) => {
+            const index = virtualRow.index
+            const ideaRating = visibleIdeaRatings[index]
+
+            return (
+              <IdeaTableRow
+                key={ideaRating.idea.id + ideaRating.idea.updatedAt}
+                ideaRating={ideaRating}
+                rowNumber={index + 1}
+                onCtrlClick={() => {
+                  onCtrlClick(ideaRating.idea.id)
+                }}
+                onShiftClick={() =>
+                  onShiftClick(
+                    visibleIdeaRatings.map((r) => r.idea.id),
+                    ideaRating.idea.id
+                  )
+                }
+              />
+            )
+          })}
         </TableBody>
       </Table>
     </TableContainer>
