@@ -97,7 +97,7 @@ const IdeaRatingsTable = ({ ...props }: Props) => {
 
   if (props.ideaRatings.length === 0) return <div></div>
 
-  if (!props.isSubideasTable || visibleIdeaRatings.length > 10)
+  if (!props.isSubideasTable && visibleIdeaRatings.length > 10)
     return (
       <Box
         sx={{
