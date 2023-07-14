@@ -39,7 +39,7 @@ const SearchBar = () => {
         <Popper
           {...props}
           sx={{
-            minWidth: 480,
+            minWidth: 600,
             display: dialogIsOpen || text.length === 0 ? "none" : "unset",
           }}
           placement="bottom-start"

@@ -213,7 +213,8 @@ const IdeaDialog = () => {
           sx={{
             gap: 0.5,
             p: 2,
-            background: (theme) => theme.palette.warning.main,
+
+            background: (theme) => theme.palette.grey[700],
           }}
         >
           <MdArchive fontSize={24} />

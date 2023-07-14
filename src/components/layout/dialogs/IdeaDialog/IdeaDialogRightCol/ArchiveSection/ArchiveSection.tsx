@@ -61,7 +61,7 @@ const ArchiveSection = (props: Props) => {
             justifyContent: "flex-start",
             pl: 2,
           }}
-          variant="contained"
+          variant="outlined"
           color="error"
           startIcon={<MdDelete />}
           onClick={handleDelete}
