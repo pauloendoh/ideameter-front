@@ -54,6 +54,16 @@ const AssignedToMeTable = (props: Props) => {
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
 
+    if (showCompleted) {
+      return ideas.sort((a, b) => {
+        // completed at desc
+        if (a.idea.completedAt!.localeCompare(b.idea.completedAt!)) {
+          return 1
+        }
+        return -1
+      })
+    }
+
     return ideas.sort((a, b) => {
       // sort by group name asc
       if (a.group.name > b.group.name) return 1
