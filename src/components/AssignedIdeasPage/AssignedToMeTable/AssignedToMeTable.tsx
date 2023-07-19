@@ -57,10 +57,13 @@ const AssignedToMeTable = (props: Props) => {
     if (showCompleted) {
       return ideas.sort((a, b) => {
         // completed at desc
-        if (a.idea.completedAt!.localeCompare(b.idea.completedAt!)) {
-          return 1
+        const completedAtA = a.idea.completedAt || ""
+        const completedAtB = b.idea.completedAt || ""
+
+        if (completedAtA.localeCompare(completedAtB)) {
+          return -1
         }
-        return -1
+        return 1
       })
     }
 
