@@ -25,6 +25,8 @@ export default interface IdeaDto {
   labels: LabelDto[]
   assignedUsers: SimpleUserDto[]
   highImpactVotes: HighImpactVoteDto[]
+
+  subideaImageUrl: string
 }
 
 export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
@@ -46,5 +48,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   labels: [],
   assignedUsers: [],
   highImpactVotes: [],
+
+  subideaImageUrl: "",
   ...partial,
 })

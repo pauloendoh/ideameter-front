@@ -7,7 +7,7 @@ import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSu
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import { Badge, Box, TableCell, Tooltip, Typography } from "@mui/material"
 import { useMemo } from "react"
-import { MdDescription } from "react-icons/md"
+import { MdDescription, MdImage } from "react-icons/md"
 import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo"
 import UserGroupAvatar from "../../UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import HighImpactVoteIcon from "./HighImpactVoteIcon/HighImpactVoteIcon"
@@ -47,6 +47,10 @@ const IdeaNameTableCell = (props: Props) => {
     () => props.ideaRating.idea.labels.sort((a, b) => a.position - b.position),
     [props.ideaRating.idea.labels]
   )
+
+  const showImageIcon = useMemo(() => {
+    return isSubidea && !!props.ideaRating.idea.subideaImageUrl
+  }, [isSubidea, props.ideaRating.idea.subideaImageUrl])
 
   return (
     <TableCell width="360px">
@@ -92,6 +96,20 @@ const IdeaNameTableCell = (props: Props) => {
                       style={{
                         position: "relative",
                         bottom: notRatedSubideasCount > 0 ? -10 : -2,
+                        left: 6,
+                      }}
+                    />
+                  </span>
+                </Tooltip>
+              )}
+
+              {showImageIcon && (
+                <Tooltip title="This subidea contains an image" arrow>
+                  <span>
+                    <MdImage
+                      style={{
+                        position: "relative",
+                        bottom: -2,
                         left: 6,
                       }}
                     />

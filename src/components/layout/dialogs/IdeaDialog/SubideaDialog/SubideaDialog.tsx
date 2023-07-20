@@ -21,6 +21,7 @@ import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 import { format } from "timeago.js"
 import IdeaDialogSelectedLabels from "../IdeaDialogSelectedLabels/IdeaDialogSelectedLabels"
+import SubideaImageSection from "./SubideaImageSection/SubideaImageSection"
 import SubideaMenu from "./SubideaMenu/SubideaMenu"
 
 const ariaLabel = "subidea-dialog"
@@ -126,6 +127,13 @@ const SubideaDialog = () => {
                     fullWidth
                   />
                 )}
+              />
+
+              <SubideaImageSection
+                subidea={watch()}
+                onChangeImageUrl={(imageUrl) =>
+                  setValue("subideaImageUrl", imageUrl)
+                }
               />
             </FlexCol>
           </DialogContent>
