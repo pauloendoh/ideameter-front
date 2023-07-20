@@ -8,6 +8,7 @@ import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import textContainsWords from "@/utils/text/textContainsWords"
 
+import useDebounce from "@/hooks/utils/useDebounce"
 import { Autocomplete, Box, Popper } from "@mui/material"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { MdSearch } from "react-icons/md"
@@ -30,6 +31,7 @@ const SearchBar = () => {
   const dialogIsOpen = useIdeaDialogStore((s) => s.dialogIsOpen)
 
   const [text, setText] = useState("")
+  const debouncedText = useDebounce(text, 300)
 
   const [selectedIdea, setSelectedIdea] = useState<IdeaDto | null>(null)
 
@@ -64,7 +66,7 @@ const SearchBar = () => {
   )
 
   const filteredIdeas = useMemo(() => {
-    if (!text) return []
+    if (!debouncedText) return []
 
     const ideas = selectedSearchType === "ideas" ? groupIdeas : subideas
     if (!ideas) return []
@@ -72,16 +74,16 @@ const SearchBar = () => {
     return ideas
       .filter(
         (i) =>
-          textContainsWords(i.name, text) ||
-          i.id.includes(text) ||
-          textContainsWords(i.description, text)
+          textContainsWords(i.name, debouncedText) ||
+          i.id.includes(debouncedText) ||
+          textContainsWords(i.description, debouncedText)
       )
       .sort((a, b) => {
         if (a.isArchived && !b.isArchived) return 1
         if (a.isDone && !b.isDone) return 1
         return -1
       })
-  }, [text, groupIdeas, selectedSearchType])
+  }, [debouncedText, groupIdeas, selectedSearchType])
 
   const label = useMemo(() => {
     if (selectedSearchType === "ideas") return "Idea title, ID or description"
