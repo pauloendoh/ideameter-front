@@ -1,4 +1,5 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
@@ -6,6 +7,7 @@ import LoginDto from "@/types/domain/auth/LoginDto"
 import { useAxios } from "@/utils/axios/useAxios"
 import urls from "@/utils/urls"
 import { Button, Link, Typography } from "@mui/material"
+import { useRouter } from "next/router"
 import { Controller, useForm } from "react-hook-form"
 import FlexCol from "../../_common/flexboxes/FlexCol"
 import MyTextField from "../../_common/inputs/MyTextField"
@@ -16,7 +18,7 @@ interface Props {
 }
 
 const LoginForm = (props: Props) => {
-  const { setErrorMessage, setSuccessMessage } = useSnackbarStore()
+  const { setSuccessMessage } = useSnackbarStore()
   const { setAuthUser } = useAuthStore()
 
   const axios = useAxios()
@@ -27,10 +29,17 @@ const LoginForm = (props: Props) => {
     },
   })
 
+  const router = useRouter()
+  const { redirectTo } = useRouterQueryString()
+
   const onSubmit = (values: LoginDto) => {
     axios.post<AuthUserGetDto>(urls.api.login, values).then((res) => {
       setAuthUser(res.data)
       setSuccessMessage("Login successful!")
+
+      if (redirectTo) {
+        router.push(redirectTo)
+      }
     })
   }
 

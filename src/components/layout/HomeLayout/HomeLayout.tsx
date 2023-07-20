@@ -1,10 +1,11 @@
 import Flex from "@/components/_common/flexboxes/Flex"
+import useCheckAuthOrLogout from "@/hooks/domain/auth/useCheckAuthOrLogout"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { Box } from "@mui/material"
-import React from "react"
-import GlobalDialogs from "../dialogs/GlobalDialogs/GlobalDialogs"
+import React, { useEffect } from "react"
 import Navbar from "../Navbar/Navbar"
 import Sidebar from "../Sidebar/Sidebar"
+import GlobalDialogs from "../dialogs/GlobalDialogs/GlobalDialogs"
 
 interface Props {
   children?: React.ReactNode
@@ -12,6 +13,12 @@ interface Props {
 
 const HomeLayout = (props: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
+
+  const { checkAuthOrLogout } = useCheckAuthOrLogout()
+
+  useEffect(() => {
+    checkAuthOrLogout()
+  }, [])
 
   if (!authUser) return null
 
