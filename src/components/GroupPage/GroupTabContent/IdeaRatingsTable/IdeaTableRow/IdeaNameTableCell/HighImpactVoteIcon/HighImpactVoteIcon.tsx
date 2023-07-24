@@ -14,6 +14,7 @@ type Props = {
   groupId: string
 }
 
+// PE 1/3 - what's the difference with HighImpactVoteButton  ?
 const HighImpactVoteIcon = (props: Props) => {
   const theme = useTheme()
 

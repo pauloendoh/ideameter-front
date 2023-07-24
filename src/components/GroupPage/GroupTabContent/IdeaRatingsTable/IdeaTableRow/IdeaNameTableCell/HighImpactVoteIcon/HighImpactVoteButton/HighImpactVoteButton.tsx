@@ -7,6 +7,7 @@ type Props = {
   count: number
   youVoted: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  minWidth?: number
 }
 
 const HighImpactVoteButton = ({ ...props }: Props) => {
@@ -14,7 +15,13 @@ const HighImpactVoteButton = ({ ...props }: Props) => {
   return (
     <Button
       size="small"
-      style={{ display: "flex", alignItems: "center", gap: 4, color: "unset" }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 4,
+        color: "unset",
+        minWidth: props.minWidth,
+      }}
       onClick={(e) => {
         if (props.onClick) {
           props.onClick(e)
