@@ -26,6 +26,8 @@ const Sidebar = () => {
     )
   }, [groups])
 
+  const size = 40
+
   return (
     <S.Drawer
       variant="persistent"
@@ -42,7 +44,7 @@ const Sidebar = () => {
       }}
     >
       <Toolbar />
-      <FlexCol sx={{ pt: 2, px: 2.5, gap: 2 }}>
+      <FlexCol sx={{ pt: 2, px: 2.5, gap: 1.5 }}>
         {sortedGroups.map((group) => (
           <Link key={group.id} href={urls.pages.groupId(String(group.id))}>
             <a style={{ position: "relative", textDecoration: "none" }}>
@@ -52,14 +54,14 @@ const Sidebar = () => {
                   {group.imageUrl ? (
                     <Image
                       src={group.imageUrl}
-                      width="64px"
-                      height="64px"
+                      width={size}
+                      height={size}
                       style={{
                         borderRadius: 64,
                       }}
                     />
                   ) : (
-                    <Avatar src={group.name} sx={{ width: 64, height: 64 }}>
+                    <Avatar src={group.name} sx={{ width: size, height: size }}>
                       {group.name.substring(0, 2)}
                     </Avatar>
                   )}
@@ -79,12 +81,12 @@ const Sidebar = () => {
             onClick={() => openDialog(newGroupDto())}
             sx={{
               background: "#3E3E3E",
-              width: 64,
-              height: 64,
+              width: size,
+              height: size,
               marginBottom: 5,
             }}
           >
-            <MdAdd fontSize="24px" />
+            <MdAdd fontSize={20} />
           </IconButton>
         </Tooltip>
       </FlexCol>
