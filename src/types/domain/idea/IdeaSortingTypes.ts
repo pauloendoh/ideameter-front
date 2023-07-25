@@ -1,5 +1,6 @@
 export type IdeaSortAttributeType =
   | "avgRating"
+  | "highImpactVotesCount"
   | "irrelevantSince"
   | "createdAt"
   | "updatedAt"

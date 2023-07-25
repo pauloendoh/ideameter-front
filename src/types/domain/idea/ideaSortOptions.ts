@@ -11,6 +11,11 @@ export const ideaSortOptionsDivided: {
       buttonLabel: "by Avg Rating",
       menuText: "Avg Rating",
     },
+    {
+      attribute: "highImpactVotesCount",
+      buttonLabel: "by High Impact",
+      menuText: "High Impact",
+    },
   ],
   [
     {

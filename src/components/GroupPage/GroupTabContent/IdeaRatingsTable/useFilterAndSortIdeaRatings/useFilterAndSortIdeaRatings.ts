@@ -139,6 +139,15 @@ export const useFilterAndSortIdeaRatings = ({
       result = sortByAvgRatingDesc(result)
     }
 
+    if (sortingBy.attribute === "highImpactVotesCount") {
+      result = result.sort((a, b) => {
+        const aCount = a.idea.highImpactVotes?.length || 0
+        const bCount = b.idea.highImpactVotes?.length || 0
+        if (aCount === bCount) return 0
+        return aCount > bCount ? -1 : 1
+      })
+    }
+
     if (sortingBy.attribute === "requiresYourRating") {
       result = result.sort((a, b) => {
         if (
