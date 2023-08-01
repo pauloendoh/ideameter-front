@@ -103,13 +103,13 @@ const IdeaDialogLeftCol = ({
       props.onSaveWithoutClosing()
     }
 
-    if (e.key === "Enter") {
-      const editor = document.querySelector(".ql-editor")
-      if (!editor) return
+    // if (e.key === "Enter") {
+    //   const editor = document.querySelector(".ql-editor")
+    //   if (!editor) return
 
-      const editorHeight = editor.scrollHeight
-      editor.scrollTo(0, editorHeight)
-    }
+    //   const editorHeight = editor.scrollHeight
+    //   editor.scrollTo(0, editorHeight)
+    // }
   }
 
   return (
