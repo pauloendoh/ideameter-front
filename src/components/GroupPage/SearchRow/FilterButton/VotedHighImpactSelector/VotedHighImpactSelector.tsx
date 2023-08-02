@@ -1,3 +1,5 @@
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
@@ -52,6 +54,18 @@ const VotedHighImpactSelector = (props: Props) => {
       }
       renderInput={(params) => (
         <MyTextField {...params} label={"Voted as high impact"} size="small" />
+      )}
+      renderOption={(props, option) => (
+        <li {...props}>
+          <FlexVCenter gap={1}>
+            <UserGroupAvatar
+              groupId={groupId}
+              userId={option.id}
+              widthAndHeight={24}
+            />
+            <span>{option.username}</span>
+          </FlexVCenter>
+        </li>
       )}
     />
   )
