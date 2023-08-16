@@ -5,13 +5,18 @@ import { useMuiTheme } from "@/hooks/utils/useMuiTheme"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
 import urls from "@/utils/urls"
-import { Link, TableBody, TableCell } from "@mui/material"
+import { Link, TableBody, TableCell, Typography } from "@mui/material"
 import NextLink from "next/link"
+import { format } from "timeago.js"
 import S from "./AssignedIdeasTableBody.styles"
 
-type Props = { ideas: AssignedToMeDto[]; showCompleted: boolean }
+type Props = {
+  ideas: AssignedToMeDto[]
+  showCompleted: boolean
+  showCreatedAt?: boolean
+}
 
-const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
+const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
   const theme = useMuiTheme()
   const { getUserId } = useAuthStore()
 
@@ -35,7 +40,7 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
                     {idea.name}
                   </Link>
                 </NextLink>
-                <FlexVCenter justifyContent={"flex-start"}>
+                <FlexVCenter justifyContent={"space-between"}>
                   <HighImpactVoteButton
                     minWidth={0}
                     count={idea.highImpactVotes.length}
@@ -43,6 +48,14 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted }: Props) => {
                       (v) => v.userId === getUserId()
                     )}
                   />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontStyle: "italic",
+                    }}
+                  >
+                    Created {props.showCreatedAt && format(idea.createdAt)}
+                  </Typography>
                 </FlexVCenter>
               </FlexCol>
             </TableCell>

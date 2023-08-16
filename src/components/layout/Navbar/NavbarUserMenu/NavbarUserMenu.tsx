@@ -12,17 +12,16 @@ import {
   Typography,
 } from "@mui/material"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { forwardRef, useState } from "react"
 import {
   MdEdit,
   MdExitToApp,
+  MdOfflineBolt,
   MdOutlineAssignmentInd,
   MdOutlineKeyboard,
 } from "react-icons/md"
 
 const NavbarUserMenu = () => {
-  const router = useRouter()
   const authUser = useAuthStore((s) => s.authUser)
 
   const logout = useLogoutAndPushIndex()
@@ -117,6 +116,15 @@ const NavbarUserMenu = () => {
 
         <Link href="/assigned-to-me" passHref>
           <AssignedIdeaItem />
+        </Link>
+
+        <Link href="/high-impact-voted">
+          <MenuItem>
+            <FlexVCenter gap={1}>
+              <MdOfflineBolt />
+              <Typography>High impact voted</Typography>
+            </FlexVCenter>
+          </MenuItem>
         </Link>
 
         {/* <Link href={urls.pages.ideaHighlights} passHref>

@@ -4,14 +4,14 @@ import queryKeys from "@/utils/queryKeys"
 import urls from "@/utils/urls"
 import { useQuery } from "react-query"
 
-const useAssignedToMeQuery = () => {
+const useHighImpactVotedByMeQuery = () => {
   const axios = useAxios()
-  const query = useQuery(queryKeys.assignedToMeIdeas, async () =>
+  const query = useQuery(queryKeys.highImpactVotedByMe, async () =>
     axios
-      .get<AssignedToMeDto[]>(urls.api.ideasAssignedToMe)
+      .get<AssignedToMeDto[]>(urls.api.highImpactVotedByMe)
       .then((res) => res.data)
   )
   return query
 }
 
-export default useAssignedToMeQuery
+export default useHighImpactVotedByMeQuery

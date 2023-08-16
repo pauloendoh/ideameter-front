@@ -6,6 +6,7 @@ export interface AssignedToMeDto {
     name: string
     isDone: boolean
     completedAt: string | null
+    createdAt: string
     highImpactVotes: HighImpactVoteDto[]
   }
   group: {
