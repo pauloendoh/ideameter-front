@@ -1,4 +1,5 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import MyTextField from "@/components/_common/inputs/MyTextField"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, Grid } from "@mui/material"
@@ -37,6 +38,26 @@ const IdeaDialogRightCol = (props: Props) => {
         <TabSelector
           valueTabId={props.watch("tabId")}
           onChange={(tabId) => props.setValue("tabId", tabId)}
+        />
+
+        <Box />
+
+        <MyTextField
+          type="number"
+          label="Complexity"
+          value={props.watch("complexity")}
+          onChange={(e) => {
+            const num = Number(e.target.value)
+            const max = 5
+            const min = 1
+            if (num > max) {
+              e.target.value = max.toString()
+            } else if (num < min) {
+              e.target.value = min.toString()
+            }
+
+            props.setValue("complexity", Number(e.target.value))
+          }}
         />
 
         <Box />

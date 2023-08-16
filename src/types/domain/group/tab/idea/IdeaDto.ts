@@ -21,6 +21,7 @@ export default interface IdeaDto {
   onFireSince: string | null
   irrelevantSince: string | null
   ratingsAreEnabled: boolean
+  complexity: number
 
   labels: LabelDto[]
   assignedUsers: SimpleUserDto[]
@@ -44,6 +45,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   onFireSince: new Date().toISOString(),
   irrelevantSince: null,
   ratingsAreEnabled: true,
+  complexity: 1,
 
   labels: [],
   assignedUsers: [],
