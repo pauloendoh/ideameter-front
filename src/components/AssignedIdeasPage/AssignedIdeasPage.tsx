@@ -1,5 +1,5 @@
 import { Container } from "@mui/material"
-import FlexCenter from "../_common/flexboxes/FlexCenter"
+import FlexCol from "../_common/flexboxes/FlexCol"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import AssignedToMeTable from "./AssignedToMeTable/AssignedToMeTable"
 import CompletedByMeChart from "./CompletedByMeChart/CompletedByMeChart"
@@ -28,9 +28,9 @@ const AssignedIdeasPage = () => {
       <Container sx={{ mt: 4, alignItems: "center", justifyContent: "center" }}>
         <AssignedToMeTable />
 
-        <FlexCenter mt={6}>
+        <FlexCol mt={6}>
           <CompletedByMeChart />
-        </FlexCenter>
+        </FlexCol>
       </Container>
     </HomeLayout>
   )

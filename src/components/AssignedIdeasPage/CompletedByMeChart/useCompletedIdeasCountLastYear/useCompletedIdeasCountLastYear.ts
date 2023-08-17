@@ -7,7 +7,9 @@ type IdeaCount = {
   count: number
 }
 
-export const useCompletedIdeasCountLastYear = () => {
+export const useCompletedIdeasCountLastYear = (
+  type: "count" | "complexity" = "count"
+) => {
   const { data: ideas } = useAssignedToMeQuery()
 
   const completedIdeas = useMemo(
@@ -37,12 +39,17 @@ export const useCompletedIdeasCountLastYear = () => {
       })
 
       ideaCountMonth.count = ideasFromMonth.length
+      if (type === "complexity") {
+        ideaCountMonth.count = ideasFromMonth.reduce((acc, curr) => {
+          return acc + curr.idea.complexity
+        }, 0)
+      }
 
       ideaCountPerMonth.push(ideaCountMonth)
     }
 
     return ideaCountPerMonth
-  }, [completedIdeas])
+  }, [completedIdeas, type])
 
   return ideasCountLast12Months
 }

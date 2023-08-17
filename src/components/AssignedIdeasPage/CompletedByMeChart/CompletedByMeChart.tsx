@@ -1,4 +1,13 @@
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import {
+  Box,
+  MenuItem,
+  Select,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
+import { useState } from "react"
 import {
   Bar,
   BarChart,
@@ -10,24 +19,39 @@ import {
 } from "recharts"
 import { useCompletedIdeasCountLastYear } from "./useCompletedIdeasCountLastYear/useCompletedIdeasCountLastYear"
 
-type Props = {}
-
-const CompletedByMeChart = (props: Props) => {
-  const completedIdeasCountLastYear = useCompletedIdeasCountLastYear()
-
+const CompletedByMeChart = () => {
   const isLargeScreen = useMediaQuery("(min-width:600px)")
 
   const theme = useTheme()
 
+  const [selectedType, setSelectedType] = useState<"count" | "complexity">(
+    "complexity"
+  )
+
+  const completedIdeasCountLastYear =
+    useCompletedIdeasCountLastYear(selectedType)
+
   return (
-    <Box
-      height={400}
-      display="flex"
-      flexDirection={"column"}
-      alignItems="center"
-    >
-      <Typography variant="h5">Completed ideas assigned to you</Typography>
+    <Box height={400} display="flex" flexDirection={"column"}>
+      <FlexVCenter justifyContent={"space-between"}>
+        <Typography variant="h5">Completed ideas assigned to you</Typography>
+        <Select
+          size="small"
+          sx={{
+            width: 160,
+          }}
+          value={selectedType}
+          onChange={(e) => {
+            console.log(e.target.value)
+            setSelectedType(e.target.value as "count" | "complexity")
+          }}
+        >
+          <MenuItem value={"complexity"}>Complexity</MenuItem>
+          <MenuItem value={"count"}>Count</MenuItem>
+        </Select>
+      </FlexVCenter>
       <BarChart
+        key={selectedType}
         height={300}
         data={completedIdeasCountLastYear}
         width={isLargeScreen ? 780 : 480}
@@ -43,7 +67,14 @@ const CompletedByMeChart = (props: Props) => {
         <YAxis />
         <Tooltip />
 
-        <Bar dataKey="count" fill={theme.palette.secondary.main}>
+        <Bar
+          dataKey="count"
+          fill={
+            selectedType === "count"
+              ? theme.palette.primary.main
+              : theme.palette.secondary.main
+          }
+        >
           <LabelList
             dataKey="count"
             position="inside"

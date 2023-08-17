@@ -8,6 +8,7 @@ export interface AssignedToMeDto {
     completedAt: string | null
     createdAt: string
     highImpactVotes: HighImpactVoteDto[]
+    complexity: number
   }
   group: {
     groupId: string
