@@ -1,6 +1,5 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import {
-  Box,
   MenuItem,
   Select,
   Typography,
@@ -32,8 +31,8 @@ const CompletedByMeChart = () => {
     useCompletedIdeasCountLastYear(selectedType)
 
   return (
-    <Box height={400} display="flex" flexDirection={"column"}>
-      <FlexVCenter justifyContent={"space-between"}>
+    <FlexCol height={400} alignItems={"center"}>
+      <FlexCol alignItems={"center"} gap={1}>
         <Typography variant="h5">Completed ideas assigned to you</Typography>
         <Select
           size="small"
@@ -49,7 +48,8 @@ const CompletedByMeChart = () => {
           <MenuItem value={"complexity"}>Complexity</MenuItem>
           <MenuItem value={"count"}>Count</MenuItem>
         </Select>
-      </FlexVCenter>
+      </FlexCol>
+
       <BarChart
         key={selectedType}
         height={300}
@@ -83,7 +83,7 @@ const CompletedByMeChart = () => {
           />
         </Bar>
       </BarChart>
-    </Box>
+    </FlexCol>
   )
 }
 
