@@ -24,7 +24,7 @@ const CompletedByMeChart = () => {
   const theme = useTheme()
 
   const [selectedType, setSelectedType] = useState<"count" | "complexity">(
-    "complexity"
+    "count"
   )
 
   const completedIdeasCountLastYear =
