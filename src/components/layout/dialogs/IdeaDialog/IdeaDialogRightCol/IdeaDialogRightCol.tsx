@@ -49,7 +49,7 @@ const IdeaDialogRightCol = (props: Props) => {
           onChange={(e) => {
             const num = Number(e.target.value)
             const max = 5
-            const min = 1
+            const min = 0
             if (num > max) {
               e.target.value = max.toString()
             } else if (num < min) {
