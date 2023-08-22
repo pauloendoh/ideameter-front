@@ -3,7 +3,7 @@ import { DateTime } from "luxon"
 import { useMemo } from "react"
 
 type IdeaCount = {
-  LLLyy: string
+  key: string
   count: number
 }
 
@@ -27,7 +27,7 @@ export const useCompletedIdeasCountLastYear = (
     const ideaCountPerMonth = []
     for (const month of months) {
       const ideaCountMonth: IdeaCount = {
-        LLLyy: month.toFormat("LLL/yy"),
+        key: month.toFormat("LLL/yy"),
         count: 0,
       }
 
