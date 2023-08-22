@@ -91,7 +91,7 @@ const HighImpactVotedTable = (props: Props) => {
             <AssignedIdeasTableBody
               ideas={sortedIdeas}
               showCompleted={showCompleted}
-              showCreatedAt
+              showVotedAt
             />
           </Table>
         </TableContainer>

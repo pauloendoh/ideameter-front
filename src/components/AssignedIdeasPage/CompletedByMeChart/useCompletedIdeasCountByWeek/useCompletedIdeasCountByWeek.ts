@@ -103,8 +103,6 @@ export const useCompletedIdeasCountByWeek = (
       result.push(ideaCount)
     }
 
-    console.log(result)
-
     return result
   }, [completedIdeas, type])
 

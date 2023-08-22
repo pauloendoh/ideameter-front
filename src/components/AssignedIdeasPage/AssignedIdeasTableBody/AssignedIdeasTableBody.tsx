@@ -13,7 +13,7 @@ import S from "./AssignedIdeasTableBody.styles"
 type Props = {
   ideas: AssignedToMeDto[]
   showCompleted: boolean
-  showCreatedAt?: boolean
+  showVotedAt?: boolean
 }
 
 const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
@@ -24,6 +24,9 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
     <TableBody>
       {ideas.map(({ group, tab, idea }, index) => {
         const ideaUrl = urls.pages.groupTabIdea(group.groupId, tab.id, idea.id)
+        const myVote = idea.highImpactVotes.find(
+          (v) => v.userId === getUserId()
+        )
 
         return (
           <S.TableRow
@@ -54,7 +57,10 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
                       fontStyle: "italic",
                     }}
                   >
-                    Created {props.showCreatedAt && format(idea.createdAt)}
+                    Voted{" "}
+                    {props.showVotedAt &&
+                      myVote?.createdAt &&
+                      format(myVote.createdAt)}
                   </Typography>
                 </FlexVCenter>
               </FlexCol>
