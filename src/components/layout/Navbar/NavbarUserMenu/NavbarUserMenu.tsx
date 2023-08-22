@@ -119,12 +119,19 @@ const NavbarUserMenu = () => {
         </Link>
 
         <Link href="/high-impact-voted">
-          <MenuItem>
-            <FlexVCenter gap={1}>
-              <MdOfflineBolt />
-              <Typography>High impact voted</Typography>
-            </FlexVCenter>
-          </MenuItem>
+          <a
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <MenuItem>
+              <FlexVCenter gap={1}>
+                <MdOfflineBolt />
+                <Typography>High impact voted</Typography>
+              </FlexVCenter>
+            </MenuItem>
+          </a>
         </Link>
 
         {/* <Link href={urls.pages.ideaHighlights} passHref>
