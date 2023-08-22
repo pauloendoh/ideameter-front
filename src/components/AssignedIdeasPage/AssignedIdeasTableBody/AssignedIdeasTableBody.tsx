@@ -51,17 +51,16 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
                       (v) => v.userId === getUserId()
                     )}
                   />
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontStyle: "italic",
-                    }}
-                  >
-                    Voted{" "}
-                    {props.showVotedAt &&
-                      myVote?.createdAt &&
-                      format(myVote.createdAt)}
-                  </Typography>
+                  {props.showVotedAt && myVote?.createdAt && (
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontStyle: "italic",
+                      }}
+                    >
+                      Voted {format(myVote.createdAt)}
+                    </Typography>
+                  )}
                 </FlexVCenter>
               </FlexCol>
             </TableCell>

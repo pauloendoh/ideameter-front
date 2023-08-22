@@ -100,6 +100,7 @@ const AssignedToMeTable = (props: Props) => {
             <AssignedIdeasTableBody
               ideas={sortedIdeas}
               showCompleted={showCompleted}
+              showVotedAt={false}
             />
           </Table>
         </TableContainer>
