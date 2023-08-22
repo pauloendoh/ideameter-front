@@ -52,7 +52,9 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
 
   // show your vote first
   const sortedVotes = useMemo(() => {
-    return watch("highImpactVotes").sort((a, b) => (a.userId === authUser?.id ? -1 : 1))
+    return watch("highImpactVotes").sort((a, b) =>
+      a.userId === authUser?.id ? -1 : 1
+    )
   }, [watch("highImpactVotes")])
 
   const theme = useTheme()
@@ -66,7 +68,9 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
         }}
       >
         <MdOfflineBolt />
-        <Typography>{watch("highImpactVotes").length} voted as high impact</Typography>
+        <Typography>
+          {watch("highImpactVotes").length} voted as high impact
+        </Typography>
         <Tooltip title={"Members who feel this idea will be highly impactful"}>
           <div>
             <FaQuestionCircle

@@ -4,6 +4,7 @@ import AssignedIdeasTableHead, {
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHighImpactVotedByMeQuery"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
   FormControlLabel,
   Paper,
@@ -45,6 +46,8 @@ const HighImpactVotedTable = (props: Props) => {
 
   const [showCompleted, setShowCompleted] = useState(false)
 
+  const { getUserId } = useAuthStore()
+
   const sortedIdeas = useMemo(() => {
     if (!data) {
       return []
@@ -55,11 +58,19 @@ const HighImpactVotedTable = (props: Props) => {
       : data.filter((i) => !i.idea.isDone)
 
     // sort ideas by createdAt desc
-    ideas = ideas.sort(
-      (a, b) =>
-        new Date(b.idea.createdAt).getTime() -
-        new Date(a.idea.createdAt).getTime()
-    )
+    ideas = ideas.sort((a, b) => {
+      const myVoteACreatedAt =
+        a.idea.highImpactVotes.find((v) => v.userId === getUserId())
+          ?.createdAt || ""
+      const myVoteBCreatedAt =
+        b.idea.highImpactVotes.find((v) => v.userId === getUserId())
+          ?.createdAt || ""
+
+      return (
+        new Date(myVoteBCreatedAt).getTime() -
+        new Date(myVoteACreatedAt).getTime()
+      )
+    })
 
     return ideas
   }, [data, showCompleted])

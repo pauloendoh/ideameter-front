@@ -1,4 +1,5 @@
 export interface HighImpactVoteDto {
-  userId: string;
-  ideaId: string;
+  userId: string
+  ideaId: string
+  createdAt?: string
 }
