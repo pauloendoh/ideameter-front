@@ -19,6 +19,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
+import { useCompletedIdeasCountByDay } from "./useCompletedIdeasCountByDay/useCompletedIdeasCountByDay"
 import { useCompletedIdeasCountByWeek } from "./useCompletedIdeasCountByWeek/useCompletedIdeasCountByWeek"
 import { useCompletedIdeasCountLastYear } from "./useCompletedIdeasCountLastYear/useCompletedIdeasCountLastYear"
 
@@ -30,19 +31,22 @@ const CompletedByMeChart = () => {
   const [selectedType, setSelectedType] = useState<"count" | "complexity">(
     "count"
   )
-  const [range, setRange] = useState<"month" | "week">("week")
+  const [range, setRange] = useState<"month" | "week" | "day">("day")
 
   const completedIdeasCountLastYear =
     useCompletedIdeasCountLastYear(selectedType)
 
   const completedIdeasByWeek = useCompletedIdeasCountByWeek(selectedType)
+  const completedIdeasCountByDay = useCompletedIdeasCountByDay(selectedType)
 
   const finalData = useMemo(() => {
+    if (range === "day") {
+      return completedIdeasCountByDay
+    }
     if (range === "week") {
       return completedIdeasByWeek
-    } else {
-      return completedIdeasCountLastYear
     }
+    return completedIdeasCountLastYear
   }, [range, completedIdeasByWeek, completedIdeasCountLastYear])
 
   return (
@@ -87,6 +91,7 @@ const CompletedByMeChart = () => {
             >
               <MenuItem value={"week"}>Week</MenuItem>
               <MenuItem value={"month"}>Month</MenuItem>
+              <MenuItem value={"day"}>Day</MenuItem>
             </Select>
           </FormControl>
         </FlexVCenter>
