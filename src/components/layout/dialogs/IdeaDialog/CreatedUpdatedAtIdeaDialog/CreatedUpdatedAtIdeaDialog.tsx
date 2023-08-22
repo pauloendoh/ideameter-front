@@ -1,4 +1,5 @@
 import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useIdeaChangesQuery from "@/hooks/react-query/domain/idea-change/useIdeaChangesQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
@@ -41,32 +42,43 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
 
   return (
     <FlexVCenter gap={1}>
-      <UserGroupAvatar
-        groupId={groupId}
-        userId={imageUserId}
-        widthAndHeight={24}
-      />
       <Tooltip title={new Date(date).toLocaleString()}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          {ideaChanges && ideaChanges.length > 0 ? (
-            <Typography
-              sx={(theme) => ({
-                cursor: "pointer",
-                textDecoration: "underline",
-              })}
-              onClick={() =>
-                openIdeaChangesDialog({
-                  ideaId: props.ideaId,
-                  ideaTitle: props.ideaTitle,
-                })
-              }
-            >
-              Updated {format(date)}
-            </Typography>
-          ) : (
-            <Typography>Created {format(props.createdAt)}</Typography>
+        <FlexCol gap={1}>
+          {ideaChanges && ideaChanges.length > 0 && (
+            <FlexVCenter gap={0.5}>
+              <UserGroupAvatar
+                groupId={groupId}
+                userId={imageUserId}
+                widthAndHeight={24}
+              />
+
+              <Typography
+                sx={(theme) => ({
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                })}
+                onClick={() =>
+                  openIdeaChangesDialog({
+                    ideaId: props.ideaId,
+                    ideaTitle: props.ideaTitle,
+                  })
+                }
+              >
+                Updated {format(date)}
+              </Typography>
+            </FlexVCenter>
           )}
-        </div>
+
+          <FlexVCenter gap={0.5}>
+            <UserGroupAvatar
+              groupId={groupId}
+              userId={props.creatorId}
+              widthAndHeight={24}
+            />
+
+            <Typography>Created {format(props.createdAt)}</Typography>
+          </FlexVCenter>
+        </FlexCol>
       </Tooltip>
     </FlexVCenter>
   )
