@@ -45,7 +45,7 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
       <Tooltip title={new Date(date).toLocaleString()}>
         <FlexCol gap={1}>
           {ideaChanges && ideaChanges.length > 0 && (
-            <FlexVCenter gap={0.5}>
+            <FlexVCenter gap={1}>
               <UserGroupAvatar
                 groupId={groupId}
                 userId={imageUserId}
@@ -53,9 +53,11 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
               />
 
               <Typography
-                sx={(theme) => ({
+                sx={() => ({
                   cursor: "pointer",
-                  textDecoration: "underline",
+                  ":hover": {
+                    textDecoration: "underline",
+                  },
                 })}
                 onClick={() =>
                   openIdeaChangesDialog({
@@ -69,7 +71,7 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
             </FlexVCenter>
           )}
 
-          <FlexVCenter gap={0.5}>
+          <FlexVCenter gap={1}>
             <UserGroupAvatar
               groupId={groupId}
               userId={props.creatorId}
