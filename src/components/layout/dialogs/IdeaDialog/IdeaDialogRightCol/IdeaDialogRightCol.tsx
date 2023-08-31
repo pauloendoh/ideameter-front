@@ -55,8 +55,10 @@ const IdeaDialogRightCol = (props: Props) => {
             } else if (num < min) {
               e.target.value = min.toString()
             }
-
             props.setValue("complexity", Number(e.target.value))
+          }}
+          inputProps={{
+            step: 0.1,
           }}
         />
 
