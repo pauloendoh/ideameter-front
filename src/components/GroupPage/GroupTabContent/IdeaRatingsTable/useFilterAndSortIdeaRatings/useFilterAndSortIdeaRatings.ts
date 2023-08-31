@@ -135,6 +135,19 @@ export const useFilterAndSortIdeaRatings = ({
         b.idea.updatedAt.localeCompare(a.idea.updatedAt)
       )
 
+    if (sortingBy.attribute === "highVotedAt") {
+      result = result.sort((a, b) => {
+        const myVoteA =
+          a.idea.highImpactVotes?.find((v) => v.userId === authUserId)
+            ?.createdAt || ""
+        const myVoteB =
+          b.idea.highImpactVotes?.find((v) => v.userId === authUserId)
+            ?.createdAt || ""
+
+        return myVoteB.localeCompare(myVoteA)
+      })
+    }
+
     if (sortingBy.attribute === "avgRating") {
       result = sortByAvgRatingDesc(result)
     }

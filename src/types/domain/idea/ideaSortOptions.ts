@@ -40,6 +40,11 @@ export const ideaSortOptionsDivided: {
       buttonLabel: "by Completed Date",
       menuText: "Completed Date",
     },
+    {
+      attribute: "highVotedAt",
+      buttonLabel: "by High Voted Date",
+      menuText: "High Voted Date",
+    },
   ],
   [
     {
