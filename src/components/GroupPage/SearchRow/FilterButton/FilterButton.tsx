@@ -200,13 +200,17 @@ const FilterButton = (props: Props) => {
         <FlexCol px={1} mt={1} gap={1}>
           <LabelsSelector
             selectedLabelIds={filter.labelIds}
-            onChange={setFilterLabelIds}
+            onChange={(labelsIds) =>
+              setFilterLabelIds(labelsIds, routerQuery.tabId)
+            }
             inputLabel="Include labels"
           />
 
           <LabelsSelector
             selectedLabelIds={filter.excludeLabelIds}
-            onChange={setFilterOutLabelIds}
+            onChange={(labelsIds) =>
+              setFilterOutLabelIds(labelsIds, routerQuery.tabId)
+            }
             inputLabel="Exclude labels"
           />
         </FlexCol>

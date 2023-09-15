@@ -22,7 +22,8 @@ export const useToggleFilterMeHotkey = () => {
         )
         if (authUserMember) {
           changeFilterUsers(
-            pushOrRemove(filter.users, authUserMember.user!, "id")
+            pushOrRemove(filter.users, authUserMember.user!, "id"),
+            tabId
           )
         }
       }
