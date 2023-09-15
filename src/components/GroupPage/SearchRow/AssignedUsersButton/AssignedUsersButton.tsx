@@ -15,10 +15,7 @@ interface Props {
 const AssignedUsersButton = (props: Props) => {
   const openAssignModal = useIdeaAssignmentStore((s) => s.openDialog)
   const { groupId, tabId } = useRouterQueryString()
-  const [filter, changeUserIds] = useGroupFilterStore((s) => [
-    s.filter,
-    s.changeFilterUsers,
-  ])
+  const { filter, changeFilterUsers } = useGroupFilterStore()
 
   useToggleFilterMeHotkey()
   const theme = useTheme()
@@ -36,7 +33,7 @@ const AssignedUsersButton = (props: Props) => {
       endIcon={<CgChevronDown />}
       onClick={() => {
         openAssignModal(filter.users, (newValue) =>
-          changeUserIds(newValue, tabId)
+          changeFilterUsers(newValue, tabId)
         )
       }}
     >

@@ -1,3 +1,4 @@
+import { ISortOption } from "@/types/domain/idea/IdeaSortingTypes"
 import SimpleUserDto from "@/types/domain/user/SimpleUserDto"
 import { cookieKeys } from "@/utils/cookieKeys"
 import nookies from "nookies"
@@ -31,7 +32,10 @@ export interface IStore {
   toggleRequiresYourRating: (tabId?: string) => void
   setMinRatingCount: (count: number, tabId?: string) => void
   setMinAvgRating: (value: number, tabId?: string) => void
-  setVotedHighImpactBy: (userId: string | null) => void
+  setVotedHighImpactBy: (userId: string | null, tabId: string) => void
+
+  sortingBy: ISortOption
+  setSortingBy: (sortingBy: ISortOption, tabId: string) => void
 }
 
 const useGroupFilterStore = create<IStore>((set, get) => ({
@@ -212,6 +216,7 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
     }))
 
     if (tabId) {
+      // PE 1/3 - DRY
       const state = get()
       nookies.set(
         null,
@@ -221,13 +226,34 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
     }
   },
 
-  setVotedHighImpactBy(userId) {
+  setVotedHighImpactBy(userId, tabId) {
     set((curr) => ({
       filter: {
         ...curr.filter,
         votedHighImpactBy: userId,
       },
     }))
+
+    const state = get()
+    nookies.set(
+      null,
+      cookieKeys.groupTabIdeasFilter(tabId),
+      JSON.stringify(state)
+    )
+  },
+
+  sortingBy: {
+    attribute: "avgRating",
+    order: "desc",
+  },
+  setSortingBy: (sortingBy, tabId) => {
+    set({ sortingBy })
+    const state = get()
+    nookies.set(
+      null,
+      cookieKeys.groupTabIdeasFilter(tabId),
+      JSON.stringify(state)
+    )
   },
 }))
 

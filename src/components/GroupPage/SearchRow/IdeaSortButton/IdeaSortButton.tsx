@@ -1,6 +1,6 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
+import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import useIdeaSortStore from "@/hooks/zustand/domain/group/useIdeaSortStore"
 import {
   findSortOptionByAttribute,
   ideaSortOptionsDivided,
@@ -27,7 +27,7 @@ const IdeaSortButton = (props: Props) => {
     setAnchorEl(null)
   }
 
-  const [sortingBy, setSortingBy] = useIdeaSortStore((s) => [
+  const [sortingBy, setSortingBy] = useGroupFilterStore((s) => [
     s.sortingBy,
     s.setSortingBy,
   ])
@@ -38,14 +38,16 @@ const IdeaSortButton = (props: Props) => {
 
   const previousSortingByRef = useRef(sortingBy)
 
+  const { tabId } = useRouterQueryString()
+
   useEffect(() => {
     if (filter.onlyCompletedIdeas) {
       previousSortingByRef.current = sortingBy
-      setSortingBy({ attribute: "completedAt", order: "desc" })
+      setSortingBy({ attribute: "completedAt", order: "desc" }, tabId)
       return
     }
 
-    setSortingBy(previousSortingByRef.current)
+    setSortingBy(previousSortingByRef.current, tabId)
   }, [filter.onlyCompletedIdeas])
 
   const theme = useTheme()
@@ -99,7 +101,10 @@ const IdeaSortButton = (props: Props) => {
                 key={option.attribute}
                 selected={sortingBy.attribute === option.attribute}
                 onClick={() => {
-                  setSortingBy({ attribute: option.attribute, order: "desc" })
+                  setSortingBy(
+                    { attribute: option.attribute, order: "desc" },
+                    tabId
+                  )
                   handleClose()
                 }}
               >

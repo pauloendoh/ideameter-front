@@ -189,7 +189,7 @@ const FilterButton = (props: Props) => {
         <FlexCol px={1} my={1} gap={1}>
           <VotedHighImpactSelector
             onChange={(value) => {
-              setVotedHighImpactBy(value)
+              setVotedHighImpactBy(value, routerQuery.tabId!)
             }}
             selectedUserId={filter.votedHighImpactBy}
           />

@@ -25,7 +25,6 @@ const useTransformToSubideaMutation = () => {
         .then((res) => res.data),
     {
       onSuccess: (parentIdea) => {
-        debugger
         setSuccessMessage("Transformed to subidea!")
 
         if (groupId && parentIdea.tabId) {

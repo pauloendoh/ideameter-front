@@ -3,7 +3,6 @@ import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQuery
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import useIdeaSortStore from "@/hooks/zustand/domain/group/useIdeaSortStore"
 import {
   Box,
   Table,
@@ -44,9 +43,7 @@ const IdeaRatingsTable = ({ ...props }: Props) => {
     ratings
   )
 
-  const filter = useGroupFilterStore((s) => s.filter)
-
-  const sortingBy = useIdeaSortStore((s) => s.sortingBy)
+  const { filter, sortingBy } = useGroupFilterStore()
 
   const visibleIdeaRatings = useFilterAndSortIdeaRatings({
     ratings,
