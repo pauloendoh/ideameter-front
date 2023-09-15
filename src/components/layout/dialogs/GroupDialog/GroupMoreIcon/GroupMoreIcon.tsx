@@ -63,34 +63,34 @@ function GroupMoreIcon(props: Props) {
         }}
       >
         {props.canEdit && (
-          <>
-            <MenuItem
-              onClick={(e) => {
-                handleCloseMore()
-                openDialog(props.group)
-              }}
-            >
-              <ListItemIcon sx={{ width: 16 }}>
-                <MdEdit />
-              </ListItemIcon>
-              <Typography variant="inherit" noWrap>
-                Edit
-              </Typography>{" "}
-            </MenuItem>
-            <MenuItem
-              onClick={(e) => {
-                handleCloseMore()
-                openArchivedIdeasDialog()
-              }}
-            >
-              <ListItemIcon sx={{ width: 16 }}>
-                <MdArchive />
-              </ListItemIcon>
-              <Typography variant="inherit" noWrap>
-                Archived ideas
-              </Typography>{" "}
-            </MenuItem>
-          </>
+          <MenuItem
+            onClick={(e) => {
+              handleCloseMore()
+              openDialog(props.group)
+            }}
+          >
+            <ListItemIcon sx={{ width: 16 }}>
+              <MdEdit />
+            </ListItemIcon>
+            <Typography variant="inherit" noWrap>
+              Edit
+            </Typography>{" "}
+          </MenuItem>
+        )}
+        {props.canEdit && (
+          <MenuItem
+            onClick={(e) => {
+              handleCloseMore()
+              openArchivedIdeasDialog()
+            }}
+          >
+            <ListItemIcon sx={{ width: 16 }}>
+              <MdArchive />
+            </ListItemIcon>
+            <Typography variant="inherit" noWrap>
+              Archived ideas
+            </Typography>{" "}
+          </MenuItem>
         )}
 
         {props.showDelete && (
