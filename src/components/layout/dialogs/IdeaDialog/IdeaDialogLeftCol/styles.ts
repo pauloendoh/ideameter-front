@@ -48,6 +48,9 @@ export const styles = {
       p: {
         marginBottom: 0,
       },
+      img: {
+        maxHeight: 240,
+      },
     },
     ".ql-tooltip": {
       background: theme.palette.grey[900],
