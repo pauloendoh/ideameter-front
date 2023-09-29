@@ -49,7 +49,7 @@ export const styles = {
         marginBottom: 0,
       },
       img: {
-        maxHeight: 240,
+        maxHeight: 400,
       },
     },
     ".ql-tooltip": {
