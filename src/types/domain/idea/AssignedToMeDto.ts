@@ -1,15 +1,7 @@
-import { HighImpactVoteDto } from "../high-impact-votes/HighImpactVoteDto"
+import IdeaDto from "../group/tab/idea/IdeaDto"
 
 export interface AssignedToMeDto {
-  idea: {
-    id: string
-    name: string
-    isDone: boolean
-    completedAt: string | null
-    createdAt: string
-    highImpactVotes: HighImpactVoteDto[]
-    complexity: number
-  }
+  idea: IdeaDto
   group: {
     groupId: string
     name: string

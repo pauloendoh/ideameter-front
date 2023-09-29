@@ -26,10 +26,6 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const { data: groupRatings } = useRatingsQuery(groupId)
   const { data: tabIdeas } = useTabIdeasQuery({ groupId, tabId })
 
-  // const selectedLabelIds = useGroupFilterStore(
-  //   (state) => state.filter.labelIds
-  // );
-
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {
       if (!groupRatings) return null

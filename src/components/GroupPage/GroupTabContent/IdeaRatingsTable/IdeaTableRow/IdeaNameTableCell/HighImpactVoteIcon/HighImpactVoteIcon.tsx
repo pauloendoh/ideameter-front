@@ -3,11 +3,11 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import { Tooltip, Typography, useTheme } from "@mui/material"
-import { deleteFromArray } from "endoh-utils"
-import { useCallback, useMemo } from "react"
+import { Tooltip, Typography } from "@mui/material"
+import { useMemo } from "react"
 import UserGroupAvatar from "../../../UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import HighImpactVoteButton from "./HighImpactVoteButton/HighImpactVoteButton"
+import { useToggleHighImpactVote } from "./useToggleHighImpactVote/useToggleHighImpactVote"
 
 type Props = {
   ideaRating: IdeaRating
@@ -16,8 +16,6 @@ type Props = {
 
 // PE 1/3 - what's the difference with HighImpactVoteButton  ?
 const HighImpactVoteIcon = (props: Props) => {
-  const theme = useTheme()
-
   const authUser = useAuthStore((s) => s.authUser)
 
   const { mutate: submitSaveIdea } = useSaveIdeaMutation()
@@ -32,27 +30,9 @@ const HighImpactVoteIcon = (props: Props) => {
     [props.ideaRating.idea.highImpactVotes, authUser]
   )
 
-  const toggleHighImpactVote = useCallback(() => {
-    if (!authUser || !props.ideaRating.idea.highImpactVotes) return
-
-    const idea = { ...props.ideaRating.idea }
-
-    if (!youVotedHighImpact) {
-      idea.highImpactVotes = [
-        ...idea.highImpactVotes,
-        { ideaId: idea.id, userId: authUser.id },
-      ]
-      submitSaveIdea(idea)
-      return
-    }
-
-    idea.highImpactVotes = deleteFromArray(
-      idea.highImpactVotes,
-      (v) => v.userId === authUser.id
-    )
-    submitSaveIdea(idea)
-    return
-  }, [props.ideaRating.idea.highImpactVotes, authUser, youVotedHighImpact])
+  const toggleHighImpactVote = useToggleHighImpactVote({
+    idea: props.ideaRating.idea,
+  })
 
   return (
     <Tooltip
