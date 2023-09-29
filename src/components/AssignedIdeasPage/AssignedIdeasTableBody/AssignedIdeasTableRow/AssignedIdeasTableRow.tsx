@@ -9,6 +9,7 @@ import urls from "@/utils/urls"
 import { Box, Link, TableCell, Typography } from "@mui/material"
 
 import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
+import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHighImpactVotedByMeQuery"
 import NextLink from "next/link"
 import { format } from "timeago.js"
 import S from "../AssignedIdeasTableBody.styles"
@@ -33,10 +34,14 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
     (v) => v.userId === getUserId()
   )
 
-  const { refetch } = useAssignedToMeQuery()
+  const { refetch: refetchAssignedToMe } = useAssignedToMeQuery()
+  const { refetch: refetchHighImpactVotedByMe } = useHighImpactVotedByMeQuery()
   const toggleHighImpactVote = useToggleHighImpactVote({
     idea: props.assignment.idea,
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      refetchAssignedToMe()
+      refetchHighImpactVotedByMe()
+    },
   })
 
   return (
