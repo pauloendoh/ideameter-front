@@ -80,7 +80,7 @@ const SearchBar = () => {
       )
       .sort((a, b) => {
         // desc
-        return b.highImpactVotes.length - a.highImpactVotes.length
+        return a.highImpactVotes.length - b.highImpactVotes.length
       })
       .sort((a, b) => {
         if (a.isArchived && !b.isArchived) return 1
