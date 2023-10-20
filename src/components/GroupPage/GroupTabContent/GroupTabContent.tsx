@@ -64,7 +64,7 @@ const GroupTabContent = (props: Props) => {
               label={`Completed ideas`}
             />
           </FormGroup>
-          <FormGroup>
+          {/* <FormGroup>
             <FormControlLabel
               control={
                 <Switch
@@ -74,7 +74,7 @@ const GroupTabContent = (props: Props) => {
               }
               label={`Auto-scroll`}
             />
-          </FormGroup>
+          </FormGroup> */}
         </FlexVCenter>
       </FlexVCenter>
     </FlexCol>
