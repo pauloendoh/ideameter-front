@@ -1,6 +1,5 @@
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
 import { Avatar, Tooltip } from "@mui/material"
-import Image from "next/image"
 import React, { useMemo } from "react"
 
 interface Props {
@@ -39,14 +38,14 @@ const UserGroupAvatar = (props: Props) => {
           />
         )}
         {user?.profile?.pictureUrl ? (
-          <Image
+          <img
             src={user.profile.pictureUrl}
             alt={user.username}
             width={props.widthAndHeight || 40}
             height={props.widthAndHeight || 40}
-            objectFit="cover"
             style={{
               borderRadius: "50%",
+              objectFit: "cover",
             }}
           />
         ) : (

@@ -4,7 +4,6 @@ import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import { newGroupDto } from "@/types/domain/group/GroupDto"
 import urls from "@/utils/urls"
 import { Avatar, IconButton, Toolbar, Tooltip } from "@mui/material"
-import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useMemo } from "react"
@@ -52,7 +51,7 @@ const Sidebar = () => {
                 <div>
                   {query.groupId === group.id && <S.SelectedGroupLittleBar />}
                   {group.imageUrl ? (
-                    <Image
+                    <img
                       src={group.imageUrl}
                       width={size}
                       height={size}
