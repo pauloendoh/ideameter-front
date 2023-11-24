@@ -89,8 +89,8 @@ const CompletedByMeChart = () => {
               }}
               label="Range"
             >
-              <MenuItem value={"week"}>Week</MenuItem>
               <MenuItem value={"month"}>Month</MenuItem>
+              <MenuItem value={"week"}>Week</MenuItem>
               <MenuItem value={"day"}>Day</MenuItem>
             </Select>
           </FormControl>
