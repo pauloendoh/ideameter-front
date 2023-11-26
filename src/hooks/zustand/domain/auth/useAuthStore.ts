@@ -1,3 +1,4 @@
+import { cookieKeys } from "@/utils/cookieKeys"
 import nookies from "nookies"
 import AuthUserGetDto from "types/domain/auth/AuthUserGetDto"
 import create, { GetState } from "zustand"
@@ -16,7 +17,7 @@ const useAuthStore = create<IAuthStore>(
     setAuthUser: (authUser) => {
       const expiresAt = new Date(authUser.expiresAt)
 
-      nookies.set(null, "user", JSON.stringify(authUser), {
+      nookies.set(null, cookieKeys.user, JSON.stringify(authUser), {
         secure: true,
 
         path: "/",
@@ -38,7 +39,7 @@ const useAuthStore = create<IAuthStore>(
 )
 const initialState = useAuthStore.getState()
 export const resetAuthStore = () => {
-  nookies.destroy(null, "user")
+  nookies.destroy(null, cookieKeys.user)
   useAuthStore.setState(initialState, true)
 }
 

@@ -1,12 +1,13 @@
 import axios from "axios"
 import nookies from "nookies"
+import { cookieKeys } from "../cookieKeys"
 import urls from "../urls"
 
 const myAxios = axios.create()
 myAxios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
 myAxios.interceptors.request.use((config) => {
-  const userStr = nookies.get(null).user
+  const userStr = nookies.get(null)[cookieKeys.user]
 
   if (userStr && config.headers)
     config.headers["x-auth-token"] = JSON.parse(userStr).token
@@ -19,7 +20,8 @@ myAxios.interceptors.response.use(
   },
   (error) => {
     // unauthenticated -> go to "/"
-    if (error?.response?.status === 401 && window) window.location.href = urls.pages.index
+    if (error?.response?.status === 401 && window)
+      window.location.href = urls.pages.index
     return Promise.reject(error)
   }
 )

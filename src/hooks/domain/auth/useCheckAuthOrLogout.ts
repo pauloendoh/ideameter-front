@@ -1,6 +1,7 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import AuthUserGetDto from "@/types/domain/auth/AuthUserGetDto"
 import myAxios from "@/utils/axios/myAxios"
+import { cookieKeys } from "@/utils/cookieKeys"
 import urls from "@/utils/urls"
 import nookies from "nookies"
 import { useState } from "react"
@@ -14,7 +15,7 @@ const useCheckAuthOrLogout = () => {
   const { setAuthUser } = useAuthStore()
 
   const checkAuthOrLogout = () => {
-    const userCookieStr = nookies.get(null).user
+    const userCookieStr = nookies.get(null)[cookieKeys.user]
 
     if (!userCookieStr) {
       logoutAndPushIndex()

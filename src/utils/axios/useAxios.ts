@@ -3,6 +3,7 @@ import nookies from "nookies"
 
 import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import axios from "axios"
+import { cookieKeys } from "../cookieKeys"
 import urls from "../urls"
 
 export const useAxios = (showErrorMessage = true) => {
@@ -12,7 +13,7 @@ export const useAxios = (showErrorMessage = true) => {
   const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage)
 
   localAxios.interceptors.request.use(async (config) => {
-    const userStr = nookies.get(null).user
+    const userStr = nookies.get(null)[cookieKeys.user]
 
     if (userStr && config.headers)
       config.headers["x-auth-token"] = JSON.parse(userStr).token
