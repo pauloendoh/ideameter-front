@@ -4,7 +4,7 @@ import { NotificationDto } from "@/types/domain/notification/NotificationDto"
 import urls from "@/utils/urls"
 import { Avatar, Box, MenuItem, Typography, useTheme } from "@mui/material"
 import Link from "next/link"
-import { GoPrimitiveDot } from "react-icons/go"
+import { GoDot as GoPrimitiveDot } from "react-icons/go"
 import { format as formatTimeago } from "timeago.js"
 
 interface Props {
@@ -13,14 +13,17 @@ interface Props {
 }
 
 const IdeaMentionNotificationItem = ({ notification, onClick }: Props) => {
-  const groupName = notification.ideaDescriptionMention?.idea?.tab?.group?.name || ""
+  const groupName =
+    notification.ideaDescriptionMention?.idea?.tab?.group?.name || ""
 
   const mentionByPictureUrl =
     notification.ideaDescriptionMention?.mentionBy.profile?.pictureUrl || ""
 
-  const mentionByUsername = notification.ideaDescriptionMention?.mentionBy.username || ""
+  const mentionByUsername =
+    notification.ideaDescriptionMention?.mentionBy.username || ""
 
-  const groupId = notification.ideaDescriptionMention?.idea?.tab?.group?.id || ""
+  const groupId =
+    notification.ideaDescriptionMention?.idea?.tab?.group?.id || ""
   const tabId = notification.ideaDescriptionMention?.idea?.tabId || ""
   const ideaId = notification.ideaDescriptionMention?.idea?.id || ""
 

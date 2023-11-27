@@ -31,7 +31,7 @@ const CompletedByMeChart = () => {
   const [selectedType, setSelectedType] = useState<"count" | "complexity">(
     "count"
   )
-  const [range, setRange] = useState<"month" | "week" | "day">("day")
+  const [range, setRange] = useState<"month" | "week" | "day">("month")
 
   const completedIdeasCountLastYear =
     useCompletedIdeasCountLastYear(selectedType)
