@@ -1,3 +1,5 @@
+import { PiFireSimple } from "react-icons/pi"
+
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogoutAndPushIndex"
 import useEditProfileDialogStore from "@/hooks/zustand/dialogs/useEditProfileDialogStore"
@@ -129,6 +131,22 @@ const NavbarUserMenu = () => {
               <FlexVCenter gap={1}>
                 <MdOfflineBolt />
                 <Typography>High impact voted</Typography>
+              </FlexVCenter>
+            </MenuItem>
+          </a>
+        </Link>
+
+        <Link href="/highly-rated-ideas">
+          <a
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <MenuItem>
+              <FlexVCenter gap={1}>
+                <PiFireSimple />
+                <Typography>Highly rated ideas</Typography>
               </FlexVCenter>
             </MenuItem>
           </a>
