@@ -67,8 +67,8 @@ const HighImpactVotedTable = (props: Props) => {
           ?.createdAt || ""
 
       return (
-        new Date(myVoteBCreatedAt).getTime() -
-        new Date(myVoteACreatedAt).getTime()
+        new Date(myVoteACreatedAt).getTime() -
+        new Date(myVoteBCreatedAt).getTime()
       )
     })
 
