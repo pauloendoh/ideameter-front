@@ -1,4 +1,5 @@
 import IdeaDto from "../group/tab/idea/IdeaDto"
+import RatingDto from "../group/tab/idea/rating/RatingDto"
 
 export interface AssignedToMeDto {
   idea: IdeaDto
@@ -10,4 +11,5 @@ export interface AssignedToMeDto {
     id: string
     name: string
   }
+  myRating: RatingDto
 }
