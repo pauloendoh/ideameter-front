@@ -76,7 +76,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     <Paper sx={{ mt: 2, background: "#2B2B2B" }}>
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
         <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-          Highly rated ideas (oldest first)
+          Highly rated ideas (oldest high rates first)
         </Typography>
         <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader>

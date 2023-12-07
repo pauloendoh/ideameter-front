@@ -83,7 +83,7 @@ const HighImpactVotedTable = (props: Props) => {
     <Paper sx={{ mt: 2, background: "#2B2B2B" }}>
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
         <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-          High impact voted
+          High impact voted (oldest high votest first)
         </Typography>
         <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader>
