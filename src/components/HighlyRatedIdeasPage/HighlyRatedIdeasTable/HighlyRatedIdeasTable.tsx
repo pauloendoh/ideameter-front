@@ -57,6 +57,14 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
 
+    ideas = ideas.sort((a, b) => {
+      const myRatingA = a.myRating
+      const myRatingB = b.myRating
+
+      // sort by updated asc
+      return myRatingA.updatedAt > myRatingB.updatedAt ? 1 : -1
+    })
+
     return ideas
   }, [data, showCompleted])
 
