@@ -12,4 +12,5 @@ export interface AssignedToMeDto {
     name: string
   }
   myRating: RatingDto
+  iAmAssigned: true
 }

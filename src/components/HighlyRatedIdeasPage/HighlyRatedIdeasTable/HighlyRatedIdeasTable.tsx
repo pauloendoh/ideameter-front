@@ -4,7 +4,6 @@ import AssignedIdeasTableHead, {
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
   FormControlLabel,
   Paper,
@@ -45,8 +44,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
   const [showCompleted, setShowCompleted] = useState(false)
-
-  const { getUserId } = useAuthStore()
+  const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
 
   const sortedIdeas = useMemo(() => {
     if (!data) {
@@ -57,6 +55,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
 
+    if (showAssignedToMeIdeas) {
+      ideas = ideas.filter((i) => i.iAmAssigned)
+    }
+
     ideas = ideas.sort((a, b) => {
       const myRatingA = a.myRating
       const myRatingB = b.myRating
@@ -66,7 +68,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     })
 
     return ideas
-  }, [data, showCompleted])
+  }, [data, showAssignedToMeIdeas, showCompleted])
 
   if (!isSuccess) {
     return null
@@ -96,16 +98,31 @@ const HighlyRatedIdeasTable = (props: Props) => {
             p: 1,
           }}
         >
-          <FormControlLabel
-            control={
-              <Switch
-                defaultChecked={showCompleted}
-                checked={showCompleted}
-                onClick={() => setShowCompleted(!showCompleted)}
-              />
-            }
-            label={`Completed ideas`}
-          />
+          <FlexVCenter gap={2}>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={showAssignedToMeIdeas}
+                  checked={showAssignedToMeIdeas}
+                  onClick={() =>
+                    setShowAssignedToMeIdeas(!showAssignedToMeIdeas)
+                  }
+                />
+              }
+              label={`Assigned to me`}
+            />
+
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={showCompleted}
+                  checked={showCompleted}
+                  onClick={() => setShowCompleted(!showCompleted)}
+                />
+              }
+              label={`Completed ideas`}
+            />
+          </FlexVCenter>
         </TableFooter>
       </FlexVCenter>
     </Paper>

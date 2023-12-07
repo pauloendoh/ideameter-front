@@ -45,6 +45,7 @@ const HighImpactVotedTable = (props: Props) => {
   const { data, isSuccess } = useHighImpactVotedByMeQuery()
 
   const [showCompleted, setShowCompleted] = useState(false)
+  const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
 
   const { getUserId } = useAuthStore()
 
@@ -56,6 +57,10 @@ const HighImpactVotedTable = (props: Props) => {
     let ideas = showCompleted
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
+
+    if (showAssignedToMeIdeas) {
+      ideas = ideas.filter((i) => i.iAmAssigned)
+    }
 
     // sort ideas by createdAt desc
     ideas = ideas.sort((a, b) => {
@@ -73,7 +78,7 @@ const HighImpactVotedTable = (props: Props) => {
     })
 
     return ideas
-  }, [data, showCompleted])
+  }, [data, showAssignedToMeIdeas, showCompleted])
 
   if (!isSuccess) {
     return null
@@ -103,16 +108,31 @@ const HighImpactVotedTable = (props: Props) => {
             p: 1,
           }}
         >
-          <FormControlLabel
-            control={
-              <Switch
-                defaultChecked={showCompleted}
-                checked={showCompleted}
-                onClick={() => setShowCompleted(!showCompleted)}
-              />
-            }
-            label={`Completed ideas`}
-          />
+          <FlexVCenter gap={2}>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={showAssignedToMeIdeas}
+                  checked={showAssignedToMeIdeas}
+                  onClick={() =>
+                    setShowAssignedToMeIdeas(!showAssignedToMeIdeas)
+                  }
+                />
+              }
+              label={`Assigned to me`}
+            />
+
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={showCompleted}
+                  checked={showCompleted}
+                  onClick={() => setShowCompleted(!showCompleted)}
+                />
+              }
+              label={`Completed ideas`}
+            />
+          </FlexVCenter>
         </TableFooter>
       </FlexVCenter>
     </Paper>

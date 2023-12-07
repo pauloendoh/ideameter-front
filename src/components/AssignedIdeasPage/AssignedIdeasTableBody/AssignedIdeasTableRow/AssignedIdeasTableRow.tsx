@@ -44,6 +44,8 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
     },
   })
 
+  const { authUser } = useAuthStore()
+
   return (
     <S.TableRow
       id={props.assignment.idea.id}
@@ -60,20 +62,34 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
             </Link>
           </NextLink>
           <FlexVCenter justifyContent={"space-between"}>
-            <Box
-              sx={{
-                cursor: "pointer",
-              }}
-              onClick={() => toggleHighImpactVote()}
-            >
-              <HighImpactVoteButton
-                minWidth={0}
-                count={props.assignment.idea.highImpactVotes.length}
-                youVoted={props.assignment.idea.highImpactVotes.some(
-                  (v) => v.userId === getUserId()
+            <FlexVCenter gap={1}>
+              <Box
+                sx={{
+                  cursor: "pointer",
+                }}
+                onClick={() => toggleHighImpactVote()}
+              >
+                <HighImpactVoteButton
+                  minWidth={0}
+                  count={props.assignment.idea.highImpactVotes.length}
+                  youVoted={props.assignment.idea.highImpactVotes.some(
+                    (v) => v.userId === getUserId()
+                  )}
+                />
+              </Box>
+              {props.assignment.iAmAssigned &&
+                authUser?.profile?.pictureUrl && (
+                  <img
+                    src={authUser.profile.pictureUrl}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
                 )}
-              />
-            </Box>
+            </FlexVCenter>
             {props.showVotedAt && myVote?.createdAt && (
               <Typography
                 variant="body2"
