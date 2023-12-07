@@ -3,7 +3,7 @@ import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
-import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHighImpactVotedByMeQuery"
+import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
   FormControlLabel,
@@ -42,7 +42,7 @@ const headers: Header[] = [
 ]
 
 const HighlyRatedIdeasTable = (props: Props) => {
-  const { data, isSuccess } = useHighImpactVotedByMeQuery()
+  const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
   const [showCompleted, setShowCompleted] = useState(false)
 
@@ -57,21 +57,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
 
-    // sort ideas by createdAt desc
-    ideas = ideas.sort((a, b) => {
-      const myVoteACreatedAt =
-        a.idea.highImpactVotes.find((v) => v.userId === getUserId())
-          ?.createdAt || ""
-      const myVoteBCreatedAt =
-        b.idea.highImpactVotes.find((v) => v.userId === getUserId())
-          ?.createdAt || ""
-
-      return (
-        new Date(myVoteBCreatedAt).getTime() -
-        new Date(myVoteACreatedAt).getTime()
-      )
-    })
-
     return ideas
   }, [data, showCompleted])
 
@@ -83,7 +68,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     <Paper sx={{ mt: 2, background: "#2B2B2B" }}>
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
         <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-          High impact voted
+          Highly rated ideas (oldest first)
         </Typography>
         <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader>

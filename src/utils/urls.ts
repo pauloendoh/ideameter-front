@@ -20,6 +20,8 @@ const urls = {
     resetPassword: "/auth/password-reset",
     ideasAssignedToMe: `ideas/assigned-to-me`,
     highImpactVotedByMe: `ideas/high-impact-voted-by-me`,
+    highlyRatedIdeasByMe: `ideas/highly-rated-ideas-by-me`,
+
     group: "/group",
     groupId: (groupId: string) => `/group/${groupId}`,
     groupMembers: (groupId: string) => `/group/${groupId}/members`,
