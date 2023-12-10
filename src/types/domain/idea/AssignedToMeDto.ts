@@ -8,7 +8,7 @@ export interface AssignedToMeDto {
     name: string
   }
   tab: {
-    id: string
+    tabId: string
     name: string
   }
   myRating: RatingDto

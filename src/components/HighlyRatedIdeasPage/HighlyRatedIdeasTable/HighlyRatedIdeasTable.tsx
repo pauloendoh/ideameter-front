@@ -4,7 +4,10 @@ import AssignedIdeasTableHead, {
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
+import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
+import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
 import {
+  Button,
   FormControlLabel,
   Paper,
   Switch,
@@ -46,6 +49,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [showCompleted, setShowCompleted] = useState(false)
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
 
+  const { data: settings } = useUserSettingsQuery()
+
   const sortedIdeas = useMemo(() => {
     if (!data) {
       return []
@@ -54,6 +59,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
     let ideas = showCompleted
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
+
+    if (settings?.hiddenTabsIds) {
+      ideas = ideas.filter(
+        (i) => !settings.hiddenTabsIds.includes(String(i.tab.tabId))
+      )
+    }
 
     if (showAssignedToMeIdeas) {
       ideas = ideas.filter((i) => i.iAmAssigned)
@@ -68,7 +79,9 @@ const HighlyRatedIdeasTable = (props: Props) => {
     })
 
     return ideas
-  }, [data, showAssignedToMeIdeas, showCompleted])
+  }, [data, showAssignedToMeIdeas, showCompleted, settings])
+
+  const { openDialog } = useHideTabsDialogStore()
 
   if (!isSuccess) {
     return null
@@ -77,9 +90,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
   return (
     <Paper sx={{ mt: 2, background: "#2B2B2B" }}>
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
-        <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-          Highly rated ideas (oldest high rates first)
-        </Typography>
+        <FlexVCenter justifyContent={"space-between"} width="100%">
+          <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
+            Highly rated ideas (oldest high rates first)
+          </Typography>
+          <Button onClick={() => openDialog()}>Hidden tabs</Button>
+        </FlexVCenter>
         <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader>
             <AssignedIdeasTableHead headers={headers} />

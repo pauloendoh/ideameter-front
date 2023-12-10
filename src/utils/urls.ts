@@ -81,6 +81,10 @@ const urls = {
     ideaHighlights: "/idea-highlights",
     toggleIdeaHighlight: (ideaId: string) =>
       `/toggle-idea-highlight?ideaId=${ideaId}`,
+    userSettings: `/me/settings`,
+    userSettingsHiddenTabsIds: `/me/settings/hidden-tabs-ids`,
+
+    allGroupsAndTabs: "/me/groups/tabs",
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,

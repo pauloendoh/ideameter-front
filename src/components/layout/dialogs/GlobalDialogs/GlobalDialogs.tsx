@@ -7,6 +7,7 @@ import EditLabelDialog from "../EditLabelDialog/EditLabelDialog"
 import EditProfileDialog from "../EditProfileDialog/EditProfileDialog"
 import GroupDialog from "../GroupDialog/GroupDialog"
 import GroupInsightsDialog from "../GroupInsightsDialog/GroupInsightsDialog"
+import HideTabsDialog from "../HideTabsDialog/HideTabsDialog"
 import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
 import IdeaChangesDialog from "../IdeaChangesDialog/IdeaChangesDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
@@ -50,6 +51,7 @@ const GlobalDialogs = () => {
       <TransformToSubideaDialog />
       <IdeaChangesDialog />
       <ArchivedIdeasDialog />
+      <HideTabsDialog />
     </>
   )
 }

@@ -9,7 +9,13 @@ import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import GroupDto from "@/types/domain/group/GroupDto"
 import urls from "@/utils/urls"
-import { Box, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material"
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -31,7 +37,7 @@ const GroupDialog = () => {
     watch,
     setValue,
     formState: { isDirty },
-  } = useForm<GroupDto>({
+  } = useForm<Omit<GroupDto, "tabs">>({
     defaultValues: initialValue,
   })
 
@@ -130,7 +136,10 @@ const GroupDialog = () => {
           </DialogContent>
 
           <DialogTitle>
-            <SaveCancelButtons disabled={saveIsDisabled} onCancel={confirmClose} />
+            <SaveCancelButtons
+              disabled={saveIsDisabled}
+              onCancel={confirmClose}
+            />
           </DialogTitle>
         </form>
 

@@ -1,3 +1,5 @@
+import TabDto from "./tab/TabDto"
+
 export default interface GroupDto {
   id?: string
   creatorId?: string
@@ -9,6 +11,8 @@ export default interface GroupDto {
   lastOpenedAt?: string
   createdAt?: string
   updatedAt?: string
+
+  tabs?: TabDto[]
 }
 
 export const newGroupDto = (): GroupDto => ({

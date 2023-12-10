@@ -37,7 +37,9 @@ const EditLabelDialog = () => {
 
   const { initialValue, dialogIsOpen, closeDialog } = useEditLabelDialogStore()
 
-  const { watch, control, handleSubmit, reset, setValue } = useForm<LabelDto>({
+  const { watch, control, handleSubmit, reset, setValue } = useForm<
+    Omit<LabelDto, "group">
+  >({
     defaultValues: initialValue,
   })
 

@@ -26,7 +26,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
 
   const ideaUrl = urls.pages.groupTabIdea(
     props.assignment.group.groupId,
-    props.assignment.tab.id,
+    props.assignment.tab.tabId,
     props.assignment.idea.id
   )
 
@@ -118,7 +118,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
         <NextLink
           href={urls.pages.groupTab(
             props.assignment.group.groupId,
-            props.assignment.tab.id
+            props.assignment.tab.tabId
           )}
           passHref
         >
