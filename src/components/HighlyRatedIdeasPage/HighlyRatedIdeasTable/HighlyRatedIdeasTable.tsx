@@ -79,7 +79,13 @@ const HighlyRatedIdeasTable = (props: Props) => {
     })
 
     return ideas
-  }, [data, showAssignedToMeIdeas, showCompleted, settings])
+  }, [
+    data,
+    data?.map((d) => d.myRating),
+    showAssignedToMeIdeas,
+    showCompleted,
+    settings,
+  ])
 
   const { openDialog } = useHideTabsDialogStore()
 
