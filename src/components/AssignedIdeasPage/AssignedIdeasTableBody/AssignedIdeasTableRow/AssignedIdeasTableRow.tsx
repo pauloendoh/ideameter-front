@@ -6,11 +6,22 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import theme from "@/theme"
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
 import urls from "@/utils/urls"
-import { Box, Link, TableCell, Typography } from "@mui/material"
+import {
+  Box,
+  IconButton,
+  Link,
+  TableCell,
+  Tooltip,
+  Typography,
+} from "@mui/material"
 
+import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
 import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHighImpactVotedByMeQuery"
+import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
+import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import NextLink from "next/link"
+import { MdArchive, MdOutlineLowPriority } from "react-icons/md"
 import { format } from "timeago.js"
 import S from "../AssignedIdeasTableBody.styles"
 
@@ -19,6 +30,7 @@ type Props = {
   showCompleted: boolean
   showVotedAt?: boolean
   index: number
+  isHighlyRatedIdeasPage?: boolean
 }
 
 const AssignedIdeasTableRow = ({ ...props }: Props) => {
@@ -36,6 +48,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
 
   const { refetch: refetchAssignedToMe } = useAssignedToMeQuery()
   const { refetch: refetchHighImpactVotedByMe } = useHighImpactVotedByMeQuery()
+  const { refetch: refetchHighlyRated } = useHighlyRatedIdeasByMeQuery()
   const toggleHighImpactVote = useToggleHighImpactVote({
     idea: props.assignment.idea,
     onSuccess: () => {
@@ -45,6 +58,30 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
   })
 
   const { authUser } = useAuthStore()
+
+  const { mutate } = useSaveIdeaMutation()
+  const archiveIdea = () => {
+    const idea = { ...props.assignment.idea }
+    idea.isArchived = true
+
+    mutate(idea, {
+      onSuccess: () => {
+        refetchAssignedToMe()
+        refetchHighImpactVotedByMe()
+        refetchHighlyRated()
+      },
+    })
+  }
+
+  const { mutate: refreshRating } = useRefreshRatingMutation()
+  const reducePriority = () => {
+    if (!props.assignment.myRating) {
+      alert("You have not rated this idea yet.")
+      return
+    }
+
+    refreshRating(props.assignment.myRating.id)
+  }
 
   return (
     <S.TableRow
@@ -99,6 +136,21 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
               >
                 Voted {format(myVote.createdAt)}
               </Typography>
+            )}
+            {props.isHighlyRatedIdeasPage && (
+              <FlexVCenter gap={1}>
+                <Tooltip title="Archive">
+                  <IconButton size="small" onClick={() => archiveIdea()}>
+                    <MdArchive />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Reduce priority">
+                  <IconButton size="small" onClick={() => reducePriority()}>
+                    <MdOutlineLowPriority />
+                  </IconButton>
+                </Tooltip>
+              </FlexVCenter>
             )}
           </FlexVCenter>
         </FlexCol>

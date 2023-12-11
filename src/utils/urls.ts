@@ -85,6 +85,7 @@ const urls = {
     userSettingsHiddenTabsIds: `/me/settings/hidden-tabs-ids`,
 
     allGroupsAndTabs: "/me/groups/tabs",
+    refreshRating: (ratingId: string) => `/rating/${ratingId}/refresh`,
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,

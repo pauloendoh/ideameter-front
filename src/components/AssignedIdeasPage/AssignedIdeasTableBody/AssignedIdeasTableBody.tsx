@@ -6,6 +6,7 @@ type Props = {
   ideas: AssignedToMeDto[]
   showCompleted: boolean
   showVotedAt?: boolean
+  isHighlyRatedIdeasPage?: boolean
 }
 
 const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
@@ -18,6 +19,7 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
             showCompleted={showCompleted}
             showVotedAt={props.showVotedAt}
             index={index}
+            isHighlyRatedIdeasPage={props.isHighlyRatedIdeasPage}
           />
         )
       })}

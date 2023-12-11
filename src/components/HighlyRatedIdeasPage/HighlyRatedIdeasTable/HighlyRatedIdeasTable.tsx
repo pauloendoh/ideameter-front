@@ -103,6 +103,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
               ideas={sortedIdeas}
               showCompleted={showCompleted}
               showVotedAt
+              isHighlyRatedIdeasPage
             />
           </Table>
         </TableContainer>
