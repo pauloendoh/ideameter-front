@@ -21,7 +21,7 @@ import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHigh
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import NextLink from "next/link"
-import { MdArchive, MdOutlineLowPriority } from "react-icons/md"
+import { MdDelete, MdOutlineLowPriority } from "react-icons/md"
 import { format } from "timeago.js"
 import S from "../AssignedIdeasTableBody.styles"
 
@@ -141,7 +141,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
               <FlexVCenter gap={1}>
                 <Tooltip title="Archive">
                   <IconButton size="small" onClick={() => archiveIdea()}>
-                    <MdArchive />
+                    <MdDelete />
                   </IconButton>
                 </Tooltip>
 
