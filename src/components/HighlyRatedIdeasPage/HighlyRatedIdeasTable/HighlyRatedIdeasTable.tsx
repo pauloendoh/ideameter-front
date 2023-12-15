@@ -87,6 +87,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
     settings,
   ])
 
+  const assignedToMeCount = useMemo(() => {
+    return sortedIdeas.filter((i) => i.iAmAssigned).length
+  }, [sortedIdeas])
+
   const { openDialog } = useHideTabsDialogStore()
 
   if (!isSuccess) {
@@ -132,7 +136,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
                   }
                 />
               }
-              label={`Assigned to me`}
+              label={`Assigned to me (${assignedToMeCount})`}
             />
 
             <FormControlLabel
