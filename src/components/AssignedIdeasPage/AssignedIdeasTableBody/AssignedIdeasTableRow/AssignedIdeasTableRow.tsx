@@ -22,6 +22,7 @@ import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHig
 import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import NextLink from "next/link"
 import { MdDelete, MdOutlineLowPriority } from "react-icons/md"
+import { PiTabs } from "react-icons/pi"
 import { format } from "timeago.js"
 import S from "../AssignedIdeasTableBody.styles"
 
@@ -31,6 +32,7 @@ type Props = {
   showVotedAt?: boolean
   index: number
   isHighlyRatedIdeasPage?: boolean
+  onOpenNext20?: () => void
 }
 
 const AssignedIdeasTableRow = ({ ...props }: Props) => {
@@ -179,6 +181,13 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
             {props.assignment.tab.name}
           </Link>
         </NextLink>
+        {props.isHighlyRatedIdeasPage && (
+          <Tooltip title={"Open next 20 from this tab."} sx={{ ml: 1 }}>
+            <IconButton size="small" onClick={() => props.onOpenNext20?.()}>
+              <PiTabs />
+            </IconButton>
+          </Tooltip>
+        )}
       </TableCell>
     </S.TableRow>
   )
