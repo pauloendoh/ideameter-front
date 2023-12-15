@@ -2,6 +2,7 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useDeleteRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useDeleteRatingMutation"
 import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation"
+import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import useSubideasQuery from "@/hooks/react-query/domain/subidea/useSubideasQuery"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
@@ -54,12 +55,25 @@ const RatingInput = (props: Props) => {
     containsSubideas ||
     props.isDisabled
 
+  const { mutate: submitRefreshRating } = useRefreshRatingMutation()
+  const { data: ratings } = useRatingsQuery(props.groupId)
+
   const handleChange = (newValue: number) => {
     if (newValue === -1) {
       deleteRatingMutation.mutate({
         ideaId: props.idea.id,
         groupId: props.groupId,
       })
+      return
+    }
+
+    if (newValue === -2) {
+      const rating = ratings?.find(
+        (r) => r.ideaId === props.idea.id && r.userId === authUser?.id
+      )
+      if (rating) {
+        submitRefreshRating(rating.id)
+      }
       return
     }
 
@@ -94,6 +108,9 @@ const RatingInput = (props: Props) => {
             e.stopPropagation()
           }}
         >
+          {authUser?.username && "pauloendoh" && (
+            <option value={-2}>Refresh</option>
+          )}
           {/* invisible character to avoid small height */}
           <option value={-1}>⠀</option>
           <option value={0}>-</option>
