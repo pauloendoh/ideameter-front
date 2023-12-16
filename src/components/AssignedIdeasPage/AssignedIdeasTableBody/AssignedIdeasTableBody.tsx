@@ -13,18 +13,11 @@ type Props = {
 const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
   const handleOpenNext20 = (index: number) => {
     const clickedIdea = { ...ideas[index] }
-    window.open(
-      urls.pages.groupTabIdea(
-        clickedIdea.group.groupId,
-        clickedIdea.tab.tabId,
-        clickedIdea.idea.id
-      )
-    )
 
     const groupId = clickedIdea.group.groupId
     const tabId = clickedIdea.tab.tabId
 
-    const next20 = ideas.slice(index + 1, index + 21)
+    const next20 = ideas.slice(index, index + 20)
     for (const idea of next20) {
       if (idea.tab.tabId === tabId) {
         // open on new tab
