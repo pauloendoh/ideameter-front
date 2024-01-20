@@ -130,7 +130,7 @@ const NavbarUserMenu = () => {
             <MenuItem>
               <FlexVCenter gap={1}>
                 <MdOfflineBolt />
-                <Typography>High impact voted</Typography>
+                <Typography>Quick return voted</Typography>
               </FlexVCenter>
             </MenuItem>
           </a>

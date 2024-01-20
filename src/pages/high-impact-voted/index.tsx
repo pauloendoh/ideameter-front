@@ -5,7 +5,7 @@ const Page = () => (
   <>
     <Head>
       <title>Ideameter</title>
-      <meta property="og:title" content="Ideameter - High impact voted" />
+      <meta property="og:title" content="Ideameter - Quick return voted" />
     </Head>
     <HighImpactVotedPage />
   </>

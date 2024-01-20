@@ -53,7 +53,7 @@ const VotedHighImpactSelector = (props: Props) => {
         typeof option === "string" ? option : option.username
       }
       renderInput={(params) => (
-        <MyTextField {...params} label={"Voted as high impact"} size="small" />
+        <MyTextField {...params} label={"Voted as quick return"} size="small" />
       )}
       renderOption={(props, option) => (
         <li {...props}>

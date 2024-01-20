@@ -40,16 +40,14 @@ const HighImpactVoteIcon = (props: Props) => {
       title={
         <FlexCol gap={0.5}>
           <Typography>
-            {props.ideaRating.idea.highImpactVotes.length} voted as high impact
+            {props.ideaRating.idea.highImpactVotes.length} voted as quick return
           </Typography>
           <FlexVCenter gap={0.5}>
             {props.ideaRating.idea.highImpactVotes.map((vote) => (
               <UserGroupAvatar
                 userId={vote.userId}
-                groupId={props.groupId!}
-                avatarProps={{
-                  sx: { width: 24, height: 24, fontSize: 12 },
-                }}
+                groupId={props.groupId}
+                widthAndHeight={24}
                 key={vote.userId}
               />
             ))}
@@ -58,14 +56,16 @@ const HighImpactVoteIcon = (props: Props) => {
       }
     >
       {/* had to use div instead of FlexVCenter due to tooltip */}
-      <HighImpactVoteButton
-        count={props.ideaRating.idea.highImpactVotes.length}
-        youVoted={youVotedHighImpact}
-        onClick={(e) => {
-          e.stopPropagation()
-          toggleHighImpactVote()
-        }}
-      />
+      <div>
+        <HighImpactVoteButton
+          count={props.ideaRating.idea.highImpactVotes.length}
+          youVoted={youVotedHighImpact}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleHighImpactVote()
+          }}
+        />
+      </div>
     </Tooltip>
   )
 }

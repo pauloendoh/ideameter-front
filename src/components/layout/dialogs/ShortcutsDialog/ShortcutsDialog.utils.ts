@@ -18,7 +18,7 @@ export const shortcutSections: Section[] = [
     title: "Mouse over idea",
     shortcuts: [
       { name: "Assign idea to me", shortcut: "A" },
-      { name: "Vote idea as high impact", shortcut: "V" },
+      { name: "Vote idea as quick return", shortcut: "V" },
       { name: "Select labels", shortcut: "L" },
       { name: "Select idea", shortcut: "Ctrl+Click" },
       { name: "Select range of ideas", shortcut: "Shift+Click" },

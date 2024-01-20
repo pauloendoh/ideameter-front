@@ -69,7 +69,7 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
       >
         <MdOfflineBolt />
         <Typography>
-          {watch("highImpactVotes").length} voted as high impact
+          {watch("highImpactVotes").length} voted as quick return
         </Typography>
         <Tooltip title={"Members who feel this idea will be highly impactful"}>
           <div>

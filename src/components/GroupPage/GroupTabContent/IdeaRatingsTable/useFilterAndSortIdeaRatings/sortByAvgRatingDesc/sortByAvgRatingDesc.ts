@@ -14,9 +14,11 @@ export const sortByAvgRatingDesc = (ideaRatings: IdeaRating[]) => {
       const ratingsCountB =
         youRatedIdeaB + b.otherUserGroupRatings.filter((r) => r.rating).length
 
-      // if both ideas have same avg rating and same ratings count, it will sort by high impact votes count
+      // if both ideas have same avg rating and same ratings count, it will sort by quick return votes count
       if (ratingsCountA === ratingsCountB) {
-        return a.idea.highImpactVotes?.length > b.idea.highImpactVotes?.length ? -1 : 1
+        return a.idea.highImpactVotes?.length > b.idea.highImpactVotes?.length
+          ? -1
+          : 1
       }
 
       return ratingsCountA > ratingsCountB ? -1 : 1

@@ -143,7 +143,7 @@ const IdeaNameTableCell = (props: Props) => {
             {props.ideaRating.idea.assignedUsers?.map((user) => (
               <UserGroupAvatar
                 userId={user.id}
-                groupId={groupId!}
+                groupId={groupId}
                 avatarProps={{
                   sx: { width: 24, height: 24, fontSize: 14 },
                 }}
@@ -155,7 +155,7 @@ const IdeaNameTableCell = (props: Props) => {
 
           {props.ideaRating.idea.highImpactVotes?.length > 0 && (
             <HighImpactVoteIcon
-              groupId={groupId!}
+              groupId={groupId}
               ideaRating={props.ideaRating}
             />
           )}

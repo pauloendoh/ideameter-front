@@ -13,8 +13,8 @@ export const ideaSortOptionsDivided: {
     },
     {
       attribute: "highImpactVotesCount",
-      buttonLabel: "by High Impact",
-      menuText: "High Impact",
+      buttonLabel: "by Quick Return",
+      menuText: "Quick Return",
     },
   ],
   [
@@ -42,8 +42,8 @@ export const ideaSortOptionsDivided: {
     },
     {
       attribute: "highVotedAt",
-      buttonLabel: "by High Voted Date",
-      menuText: "High Voted Date",
+      buttonLabel: "by Quick Return Voted Date",
+      menuText: "Quick Return Voted Date",
     },
   ],
   [

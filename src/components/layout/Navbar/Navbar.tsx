@@ -13,10 +13,10 @@ const Navbar = () => {
     >
       <S.NavbarToolbar>
         <FlexVCenter>
-          <Typography>Ideameter</Typography>
+          <Typography variant="h6">Ideameter</Typography>
         </FlexVCenter>
 
-        <FlexVCenter sx={{ gap: 2 }}>
+        <FlexVCenter>
           <NavbarUserNotifications />
           <NavbarUserMenu />
         </FlexVCenter>
