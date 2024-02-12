@@ -58,7 +58,7 @@ const IdeaDialogRightCol = (props: Props) => {
             props.setValue("complexity", Number(e.target.value))
           }}
           inputProps={{
-            step: 0.1,
+            step: 1,
           }}
         />
 
