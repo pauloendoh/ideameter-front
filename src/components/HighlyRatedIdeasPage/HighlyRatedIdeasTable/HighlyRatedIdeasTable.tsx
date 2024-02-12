@@ -38,12 +38,12 @@ const headers: Header[] = [
     align: "left",
   },
   {
-    title: "R^C",
+    title: "R*C",
     reactNode: (
       <Tooltip
         title={
           <div>
-            <span>High rating ^ complexity</span>
+            <span>High rating * complexity</span>
             <br />
             <ol>
               <li>
@@ -56,7 +56,7 @@ const headers: Header[] = [
         }
       >
         <div>
-          R^C <MdInfo />
+          R*C <MdInfo />
         </div>
       </Tooltip>
     ),
@@ -125,8 +125,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
     if (sortBy === "highest-ratio") {
       ideas = ideas.sort((a, b) => {
-        const valueA = Math.pow(a.myRating.rating ?? 0, a.idea.complexity)
-        const valueB = Math.pow(b.myRating.rating ?? 0, b.idea.complexity)
+        const valueA = (a.myRating.rating ?? 0) * a.idea.complexity
+        const valueB = (b.myRating.rating ?? 0) * b.idea.complexity
 
         return valueA < valueB ? 1 : -1
       })
@@ -167,7 +167,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
             aria-label="basic tabs example"
           >
             <Tab label="Oldest rated" />
-            <Tab label="Highest R^C" />
+            <Tab label="Highest R*C" />
           </Tabs>
 
           <Button onClick={() => openDialog()}>Hidden tabs</Button>

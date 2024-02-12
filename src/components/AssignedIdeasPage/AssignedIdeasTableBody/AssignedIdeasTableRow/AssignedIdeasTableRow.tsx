@@ -90,8 +90,8 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
     if (props) {
       console.log("props", props)
     }
-    return Math.pow(
-      props.ideaAssignment.myRating?.rating ?? 0,
+    return (
+      (props.ideaAssignment.myRating?.rating ?? 0) *
       props.ideaAssignment.idea.complexity
     )
   }, [props.ideaAssignment])
