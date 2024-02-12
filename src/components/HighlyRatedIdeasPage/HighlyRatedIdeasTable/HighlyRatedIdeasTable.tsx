@@ -6,38 +6,70 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
+import { localStorageKeys } from "@/utils/localStorageKeys"
+import { useLocalStorage } from "@mantine/hooks"
 import {
   Button,
   FormControlLabel,
   Paper,
   Switch,
+  Tab,
   Table,
   TableContainer,
   TableFooter,
+  Tabs,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import { useMemo, useState } from "react"
+import { MdInfo } from "react-icons/md"
 
 type Props = {}
 
 const headers: Header[] = [
   {
-    header: "#",
+    title: "#",
     width: 64,
     align: "center",
   },
   {
-    header: "idea",
+    title: "idea",
     width: 360,
     align: "left",
   },
   {
-    header: "Group",
+    title: "R^C",
+    reactNode: (
+      <Tooltip
+        title={
+          <div>
+            <span>High rating ^ complexity</span>
+            <br />
+            <ol>
+              <li>
+                You spend more time doing things that are more interesting
+              </li>
+              <li>You learn more</li>
+              <li>You have a more significant result, most of the time</li>
+            </ol>
+          </div>
+        }
+      >
+        <div>
+          R^C <MdInfo />
+        </div>
+      </Tooltip>
+    ),
+    width: 100,
+    align: "center",
+  },
+  {
+    title: "Group",
     width: 200,
     align: "left",
   },
   {
-    header: "Tab",
+    title: "Tab",
     width: 200,
     align: "left",
   },
@@ -50,6 +82,17 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
 
   const { data: settings } = useUserSettingsQuery()
+
+  const [sortBy, setSortBy] = useLocalStorage<"oldest-rated" | "highest-ratio">(
+    {
+      key: localStorageKeys.sortByHighlyRatedIdeasPage,
+      defaultValue: "oldest-rated",
+    }
+  )
+
+  const tabIndex = useMemo(() => {
+    return sortBy === "oldest-rated" ? 0 : 1
+  }, [sortBy])
 
   const sortedIdeas = useMemo(() => {
     if (!data) {
@@ -70,13 +113,24 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ideas = ideas.filter((i) => i.iAmAssigned)
     }
 
-    ideas = ideas.sort((a, b) => {
-      const myRatingA = a.myRating
-      const myRatingB = b.myRating
+    if (sortBy === "oldest-rated") {
+      ideas = ideas.sort((a, b) => {
+        const myRatingA = a.myRating
+        const myRatingB = b.myRating
 
-      // sort by updated asc
-      return myRatingA.updatedAt > myRatingB.updatedAt ? 1 : -1
-    })
+        // sort by updated asc
+        return myRatingA.updatedAt > myRatingB.updatedAt ? 1 : -1
+      })
+    }
+
+    if (sortBy === "highest-ratio") {
+      ideas = ideas.sort((a, b) => {
+        const valueA = Math.pow(a.myRating.rating ?? 0, a.idea.complexity)
+        const valueB = Math.pow(b.myRating.rating ?? 0, b.idea.complexity)
+
+        return valueA < valueB ? 1 : -1
+      })
+    }
 
     return ideas
   }, [
@@ -102,11 +156,23 @@ const HighlyRatedIdeasTable = (props: Props) => {
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
         <FlexVCenter justifyContent={"space-between"} width="100%">
           <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-            Highly rated ideas (oldest high rates first)
+            Highly rated ideas
           </Typography>
+
+          <Tabs
+            value={tabIndex}
+            onChange={(e, value) => {
+              setSortBy(value === 0 ? "oldest-rated" : "highest-ratio")
+            }}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Oldest rated" />
+            <Tab label="Highest R^C" />
+          </Tabs>
+
           <Button onClick={() => openDialog()}>Hidden tabs</Button>
         </FlexVCenter>
-        <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
+        <TableContainer sx={{ maxHeight: "calc(100vh - 400px)", mt: 2 }}>
           <Table stickyHeader>
             <AssignedIdeasTableHead headers={headers} />
             <AssignedIdeasTableBody

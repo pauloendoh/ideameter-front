@@ -21,13 +21,14 @@ import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHigh
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import NextLink from "next/link"
+import { useMemo } from "react"
 import { MdDelete, MdOutlineLowPriority } from "react-icons/md"
 import { PiTabs } from "react-icons/pi"
 import { format } from "timeago.js"
 import S from "../AssignedIdeasTableBody.styles"
 
 type Props = {
-  assignment: AssignedToMeDto
+  ideaAssignment: AssignedToMeDto
   showCompleted: boolean
   showVotedAt?: boolean
   index: number
@@ -39,12 +40,12 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
   const { getUserId } = useAuthStore()
 
   const ideaUrl = urls.pages.groupTabIdea(
-    props.assignment.group.groupId,
-    props.assignment.tab.tabId,
-    props.assignment.idea.id
+    props.ideaAssignment.group.groupId,
+    props.ideaAssignment.tab.tabId,
+    props.ideaAssignment.idea.id
   )
 
-  const myVote = props.assignment.idea.highImpactVotes.find(
+  const myHighImpactVote = props.ideaAssignment.idea.highImpactVotes.find(
     (v) => v.userId === getUserId()
   )
 
@@ -52,7 +53,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
   const { refetch: refetchHighImpactVotedByMe } = useHighImpactVotedByMeQuery()
   const { refetch: refetchHighlyRated } = useHighlyRatedIdeasByMeQuery()
   const toggleHighImpactVote = useToggleHighImpactVote({
-    idea: props.assignment.idea,
+    idea: props.ideaAssignment.idea,
     onSuccess: () => {
       refetchAssignedToMe()
       refetchHighImpactVotedByMe()
@@ -63,7 +64,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
 
   const { mutate } = useSaveIdeaMutation()
   const archiveIdea = () => {
-    const idea = { ...props.assignment.idea }
+    const idea = { ...props.ideaAssignment.idea }
     idea.isArchived = true
 
     mutate(idea, {
@@ -77,18 +78,28 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
 
   const { mutate: refreshRating } = useRefreshRatingMutation()
   const reducePriority = () => {
-    if (!props.assignment.myRating) {
+    if (!props.ideaAssignment.myRating) {
       alert("You have not rated this idea yet.")
       return
     }
 
-    refreshRating(props.assignment.myRating.id)
+    refreshRating(props.ideaAssignment.myRating.id)
   }
+
+  const ratingComplexityRatio = useMemo(() => {
+    if (props) {
+      console.log("props", props)
+    }
+    return Math.pow(
+      props.ideaAssignment.myRating?.rating ?? 0,
+      props.ideaAssignment.idea.complexity
+    )
+  }, [props.ideaAssignment])
 
   return (
     <S.TableRow
-      id={props.assignment.idea.id}
-      key={props.assignment.idea.id}
+      id={props.ideaAssignment.idea.id}
+      key={props.ideaAssignment.idea.id}
       className="idea-table-row"
       hover
     >
@@ -97,7 +108,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
         <FlexCol gap={0.5}>
           <NextLink href={ideaUrl} passHref>
             <Link color={theme.palette.grey[100]} width="fit-content">
-              {props.assignment.idea.name}
+              {props.ideaAssignment.idea.name}
             </Link>
           </NextLink>
           <FlexVCenter justifyContent={"space-between"}>
@@ -110,13 +121,13 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
               >
                 <HighImpactVoteButton
                   minWidth={0}
-                  count={props.assignment.idea.highImpactVotes.length}
-                  youVoted={props.assignment.idea.highImpactVotes.some(
+                  count={props.ideaAssignment.idea.highImpactVotes.length}
+                  youVoted={props.ideaAssignment.idea.highImpactVotes.some(
                     (v) => v.userId === getUserId()
                   )}
                 />
               </Box>
-              {props.assignment.iAmAssigned &&
+              {props.ideaAssignment.iAmAssigned &&
                 authUser?.profile?.pictureUrl && (
                   <img
                     src={authUser.profile.pictureUrl}
@@ -129,14 +140,14 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
                   />
                 )}
             </FlexVCenter>
-            {props.showVotedAt && myVote?.createdAt && (
+            {props.showVotedAt && myHighImpactVote?.createdAt && (
               <Typography
                 variant="body2"
                 sx={{
                   fontStyle: "italic",
                 }}
               >
-                Voted {format(myVote.createdAt)}
+                Voted {format(myHighImpactVote.createdAt)}
               </Typography>
             )}
             {props.isHighlyRatedIdeasPage && (
@@ -157,28 +168,37 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
           </FlexVCenter>
         </FlexCol>
       </TableCell>
+      {props.isHighlyRatedIdeasPage && (
+        <TableCell align="center">
+          <Tooltip
+            title={`${props.ideaAssignment.myRating?.rating}^${props.ideaAssignment.idea.complexity} = ${ratingComplexityRatio}`}
+          >
+            <div>{ratingComplexityRatio}</div>
+          </Tooltip>
+        </TableCell>
+      )}
       <TableCell>
         <NextLink
-          href={urls.pages.groupId(props.assignment.group.groupId)}
+          href={urls.pages.groupId(props.ideaAssignment.group.groupId)}
           passHref
         >
           <Link color={theme.palette.grey[100]}>
             {" "}
-            {props.assignment.group.name}
+            {props.ideaAssignment.group.name}
           </Link>
         </NextLink>
       </TableCell>
       <TableCell>
         <NextLink
           href={urls.pages.groupTab(
-            props.assignment.group.groupId,
-            props.assignment.tab.tabId
+            props.ideaAssignment.group.groupId,
+            props.ideaAssignment.tab.tabId
           )}
           passHref
         >
           <Link color={theme.palette.grey[100]}>
             {" "}
-            {props.assignment.tab.name}
+            {props.ideaAssignment.tab.name}
           </Link>
         </NextLink>
         {props.isHighlyRatedIdeasPage && (

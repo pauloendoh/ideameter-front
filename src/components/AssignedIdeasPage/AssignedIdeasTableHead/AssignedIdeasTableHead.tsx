@@ -1,22 +1,24 @@
 import { TableCell, TableRow } from "@mui/material"
+import React from "react"
 import S from "./AssignedIdeasTableHead.styles"
 
 export type Header = {
-  header: string
+  title: string
+  reactNode?: React.ReactNode
   width?: number
   align: "left" | "right" | "center"
 }
 
-type HeadProps = {
+type Props = {
   headers: Header[]
 }
 
-const AssignedIdeasTableHead = ({ headers }: HeadProps) => (
+const AssignedIdeasTableHead = ({ headers }: Props) => (
   <S.TableHead>
     <TableRow>
-      {headers.map(({ header, width, align }, index) => (
-        <TableCell key={header + index} width={width || 0} align={align}>
-          {header}
+      {headers.map(({ title, width, align, reactNode }, index) => (
+        <TableCell key={title} width={width ?? 0} align={align}>
+          {reactNode ?? title}
         </TableCell>
       ))}
     </TableRow>

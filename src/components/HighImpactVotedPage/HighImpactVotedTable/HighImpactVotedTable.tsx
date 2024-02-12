@@ -20,22 +20,22 @@ type Props = {}
 
 const headers: Header[] = [
   {
-    header: "#",
+    title: "#",
     width: 64,
     align: "center",
   },
   {
-    header: "idea",
+    title: "idea",
     width: 360,
     align: "left",
   },
   {
-    header: "Group",
+    title: "Group",
     width: 200,
     align: "left",
   },
   {
-    header: "Tab",
+    title: "Tab",
     width: 200,
     align: "left",
   },

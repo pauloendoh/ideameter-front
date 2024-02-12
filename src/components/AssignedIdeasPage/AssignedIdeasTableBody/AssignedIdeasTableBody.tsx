@@ -27,11 +27,11 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
   }
   return (
     <TableBody>
-      {ideas.map((assignment, index) => {
+      {ideas.map((idea, index) => {
         return (
           <AssignedIdeasTableRow
-            key={assignment.idea.id}
-            assignment={assignment}
+            key={idea.idea.id}
+            ideaAssignment={idea}
             showCompleted={showCompleted}
             showVotedAt={props.showVotedAt}
             index={index}
