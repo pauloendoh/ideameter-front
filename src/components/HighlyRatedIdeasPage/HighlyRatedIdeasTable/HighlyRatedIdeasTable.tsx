@@ -3,6 +3,7 @@ import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
@@ -83,6 +84,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
   const { data: settings } = useUserSettingsQuery()
 
+  const [filteringByRatio, setFilteringByRatio] = useState<"" | number>("")
+
   const [sortBy, setSortBy] = useLocalStorage<"oldest-rated" | "highest-ratio">(
     {
       key: localStorageKeys.sortByHighlyRatedIdeasPage,
@@ -102,6 +105,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
     let ideas = showCompleted
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
+
+    if (filteringByRatio !== "") {
+      ideas = ideas.filter((i) => {
+        return (i.myRating.rating ?? 0) * i.idea.complexity === filteringByRatio
+      })
+    }
 
     if (settings?.hiddenTabsIds) {
       ideas = ideas.filter(
@@ -127,6 +136,11 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ideas = ideas.sort((a, b) => {
         const valueA = (a.myRating.rating ?? 0) * a.idea.complexity
         const valueB = (b.myRating.rating ?? 0) * b.idea.complexity
+
+        if (valueA === valueB) {
+          // sort by rating updated asc
+          return a.myRating.updatedAt > b.myRating.updatedAt ? 1 : -1
+        }
 
         return valueA < valueB ? 1 : -1
       })
@@ -192,6 +206,23 @@ const HighlyRatedIdeasTable = (props: Props) => {
           }}
         >
           <FlexVCenter gap={2}>
+            <MyTextField
+              sx={{
+                width: 100,
+              }}
+              value={filteringByRatio}
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  setFilteringByRatio("")
+                  return
+                }
+                setFilteringByRatio(Number(e.target.value))
+              }}
+              label="R*C"
+              type="number"
+              variant="outlined"
+            />
+
             <FormControlLabel
               control={
                 <Switch
