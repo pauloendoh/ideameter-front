@@ -10,6 +10,8 @@ export default interface RatingDto {
   createdAt: string
   updatedAt: string
   rating: number | null
+
+  position: number | null
 }
 
 export const newRatingDto = (
@@ -22,4 +24,5 @@ export const newRatingDto = (
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   rating,
+  position: null,
 })

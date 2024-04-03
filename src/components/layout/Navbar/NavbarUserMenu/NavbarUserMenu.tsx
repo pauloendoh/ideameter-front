@@ -151,6 +151,21 @@ const NavbarUserMenu = () => {
             </MenuItem>
           </a>
         </Link>
+        {/* <Link href="/my-ratings">
+          <a
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <MenuItem>
+              <FlexVCenter gap={1}>
+                <MdStar />
+                <Typography>My ratings</Typography>
+              </FlexVCenter>
+            </MenuItem>
+          </a>
+        </Link> */}
 
         {/* <Link href={urls.pages.ideaHighlights} passHref>
           <MenuItem>

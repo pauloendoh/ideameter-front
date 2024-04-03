@@ -45,7 +45,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   onFireSince: new Date().toISOString(),
   irrelevantSince: null,
   ratingsAreEnabled: true,
-  complexity: 1,
+  complexity: 0,
 
   labels: [],
   assignedUsers: [],

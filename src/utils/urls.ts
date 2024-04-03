@@ -59,6 +59,8 @@ const urls = {
     ideaName: (ideaId: string) => `/idea/${ideaId}/name`,
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
 
+    moveRatingPosition: (ratingId: string) => `/rating/${ratingId}/move-position`,
+
     labelId: (labelId: string) => `/labels/${labelId}`,
 
     userSearch: (query: string) => `/user/search?q=${query}`,

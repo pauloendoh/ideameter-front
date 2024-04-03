@@ -1,8 +1,10 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import MyTextField from "@/components/_common/inputs/MyTextField"
+import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
-import { Box, Grid } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
+import { useMemo } from "react"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
 import CreatedUpdatedAtIdeaDialog from "../CreatedUpdatedAtIdeaDialog/CreatedUpdatedAtIdeaDialog"
 import ArchiveSection from "./ArchiveSection/ArchiveSection"
@@ -16,6 +18,10 @@ interface Props {
 
 const IdeaDialogRightCol = (props: Props) => {
   const { groupId } = useRouterQueryString()
+  const { data: groups } = useGroupsQuery()
+  const group = useMemo(() => {
+    return groups?.find((g) => g.id === groupId)
+  }, [groups, groupId])
   return (
     <Grid item xs={4}>
       <FlexCol gap={1}>
@@ -32,6 +38,10 @@ const IdeaDialogRightCol = (props: Props) => {
         <Box />
 
         <CompleteIdeaButton watch={props.watch} setValue={props.setValue} />
+
+        <Box />
+
+        <Typography>Group: {group?.name}</Typography>
 
         <Box />
 
