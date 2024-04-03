@@ -1,6 +1,6 @@
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import TabDto from "@/types/domain/group/tab/TabDto"
+import { localStorageKeys } from "@/utils/localStorageKeys"
 import urls from "@/utils/urls"
 import { Box } from "@mui/material"
 import { useRouter } from "next/router"
@@ -14,7 +14,6 @@ interface Props {
 }
 
 const GroupTabs = (props: Props) => {
-  const { authUser } = useAuthStore()
   const [tabIndex, setTabIndex] = useState(0)
 
   const router = useRouter()
@@ -23,13 +22,29 @@ const GroupTabs = (props: Props) => {
   useEffect(() => {
     if (queryTabId) {
       const index = props.tabs.findIndex((tab) => tab.id === queryTabId)
-      if (index !== -1) setTabIndex(index)
+      if (index !== -1) {
+        setTabIndex(index)
+        localStorage.setItem(
+          localStorageKeys.lastOpenedTabId(props.groupId),
+          queryTabId
+        )
+      }
       return
     }
 
+    const lastOpenedTabId = localStorage.getItem(
+      localStorageKeys.lastOpenedTabId(props.groupId)
+    )
+    if (lastOpenedTabId) {
+      const index = props.tabs.findIndex((tab) => tab.id === lastOpenedTabId)
+      if (index !== -1) {
+        router.push(urls.pages.groupTab(props.groupId, lastOpenedTabId))
+        return
+      }
+    }
+
     const firstTab = props.tabs[0]
-    if (firstTab && !ideaId) {
-      console.log("GroupTabs.tsx")
+    if (firstTab && !ideaId && firstTab.groupId === props.groupId) {
       router.push(urls.pages.groupTab(props.groupId, firstTab.id))
     }
   }, [queryTabId, props.tabs])
