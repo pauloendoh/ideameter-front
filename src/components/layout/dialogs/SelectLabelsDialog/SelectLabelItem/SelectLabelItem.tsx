@@ -1,9 +1,9 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import Flex from "@/components/_common/flexboxes/Flex"
 import LabelDto from "@/types/domain/label/LabelDto"
 import styled from "@emotion/styled"
-import { IconButton, Typography } from "@mui/material"
+import { Checkbox, IconButton, Typography } from "@mui/material"
 import { Draggable } from "react-beautiful-dnd"
-import { MdCheck, MdEdit } from "react-icons/md"
+import { MdEdit } from "react-icons/md"
 
 interface Props {
   handleClick: (label: LabelDto) => void
@@ -34,23 +34,37 @@ const SelectLabelItem = (props: Props) => {
   return (
     <Draggable draggableId={props.label.id} index={props.index}>
       {(provided, snapshot) => (
-        <FlexVCenter gap={0.5}>
+        <Flex
+          gap={0.5}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <div>
+            <Checkbox
+              checked={props.labelIsSelected}
+              onClick={(e) => {
+                e.stopPropagation()
+                props.handleClick(props.label)
+              }}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </div>
+
           <Container
             bgColor={props.label.bgColor}
             onClick={() => props.handleClick(props.label)}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
             isDragging={snapshot.isDragging}
             ref={provided.innerRef}
           >
             <Typography>{props.label.name}</Typography>
-            {props.labelIsSelected && <MdCheck />}
           </Container>
 
-          <IconButton size="small" onClick={() => props.onEdit(props.label)}>
-            <MdEdit />
-          </IconButton>
-        </FlexVCenter>
+          <div>
+            <IconButton size="small" onClick={() => props.onEdit(props.label)}>
+              <MdEdit />
+            </IconButton>
+          </div>
+        </Flex>
       )}
     </Draggable>
   )
