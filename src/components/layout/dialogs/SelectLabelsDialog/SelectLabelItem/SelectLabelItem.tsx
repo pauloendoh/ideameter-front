@@ -35,7 +35,8 @@ const SelectLabelItem = (props: Props) => {
     <Draggable draggableId={props.label.id} index={props.index}>
       {(provided, snapshot) => (
         <Flex
-          gap={0.5}
+          alignItems={"center"}
+          gap={0.25}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >

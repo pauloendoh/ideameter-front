@@ -31,7 +31,7 @@ const SelectLabelList = (props: Props) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: 8,
+            gap: 4,
           }}
           ref={provided.innerRef}
           {...provided.droppableProps}
