@@ -1,10 +1,11 @@
 import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import TimeagoSpan from "@/components/_common/text/TimeagoSpan"
 import useIdeaChangesQuery from "@/hooks/react-query/domain/idea-change/useIdeaChangesQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useIdeaChangesDialogStore from "@/hooks/zustand/dialogs/useIdeaChangesDialogStore"
-import { Tooltip, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 import { useMemo } from "react"
 import { format } from "timeago.js"
 
@@ -42,46 +43,46 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
 
   return (
     <FlexVCenter gap={1}>
-      <Tooltip title={new Date(date).toLocaleString()}>
-        <FlexCol gap={1}>
-          {ideaChanges && ideaChanges.length > 0 && (
-            <FlexVCenter gap={1}>
-              <UserGroupAvatar
-                groupId={groupId}
-                userId={imageUserId}
-                widthAndHeight={24}
-              />
-
-              <Typography
-                sx={() => ({
-                  cursor: "pointer",
-                  ":hover": {
-                    textDecoration: "underline",
-                  },
-                })}
-                onClick={() =>
-                  openIdeaChangesDialog({
-                    ideaId: props.ideaId,
-                    ideaTitle: props.ideaTitle,
-                  })
-                }
-              >
-                Updated {format(date)}
-              </Typography>
-            </FlexVCenter>
-          )}
-
+      <FlexCol gap={1}>
+        {ideaChanges && ideaChanges.length > 0 && (
           <FlexVCenter gap={1}>
             <UserGroupAvatar
               groupId={groupId}
-              userId={props.creatorId}
+              userId={imageUserId}
               widthAndHeight={24}
             />
 
-            <Typography>Created {format(props.createdAt)}</Typography>
+            <Typography
+              sx={() => ({
+                cursor: "pointer",
+                ":hover": {
+                  textDecoration: "underline",
+                },
+              })}
+              onClick={() =>
+                openIdeaChangesDialog({
+                  ideaId: props.ideaId,
+                  ideaTitle: props.ideaTitle,
+                })
+              }
+            >
+              Updated {format(date)}
+            </Typography>
           </FlexVCenter>
-        </FlexCol>
-      </Tooltip>
+        )}
+
+        <FlexVCenter gap={1}>
+          <UserGroupAvatar
+            groupId={groupId}
+            userId={props.creatorId}
+            widthAndHeight={24}
+          />
+
+          <Typography>
+            Created <TimeagoSpan createdAt={props.createdAt} />
+          </Typography>
+        </FlexVCenter>
+      </FlexCol>
     </FlexVCenter>
   )
 }

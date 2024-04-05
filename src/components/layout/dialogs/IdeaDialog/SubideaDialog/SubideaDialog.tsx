@@ -3,6 +3,7 @@ import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/Sa
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
+import TimeagoSpan from "@/components/_common/text/TimeagoSpan"
 import useSaveSubideaMutation from "@/hooks/react-query/domain/subidea/useSaveSubideaMutation"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
@@ -12,14 +13,12 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
-import { format } from "timeago.js"
 import IdeaDialogSelectedLabels from "../IdeaDialogSelectedLabels/IdeaDialogSelectedLabels"
 import SubideaImageSection from "./SubideaImageSection/SubideaImageSection"
 import SubideaMenu from "./SubideaMenu/SubideaMenu"
@@ -156,15 +155,12 @@ const SubideaDialog = () => {
                       userId={watch("creatorId")}
                       widthAndHeight={24}
                     />
-                    <Tooltip
-                      title={new Date(watch("createdAt")).toLocaleDateString()}
-                    >
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <Typography>
-                          Created {format(watch("createdAt"))}
-                        </Typography>
-                      </div>
-                    </Tooltip>
+
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Typography>
+                        Created <TimeagoSpan createdAt={watch("createdAt")} />
+                      </Typography>
+                    </div>
                   </>
                 )}
               </FlexVCenter>
