@@ -95,6 +95,7 @@ const RatingInput = (props: Props) => {
         </FlexVCenter>
       ) : (
         <NativeSelect
+          key={myCurrentRating}
           disabled={isLoading}
           variant="outlined"
           size="small"
