@@ -107,7 +107,11 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
       <TableCell>
         <FlexCol gap={0.5}>
           <NextLink href={ideaUrl} passHref>
-            <Link color={theme.palette.grey[100]} width="fit-content">
+            <Link
+              color={theme.palette.grey[100]}
+              width="fit-content"
+              target="_blank"
+            >
               {props.ideaAssignment.idea.name}
             </Link>
           </NextLink>
