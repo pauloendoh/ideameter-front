@@ -58,11 +58,8 @@ const IdeaDialogRightCol = (props: Props) => {
           value={props.watch("complexity")}
           onChange={(e) => {
             const num = Number(e.target.value)
-            const max = 5
             const min = 0
-            if (num > max) {
-              e.target.value = max.toString()
-            } else if (num < min) {
+            if (num < min) {
               e.target.value = min.toString()
             }
             props.setValue("complexity", Number(e.target.value))
