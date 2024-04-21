@@ -1,8 +1,10 @@
+import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
-import { Flex } from "@mantine/core"
+import urls from "@/utils/urls"
 import { useHover } from "@mantine/hooks"
+import { Link } from "@mui/material"
 import MyRatingItemMenu from "./MyRatingItemMenu/MyRatingItemMenu"
 
 type Props = {
@@ -20,6 +22,7 @@ const MyRatingItem = ({ assign, index, ...props }: Props) => {
 
   return (
     <Flex
+      key={idea.id}
       ref={hoverRef}
       sx={{
         borderTop: index === 0 ? "none" : "1px solid",
@@ -42,9 +45,14 @@ const MyRatingItem = ({ assign, index, ...props }: Props) => {
       <FlexCol
         sx={{
           py: 1,
+          width: "100%",
         }}
       >
-        <Flex justify={"space-between"}>
+        <Flex
+          sx={{
+            justifyContent: "space-between",
+          }}
+        >
           <span>
             <span
               style={{
@@ -55,14 +63,22 @@ const MyRatingItem = ({ assign, index, ...props }: Props) => {
             >
               {group.name} - {tab.name}
             </span>
-            <span
-              style={{
-                marginLeft: 8,
+            <Link
+              sx={{
+                color: "unset",
+                ml: 1,
+                textDecoration: "none",
+                ":hover": {
+                  textDecoration: "underline",
+                },
               }}
+              href={urls.pages.groupTabIdea(group.groupId, tab.tabId, idea.id)}
+              target="_blank"
             >
               {idea.name}
-            </span>
+            </Link>
           </span>
+
           <MyRatingItemMenu
             isHovering={hovered}
             ratingId={assign.myRating.id}

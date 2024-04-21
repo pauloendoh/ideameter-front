@@ -41,6 +41,7 @@ const MyRatingItemMenu = ({ ...props }: Props) => {
   return (
     <div>
       <IconButton
+        size="small"
         onClick={(e) => handleClick(e)}
         sx={{
           visibility: isVisible ? "visible" : "hidden",
