@@ -79,11 +79,17 @@ const MyRatingItem = ({ assign, index, ...props }: Props) => {
             </Link>
           </span>
 
-          <MyRatingItemMenu
-            isHovering={hovered}
-            ratingId={assign.myRating.id}
-            assign={assign}
-          />
+          <div
+            style={{
+              paddingLeft: 4,
+            }}
+          >
+            <MyRatingItemMenu
+              isHovering={hovered}
+              ratingId={assign.myRating.id}
+              assign={assign}
+            />
+          </div>
         </Flex>
       </FlexCol>
     </Flex>
