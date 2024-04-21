@@ -11,7 +11,7 @@ const useUpdateRatingPositionMutation = () => {
   const { setSuccessMessage } = useSnackbarStore()
 
   return useMutation(
-    (data: { ratingId: string; position: number | "first" | "last" }) =>
+    (data: { ratingId: string; position: number | "first" | "last" | null }) =>
       axios
         .put(urls.api.moveRatingPosition(data.ratingId), {
           position: data.position,

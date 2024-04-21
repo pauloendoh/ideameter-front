@@ -1,11 +1,19 @@
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useUpdateRatingPositionMutation from "@/hooks/react-query/domain/my-ratings/useUpdateRatingPositionMutation"
-import { IconButton, Menu, MenuItem } from "@mui/material"
+import { AssignedToMeDto } from "@/types/domain/idea/AssignedToMeDto"
+import { Divider, IconButton, Menu, MenuItem } from "@mui/material"
 import React, { useMemo } from "react"
-import { MdMoreHoriz } from "react-icons/md"
+import {
+  MdArrowDownward,
+  MdArrowUpward,
+  MdDelete,
+  MdMoreHoriz,
+} from "react-icons/md"
 
 type Props = {
   isHovering: boolean
   ratingId: string
+  assign: AssignedToMeDto
 }
 
 const MyRatingItemMenu = ({ ...props }: Props) => {
@@ -64,7 +72,10 @@ const MyRatingItemMenu = ({ ...props }: Props) => {
             handleClose()
           }}
         >
-          Move to first
+          <FlexVCenter gap={1}>
+            <MdArrowUpward />
+            <span>Move to first</span>
+          </FlexVCenter>
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -75,8 +86,31 @@ const MyRatingItemMenu = ({ ...props }: Props) => {
             handleClose()
           }}
         >
-          Move to last
+          <FlexVCenter gap={1}>
+            <MdArrowDownward />
+            <span>Move to last</span>
+          </FlexVCenter>
         </MenuItem>
+
+        {props.assign.myRating.position !== null && (
+          <>
+            <Divider />
+            <MenuItem
+              onClick={() => {
+                submitRatingPositionUpdate({
+                  ratingId: props.ratingId,
+                  position: null,
+                })
+                handleClose()
+              }}
+            >
+              <FlexVCenter gap={1}>
+                <MdDelete />
+                <span>Remove position</span>
+              </FlexVCenter>
+            </MenuItem>
+          </>
+        )}
       </Menu>
     </div>
   )

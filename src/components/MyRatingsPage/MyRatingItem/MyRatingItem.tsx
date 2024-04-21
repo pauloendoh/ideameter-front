@@ -46,7 +46,11 @@ const MyRatingItem = ({ assign, index, ...props }: Props) => {
             {idea.name}
           </span>
         </span>
-        <MyRatingItemMenu isHovering={hovered} ratingId={assign.myRating.id} />
+        <MyRatingItemMenu
+          isHovering={hovered}
+          ratingId={assign.myRating.id}
+          assign={assign}
+        />
       </Flex>
       <Typography>Is done: {String(idea.isDone)}</Typography>
       <Typography>Is archived: {String(idea.isArchived)}</Typography>
