@@ -1,7 +1,10 @@
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
-import { Box, Container, Tab, Tabs, Typography } from "@mui/material"
+import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
+import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
+import { Box, Button, Container, Tab, Tabs, Typography } from "@mui/material"
 import { useMemo, useState } from "react"
 import FlexCol from "../_common/flexboxes/FlexCol"
+import FlexVCenter from "../_common/flexboxes/FlexVCenter"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import MyRatingItem from "./MyRatingItem/MyRatingItem"
 
@@ -9,6 +12,8 @@ const MyRatingsPage = () => {
   const { data } = useHighlyRatedIdeasByMeQuery()
 
   const [tab, setTab] = useState<"would now" | "archived" | "completed">()
+
+  const { data: userSettings } = useUserSettingsQuery()
 
   const tabIndex = useMemo(() => {
     if (tab === "would now") return 0
@@ -26,12 +31,16 @@ const MyRatingsPage = () => {
     }
     return data
       ?.filter((item) => !item.idea.isDone)
+      ?.filter((item) => {
+        if (userSettings?.hiddenTabsIds.includes(item.tab.tabId)) return false
+        return true
+      })
       .sort((a, b) => {
         if (a.myRating.position === null) return 1
         if (b.myRating.position === null) return -1
         return a.myRating.position - b.myRating.position
       })
-  }, [data, tab])
+  }, [data, tab, userSettings])
 
   const selectedItemwWithPosition = useMemo(() => {
     return (
@@ -44,6 +53,8 @@ const MyRatingsPage = () => {
       selectedItems?.filter((item) => item.myRating.position === null) ?? []
     )
   }, [selectedItems])
+
+  const { openDialog } = useHideTabsDialogStore()
 
   return (
     <HomeLayout>
@@ -74,6 +85,11 @@ const MyRatingsPage = () => {
             <Tab label="Archived" />
           </Tabs>
         </Box>
+
+        <FlexVCenter justifyContent={"space-between"}>
+          <span></span>
+          <Button onClick={() => openDialog()}>Hidden tabs</Button>
+        </FlexVCenter>
 
         <FlexCol mt={4}>
           {selectedItemwWithPosition.map((assign, index) => (
