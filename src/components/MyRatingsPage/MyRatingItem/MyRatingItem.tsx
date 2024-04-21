@@ -61,7 +61,7 @@ const MyRatingItem = ({ assign, index, ...props }: Props) => {
                 borderRadius: 4,
               }}
             >
-              {group.name} - {tab.name}
+              {tab.name} - {group.name}
             </span>
             <Link
               sx={{
