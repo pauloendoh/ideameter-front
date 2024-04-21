@@ -33,6 +33,18 @@ const MyRatingsPage = () => {
       })
   }, [data, tab])
 
+  const selectedItemwWithPosition = useMemo(() => {
+    return (
+      selectedItems?.filter((item) => item.myRating.position !== null) ?? []
+    )
+  }, [selectedItems])
+
+  const selectedItemwWithoutPosition = useMemo(() => {
+    return (
+      selectedItems?.filter((item) => item.myRating.position === null) ?? []
+    )
+  }, [selectedItems])
+
   return (
     <HomeLayout>
       <Container
@@ -64,7 +76,13 @@ const MyRatingsPage = () => {
         </Box>
 
         <FlexCol mt={4}>
-          {selectedItems?.map((assign, index) => (
+          {selectedItemwWithPosition.map((assign, index) => (
+            <MyRatingItem assign={assign} index={index} key={assign.idea.id} />
+          ))}
+        </FlexCol>
+
+        <FlexCol mt={4}>
+          {selectedItemwWithoutPosition.map((assign, index) => (
             <MyRatingItem assign={assign} index={index} key={assign.idea.id} />
           ))}
         </FlexCol>
