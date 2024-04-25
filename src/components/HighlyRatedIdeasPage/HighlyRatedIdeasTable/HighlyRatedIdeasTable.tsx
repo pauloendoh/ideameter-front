@@ -3,7 +3,6 @@ import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
-import MyTextField from "@/components/_common/inputs/MyTextField"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
@@ -19,11 +18,9 @@ import {
   TableContainer,
   TableFooter,
   Tabs,
-  Tooltip,
   Typography,
 } from "@mui/material"
 import { useMemo, useState } from "react"
-import { MdInfo } from "react-icons/md"
 
 type Props = {}
 
@@ -39,28 +36,7 @@ const headers: Header[] = [
     align: "left",
   },
   {
-    title: "R*C",
-    reactNode: (
-      <Tooltip
-        title={
-          <div>
-            <span>High rating * complexity</span>
-            <br />
-            <ol>
-              <li>
-                You spend more time doing things that are more interesting
-              </li>
-              <li>You learn more</li>
-              <li>You have a more significant result, most of the time</li>
-            </ol>
-          </div>
-        }
-      >
-        <div>
-          R*C <MdInfo />
-        </div>
-      </Tooltip>
-    ),
+    title: "Complexity",
     width: 100,
     align: "center",
   },
@@ -84,8 +60,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
   const { data: settings } = useUserSettingsQuery()
 
-  const [filteringByRatio, setFilteringByRatio] = useState<"" | number>("")
-
   const [sortBy, setSortBy] = useLocalStorage<"oldest-rated" | "highest-ratio">(
     {
       key: localStorageKeys.sortByHighlyRatedIdeasPage,
@@ -105,12 +79,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
     let ideas = showCompleted
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
-
-    if (filteringByRatio !== "") {
-      ideas = ideas.filter((i) => {
-        return (i.myRating.rating ?? 0) * i.idea.complexity === filteringByRatio
-      })
-    }
 
     if (settings?.hiddenTabsIds) {
       ideas = ideas.filter(
@@ -161,6 +129,13 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
   const { openDialog } = useHideTabsDialogStore()
 
+  const totalComplexityAssigned = useMemo(() => {
+    return sortedIdeas.reduce((acc, idea) => {
+      if (!idea.iAmAssigned) return acc
+      return acc + idea.idea.complexity
+    }, 0)
+  }, [sortedIdeas])
+
   if (!isSuccess) {
     return null
   }
@@ -181,7 +156,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
             aria-label="basic tabs example"
           >
             <Tab label="Oldest rated" />
-            <Tab label="Highest R*C" />
+            <Tab label="Highest complexity" />
           </Tabs>
 
           <Button onClick={() => openDialog()}>Hidden tabs</Button>
@@ -201,28 +176,15 @@ const HighlyRatedIdeasTable = (props: Props) => {
           sx={{
             width: "100%",
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
             p: 1,
+            pl: 2,
           }}
         >
+          <FlexVCenter>
+            Complexity assigned: {totalComplexityAssigned}
+          </FlexVCenter>
           <FlexVCenter gap={2}>
-            <MyTextField
-              sx={{
-                width: 100,
-              }}
-              value={filteringByRatio}
-              onChange={(e) => {
-                if (e.target.value === "") {
-                  setFilteringByRatio("")
-                  return
-                }
-                setFilteringByRatio(Number(e.target.value))
-              }}
-              label="R*C"
-              type="number"
-              variant="outlined"
-            />
-
             <FormControlLabel
               control={
                 <Switch

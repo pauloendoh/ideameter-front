@@ -21,7 +21,6 @@ import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHigh
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import NextLink from "next/link"
-import { useMemo } from "react"
 import { MdDelete, MdOutlineLowPriority } from "react-icons/md"
 import { PiTabs } from "react-icons/pi"
 import { format } from "timeago.js"
@@ -85,16 +84,6 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
 
     refreshRating(props.ideaAssignment.myRating.id)
   }
-
-  const ratingComplexityRatio = useMemo(() => {
-    if (props) {
-      console.log("props", props)
-    }
-    return (
-      (props.ideaAssignment.myRating?.rating ?? 0) *
-      props.ideaAssignment.idea.complexity
-    )
-  }, [props.ideaAssignment])
 
   return (
     <S.TableRow
@@ -174,11 +163,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
       </TableCell>
       {props.isHighlyRatedIdeasPage && (
         <TableCell align="center">
-          <Tooltip
-            title={`${props.ideaAssignment.myRating?.rating}^${props.ideaAssignment.idea.complexity} = ${ratingComplexityRatio}`}
-          >
-            <div>{ratingComplexityRatio}</div>
-          </Tooltip>
+          {props.ideaAssignment.idea.complexity}
         </TableCell>
       )}
       <TableCell>
