@@ -4,8 +4,12 @@ import AssignedIdeasTableHead, {
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHighImpactVotedByMeQuery"
+import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
+import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
+  Box,
+  Button,
   FormControlLabel,
   Paper,
   Switch,
@@ -47,16 +51,24 @@ const HighImpactVotedTable = (props: Props) => {
   const [showCompleted, setShowCompleted] = useState(false)
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
 
+  const { data: userSettings } = useUserSettingsQuery()
+
   const { getUserId } = useAuthStore()
 
+  const { openDialog } = useHideTabsDialogStore()
+
   const sortedIdeas = useMemo(() => {
-    if (!data) {
+    if (!data || !userSettings) {
       return []
     }
 
     let ideas = showCompleted
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
+
+    ideas = ideas.filter(
+      (i) => !userSettings.hiddenTabsIds.includes(i.tab.tabId)
+    )
 
     if (showAssignedToMeIdeas) {
       ideas = ideas.filter((i) => i.iAmAssigned)
@@ -78,7 +90,7 @@ const HighImpactVotedTable = (props: Props) => {
     })
 
     return ideas
-  }, [data, showAssignedToMeIdeas, showCompleted])
+  }, [data, showAssignedToMeIdeas, showCompleted, userSettings])
 
   if (!isSuccess) {
     return null
@@ -86,10 +98,14 @@ const HighImpactVotedTable = (props: Props) => {
 
   return (
     <Paper sx={{ mt: 2, background: "#2B2B2B" }}>
-      <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
-        <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-          Quick return voted (oldest votes first)
-        </Typography>
+      <Box sx={{ pt: 1 }}>
+        <FlexVCenter justifyContent={"space-between"}>
+          <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
+            Quick return voted (oldest votes first)
+          </Typography>
+
+          <Button onClick={() => openDialog()}>Hidden tabs</Button>
+        </FlexVCenter>
         <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader>
             <AssignedIdeasTableHead headers={headers} />
@@ -134,7 +150,7 @@ const HighImpactVotedTable = (props: Props) => {
             />
           </FlexVCenter>
         </TableFooter>
-      </FlexVCenter>
+      </Box>
     </Paper>
   )
 }
