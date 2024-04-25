@@ -130,9 +130,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const { openDialog } = useHideTabsDialogStore()
 
   const totalComplexityAssigned = useMemo(() => {
-    return sortedIdeas.reduce((acc, idea) => {
-      if (!idea.iAmAssigned) return acc
-      return acc + idea.idea.complexity
+    return sortedIdeas.reduce((acc, assign) => {
+      return acc + assign.idea.complexity
     }, 0)
   }, [sortedIdeas])
 
@@ -181,9 +180,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
             pl: 2,
           }}
         >
-          <FlexVCenter>
-            Complexity assigned: {totalComplexityAssigned}
-          </FlexVCenter>
+          <FlexVCenter>Total complexity: {totalComplexityAssigned}</FlexVCenter>
           <FlexVCenter gap={2}>
             <FormControlLabel
               control={
