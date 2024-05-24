@@ -92,7 +92,7 @@ const IdeaDialogRightCol = (props: Props) => {
                   width: "fit-content",
                 }}
               >
-                Freq.
+                Frequency
               </span>
             </Tooltip>
             <MyTextField
@@ -135,7 +135,7 @@ const IdeaDialogRightCol = (props: Props) => {
               }
               arrow
             >
-              <span style={{ width: "fit-content" }}>Impr.</span>
+              <span style={{ width: "fit-content" }}>Improvement</span>
             </Tooltip>
             <MyTextField
               type="number"
