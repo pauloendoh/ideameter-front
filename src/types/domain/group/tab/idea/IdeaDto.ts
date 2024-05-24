@@ -26,6 +26,8 @@ export default interface IdeaDto {
   labels: LabelDto[]
   assignedUsers: SimpleUserDto[]
   highImpactVotes: HighImpactVoteDto[]
+  frequencyRate: number | null
+  improvementRate: number | null
 
   subideaImageUrl: string
 }
@@ -46,6 +48,8 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   irrelevantSince: null,
   ratingsAreEnabled: true,
   complexity: 0,
+  frequencyRate: null,
+  improvementRate: null,
 
   labels: [],
   assignedUsers: [],
