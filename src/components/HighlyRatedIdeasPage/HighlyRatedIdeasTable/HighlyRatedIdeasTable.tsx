@@ -18,7 +18,6 @@ import {
   TableContainer,
   TableFooter,
   Tabs,
-  Tooltip,
   Typography,
 } from "@mui/material"
 import { useMemo, useState } from "react"
@@ -37,56 +36,11 @@ const headers: Header[] = [
     align: "left",
   },
   {
-    title: "RES",
+    title: "Reward",
     width: 100,
     align: "center",
   },
-  {
-    title: "Freq.",
-    reactNode: (
-      <Tooltip
-        title={
-          <span>
-            FREQUENCY (of pain?..) <br />
-            5. Everyday <br />
-            4. Every other day <br />
-            3. Once a week <br />
-            2. Once a month <br />
-            1. Once a year
-          </span>
-        }
-        arrow
-      >
-        <span>Freq.</span>
-      </Tooltip>
-    ),
-    width: 100,
-    align: "center",
-  },
-  {
-    title: "Impr.",
-    reactNode: (
-      <Tooltip
-        title={
-          <span>
-            Improvement: o quanto pode melhorar minha experiência no meu dia a
-            dia <br />
-            5. Maybe life changing <br />
-            4. Great improvement <br />
-            3. Nice to have <br />
-            2. Yea this is a little better i guess? <br />
-            1. No?
-          </span>
-        }
-        arrow
-      >
-        <span>Impr.</span>
-      </Tooltip>
-    ),
 
-    width: 100,
-    align: "center",
-  },
   {
     title: "Group",
     width: 200,
@@ -108,10 +62,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const { data: settings } = useUserSettingsQuery()
 
   const [sortBy, setSortBy] = useLocalStorage<
-    "oldest-rated" | "highest-result"
+    "oldest-rated" | "highest-reward"
   >({
     key: localStorageKeys.sortByHighlyRatedIdeasPage,
-    defaultValue: "highest-result",
+    defaultValue: "highest-reward",
   })
 
   const tabIndex = useMemo(() => {
@@ -147,17 +101,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
       })
     }
 
-    if (sortBy === "highest-result") {
+    if (sortBy === "highest-reward") {
       ideas = ideas.sort((a, b) => {
-        const valueA =
-          (a.idea.frequencyRate ?? 0) * (a.idea.improvementRate ?? 0)
-        const valueB =
-          (b.idea.frequencyRate ?? 0) * (b.idea.improvementRate ?? 0)
-
-        if (valueA === valueB) {
-          // sort by rating updated asc
-          return a.myRating.updatedAt > b.myRating.updatedAt ? 1 : -1
-        }
+        const valueA = a.idea.rewarding ?? 0
+        const valueB = b.idea.rewarding ?? 0
 
         return valueA < valueB ? 1 : -1
       })
@@ -199,11 +146,11 @@ const HighlyRatedIdeasTable = (props: Props) => {
           <Tabs
             value={tabIndex}
             onChange={(e, value) => {
-              setSortBy(value === 0 ? "highest-result" : "oldest-rated")
+              setSortBy(value === 0 ? "highest-reward" : "oldest-rated")
             }}
             aria-label="basic tabs example"
           >
-            <Tab label="Highest RES" />
+            <Tab label="Highest reward" />
             <Tab label="Oldest rated" />
           </Tabs>
 
