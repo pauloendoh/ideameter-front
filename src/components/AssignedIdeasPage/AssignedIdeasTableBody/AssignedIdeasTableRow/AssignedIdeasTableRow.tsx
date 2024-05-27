@@ -162,9 +162,14 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
         </FlexCol>
       </TableCell>
       {props.isHighlyRatedIdeasPage && (
-        <TableCell align="center">
-          {props.ideaAssignment.idea.rewarding}
-        </TableCell>
+        <>
+          <TableCell align="center">
+            {props.ideaAssignment.idea.rewarding}
+          </TableCell>
+          <TableCell align="center">
+            {props.ideaAssignment.idea.complexity}
+          </TableCell>
+        </>
       )}
       <TableCell>
         <NextLink

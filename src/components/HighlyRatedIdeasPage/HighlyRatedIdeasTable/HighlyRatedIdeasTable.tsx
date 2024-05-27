@@ -40,7 +40,11 @@ const headers: Header[] = [
     width: 100,
     align: "center",
   },
-
+  {
+    title: "Complexity",
+    width: 100,
+    align: "center",
+  },
   {
     title: "Group",
     width: 200,
