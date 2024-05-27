@@ -1,10 +1,9 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
-import { Box, Grid, Tooltip, Typography } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
 import { useMemo } from "react"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
 import CreatedUpdatedAtIdeaDialog from "../CreatedUpdatedAtIdeaDialog/CreatedUpdatedAtIdeaDialog"
@@ -69,99 +68,6 @@ const IdeaDialogRightCol = (props: Props) => {
             step: 1,
           }}
         />
-
-        <Box />
-
-        <FlexVCenter gap={1}>
-          <FlexCol>
-            <Tooltip
-              title={
-                <span>
-                  FREQUENCY (of pain?..) <br />
-                  5. Everyday <br />
-                  4. Every other day <br />
-                  3. Once a week <br />
-                  2. Once a month <br />
-                  1. Once a year
-                </span>
-              }
-              arrow
-            >
-              <span
-                style={{
-                  width: "fit-content",
-                }}
-              >
-                Frequency
-              </span>
-            </Tooltip>
-            <MyTextField
-              type="number"
-              value={props.watch("frequencyRate")}
-              onChange={(e) => {
-                if (e.target.value === "")
-                  return props.setValue("frequencyRate", null)
-
-                const num = Number(e.target.value)
-                const min = 1
-                const max = 5
-                if (num < min) {
-                  e.target.value = min.toString()
-                }
-                if (num > max) {
-                  e.target.value = max.toString()
-                }
-
-                props.setValue("frequencyRate", Number(e.target.value))
-              }}
-              inputProps={{
-                step: 1,
-              }}
-            />
-          </FlexCol>
-
-          <FlexCol>
-            <Tooltip
-              title={
-                <span>
-                  Improvement: o quanto pode melhorar minha experiência no meu
-                  dia a dia <br />
-                  5. Maybe life changing <br />
-                  4. Great improvement <br />
-                  3. Nice to have <br />
-                  2. Yea this is a little better i guess? <br />
-                  1. No?
-                </span>
-              }
-              arrow
-            >
-              <span style={{ width: "fit-content" }}>Improvement</span>
-            </Tooltip>
-            <MyTextField
-              type="number"
-              value={props.watch("improvementRate")}
-              onChange={(e) => {
-                if (e.target.value === "")
-                  return props.setValue("improvementRate", null)
-
-                const num = Number(e.target.value)
-                const min = 1
-                const max = 5
-                if (num < min) {
-                  e.target.value = min.toString()
-                }
-                if (num > max) {
-                  e.target.value = max.toString()
-                }
-
-                props.setValue("improvementRate", Number(e.target.value))
-              }}
-              inputProps={{
-                step: 1,
-              }}
-            />
-          </FlexCol>
-        </FlexVCenter>
 
         <Box />
 
