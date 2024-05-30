@@ -1,4 +1,5 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
+import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
@@ -52,51 +53,52 @@ const IdeaDialogRightCol = (props: Props) => {
 
         <Box />
 
-        <MyTextField
-          type="number"
-          label="Complexity"
-          value={props.watch("complexity")}
-          onChange={(e) => {
-            const num = Number(e.target.value)
-            const min = 0
-            if (num < min) {
-              e.target.value = min.toString()
-            }
-            props.setValue("complexity", Number(e.target.value))
-          }}
-          inputProps={{
-            step: 1,
-          }}
-        />
+        <FlexVCenter gap={2}>
+          <MyTextField
+            type="number"
+            label="Rewarding"
+            value={props.watch("rewarding")}
+            onChange={(e) => {
+              if (e.target.value === "")
+                return props.setValue("rewarding", null)
 
-        <Box />
+              const num = Number(e.target.value)
+              const min = 1
+              const max = 5
+              if (num < min) {
+                e.target.value = min.toString()
+              }
+              if (num > max) {
+                e.target.value = max.toString()
+              }
 
-        <MyTextField
-          type="number"
-          label="Rewarding"
-          value={props.watch("rewarding")}
-          onChange={(e) => {
-            if (e.target.value === "") return props.setValue("rewarding", null)
+              props.setValue("rewarding", Number(e.target.value))
+            }}
+            inputProps={{
+              step: 1,
+            }}
+            sx={{
+              maxWidth: "140px",
+            }}
+          />
 
-            const num = Number(e.target.value)
-            const min = 1
-            const max = 5
-            if (num < min) {
-              e.target.value = min.toString()
-            }
-            if (num > max) {
-              e.target.value = max.toString()
-            }
-
-            props.setValue("rewarding", Number(e.target.value))
-          }}
-          inputProps={{
-            step: 1,
-          }}
-          sx={{
-            maxWidth: "140px",
-          }}
-        />
+          <MyTextField
+            type="number"
+            label="Complexity"
+            value={props.watch("complexity")}
+            onChange={(e) => {
+              const num = Number(e.target.value)
+              const min = 0
+              if (num < min) {
+                e.target.value = min.toString()
+              }
+              props.setValue("complexity", Number(e.target.value))
+            }}
+            inputProps={{
+              step: 1,
+            }}
+          />
+        </FlexVCenter>
 
         <Box />
 
