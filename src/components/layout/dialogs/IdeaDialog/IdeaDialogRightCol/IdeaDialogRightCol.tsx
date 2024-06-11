@@ -75,7 +75,7 @@ const IdeaDialogRightCol = (props: Props) => {
               props.setValue("rewarding", Number(e.target.value))
             }}
             inputProps={{
-              step: 1,
+              step: 0.1,
             }}
             sx={{
               maxWidth: "140px",
@@ -95,7 +95,7 @@ const IdeaDialogRightCol = (props: Props) => {
               props.setValue("complexity", Number(e.target.value))
             }}
             inputProps={{
-              step: 1,
+              step: 0.1,
             }}
           />
         </FlexVCenter>
