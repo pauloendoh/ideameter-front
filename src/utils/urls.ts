@@ -59,7 +59,8 @@ const urls = {
     ideaName: (ideaId: string) => `/idea/${ideaId}/name`,
     ideaRating: (ideaId: string) => `/idea/${ideaId}/rating`,
 
-    moveRatingPosition: (ratingId: string) => `/rating/${ratingId}/move-position`,
+    moveRatingPosition: (ratingId: string) =>
+      `/rating/${ratingId}/move-position`,
 
     labelId: (labelId: string) => `/labels/${labelId}`,
 
@@ -88,6 +89,7 @@ const urls = {
 
     allGroupsAndTabs: "/me/groups/tabs",
     refreshRating: (ratingId: string) => `/rating/${ratingId}/refresh`,
+    searchGroupTabs: (query: string) => `/search-group-tabs?q=${query}`,
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,

@@ -1,15 +1,15 @@
-import { Box } from "@mui/material";
-import React from "react";
+import { Box } from "@mui/material"
+import React from "react"
 
-// PE 3/3
-const FlexVCenter = (props: Props) => {
+type Props = React.ComponentProps<typeof Box>
+
+// forwardRef
+const FlexVCenter = React.forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
-    <Box display="flex" alignItems="center" {...props}>
+    <Box display="flex" alignItems="center" {...props} ref={ref}>
       {props.children}
     </Box>
-  );
-};
+  )
+})
 
-type Props = React.ComponentProps<typeof Box>;
-
-export default FlexVCenter;
+export default FlexVCenter
