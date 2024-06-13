@@ -55,6 +55,14 @@ const NavbarSearch = ({ ...props }: Props) => {
               setSearch(getOptionLabel(option))
             }
           }}
+          filterOptions={(options, params) => {
+            const filtered = options.filter((option) => {
+              const label = getOptionLabel(option)
+              return textContainsWords(label, params.inputValue)
+            })
+
+            return filtered
+          }}
           renderOption={(props, option) => (
             <li {...props}>
               <Link href={urls.pages.groupTab(option.group.id!, option.tab.id)}>
