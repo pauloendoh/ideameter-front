@@ -45,7 +45,7 @@ const NavbarSearch = ({ ...props }: Props) => {
           style={{ width: 300 }}
           size="small"
           freeSolo
-          options={data?.slice(0, 10) ?? []}
+          options={data ?? []}
           getOptionLabel={(option) => {
             if (typeof option === "string") return option
             return getOptionLabel(option)
