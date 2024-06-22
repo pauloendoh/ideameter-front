@@ -117,8 +117,11 @@ const HighlyRatedIdeasTable = (props: Props) => {
     if (showCompleted) {
       // desc
       ideas = ideas.sort((a, b) => {
-        const valueA = a.idea.completedAt ?? 0
-        const valueB = b.idea.completedAt ?? 0
+        const valueA = a.idea.completedAt
+        const valueB = b.idea.completedAt
+
+        if (!valueA) return 1
+        if (!valueB) return -1
 
         return valueA < valueB ? 1 : -1
       })
