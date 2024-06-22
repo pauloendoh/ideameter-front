@@ -114,6 +114,16 @@ const HighlyRatedIdeasTable = (props: Props) => {
       })
     }
 
+    if (showCompleted) {
+      // desc
+      ideas = ideas.sort((a, b) => {
+        const valueA = a.idea.completedAt ?? 0
+        const valueB = b.idea.completedAt ?? 0
+
+        return valueA < valueB ? 1 : -1
+      })
+    }
+
     return ideas
   }, [
     data,
