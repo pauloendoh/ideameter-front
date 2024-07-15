@@ -60,8 +60,9 @@ const headers: Header[] = [
 const HighlyRatedIdeasTable = (props: Props) => {
   const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
-  const [showCompleted, setShowCompleted] = useState(false)
+  const [showWithoutReward, setShowWithoutReward] = useState(false)
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
+  const [showCompleted, setShowCompleted] = useState(false)
 
   const { data: settings } = useUserSettingsQuery()
 
@@ -89,6 +90,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ideas = ideas.filter(
         (i) => !settings.hiddenTabsIds.includes(String(i.tab.tabId))
       )
+    }
+
+    if (showWithoutReward) {
+      ideas = ideas.filter((i) => i.idea.rewarding === null)
     }
 
     if (showAssignedToMeIdeas) {
@@ -135,6 +140,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
     showCompleted,
     settings,
   ])
+
+  const ideasWithoutRewardCount = useMemo(() => {
+    return sortedIdeas.filter((i) => i.idea.rewarding === null).length
+  }, [sortedIdeas])
 
   const assignedToMeCount = useMemo(() => {
     return sortedIdeas.filter((i) => i.iAmAssigned).length
@@ -195,6 +204,17 @@ const HighlyRatedIdeasTable = (props: Props) => {
         >
           <FlexVCenter>Total complexity: {totalComplexityAssigned}</FlexVCenter>
           <FlexVCenter gap={2}>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={showWithoutReward}
+                  checked={showWithoutReward}
+                  onClick={() => setShowWithoutReward(!showWithoutReward)}
+                />
+              }
+              label={`Without reward (${ideasWithoutRewardCount})`}
+            />
+
             <FormControlLabel
               control={
                 <Switch
