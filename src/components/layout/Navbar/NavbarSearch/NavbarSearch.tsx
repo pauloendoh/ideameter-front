@@ -1,4 +1,3 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import {
   TabGroup,
@@ -73,7 +72,7 @@ const NavbarSearch = ({ ...props }: Props) => {
                     width: "100%",
                   }}
                 >
-                  <FlexVCenter>
+                  <span>
                     <span
                       style={{
                         fontWeight: textContainsWords(option.group.name, search)
@@ -93,7 +92,7 @@ const NavbarSearch = ({ ...props }: Props) => {
                     >
                       {option.tab.name}
                     </span>
-                  </FlexVCenter>
+                  </span>
                 </a>
               </Link>
             </li>
