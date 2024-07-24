@@ -45,6 +45,11 @@ export const ideaSortOptionsDivided: {
       buttonLabel: "by Quick Return Voted Date",
       menuText: "Quick Return Voted Date",
     },
+    {
+      attribute: "rewarding",
+      buttonLabel: "by Rewarding",
+      menuText: "Rewarding",
+    },
   ],
   [
     {

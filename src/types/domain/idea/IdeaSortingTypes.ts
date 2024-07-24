@@ -7,6 +7,7 @@ export type IdeaSortAttributeType =
   | "completedAt"
   | "requiresYourRating"
   | "highVotedAt"
+  | "rewarding"
 
 export type SortOrderType = "desc" | "asc"
 
