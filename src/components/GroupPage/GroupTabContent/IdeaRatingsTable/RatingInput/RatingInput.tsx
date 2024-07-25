@@ -101,7 +101,7 @@ const RatingInput = (props: Props) => {
       {!props.isDisabled && props.hideInput ? (
         <FlexVCenter sx={{ width: 64, justifyContent: "center" }}>
           {myCurrentRating === 0 && "-"}
-          {myCurrentRating > 0 && myCurrentRating}
+          {myCurrentRating !== null && myCurrentRating > 0 && myCurrentRating}
         </FlexVCenter>
       ) : (
         // <NativeSelect
