@@ -115,6 +115,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
         const valueA = a.idea.rewarding ?? 0
         const valueB = b.idea.rewarding ?? 0
 
+        if (valueA === valueB) {
+          return a.idea.createdAt > b.idea.createdAt ? 1 : -1
+        }
+
         return valueA < valueB ? 1 : -1
       })
     }
