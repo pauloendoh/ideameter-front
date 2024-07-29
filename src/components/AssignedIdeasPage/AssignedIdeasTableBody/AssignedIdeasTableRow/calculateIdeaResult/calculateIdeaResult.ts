@@ -4,5 +4,7 @@ export const calculateIdeaResult = (idea: IdeaDto): number => {
   const rewarding = idea.rewarding || 0
   const discomfortZone = idea.discomfortZone || 0
 
-  return Math.pow(rewarding, 2) * discomfortZone
+  const result = Math.pow(rewarding, 2) * discomfortZone
+
+  return Math.round(result)
 }
