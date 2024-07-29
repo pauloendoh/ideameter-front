@@ -29,6 +29,7 @@ export default interface IdeaDto {
   frequencyRate: number | null
   improvementRate: number | null
   rewarding: number | null
+  discomfortZone: number | null
 
   subideaImageUrl: string
 }
@@ -52,6 +53,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   frequencyRate: null,
   improvementRate: null,
   rewarding: null,
+  discomfortZone: null,
 
   labels: [],
   assignedUsers: [],

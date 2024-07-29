@@ -1,4 +1,5 @@
 import AssignedIdeasTableBody from "@/components/AssignedIdeasPage/AssignedIdeasTableBody/AssignedIdeasTableBody"
+import { calculateIdeaResult } from "@/components/AssignedIdeasPage/AssignedIdeasTableBody/AssignedIdeasTableRow/calculateIdeaResult/calculateIdeaResult"
 import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
@@ -36,12 +37,17 @@ const headers: Header[] = [
     align: "left",
   },
   {
+    title: "Result",
+    width: 100,
+    align: "center",
+  },
+  {
     title: "Reward",
     width: 100,
     align: "center",
   },
   {
-    title: "Complexity",
+    title: "Discomfort",
     width: 100,
     align: "center",
   },
@@ -67,10 +73,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const { data: settings } = useUserSettingsQuery()
 
   const [sortBy, setSortBy] = useLocalStorage<
-    "oldest-rated" | "highest-reward"
+    "oldest-rated" | "highest-result"
   >({
     key: localStorageKeys.sortByHighlyRatedIdeasPage,
-    defaultValue: "highest-reward",
+    defaultValue: "highest-result",
   })
 
   const tabIndex = useMemo(() => {
@@ -110,14 +116,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
       })
     }
 
-    if (sortBy === "highest-reward") {
+    if (sortBy === "highest-result") {
       ideas = ideas.sort((a, b) => {
-        const valueA = a.idea.rewarding ?? 0
-        const valueB = b.idea.rewarding ?? 0
-
-        if (valueA === valueB) {
-          return a.idea.createdAt > b.idea.createdAt ? 1 : -1
-        }
+        const valueA = calculateIdeaResult(a.idea)
+        const valueB = calculateIdeaResult(b.idea)
 
         return valueA < valueB ? 1 : -1
       })
@@ -176,11 +178,11 @@ const HighlyRatedIdeasTable = (props: Props) => {
           <Tabs
             value={tabIndex}
             onChange={(e, value) => {
-              setSortBy(value === 0 ? "highest-reward" : "oldest-rated")
+              setSortBy(value === 0 ? "highest-result" : "oldest-rated")
             }}
             aria-label="basic tabs example"
           >
-            <Tab label="Highest reward" />
+            <Tab label="Highest result" />
             <Tab label="Oldest rated" />
           </Tabs>
 

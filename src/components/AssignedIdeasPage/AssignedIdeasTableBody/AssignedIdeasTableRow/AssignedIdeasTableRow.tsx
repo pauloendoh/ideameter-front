@@ -25,6 +25,7 @@ import { MdDelete, MdOutlineLowPriority } from "react-icons/md"
 import { PiTabs } from "react-icons/pi"
 import { format } from "timeago.js"
 import S from "../AssignedIdeasTableBody.styles"
+import { calculateIdeaResult } from "./calculateIdeaResult/calculateIdeaResult"
 
 type Props = {
   ideaAssignment: AssignedToMeDto
@@ -164,10 +165,14 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
       {props.isHighlyRatedIdeasPage && (
         <>
           <TableCell align="center">
+            {calculateIdeaResult(props.ideaAssignment.idea)}
+          </TableCell>
+
+          <TableCell align="center">
             {props.ideaAssignment.idea.rewarding}
           </TableCell>
           <TableCell align="center">
-            {props.ideaAssignment.idea.complexity}
+            {props.ideaAssignment.idea.discomfortZone}
           </TableCell>
         </>
       )}

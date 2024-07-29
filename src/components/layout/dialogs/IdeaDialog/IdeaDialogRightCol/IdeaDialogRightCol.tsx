@@ -84,6 +84,38 @@ const IdeaDialogRightCol = (props: Props) => {
 
           <MyTextField
             type="number"
+            label="Discomfort Zone"
+            value={props.watch("discomfortZone")}
+            onChange={(e) => {
+              if (e.target.value === "")
+                return props.setValue("discomfortZone", null)
+
+              const num = Number(e.target.value)
+              const min = 1
+              const max = 5
+              if (num < min) {
+                e.target.value = min.toString()
+              }
+              if (num > max) {
+                e.target.value = max.toString()
+              }
+
+              props.setValue("discomfortZone", Number(e.target.value))
+            }}
+            inputProps={{
+              step: 0.1,
+            }}
+            sx={{
+              maxWidth: "140px",
+            }}
+          />
+        </FlexVCenter>
+
+        <Box />
+
+        <FlexVCenter gap={2}>
+          <MyTextField
+            type="number"
             label="Complexity"
             value={props.watch("complexity")}
             onChange={(e) => {
