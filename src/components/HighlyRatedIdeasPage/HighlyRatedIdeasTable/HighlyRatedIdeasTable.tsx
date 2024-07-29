@@ -121,6 +121,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
         const valueA = calculateIdeaResult(a.idea)
         const valueB = calculateIdeaResult(b.idea)
 
+        if (valueA === valueB) {
+          const rewardingA = a.idea.rewarding ?? 0
+          const rewardingB = b.idea.rewarding ?? 0
+          return rewardingA < rewardingB ? 1 : -1
+        }
+
         return valueA < valueB ? 1 : -1
       })
     }
