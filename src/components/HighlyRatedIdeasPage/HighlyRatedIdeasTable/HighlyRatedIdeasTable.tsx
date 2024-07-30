@@ -37,7 +37,7 @@ const headers: Header[] = [
     align: "left",
   },
   {
-    title: "Result",
+    title: "Result (EXP)",
     width: 100,
     align: "center",
   },
