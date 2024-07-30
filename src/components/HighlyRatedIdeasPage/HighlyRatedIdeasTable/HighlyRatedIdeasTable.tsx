@@ -47,7 +47,7 @@ const headers: Header[] = [
     align: "center",
   },
   {
-    title: "Discomfort",
+    title: "Discomfort Zone",
     width: 100,
     align: "center",
   },
