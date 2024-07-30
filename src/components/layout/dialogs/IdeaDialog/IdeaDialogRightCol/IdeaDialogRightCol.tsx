@@ -113,7 +113,7 @@ const IdeaDialogRightCol = (props: Props) => {
 
         <Box />
 
-        <FlexVCenter gap={2}>
+        {/* <FlexVCenter gap={2}>
           <MyTextField
             type="number"
             label="Complexity"
@@ -132,7 +132,7 @@ const IdeaDialogRightCol = (props: Props) => {
           />
         </FlexVCenter>
 
-        <Box />
+        <Box /> */}
 
         {props.watch("id") && (
           <ArchiveSection
