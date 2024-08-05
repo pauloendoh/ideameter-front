@@ -4,6 +4,7 @@ import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
@@ -67,6 +68,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
   const [showWithoutReward, setShowWithoutReward] = useState(false)
+  const [minReward, setMinReward] = useLocalStorage<number>({
+    key: localStorageKeys.highlyRatedPage.minReward,
+    defaultValue: 0,
+  })
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
 
@@ -104,6 +109,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
     if (showAssignedToMeIdeas) {
       ideas = ideas.filter((i) => i.iAmAssigned)
+    }
+
+    if (minReward > 0) {
+      ideas = ideas.filter((i) => (i.idea.rewarding ?? 0) >= minReward)
     }
 
     if (sortBy === "oldest-rated") {
@@ -230,7 +239,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
         >
           <FlexVCenter>Total complexity: {totalComplexityAssigned}</FlexVCenter>
           <FlexVCenter gap={2}>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={
                 <Switch
                   defaultChecked={showWithoutReward}
@@ -239,6 +248,23 @@ const HighlyRatedIdeasTable = (props: Props) => {
                 />
               }
               label={`Without reward (${ideasWithoutRewardCount})`}
+            /> */}
+
+            <MyTextField
+              label="Min reward"
+              type="number"
+              value={minReward}
+              onChange={(e) => {
+                const value = e.target.value
+                if (value === "") {
+                  setMinReward(0)
+                } else {
+                  setMinReward(parseInt(value))
+                }
+              }}
+              sx={{
+                width: 100,
+              }}
             />
 
             <FormControlLabel
