@@ -117,18 +117,27 @@ const HighlyRatedIdeasTable = (props: Props) => {
     }
 
     if (sortBy === "highest-result") {
-      ideas = ideas.sort((a, b) => {
-        const valueA = calculateIdeaResult(a.idea)
-        const valueB = calculateIdeaResult(b.idea)
+      ideas = ideas
+        .sort((a, b) => {
+          const valueA = calculateIdeaResult(a.idea)
+          const valueB = calculateIdeaResult(b.idea)
 
-        if (valueA === valueB) {
-          const rewardingA = a.idea.rewarding ?? 0
-          const rewardingB = b.idea.rewarding ?? 0
-          return rewardingA < rewardingB ? 1 : -1
-        }
+          if (valueA === valueB) {
+            const rewardingA = a.idea.rewarding ?? 0
+            const rewardingB = b.idea.rewarding ?? 0
+            return rewardingA < rewardingB ? 1 : -1
+          }
 
-        return valueA < valueB ? 1 : -1
-      })
+          return valueA < valueB ? 1 : -1
+        })
+        .sort((a, b) => {
+          const hasImpactVoteA = Boolean(a.idea.highImpactVotes[0])
+          const hasImpactVoteB = Boolean(b.idea.highImpactVotes[0])
+          // the ones that have impact votes should be on top
+          if (hasImpactVoteA && !hasImpactVoteB) return -1
+          if (!hasImpactVoteA && hasImpactVoteB) return 1
+          return 0
+        })
     }
 
     if (showCompleted) {
