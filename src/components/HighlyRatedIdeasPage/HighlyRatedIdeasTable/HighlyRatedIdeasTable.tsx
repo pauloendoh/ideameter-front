@@ -131,11 +131,16 @@ const HighlyRatedIdeasTable = (props: Props) => {
           return valueA < valueB ? 1 : -1
         })
         .sort((a, b) => {
-          const hasImpactVoteA = Boolean(a.idea.highImpactVotes[0])
-          const hasImpactVoteB = Boolean(b.idea.highImpactVotes[0])
+          const youHighImpactVotedA = a.idea.highImpactVotes.some(
+            (v) => v.userId === a.myRating.userId
+          )
+          const youHighImpactVotedB = b.idea.highImpactVotes.some(
+            (v) => v.userId === b.myRating.userId
+          )
+
           // the ones that have impact votes should be on top
-          if (hasImpactVoteA && !hasImpactVoteB) return -1
-          if (!hasImpactVoteA && hasImpactVoteB) return 1
+          if (youHighImpactVotedA && !youHighImpactVotedB) return -1
+          if (!youHighImpactVotedA && youHighImpactVotedB) return 1
           return 0
         })
     }
