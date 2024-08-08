@@ -1,4 +1,4 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import Flex from "@/components/_common/flexboxes/Flex"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { CommentDto } from "@/hooks/react-query/domain/comment/types/CommentDto"

@@ -1,4 +1,4 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import Txt from "@/components/_common/text/Txt"
@@ -31,7 +31,8 @@ const IdeaAssignDialog = () => {
 
   const { data: members } = useGroupMembersQuery(routerQuery.groupId!)
 
-  const { initialValues, onChange, dialogIsOpen, closeDialog } = useIdeaAssignmentStore()
+  const { initialValues, onChange, dialogIsOpen, closeDialog } =
+    useIdeaAssignmentStore()
 
   const [localValues, setLocalValues] = useState<SimpleUserDto[]>([])
 
@@ -123,7 +124,8 @@ const IdeaAssignDialog = () => {
                   <Checkbox
                     checked={member.user && idIsChecked(member.user.id)}
                     onChange={(e) => {
-                      if (member.user) handleChange(member.user, e.currentTarget.checked)
+                      if (member.user)
+                        handleChange(member.user, e.currentTarget.checked)
                     }}
                   />
                 }

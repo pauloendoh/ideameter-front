@@ -3,7 +3,7 @@ import useMoveIdeasToTabDialogStore from "@/hooks/zustand/dialogs/useMoveIdeasTo
 import { Button, IconButton, Typography, useTheme } from "@mui/material"
 import { BsArrowRightCircle } from "react-icons/bs"
 import { MdOutlineClose } from "react-icons/md"
-import useMultiSelectIdeas from "../GroupTabContent/IdeaRatingsTable/useMultiSelectIdeas/useMultiSelectIdeas"
+import useMultiSelectIdeas from "../GroupTabContent/IdeaTable/useMultiSelectIdeas/useMultiSelectIdeas"
 
 interface Props {
   selectedIdeaIds: string[]

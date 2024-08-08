@@ -1,4 +1,4 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"

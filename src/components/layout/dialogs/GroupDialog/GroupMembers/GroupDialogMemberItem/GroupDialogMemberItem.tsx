@@ -1,4 +1,4 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import { useDismissAdminMutation } from "@/hooks/react-query/domain/group-members/useDismissAdminMutation"
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"

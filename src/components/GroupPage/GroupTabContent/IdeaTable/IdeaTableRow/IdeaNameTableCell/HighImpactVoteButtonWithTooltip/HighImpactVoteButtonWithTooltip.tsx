@@ -1,6 +1,5 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
-import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { Tooltip, Typography } from "@mui/material"
@@ -14,11 +13,8 @@ type Props = {
   groupId: string
 }
 
-// PE 1/3 - what's the difference with HighImpactVoteButton  ?
-const HighImpactVoteIcon = (props: Props) => {
+const HighImpactVoteButtonWithTooltip = (props: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
-
-  const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
   const youVotedHighImpact = useMemo(
     () =>
@@ -70,4 +66,4 @@ const HighImpactVoteIcon = (props: Props) => {
   )
 }
 
-export default HighImpactVoteIcon
+export default HighImpactVoteButtonWithTooltip

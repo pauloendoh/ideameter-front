@@ -6,64 +6,56 @@ import { socketEvents } from "@/utils/socketEvents"
 import { useEffect } from "react"
 import { useQueryClient } from "react-query"
 import { useMySocketEvent } from "../../useMySocketEvent"
-import { useDeletedRatingSocket } from "./useDeletedRatingSocket/useDeletedRatingSocket"
-import { useSavedRatingSocket } from "./useSaveRatingSocket/useSavedRatingSocket"
+import { useDeletedRatingWSListener } from "./useDeletedRatingWSListener/useDeletedRatingWSListener"
+import { useMovedIdeasWSListener } from "./useMovedIdeasWSListener/useMovedIdeasWSListener"
+import { useSavedRatingWSListener } from "./useSavedRatingWSListener/useSavedRatingWSListener"
 
-// PE 1/3
 export const useGroupRelatedSockets = (groupId: string | undefined) => {
-  const { sendMessage: sendEnterGroupMessage, socket } = useMySocketEvent<string>(
-    "enter-group"
-  )
+  useMovedIdeasWSListener(groupId!)
+  useSavedRatingWSListener()
+  useDeletedRatingWSListener()
+
+  // PE 1/3 - seguir o padrão de WSListener e WSPublisher hooks
+  const { sendMessage: submitEnterGroup, socket } =
+    useMySocketEvent<string>("enter-group")
 
   useEffect(() => {
-    if (groupId && socket.connected) sendEnterGroupMessage(groupId)
+    if (groupId && socket.connected) {
+      submitEnterGroup(groupId)
+    }
   }, [groupId, socket.connected])
 
-  const { lastMessage: lastMessageSaveIdea } = useMySocketEvent<{
+  const { lastMessage: lastSavedIdea } = useMySocketEvent<{
     idea: IdeaDto
     groupId: string
   }>("saveIdea")
+
   const queryClient = useQueryClient()
   useEffect(() => {
-    if (lastMessageSaveIdea && groupId) {
-      queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId), (curr) =>
-        upsert(
-          curr,
-          lastMessageSaveIdea.idea,
-          (i) => i.id === lastMessageSaveIdea.idea.id
-        )
+    if (lastSavedIdea && groupId) {
+      queryClient.setQueryData<IdeaDto[]>(
+        queryKeys.groupIdeas(groupId),
+        (curr) =>
+          upsert(
+            curr,
+            lastSavedIdea.idea,
+            (i) => i.id === lastSavedIdea.idea.id
+          )
       )
     }
-  }, [lastMessageSaveIdea])
+  }, [lastSavedIdea])
 
-  const { lastMessage: lastMessageDeleteIdea } = useMySocketEvent<{
+  const { lastMessage: lastDeletedIdea } = useMySocketEvent<{
     idea: IdeaDto
     groupId: string
   }>(socketEvents.deleteIdea)
 
   useEffect(() => {
-    if (lastMessageDeleteIdea?.groupId) {
+    if (lastDeletedIdea?.groupId) {
       queryClient.setQueryData<IdeaDto[]>(
-        queryKeys.groupIdeas(lastMessageDeleteIdea.groupId),
-        (curr) => pushOrRemove(curr || [], lastMessageDeleteIdea.idea, "id")
+        queryKeys.groupIdeas(lastDeletedIdea.groupId),
+        (curr) => pushOrRemove(curr || [], lastDeletedIdea.idea, "id")
       )
     }
-  }, [lastMessageDeleteIdea])
-
-  const { lastMessage: lastMessageMoveIdeasToTab } = useMySocketEvent<IdeaDto[]>(
-    socketEvents.moveIdeasToTab
-  )
-  useEffect(() => {
-    if (!lastMessageMoveIdeasToTab) return
-
-    for (const idea of lastMessageMoveIdeasToTab) {
-      queryClient.setQueryData<IdeaDto[]>(queryKeys.groupIdeas(groupId!), (curr) => {
-        if (!curr) return [idea]
-        return upsert(curr, idea, (i) => i.id === idea.id)
-      })
-    }
-  }, [lastMessageMoveIdeasToTab])
-
-  useSavedRatingSocket()
-  useDeletedRatingSocket()
+  }, [lastDeletedIdea])
 }

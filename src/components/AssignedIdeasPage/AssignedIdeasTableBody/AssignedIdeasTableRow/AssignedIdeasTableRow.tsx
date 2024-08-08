@@ -1,5 +1,5 @@
-import HighImpactVoteButton from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/IdeaTableRow/IdeaNameTableCell/HighImpactVoteIcon/HighImpactVoteButton/HighImpactVoteButton"
-import { useToggleHighImpactVote } from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/IdeaTableRow/IdeaNameTableCell/HighImpactVoteIcon/useToggleHighImpactVote/useToggleHighImpactVote"
+import HighImpactVoteButton from "@/components/GroupPage/GroupTabContent/IdeaTable/IdeaTableRow/IdeaNameTableCell/HighImpactVoteButtonWithTooltip/HighImpactVoteButton/HighImpactVoteButton"
+import { useToggleHighImpactVote } from "@/components/GroupPage/GroupTabContent/IdeaTable/IdeaTableRow/IdeaNameTableCell/HighImpactVoteButtonWithTooltip/useToggleHighImpactVote/useToggleHighImpactVote"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"

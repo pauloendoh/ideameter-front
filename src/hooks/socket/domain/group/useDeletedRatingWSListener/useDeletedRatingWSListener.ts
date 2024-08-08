@@ -1,24 +1,28 @@
 import { useMySocketEvent } from "@/hooks/socket/useMySocketEvent"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
-import upsert from "@/utils/array/upsert"
+import deleteFromArray from "@/utils/array/deleteFromArray"
 import queryKeys from "@/utils/queryKeys"
 import { socketEvents } from "@/utils/socketEvents"
 import { useEffect } from "react"
 import { useQueryClient } from "react-query"
 
-export const useSavedRatingSocket = () => {
-  const { lastMessage: data } = useMySocketEvent<{
+export const useDeletedRatingWSListener = () => {
+  const { lastMessage } = useMySocketEvent<{
+    ratingId: string
     groupId: string
-    savedRating: RatingDto
-  }>(socketEvents.savedRating)
+  }>(socketEvents.deletedRating)
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    if (!data) return
+    if (!lastMessage) return
+
+    console.log({
+      lastMessage,
+    })
 
     queryClient.setQueryData<RatingDto[]>(
-      queryKeys.ratingsByGroup(data.groupId),
-      (curr) => upsert(curr, data.savedRating, (r) => r.id === data.savedRating.id)
+      queryKeys.ratingsByGroup(lastMessage.groupId),
+      (curr) => deleteFromArray(curr, (r) => r.id === lastMessage.ratingId)
     )
-  }, [data])
+  }, [lastMessage])
 }

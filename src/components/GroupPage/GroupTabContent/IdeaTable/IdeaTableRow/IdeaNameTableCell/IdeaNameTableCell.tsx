@@ -10,7 +10,7 @@ import { useMemo } from "react"
 import { MdDescription, MdImage } from "react-icons/md"
 import HighestSubideaInfo from "../../HighestSubideaInfo/HighestSubideaInfo"
 import UserGroupAvatar from "../../UserTableCell/UserGroupAvatar/UserGroupAvatar"
-import HighImpactVoteIcon from "./HighImpactVoteIcon/HighImpactVoteIcon"
+import HighImpactVoteButtonWithTooltip from "./HighImpactVoteButtonWithTooltip/HighImpactVoteButtonWithTooltip"
 
 interface Props {
   ideaRating: IdeaRating
@@ -154,7 +154,7 @@ const IdeaNameTableCell = (props: Props) => {
           </Flex>
 
           {props.ideaRating.idea.highImpactVotes?.length > 0 && (
-            <HighImpactVoteIcon
+            <HighImpactVoteButtonWithTooltip
               groupId={groupId}
               ideaRating={props.ideaRating}
             />

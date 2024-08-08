@@ -1,4 +1,4 @@
-import useMultiSelectIdeas from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/useMultiSelectIdeas/useMultiSelectIdeas"
+import useMultiSelectIdeas from "@/components/GroupPage/GroupTabContent/IdeaTable/useMultiSelectIdeas/useMultiSelectIdeas"
 import SaveCancelButtons from "@/components/_common/buttons/SaveCancelButtons/SaveCancelButtons"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"

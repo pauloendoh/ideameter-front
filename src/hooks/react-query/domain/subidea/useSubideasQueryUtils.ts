@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 import useSubideasQuery from "./useSubideasQuery"
 
-// PE 1/3 - params? '-'
 const useSubideasQueryUtils = (params: { groupId: string; ideaId: string }) => {
   const { groupId, ideaId } = params
   const { data, isLoading, isFetching } = useSubideasQuery(groupId)

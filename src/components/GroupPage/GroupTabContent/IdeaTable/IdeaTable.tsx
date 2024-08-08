@@ -31,8 +31,7 @@ interface Props {
   isSubideasTable?: boolean
 }
 
-// PE 1/3 - IdeaTable
-const IdeaRatingsTable = ({ ...props }: Props) => {
+const IdeaTable = ({ ...props }: Props) => {
   const authUser = useAuthStore((s) => s.authUser)
 
   const { groupId } = useRouterQueryString()
@@ -194,4 +193,4 @@ const IdeaRatingsTable = ({ ...props }: Props) => {
   )
 }
 
-export default IdeaRatingsTable
+export default IdeaTable

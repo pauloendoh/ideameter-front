@@ -6,7 +6,7 @@ import useIdeaAssignmentStore from "@/hooks/zustand/dialogs/useIdeaAssignmentSto
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import { useTheme } from "@mui/material"
 import { CgChevronDown } from "react-icons/cg"
-import UserGroupAvatar from "../../GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import UserGroupAvatar from "../../GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 
 interface Props {
   test?: string

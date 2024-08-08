@@ -10,7 +10,7 @@ import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material"
 import { useRouter } from "next/router"
 import useIdeaRatingsQueryUtils from "../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
-import IdeaRatingsTable from "./IdeaRatingsTable/IdeaRatingsTable"
+import IdeaTable from "./IdeaTable/IdeaTable"
 
 interface Props {
   tabId: string
@@ -42,7 +42,7 @@ const GroupTabContent = (props: Props) => {
 
   return (
     <FlexCol gap={2}>
-      <Box>{ideas && <IdeaRatingsTable ideaRatings={ideaRatings} />}</Box>
+      <Box>{ideas && <IdeaTable ideaRatings={ideaRatings} />}</Box>
 
       <FlexVCenter ml={2} mb={1} justifyContent="space-between">
         <DarkButton

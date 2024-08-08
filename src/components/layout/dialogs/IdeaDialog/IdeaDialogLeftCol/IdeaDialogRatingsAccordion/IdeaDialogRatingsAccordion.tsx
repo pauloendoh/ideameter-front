@@ -1,6 +1,6 @@
-import DisabledRatingsIcon from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
-import RatingInput from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/RatingInput/RatingInput"
-import UserTableCell from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserTableCell"
+import DisabledRatingsIcon from "@/components/GroupPage/GroupTabContent/IdeaTable/RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
+import RatingInput from "@/components/GroupPage/GroupTabContent/IdeaTable/RatingInput/RatingInput"
+import UserTableCell from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserTableCell"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {

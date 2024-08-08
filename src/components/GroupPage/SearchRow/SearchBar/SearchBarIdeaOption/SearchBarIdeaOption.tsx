@@ -1,5 +1,5 @@
-import HighImpactVoteButton from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/IdeaTableRow/IdeaNameTableCell/HighImpactVoteIcon/HighImpactVoteButton/HighImpactVoteButton"
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import HighImpactVoteButton from "@/components/GroupPage/GroupTabContent/IdeaTable/IdeaTableRow/IdeaNameTableCell/HighImpactVoteButtonWithTooltip/HighImpactVoteButton/HighImpactVoteButton"
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"

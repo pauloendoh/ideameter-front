@@ -1,4 +1,4 @@
-import IdeaRatingsTable from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/IdeaRatingsTable"
+import IdeaTable from "@/components/GroupPage/GroupTabContent/IdeaTable/IdeaTable"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import { LinearProgress } from "@mui/material"
 
@@ -13,7 +13,7 @@ const SubideasTable = (props: Props) => {
       {props.isLoading ? (
         <LinearProgress />
       ) : (
-        <IdeaRatingsTable ideaRatings={props.subideaRatings} isSubideasTable />
+        <IdeaTable ideaRatings={props.subideaRatings} isSubideasTable />
       )}
     </div>
   )

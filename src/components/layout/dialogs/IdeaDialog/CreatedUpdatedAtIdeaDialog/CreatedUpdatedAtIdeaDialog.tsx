@@ -1,4 +1,4 @@
-import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaRatingsTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
+import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import TimeagoSpan from "@/components/_common/text/TimeagoSpan"
@@ -17,7 +17,6 @@ type Props = {
   creatorId: string
 }
 
-// PE 1/3 - improve name CreatedUpdatedAtIdeaDialog
 const CreatedUpdatedAtIdeaDialog = (props: Props) => {
   const { openDialog: openIdeaChangesDialog } = useIdeaChangesDialogStore()
 
