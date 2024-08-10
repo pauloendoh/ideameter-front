@@ -33,7 +33,7 @@ type Props = {
   showVotedAt?: boolean
   index: number
   isHighlyRatedIdeasPage?: boolean
-  onOpenNext20?: () => void
+  onOpenNext5?: () => void
 }
 
 const AssignedIdeasTableRow = ({ ...props }: Props) => {
@@ -201,8 +201,8 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
           </Link>
         </NextLink>
         {props.isHighlyRatedIdeasPage && (
-          <Tooltip title={"Open next 20 from this tab."} sx={{ ml: 1 }}>
-            <IconButton size="small" onClick={() => props.onOpenNext20?.()}>
+          <Tooltip title={"Open next 5 from this tab."} sx={{ ml: 1 }}>
+            <IconButton size="small" onClick={() => props.onOpenNext5?.()}>
               <PiTabs />
             </IconButton>
           </Tooltip>

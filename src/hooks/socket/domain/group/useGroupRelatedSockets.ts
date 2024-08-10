@@ -15,7 +15,7 @@ export const useGroupRelatedSockets = (groupId: string | undefined) => {
   useSavedRatingWSListener()
   useDeletedRatingWSListener()
 
-  // PE 1/3 - seguir o padrão de WSListener e WSPublisher hooks
+  // PE 1/3 - seguir o padrão de cima
   const { sendMessage: submitEnterGroup, socket } =
     useMySocketEvent<string>("enter-group")
 
