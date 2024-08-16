@@ -22,6 +22,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material"
+import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
 
 type Props = {}
@@ -68,6 +69,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
   const [showWithoutReward, setShowWithoutReward] = useState(false)
+  const [hideRecent, setHideRecent] = useState(false)
   const [minReward, setMinReward] = useLocalStorage<number>({
     key: localStorageKeys.highlyRatedPage.minReward,
     defaultValue: 0,
@@ -113,6 +115,19 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
     if (minReward > 0) {
       ideas = ideas.filter((i) => (i.idea.rewarding ?? 0) >= minReward)
+    }
+
+    if (hideRecent) {
+      ideas = ideas.filter((i) => {
+        const youHighImpactVotedA = i.idea.highImpactVotes.some(
+          (v) => v.userId === i.myRating.userId
+        )
+        if (youHighImpactVotedA) return true
+        const now = DateTime.now()
+        const createdAt = DateTime.fromISO(i.idea.createdAt)
+
+        return now.diff(createdAt, "days").days > 14
+      })
     }
 
     if (sortBy === "oldest-rated") {
@@ -174,6 +189,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     showAssignedToMeIdeas,
     showCompleted,
     settings,
+    hideRecent,
   ])
 
   const ideasWithoutRewardCount = useMemo(() => {
@@ -185,12 +201,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
   }, [sortedIdeas])
 
   const { openDialog } = useHideTabsDialogStore()
-
-  const totalComplexityAssigned = useMemo(() => {
-    return sortedIdeas.reduce((acc, assign) => {
-      return acc + assign.idea.complexity
-    }, 0)
-  }, [sortedIdeas])
 
   if (!isSuccess) {
     return null
@@ -237,7 +247,18 @@ const HighlyRatedIdeasTable = (props: Props) => {
             pl: 2,
           }}
         >
-          <FlexVCenter>Total complexity: {totalComplexityAssigned}</FlexVCenter>
+          <FlexVCenter>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={hideRecent}
+                  checked={hideRecent}
+                  onClick={() => setHideRecent(!hideRecent)}
+                />
+              }
+              label={`Hide recent (15 days)`}
+            />
+          </FlexVCenter>
           <FlexVCenter gap={2}>
             {/* <FormControlLabel
               control={
