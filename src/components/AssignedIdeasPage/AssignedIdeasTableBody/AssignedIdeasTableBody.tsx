@@ -11,13 +11,13 @@ type Props = {
 }
 
 const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
-  const handleOpenNext5 = (index: number) => {
+  const handleOpenNext20 = (index: number) => {
     const clickedIdea = { ...ideas[index] }
 
     const groupId = clickedIdea.group.groupId
     const tabId = clickedIdea.tab.tabId
 
-    const next5 = ideas.slice(index, index + 5)
+    const next5 = ideas.slice(index, index + 20)
     for (const idea of next5) {
       if (idea.tab.tabId === tabId) {
         // open on new tab
@@ -36,8 +36,8 @@ const AssignedIdeasTableBody = ({ ideas, showCompleted, ...props }: Props) => {
             showVotedAt={props.showVotedAt}
             index={index}
             isHighlyRatedIdeasPage={props.isHighlyRatedIdeasPage}
-            onOpenNext5={() => {
-              handleOpenNext5(index)
+            onOpenNext20={() => {
+              handleOpenNext20(index)
             }}
           />
         )
