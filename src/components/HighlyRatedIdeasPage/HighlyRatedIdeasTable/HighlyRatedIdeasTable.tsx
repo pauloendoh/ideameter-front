@@ -114,6 +114,13 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ideas = ideas.filter((i) => i.iAmAssigned)
     }
 
+    if (onlyNoXp) {
+      ideas = ideas.filter((i) => {
+        const value = calculateIdeaResult(i.idea)
+        return value === 0
+      })
+    }
+
     if (minReward > 0) {
       ideas = ideas.filter((i) => (i.idea.rewarding ?? 0) >= minReward)
     }
