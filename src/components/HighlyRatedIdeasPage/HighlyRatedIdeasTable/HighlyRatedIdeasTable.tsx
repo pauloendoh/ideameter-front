@@ -76,6 +76,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
   })
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
+  const [onlyNoXp, setOnlyNoXp] = useState(false)
 
   const { data: settings } = useUserSettingsQuery()
 
@@ -247,16 +248,30 @@ const HighlyRatedIdeasTable = (props: Props) => {
             pl: 2,
           }}
         >
-          <FlexVCenter>
+          <FlexVCenter gap={2}>
             <FormControlLabel
               control={
                 <Switch
+                  size="small"
                   defaultChecked={hideRecent}
                   checked={hideRecent}
                   onClick={() => setHideRecent(!hideRecent)}
                 />
               }
-              label={`Hide recent (15 days)`}
+              label={
+                <Typography variant="body2">Hide recent (15 days)</Typography>
+              }
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  defaultChecked={onlyNoXp}
+                  checked={onlyNoXp}
+                  onClick={() => setOnlyNoXp(!onlyNoXp)}
+                />
+              }
+              label={<Typography variant="body2">No XP</Typography>}
             />
           </FlexVCenter>
           <FlexVCenter gap={2}>
@@ -291,6 +306,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
             <FormControlLabel
               control={
                 <Switch
+                  size="small"
                   defaultChecked={showAssignedToMeIdeas}
                   checked={showAssignedToMeIdeas}
                   onClick={() =>
@@ -298,18 +314,23 @@ const HighlyRatedIdeasTable = (props: Props) => {
                   }
                 />
               }
-              label={`Assigned to me (${assignedToMeCount})`}
+              label={
+                <Typography variant="body2">
+                  Assigned to me ({assignedToMeCount})
+                </Typography>
+              }
             />
 
             <FormControlLabel
               control={
                 <Switch
+                  size="small"
                   defaultChecked={showCompleted}
                   checked={showCompleted}
                   onClick={() => setShowCompleted(!showCompleted)}
                 />
               }
-              label={`Completed ideas`}
+              label={<Typography variant="body2">Completed</Typography>}
             />
           </FlexVCenter>
         </TableFooter>
