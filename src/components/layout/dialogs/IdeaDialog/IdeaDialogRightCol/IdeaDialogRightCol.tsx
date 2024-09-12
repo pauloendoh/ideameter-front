@@ -56,7 +56,7 @@ const IdeaDialogRightCol = (props: Props) => {
         <FlexVCenter gap={2}>
           <MyTextField
             type="number"
-            label="Rewarding"
+            label="My interest"
             value={props.watch("rewarding")}
             onChange={(e) => {
               if (e.target.value === "")
