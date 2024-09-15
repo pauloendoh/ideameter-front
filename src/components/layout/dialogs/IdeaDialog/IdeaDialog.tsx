@@ -160,6 +160,10 @@ const IdeaDialog = () => {
 
   const { dialogIsOpen: labelsDialogIsOpen } = useEditLabelDialogStore()
 
+  const completedWithoutAssignedUsers = useMemo(() => {
+    return watch("assignedUsers").length === 0 && watch("isDone")
+  }, [watch("assignedUsers"), watch("isDone")])
+
   const saveIsDisabled = useMemo(() => {
     const dirtyFields = Object.keys(formState.dirtyFields)
 
@@ -168,7 +172,8 @@ const IdeaDialog = () => {
       dirtyFields.length === 0 ||
       !formState.isDirty ||
       subideaDialogIsOpen ||
-      labelsDialogIsOpen
+      labelsDialogIsOpen ||
+      completedWithoutAssignedUsers
     )
   }, [
     isSubmitting,

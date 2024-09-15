@@ -30,7 +30,7 @@ const IdeaDialogAssignedUsers = ({ watch, setValue }: Props) => {
       <FlexVCenter
         gap={1}
         sx={(theme) => ({
-          color: showAlert ? theme.palette.warning.main : undefined,
+          color: showAlert ? theme.palette.error.main : undefined,
         })}
       >
         <FaUserAlt />
