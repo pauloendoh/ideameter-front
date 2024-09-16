@@ -48,7 +48,9 @@ const IdeaDialogRightCol = (props: Props) => {
 
         <TabSelector
           valueTabId={props.watch("tabId")}
-          onChange={(tabId) => props.setValue("tabId", tabId)}
+          onChange={(tabId) =>
+            props.setValue("tabId", tabId, { shouldDirty: true })
+          }
         />
 
         <Box />
@@ -60,7 +62,7 @@ const IdeaDialogRightCol = (props: Props) => {
             value={props.watch("rewarding")}
             onChange={(e) => {
               if (e.target.value === "") {
-                return props.setValue("rewarding", null)
+                return props.setValue("rewarding", null, { shouldDirty: true })
               }
             }}
             inputProps={{
@@ -77,7 +79,9 @@ const IdeaDialogRightCol = (props: Props) => {
             value={props.watch("discomfortZone")}
             onChange={(e) => {
               if (e.target.value === "")
-                return props.setValue("discomfortZone", null)
+                return props.setValue("discomfortZone", null, {
+                  shouldDirty: true,
+                })
 
               const num = Number(e.target.value)
               const min = 1
@@ -89,7 +93,9 @@ const IdeaDialogRightCol = (props: Props) => {
                 e.target.value = max.toString()
               }
 
-              props.setValue("discomfortZone", Number(e.target.value))
+              props.setValue("discomfortZone", Number(e.target.value), {
+                shouldDirty: true,
+              })
             }}
             inputProps={{
               step: 0.1,
