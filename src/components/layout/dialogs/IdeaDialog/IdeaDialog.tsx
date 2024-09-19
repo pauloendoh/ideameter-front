@@ -196,6 +196,7 @@ const IdeaDialog = () => {
     dialogIsOpen,
     saveWithoutClosing,
     ideaDto: watch(),
+    savingIsDisabled: saveIsDisabled,
   })
 
   return (
