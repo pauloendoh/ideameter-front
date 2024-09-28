@@ -3,6 +3,7 @@ import { calculateIdeaResult } from "@/components/AssignedIdeasPage/AssignedIdea
 import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
+import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
@@ -12,8 +13,12 @@ import { localStorageKeys } from "@/utils/localStorageKeys"
 import { useLocalStorage } from "@mantine/hooks"
 import {
   Button,
+  FormControl,
   FormControlLabel,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Switch,
   Tab,
   Table,
@@ -77,6 +82,9 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [onlyNoXp, setOnlyNoXp] = useState(false)
+  const [waitingForIdeasFilter, setWaitingForIdeasFilter] = useState<
+    "" | "hide ideas waiting ideas" | "waiting for idea" | "being waited for"
+  >("hide ideas waiting ideas")
 
   const { data: settings } = useUserSettingsQuery()
 
@@ -146,6 +154,21 @@ const HighlyRatedIdeasTable = (props: Props) => {
         // sort by updated asc
         return myRatingA.updatedAt > myRatingB.updatedAt ? 1 : -1
       })
+    }
+
+    if (waitingForIdeasFilter === "hide ideas waiting ideas") {
+      ideas = ideas.filter(
+        (i) => i.idea.waitingIdeas.filter((w) => !w.isDone).length === 0
+      )
+    }
+
+    if (waitingForIdeasFilter === "waiting for idea") {
+      ideas = ideas.filter(
+        (i) => i.idea.waitingIdeas.filter((w) => !w.isDone).length > 0
+      )
+    }
+    if (waitingForIdeasFilter === "being waited for") {
+      ideas = ideas.filter((i) => i.idea.beingWaitedFor.length > 0)
     }
 
     if (sortBy === "highest-result") {
@@ -249,40 +272,42 @@ const HighlyRatedIdeasTable = (props: Props) => {
         <TableFooter
           sx={{
             width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
             p: 1,
             pl: 2,
           }}
         >
-          <FlexVCenter gap={2}>
-            <FormControlLabel
-              control={
-                <Switch
-                  size="small"
-                  defaultChecked={hideRecent}
-                  checked={hideRecent}
-                  onClick={() => setHideRecent(!hideRecent)}
+          <FlexCol gap={2}>
+            <FlexVCenter justifyContent={"space-between"}>
+              <FlexVCenter gap={2}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      defaultChecked={hideRecent}
+                      checked={hideRecent}
+                      onClick={() => setHideRecent(!hideRecent)}
+                    />
+                  }
+                  label={
+                    <Typography variant="body2">
+                      Hide recent (15 days)
+                    </Typography>
+                  }
                 />
-              }
-              label={
-                <Typography variant="body2">Hide recent (15 days)</Typography>
-              }
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  size="small"
-                  defaultChecked={onlyNoXp}
-                  checked={onlyNoXp}
-                  onClick={() => setOnlyNoXp(!onlyNoXp)}
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      defaultChecked={onlyNoXp}
+                      checked={onlyNoXp}
+                      onClick={() => setOnlyNoXp(!onlyNoXp)}
+                    />
+                  }
+                  label={<Typography variant="body2">No XP</Typography>}
                 />
-              }
-              label={<Typography variant="body2">No XP</Typography>}
-            />
-          </FlexVCenter>
-          <FlexVCenter gap={2}>
-            {/* <FormControlLabel
+              </FlexVCenter>
+              <FlexVCenter gap={2}>
+                {/* <FormControlLabel
               control={
                 <Switch
                   defaultChecked={showWithoutReward}
@@ -293,53 +318,87 @@ const HighlyRatedIdeasTable = (props: Props) => {
               label={`Without reward (${ideasWithoutRewardCount})`}
             /> */}
 
-            <MyTextField
-              label="Min reward"
-              type="number"
-              value={minReward}
-              onChange={(e) => {
-                const value = e.target.value
-                if (value === "") {
-                  setMinReward(0)
-                } else {
-                  setMinReward(parseInt(value))
-                }
-              }}
-              sx={{
-                width: 100,
-              }}
-            />
+                <MyTextField
+                  label="Min reward"
+                  type="number"
+                  value={minReward}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value === "") {
+                      setMinReward(0)
+                    } else {
+                      setMinReward(parseInt(value))
+                    }
+                  }}
+                  sx={{
+                    width: 100,
+                  }}
+                />
 
-            <FormControlLabel
-              control={
-                <Switch
-                  size="small"
-                  defaultChecked={showAssignedToMeIdeas}
-                  checked={showAssignedToMeIdeas}
-                  onClick={() =>
-                    setShowAssignedToMeIdeas(!showAssignedToMeIdeas)
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      defaultChecked={showAssignedToMeIdeas}
+                      checked={showAssignedToMeIdeas}
+                      onClick={() =>
+                        setShowAssignedToMeIdeas(!showAssignedToMeIdeas)
+                      }
+                    />
+                  }
+                  label={
+                    <Typography variant="body2">
+                      Assigned to me ({assignedToMeCount})
+                    </Typography>
                   }
                 />
-              }
-              label={
-                <Typography variant="body2">
-                  Assigned to me ({assignedToMeCount})
-                </Typography>
-              }
-            />
 
-            <FormControlLabel
-              control={
-                <Switch
-                  size="small"
-                  defaultChecked={showCompleted}
-                  checked={showCompleted}
-                  onClick={() => setShowCompleted(!showCompleted)}
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      defaultChecked={showCompleted}
+                      checked={showCompleted}
+                      onClick={() => setShowCompleted(!showCompleted)}
+                    />
+                  }
+                  label={<Typography variant="body2">Completed</Typography>}
                 />
-              }
-              label={<Typography variant="body2">Completed</Typography>}
-            />
-          </FlexVCenter>
+              </FlexVCenter>
+            </FlexVCenter>
+            <FlexVCenter>
+              <FormControl size="small">
+                <InputLabel id="waiting-for-ideas-filter-label">
+                  Ideas waiting ideas
+                </InputLabel>
+                <Select
+                  size="small"
+                  sx={{
+                    minWidth: 180,
+                  }}
+                  value={waitingForIdeasFilter}
+                  label="Ideas waiting ideas"
+                  labelId="waiting-for-ideas-filter-label"
+                  onChange={(e) =>
+                    setWaitingForIdeasFilter(e.target.value as any)
+                  }
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="hide ideas waiting ideas">
+                    Hide ideas waiting ideas
+                  </MenuItem>
+                  <MenuItem value="waiting for idea">
+                    Show ideas waiting ideas
+                  </MenuItem>
+                  <MenuItem value="being waited for">
+                    Show ideas being waited for
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </FlexVCenter>
+          </FlexCol>
         </TableFooter>
       </FlexVCenter>
     </Paper>
