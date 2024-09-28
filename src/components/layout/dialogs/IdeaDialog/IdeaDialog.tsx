@@ -50,6 +50,7 @@ const IdeaDialog = () => {
   const { openDialog, initialValue, dialogIsOpen, closeDialog } =
     useIdeaDialogStore()
 
+  // PE 1/3 - put everything into const form
   const { watch, control, setValue, handleSubmit, reset, formState } =
     useForm<IdeaDto>({
       defaultValues: initialValue,

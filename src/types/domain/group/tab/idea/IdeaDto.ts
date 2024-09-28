@@ -2,6 +2,7 @@ import { HighImpactVoteDto } from "@/types/domain/high-impact-votes/HighImpactVo
 import LabelDto from "@/types/domain/label/LabelDto"
 import SimpleUserDto from "@/types/domain/user/SimpleUserDto"
 import TabDto from "../TabDto"
+import { WaitingIdeaDto } from "./WaitingIdeaDto/WaitingIdeaDto"
 
 export default interface IdeaDto {
   id: string
@@ -32,6 +33,9 @@ export default interface IdeaDto {
   discomfortZone: number | null
 
   subideaImageUrl: string
+
+  waitingIdeas: WaitingIdeaDto[]
+  beingWaitedFor: WaitingIdeaDto[]
 }
 
 export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
@@ -60,5 +64,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   highImpactVotes: [],
 
   subideaImageUrl: "",
+  waitingIdeas: [],
+  beingWaitedFor: [],
   ...partial,
 })

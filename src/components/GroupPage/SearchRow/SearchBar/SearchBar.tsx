@@ -10,6 +10,7 @@ import textContainsWords from "@/utils/text/textContainsWords"
 
 import useDebounce from "@/hooks/utils/useDebounce"
 import { Autocomplete, Box, Popper } from "@mui/material"
+import { valueIsOneOf } from "endoh-utils"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { MdSearch } from "react-icons/md"
 import SearchBarIdeaOption from "./SearchBarIdeaOption/SearchBarIdeaOption"
@@ -17,11 +18,20 @@ import SearchBarSubideaOption from "./SearchBarSubideaOption/SearchBarSubideaOpt
 
 type SearchType = "ideas" | "subideas"
 
-const SearchBar = () => {
+type Props = {
+  label?: string
+  ignoreIdeaIds?: string[]
+  hidePopper?: boolean
+  popperMinWidth?: number
+  overrideOnSelect?: (idea: IdeaDto) => void
+}
+
+const SearchBar = (props: Props) => {
   const { groupId } = useRouterQueryString()
   const { data: groupIdeas, refetch } = useGroupIdeasQuery(groupId!)
   const { data: subideas } = useSubideasQuery(groupId)
 
+  // PE 1/3 - delete?
   const [selectedSearchType, setSelectedSearchType] =
     useState<SearchType>("ideas")
 
@@ -36,13 +46,14 @@ const SearchBar = () => {
   const [selectedIdea, setSelectedIdea] = useState<IdeaDto | null>(null)
 
   const MyPopper = useCallback(
-    function (props: React.ComponentProps<typeof Popper>) {
+    function (popperProps: React.ComponentProps<typeof Popper>) {
       return (
         <Popper
-          {...props}
+          {...popperProps}
           sx={{
-            minWidth: 600,
-            display: dialogIsOpen || text.length === 0 ? "none" : "unset",
+            minWidth: props.popperMinWidth ?? 600,
+            display: props.hidePopper ? "none" : "unset",
+            zIndex: 1000,
           }}
           placement="bottom-start"
         />
@@ -53,7 +64,12 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (!selectedIdea) return
-    openIdeaDialog(selectedIdea)
+
+    if (props.overrideOnSelect) {
+      props.overrideOnSelect(selectedIdea)
+    } else {
+      openIdeaDialog(selectedIdea)
+    }
 
     setSelectedIdea(null)
   }, [selectedIdea])
@@ -71,13 +87,19 @@ const SearchBar = () => {
     const ideas = selectedSearchType === "ideas" ? groupIdeas : subideas
     if (!ideas) return []
 
-    return ideas
+    const result = ideas
       .filter(
         (i) =>
           textContainsWords(i.name, debouncedText) ||
           i.id.includes(debouncedText) ||
           textContainsWords(i.description, debouncedText)
       )
+      .filter((i) => {
+        if (props.ignoreIdeaIds) {
+          return !valueIsOneOf(i.id, props.ignoreIdeaIds)
+        }
+        return true
+      })
       .sort((a, b) => {
         // desc
         return a.highImpactVotes.length - b.highImpactVotes.length
@@ -87,12 +109,17 @@ const SearchBar = () => {
         if (a.isDone && !b.isDone) return 1
         return -1
       })
-  }, [debouncedText, groupIdeas, selectedSearchType])
+
+    return result
+  }, [debouncedText, groupIdeas, selectedSearchType, props.ignoreIdeaIds])
 
   const label = useMemo(() => {
+    if (props.label) {
+      return props.label
+    }
     if (selectedSearchType === "ideas") return "Idea title, ID or description"
     return "Search subidea title"
-  }, [selectedSearchType])
+  }, [selectedSearchType, props.label])
 
   return (
     <Box onClick={() => refetch()}>
@@ -101,9 +128,6 @@ const SearchBar = () => {
           value={selectedIdea}
           onBlur={() => setText("")}
           onChange={(e, idea) => {
-            console.log({
-              idea,
-            })
             if (typeof idea === "string") return
             if (idea?.parentId) {
               const parentIdea = groupIdeas?.find((i) => i.id === idea.parentId)

@@ -11,6 +11,7 @@ import CreatedUpdatedAtIdeaDialog from "../CreatedUpdatedAtIdeaDialog/CreatedUpd
 import ArchiveSection from "./ArchiveSection/ArchiveSection"
 import CompleteIdeaButton from "./CompleteIdeaButton/CompleteIdeaButton"
 import TabSelector from "./TabSelector/TabSelector"
+import WaitingIdeasSection from "./WaitingIdeasSection/WaitingIdeasSection"
 
 interface Props {
   watch: UseFormWatch<IdeaDto>
@@ -135,6 +136,9 @@ const IdeaDialogRightCol = (props: Props) => {
             }
           />
         )}
+
+        <Box />
+        <WaitingIdeasSection setValue={props.setValue} watch={props.watch} />
       </FlexCol>
     </Grid>
   )
