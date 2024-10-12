@@ -116,9 +116,14 @@ const IdeaDialog = () => {
   }, [groupIdeas, router.isReady, routerQuery.ideaId]) // don't add dialogIsOpen or dontReopen, otherwise it will keep opening while closing the dialog
 
   const onSubmit = (values: IdeaDto) => {
-    submitSaveIdea(values, {
-      onSuccess: closeDialog,
-    })
+    submitSaveIdea(
+      {
+        ...values,
+      },
+      {
+        onSuccess: closeDialog,
+      }
+    )
   }
 
   useConfirmTabClose(formState.isDirty && dialogIsOpen)
