@@ -73,7 +73,6 @@ const headers: Header[] = [
 const HighlyRatedIdeasTable = (props: Props) => {
   const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
-  const [showWithoutReward, setShowWithoutReward] = useState(false)
   const [hideRecent, setHideRecent] = useState(false)
   const [minReward, setMinReward] = useLocalStorage<number>({
     key: localStorageKeys.highlyRatedPage.minReward,
@@ -112,10 +111,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
       ideas = ideas.filter(
         (i) => !settings.hiddenTabsIds.includes(String(i.tab.tabId))
       )
-    }
-
-    if (showWithoutReward) {
-      ideas = ideas.filter((i) => i.idea.rewarding === null)
     }
 
     if (showAssignedToMeIdeas) {
@@ -223,10 +218,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
     hideRecent,
   ])
 
-  const ideasWithoutRewardCount = useMemo(() => {
-    return sortedIdeas.filter((i) => i.idea.rewarding === null).length
-  }, [sortedIdeas])
-
   const assignedToMeCount = useMemo(() => {
     return sortedIdeas.filter((i) => i.iAmAssigned).length
   }, [sortedIdeas])
@@ -242,7 +233,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
         <FlexVCenter justifyContent={"space-between"} width="100%">
           <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-            Highly rated ideas
+            Highly rated ideas ({sortedIdeas.length}/{data.length})
           </Typography>
 
           <Tabs
