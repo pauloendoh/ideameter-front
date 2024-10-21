@@ -3,12 +3,11 @@ import MyTextField from "@/components/_common/inputs/MyTextField"
 import { buildCommentDto } from "@/hooks/react-query/domain/comment/types/CommentDto"
 import useSaveCommentMutation from "@/hooks/react-query/domain/comment/useSaveCommentMutation"
 import { LoadingButton } from "@mui/lab"
-import { Button } from "@mui/material"
 import { useState } from "react"
 
 type Props = {
   ideaId: string
-  onClose: () => void
+  saveButtonRef?: React.RefObject<HTMLButtonElement>
 }
 
 const CommentInput = (props: Props) => {
@@ -26,7 +25,7 @@ const CommentInput = (props: Props) => {
       },
       {
         onSuccess: () => {
-          props.onClose()
+          setText("")
         },
       }
     )
@@ -39,6 +38,7 @@ const CommentInput = (props: Props) => {
       }}
     >
       <MyTextField
+        placeholder="Add a comment..."
         fullWidth
         autoFocus
         multiline
@@ -50,15 +50,21 @@ const CommentInput = (props: Props) => {
           e.stopPropagation()
         }}
       />
-      <FlexVCenter justifyContent={"flex-end"} mt={1} gap={1}>
+      <FlexVCenter
+        justifyContent={"flex-end"}
+        mt={1}
+        gap={1}
+        visibility={text.trim() === "" ? "hidden" : "visible"}
+      >
         <LoadingButton
           variant="contained"
           onClick={handleSubmit}
           loading={isLoading}
+          disabled={text.trim() === ""}
+          ref={props.saveButtonRef}
         >
           Save
         </LoadingButton>
-        <Button onClick={props.onClose}>Cancel</Button>
       </FlexVCenter>
     </div>
   )

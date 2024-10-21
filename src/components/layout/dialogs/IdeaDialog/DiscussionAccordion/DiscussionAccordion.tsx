@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import CommentInput from "./CommentInput/CommentInput"
 import UserComment from "./UserComment/UserComment"
@@ -25,7 +25,24 @@ interface Props {
 const ariaLabel = `discussion-accordion`
 
 const DiscussionAccordion = (props: Props) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
+
+  const [isFirstRender, setIsFirstRender] = useState(true)
+
+  const inputRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!isFirstRender && expanded) {
+      setTimeout(() => {
+        debugger
+        inputRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        })
+      }, 250)
+    }
+    setIsFirstRender(false)
+  }, [expanded])
 
   const theme = useTheme()
 
@@ -95,29 +112,8 @@ const DiscussionAccordion = (props: Props) => {
               <div>
                 <UserGroupAvatar groupId={groupId} userId={authUser?.id!} />
               </div>
-              {isAddingComment ? (
-                <CommentInput
-                  ideaId={props.ideaId}
-                  onClose={() => setIsAddingComment(false)}
-                />
-              ) : (
-                <Box
-                  sx={{
-                    cursor: "text",
-                    borderRadius: 1,
-                    width: "100%",
-                    minHeight: 80,
-                    p: 1,
-                    border: `1px solid ${theme.palette.grey[700]}`,
-                    fontStyle: "italic",
-                    color: theme.palette.grey[500],
-                    background: theme.palette.grey[900],
-                  }}
-                  onClick={() => setIsAddingComment(true)}
-                >
-                  Add a comment
-                </Box>
-              )}
+
+              <CommentInput saveButtonRef={inputRef} ideaId={props.ideaId} />
             </Flex>
 
             <FlexCol gap={4} mt={4}>
