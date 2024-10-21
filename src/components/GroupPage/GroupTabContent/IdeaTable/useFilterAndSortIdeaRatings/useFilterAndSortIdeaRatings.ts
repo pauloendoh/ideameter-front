@@ -1,3 +1,4 @@
+import { calculateIdeaResult } from "@/components/AssignedIdeasPage/AssignedIdeasTableBody/AssignedIdeasTableRow/calculateIdeaResult/calculateIdeaResult"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import { IFilter } from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
@@ -130,11 +131,12 @@ export const useFilterAndSortIdeaRatings = ({
         b.idea.createdAt.localeCompare(a.idea.createdAt)
       )
 
-    if (sortingBy.attribute === "rewarding") {
+    if (sortingBy.attribute === "experience") {
       result = result.sort((a, b) => {
-        const valueA = a.idea.rewarding ?? 0
-        const valueB = b.idea.rewarding ?? 0
-        return valueA < valueB ? 1 : -1
+        const resultA = calculateIdeaResult(a.idea)
+        const resultB = calculateIdeaResult(b.idea)
+
+        return resultB - resultA
       })
     }
 
