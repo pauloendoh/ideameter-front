@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
 import CommentInput from "./CommentInput/CommentInput"
 import UserComment from "./UserComment/UserComment"
@@ -27,26 +27,10 @@ const ariaLabel = `discussion-accordion`
 const DiscussionAccordion = (props: Props) => {
   const [expanded, setExpanded] = useState(true)
 
-  const [isFirstRender, setIsFirstRender] = useState(true)
-
-  const inputRef = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    if (!isFirstRender && expanded) {
-      setTimeout(() => {
-        debugger
-        inputRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-        })
-      }, 250)
-    }
-    setIsFirstRender(false)
-  }, [expanded])
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const saveButtonRef = useRef<HTMLButtonElement>(null)
 
   const theme = useTheme()
-
-  const [isAddingComment, setIsAddingComment] = useState(false)
 
   const { groupId } = useRouterQueryString()
 
@@ -85,7 +69,18 @@ const DiscussionAccordion = (props: Props) => {
       }}
     >
       <AccordionSummary
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => {
+          setExpanded(!expanded)
+
+          if (!expanded) {
+            setTimeout(() => {
+              saveButtonRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+              })
+            }, 250)
+          }
+        }}
         expandIcon={<MdExpandMore />}
         aria-controls={`${ariaLabel}-head`}
         id={`${ariaLabel}-head`}
@@ -113,7 +108,11 @@ const DiscussionAccordion = (props: Props) => {
                 <UserGroupAvatar groupId={groupId} userId={authUser?.id!} />
               </div>
 
-              <CommentInput saveButtonRef={inputRef} ideaId={props.ideaId} />
+              <CommentInput
+                inputRef={inputRef}
+                saveButtonRef={saveButtonRef}
+                ideaId={props.ideaId}
+              />
             </Flex>
 
             <FlexCol gap={4} mt={4}>

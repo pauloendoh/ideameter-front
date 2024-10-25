@@ -7,6 +7,7 @@ import { useState } from "react"
 
 type Props = {
   ideaId: string
+  inputRef?: React.RefObject<HTMLTextAreaElement>
   saveButtonRef?: React.RefObject<HTMLButtonElement>
 }
 
@@ -38,9 +39,9 @@ const CommentInput = (props: Props) => {
       }}
     >
       <MyTextField
+        inputRef={props.inputRef}
         placeholder="Add a comment..."
         fullWidth
-        autoFocus
         multiline
         minRows={3}
         value={text}
