@@ -109,7 +109,7 @@ const RatingInput = (props: Props) => {
             e.stopPropagation()
           }}
         >
-          {authUser?.username && "pauloendoh" && (
+          {authUser?.username === "pauloendoh" && (
             <option value={-2}>Refresh</option>
           )}
           {/* invisible character to avoid small height */}

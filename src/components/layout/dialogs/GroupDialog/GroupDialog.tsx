@@ -4,7 +4,7 @@ import FlexHCenter from "@/components/_common/flexboxes/FlexHCenter"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useSaveGroupMutation from "@/hooks/react-query/domain/group/useSaveGroupMutation"
-import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
+import useConfirmBrowserTabClose from "@/hooks/utils/useConfirmBrowserTabClose"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
 import GroupDto from "@/types/domain/group/GroupDto"
@@ -64,7 +64,7 @@ const GroupDialog = () => {
     return true
   }, [isDirty])
 
-  useConfirmTabClose(isDirty && isOpen)
+  useConfirmBrowserTabClose(isDirty && isOpen)
 
   const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
   const confirmClose = () => {

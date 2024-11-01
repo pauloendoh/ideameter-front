@@ -3,6 +3,7 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, Grid, Typography } from "@mui/material"
 import { useMemo } from "react"
@@ -24,6 +25,9 @@ const IdeaDialogRightCol = (props: Props) => {
   const group = useMemo(() => {
     return groups?.find((g) => g.id === groupId)
   }, [groups, groupId])
+
+  const { authUser } = useAuthStore()
+
   return (
     <Grid item xs={4}>
       <FlexCol gap={1}>
@@ -54,56 +58,60 @@ const IdeaDialogRightCol = (props: Props) => {
 
         <Box />
 
-        <FlexVCenter gap={2}>
-          <MyTextField
-            type="number"
-            label="My interest"
-            value={props.watch("rewarding")}
-            onChange={(e) => {
-              if (e.target.value === "") {
-                return props.setValue("rewarding", null)
-              }
+        {authUser?.username === "pauloendoh" && (
+          <>
+            <FlexVCenter gap={2}>
+              <MyTextField
+                type="number"
+                label="My interest"
+                value={props.watch("rewarding")}
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    return props.setValue("rewarding", null)
+                  }
 
-              return props.setValue("rewarding", Number(e.target.value))
-            }}
-            inputProps={{
-              step: 0.1,
-            }}
-            sx={{
-              maxWidth: "140px",
-            }}
-          />
+                  return props.setValue("rewarding", Number(e.target.value))
+                }}
+                inputProps={{
+                  step: 0.1,
+                }}
+                sx={{
+                  maxWidth: "140px",
+                }}
+              />
 
-          <MyTextField
-            type="number"
-            label="Discomfort Zone"
-            value={props.watch("discomfortZone")}
-            onChange={(e) => {
-              if (e.target.value === "")
-                return props.setValue("discomfortZone", null)
+              <MyTextField
+                type="number"
+                label="Discomfort Zone"
+                value={props.watch("discomfortZone")}
+                onChange={(e) => {
+                  if (e.target.value === "")
+                    return props.setValue("discomfortZone", null)
 
-              const num = Number(e.target.value)
-              const min = 1
-              const max = 5
-              if (num < min) {
-                e.target.value = min.toString()
-              }
-              if (num > max) {
-                e.target.value = max.toString()
-              }
+                  const num = Number(e.target.value)
+                  const min = 1
+                  const max = 5
+                  if (num < min) {
+                    e.target.value = min.toString()
+                  }
+                  if (num > max) {
+                    e.target.value = max.toString()
+                  }
 
-              props.setValue("discomfortZone", Number(e.target.value))
-            }}
-            inputProps={{
-              step: 0.1,
-            }}
-            sx={{
-              maxWidth: "140px",
-            }}
-          />
-        </FlexVCenter>
+                  props.setValue("discomfortZone", Number(e.target.value))
+                }}
+                inputProps={{
+                  step: 0.1,
+                }}
+                sx={{
+                  maxWidth: "140px",
+                }}
+              />
+            </FlexVCenter>
 
-        <Box />
+            <Box />
+          </>
+        )}
 
         {/* <FlexVCenter gap={2}>
           <MyTextField

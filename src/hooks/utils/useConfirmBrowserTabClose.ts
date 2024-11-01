@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const useConfirmTabClose = (
+const useConfirmBrowserTabClose = (
   mustConfirm: boolean,
   message = "You have unsaved changes. Continue?" // depends on the browser
 ) => {
@@ -19,4 +19,4 @@ const useConfirmTabClose = (
   }, [mustConfirm])
 }
 
-export default useConfirmTabClose
+export default useConfirmBrowserTabClose

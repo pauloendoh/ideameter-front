@@ -4,7 +4,7 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
-import useConfirmTabClose from "@/hooks/utils/useConfirmTabClose"
+import useConfirmBrowserTabClose from "@/hooks/utils/useConfirmBrowserTabClose"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useEditLabelDialogStore from "@/hooks/zustand/dialogs/useEditLabelDialogStore"
@@ -121,7 +121,7 @@ const IdeaDialog = () => {
     })
   }
 
-  useConfirmTabClose(formState.isDirty && dialogIsOpen)
+  useConfirmBrowserTabClose(formState.isDirty && dialogIsOpen)
   const openConfirmDialog = useConfirmDialogStore((s) => s.openConfirmDialog)
 
   const confirmClose = useCallback(() => {

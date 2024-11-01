@@ -1,5 +1,6 @@
 import DarkButton from "@/components/_common/buttons/DarkButton/DarkButton"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
+import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import {
   findSortOptionByAttribute,
@@ -58,6 +59,8 @@ const IdeaSortButton = (props: Props) => {
     return theme.palette.secondary.main
   }, [sortingBy])
 
+  const { authUser } = useAuthStore()
+
   return (
     <>
       <DarkButton
@@ -92,25 +95,34 @@ const IdeaSortButton = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {ideaSortOptionsDivided.map((sortOptions, i, a) => (
-          <div key={i}>
+        {ideaSortOptionsDivided.map((sortOptions, i) => (
+          <div key={sortOptions[0].menuText}>
             {i > 0 && <Divider />}
 
-            {sortOptions.map((option, j) => (
-              <MenuItem
-                key={option.attribute}
-                selected={sortingBy.attribute === option.attribute}
-                onClick={() => {
-                  setSortingBy(
-                    { attribute: option.attribute, order: "desc" },
-                    tabId
-                  )
-                  handleClose()
-                }}
-              >
-                {option.menuText}
-              </MenuItem>
-            ))}
+            {sortOptions.map((option) => {
+              if (
+                option.attribute === "experience" &&
+                authUser?.username !== "pauloendoh"
+              ) {
+                return null
+              }
+
+              return (
+                <MenuItem
+                  key={option.attribute}
+                  selected={sortingBy.attribute === option.attribute}
+                  onClick={() => {
+                    setSortingBy(
+                      { attribute: option.attribute, order: "desc" },
+                      tabId
+                    )
+                    handleClose()
+                  }}
+                >
+                  {option.menuText}
+                </MenuItem>
+              )
+            })}
           </div>
         ))}
       </Menu>
