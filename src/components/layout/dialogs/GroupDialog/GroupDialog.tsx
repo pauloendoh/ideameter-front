@@ -137,6 +137,7 @@ const GroupDialog = () => {
 
           <DialogTitle>
             <SaveCancelButtons
+              onEnabledAndCtrlEnter={handleSubmit(onSubmit)}
               disabled={saveIsDisabled}
               onCancel={confirmClose}
             />
