@@ -71,7 +71,11 @@ const IdeaDialogUsersVotedHighImpact = ({ watch, setValue }: Props) => {
         <Typography>
           {watch("highImpactVotes").length} voted as quick return
         </Typography>
-        <Tooltip title={"Members who feel this idea will be highly impactful"}>
+        <Tooltip
+          title={
+            "Members who believe this idea will deliver significant impact in a short period of time."
+          }
+        >
           <div>
             <FaQuestionCircle
               style={{ color: theme.palette.grey[100], marginLeft: 16 }}
