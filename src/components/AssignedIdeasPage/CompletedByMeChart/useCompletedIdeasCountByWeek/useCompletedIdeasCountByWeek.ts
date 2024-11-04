@@ -61,7 +61,7 @@ export const useCompletedIdeasCountByWeek = (
       startingDays.push(day)
     }
 
-    const sortedStartingDays = startingDays.sort(
+    const sortedStartingDays = [...startingDays].sort(
       (a, b) => a.getTime() - b.getTime()
     )
 
