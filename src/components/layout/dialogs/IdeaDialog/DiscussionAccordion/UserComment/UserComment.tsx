@@ -1,6 +1,7 @@
 import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import Flex from "@/components/_common/flexboxes/Flex"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify"
 import { CommentDto } from "@/hooks/react-query/domain/comment/types/CommentDto"
 import { Box, Typography, useTheme } from "@mui/material"
 import { format } from "timeago.js"
@@ -48,9 +49,10 @@ const UserComment = (props: Props) => {
             p: 1,
             minHeight: 40,
             border: `1px solid ${theme.palette.grey[700]}`,
+            whiteSpace: "break-spaces",
           }}
         >
-          {props.comment.text}
+          <MyReactLinkify>{props.comment.text}</MyReactLinkify>
         </Box>
       </Box>
     </Flex>
