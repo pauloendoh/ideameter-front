@@ -7,6 +7,7 @@ import EditLabelDialog from "../EditLabelDialog/EditLabelDialog"
 import EditProfileDialog from "../EditProfileDialog/EditProfileDialog"
 import GroupDialog from "../GroupDialog/GroupDialog"
 import GroupInsightsDialog from "../GroupInsightsDialog/GroupInsightsDialog"
+import GroupRatingSettingsDialog from "../GroupRatingSettingsDialog/GroupRatingSettingsDialog"
 import HideTabsDialog from "../HideTabsDialog/HideTabsDialog"
 import IdeaAssignDialog from "../IdeaAssignDialog/IdeaAssignDialog"
 import IdeaChangesDialog from "../IdeaChangesDialog/IdeaChangesDialog"
@@ -26,7 +27,10 @@ const GlobalDialogs = () => {
     <>
       <ConfirmDialog />
       <TabDialog />
+
       <GroupDialog />
+      <GroupRatingSettingsDialog />
+
       <IdeaDialog />
       <EditLabelDialog />
 

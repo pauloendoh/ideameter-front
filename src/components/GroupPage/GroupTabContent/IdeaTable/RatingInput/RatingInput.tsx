@@ -1,4 +1,5 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useCurrentGroup } from "@/hooks/domain/group/useCurrentGroup"
 import useDeleteRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useDeleteRatingMutation"
 import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation"
@@ -84,6 +85,21 @@ const RatingInput = (props: Props) => {
     })
   }
 
+  const currentGroup = useCurrentGroup()
+  const options = useMemo(() => {
+    if (!currentGroup) return []
+
+    const range = currentGroup.maxRating - currentGroup.minRating
+
+    return Array.from({ length: range + 1 }, (_, i) => {
+      const value = currentGroup.minRating + i
+      return {
+        value: value,
+        label: `${value} - ${currentGroup.dropdownValueLabels?.[i] || ""}`,
+      }
+    }).reverse()
+  }, [currentGroup])
+
   return (
     <Badge color="error" variant={hideBadge ? "standard" : "dot"}>
       {props.isDisabled && <DisabledRatingsIcon />}
@@ -115,9 +131,11 @@ const RatingInput = (props: Props) => {
           {/* invisible character to avoid small height */}
           <option value={-1}>⠀</option>
           <option value={0}>-</option>
-          <option value={3}>3 - Very interesting</option>
-          <option value={2}>2 - Kinda interesting</option>
-          <option value={1}>1 - Not interesting</option>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </NativeSelect>
       )}
     </Badge>

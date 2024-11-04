@@ -2,8 +2,8 @@ import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import HomeLayout from "@/components/layout/HomeLayout/HomeLayout"
 import GroupMoreIcon from "@/components/layout/dialogs/GroupDialog/GroupMoreIcon/GroupMoreIcon"
 import { useCheckAndRedirectLastOpenedGroup } from "@/hooks/domain/group/useCheckAndRedirectLastOpenedGroup"
+import { useCurrentGroup } from "@/hooks/domain/group/useCurrentGroup"
 import useGroupTabsQuery from "@/hooks/react-query/domain/group/tab/useGroupTabsQuery"
-import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useGroupRelatedSockets } from "@/hooks/socket/domain/group/useGroupRelatedSockets"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useGroupInsightsDialogStore from "@/hooks/zustand/dialogs/useGroupInsightsDialogStore"
@@ -36,12 +36,9 @@ import GroupTabs from "../GroupTabs/GroupTabs"
 import SearchRow from "../SearchRow/SearchRow"
 import SelectedIdeasOptionsRow from "../SelectedIdeasOptionsRow/SelectedIdeasOptionsRow"
 
-interface Props {
-  test?: string
-}
+interface Props {}
 
 const GroupPageContent = (props: Props) => {
-  const { data: groups } = useGroupsQuery()
   const { openDialog } = useTabDialogStore()
   const { groupId, tabId } = useRouterQueryString()
 
@@ -50,23 +47,14 @@ const GroupPageContent = (props: Props) => {
   const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage)
   const checkAndRedirectLastOpenedGroup = useCheckAndRedirectLastOpenedGroup()
 
-  const selectedGroup = useMemo(() => {
-    if (groupId) {
-      const foundGroup = groups?.find((group) => group.id === groupId)
+  const selectedGroup = useCurrentGroup({
+    onGroupNotFound: () => {
+      setErrorMessage("Group not found. Redirecting to last opened group...")
+      checkAndRedirectLastOpenedGroup()
+    },
+  })
 
-      if (groups && !foundGroup) {
-        setErrorMessage("Group not found. Redirecting to last opened group...")
-        checkAndRedirectLastOpenedGroup()
-        return undefined
-      }
-
-      return foundGroup
-    }
-
-    return null
-  }, [groups, groupId])
-
-  const { data: groupTabs } = useGroupTabsQuery(groupId!)
+  const { data: groupTabs } = useGroupTabsQuery(groupId)
 
   const selectedTab = useMemo(() => {
     if (!tabId || !groupTabs) return null

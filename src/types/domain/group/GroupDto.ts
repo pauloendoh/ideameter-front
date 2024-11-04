@@ -11,6 +11,11 @@ export default interface GroupDto {
   updatedAt?: string
 
   tabs?: { id: string; name: string }[]
+
+  minRating: number
+  maxRating: number
+  ratingInputType: "dropdown" | "numeric"
+  dropdownValueLabels: string[]
 }
 
 export const newGroupDto = (): GroupDto => ({
@@ -18,4 +23,14 @@ export const newGroupDto = (): GroupDto => ({
   imageUrl: null,
   name: "",
   description: "",
+
+  minRating: 1,
+  maxRating: 3,
+
+  ratingInputType: "dropdown",
+  dropdownValueLabels: [
+    "Not interesting",
+    "Kinda interesting",
+    "Very interesting",
+  ],
 })

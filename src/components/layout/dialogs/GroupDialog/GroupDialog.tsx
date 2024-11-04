@@ -7,6 +7,7 @@ import useSaveGroupMutation from "@/hooks/react-query/domain/group/useSaveGroupM
 import useConfirmBrowserTabClose from "@/hooks/utils/useConfirmBrowserTabClose"
 import useConfirmDialogStore from "@/hooks/zustand/dialogs/useConfirmDialogStore"
 import useGroupDialogStore from "@/hooks/zustand/dialogs/useGroupDialogStore"
+import { useGroupRatingSettingsDialogStore } from "@/hooks/zustand/dialogs/useGroupRatingSettingsDialogStore"
 import GroupDto from "@/types/domain/group/GroupDto"
 import urls from "@/utils/urls"
 import {
@@ -14,6 +15,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Link,
   Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
@@ -26,6 +28,8 @@ import GroupMoreIcon from "./GroupMoreIcon/GroupMoreIcon"
 const GroupDialog = () => {
   const router = useRouter()
   const { initialValue, isOpen, close } = useGroupDialogStore()
+  const { openDialog: openGroupRatingSettingsDialog } =
+    useGroupRatingSettingsDialogStore()
   const inputRef = useRef<HTMLDivElement>(null)
   const { mutate } = useSaveGroupMutation()
 
@@ -132,6 +136,38 @@ const GroupDialog = () => {
                 fullWidth
                 {...register("description")}
               />
+              <div>
+                {/* @ts-expect-error: primitive "button" is not valid in mui v5 */}
+                <Link
+                  component={"button"}
+                  type="button"
+                  variant="body2"
+                  onClick={() =>
+                    openGroupRatingSettingsDialog({
+                      initialValue: watch(),
+                      onSave: (values) => {
+                        setValue("ratingInputType", values.ratingInputType, {
+                          shouldDirty: true,
+                        })
+                        setValue("minRating", values.minRating, {
+                          shouldDirty: true,
+                        })
+                        setValue("maxRating", values.maxRating, {
+                          shouldDirty: true,
+                        })
+                        setValue(
+                          "dropdownValueLabels",
+                          values.dropdownValueLabels,
+                          { shouldDirty: true }
+                        )
+                      },
+                    })
+                  }
+                  fullWidth={false}
+                >
+                  Rating settings
+                </Link>
+              </div>
             </FlexCol>
           </DialogContent>
 
