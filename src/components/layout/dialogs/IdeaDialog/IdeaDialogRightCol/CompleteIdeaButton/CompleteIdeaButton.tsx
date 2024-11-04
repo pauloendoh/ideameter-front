@@ -18,11 +18,6 @@ const CompleteIdeaButton = ({ watch, setValue }: Props) => {
     setValue("completedAt", newCompletedAt)
 
     setValue("isDone", !watch("isDone"))
-    if (watch("isDone")) {
-      setValue("completedAt", new Date().toISOString())
-    } else {
-      setValue("completedAt", null)
-    }
   }
 
   const buttonBgColor = useMemo(() => {
