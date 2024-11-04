@@ -53,6 +53,7 @@ const GroupRatingSettingsDialog = () => {
                   type="number"
                   label="Min rating"
                   value={values.minRating}
+                  defaultValue={values.minRating}
                   onChange={(e) => {
                     let val = Number(e.target.value)
 
@@ -73,6 +74,7 @@ const GroupRatingSettingsDialog = () => {
                   type="number"
                   label="Max rating"
                   value={values.maxRating}
+                  defaultValue={values.maxRating}
                   onChange={(e) => {
                     let val = Number(e.target.value)
 
@@ -99,6 +101,7 @@ const GroupRatingSettingsDialog = () => {
                       <MyTextField
                         required
                         fullWidth
+                        defaultValue={values.dropdownValueLabels[i] || ""}
                         label={`Rating ${i + values.minRating}`}
                         value={values.dropdownValueLabels[i]}
                         onChange={(e) => {
