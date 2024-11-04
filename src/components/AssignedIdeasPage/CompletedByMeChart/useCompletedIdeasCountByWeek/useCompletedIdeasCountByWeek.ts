@@ -58,6 +58,7 @@ export const useCompletedIdeasCountByWeek = (
     for (let i = 0; i < 10; i++) {
       const day = new Date()
       day.setDate(lastMonday.getDate() - i * 7)
+      day.setHours(0, 0, 0, 0)
       startingDays.push(day)
     }
 
@@ -67,6 +68,9 @@ export const useCompletedIdeasCountByWeek = (
 
     const result: IdeaCount[] = []
 
+    console.log({
+      sortedStartingDays,
+    })
     for (const day of sortedStartingDays) {
       const startingDay = new Date(day)
       const finishedDay = new Date(day)

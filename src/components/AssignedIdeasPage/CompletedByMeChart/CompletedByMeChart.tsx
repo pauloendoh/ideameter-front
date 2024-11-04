@@ -1,5 +1,7 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { localStorageKeys } from "@/utils/localStorageKeys"
+import { useLocalStorage } from "@mantine/hooks"
 import {
   FormControl,
   InputLabel,
@@ -31,7 +33,10 @@ const CompletedByMeChart = () => {
   const [selectedType, setSelectedType] = useState<"count" | "complexity">(
     "count"
   )
-  const [range, setRange] = useState<"month" | "week" | "day">("month")
+  const [range, setRange] = useLocalStorage<"month" | "week" | "day">({
+    key: localStorageKeys.highlyRatedPage.completedIdeasRange,
+    defaultValue: "month",
+  })
 
   const completedIdeasCountLastYear =
     useCompletedIdeasCountLastYear(selectedType)

@@ -13,16 +13,10 @@ export const useAxios = (showErrorMessage = true) => {
   const setErrorMessage = useSnackbarStore((s) => s.setErrorMessage)
 
   localAxios.interceptors.request.use(async (config) => {
-    if (config.headers) {
-      config.headers["x-minutes-offset"] = new Date().getTimezoneOffset()
+    const userStr = nookies.get(null)[cookieKeys.user]
 
-      const userStr = nookies.get(null)[cookieKeys.user]
-
-      if (userStr) {
-        config.headers["x-auth-token"] = JSON.parse(userStr).token
-      }
-    }
-
+    if (userStr && config.headers)
+      config.headers["x-auth-token"] = JSON.parse(userStr).token
     return config
   })
 

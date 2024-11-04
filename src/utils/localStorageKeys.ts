@@ -4,5 +4,6 @@ export const localStorageKeys = {
 
   highlyRatedPage: {
     minReward: "/highly-rated-page/min-reward",
+    completedIdeasRange: "completed-ideas-range",
   },
 } as const
