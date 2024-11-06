@@ -144,7 +144,9 @@ const MissingRatingsTab = (props: Props) => {
                           {rating.rating}
                         </TableCell>
                         <TableCell align="center" width="120px">
-                          {capitalize(format(rating.updatedAt))}
+                          <span title={rating.updatedAt}>
+                            {capitalize(format(rating.updatedAt))}
+                          </span>
                         </TableCell>
                       </TableRow>
                     )
