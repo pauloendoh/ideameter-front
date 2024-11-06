@@ -10,6 +10,7 @@ type GroupMembersLastRatingsDto = {
     idea: {
       id: string
       name: string
+      tabId: string
     }
     rating: number
   }[]

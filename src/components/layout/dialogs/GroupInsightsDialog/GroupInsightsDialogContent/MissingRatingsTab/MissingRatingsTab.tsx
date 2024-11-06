@@ -1,3 +1,5 @@
+import NextLink from "next/link"
+
 import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserGroupAvatar/UserGroupAvatar"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
@@ -9,9 +11,9 @@ import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { useGroupMembersLastRatingsQuery } from "@/types/domain/insights/useGroupMembersLastRatingsQuery"
 import useMissingRatingsFromGroupQuery from "@/types/domain/insights/useMissingRatingsFromGroupQuery"
 import { capitalize } from "@/utils/text/capitalize"
+import urls from "@/utils/urls"
 import {
   Badge,
-  Link,
   Paper,
   Table,
   TableBody,
@@ -117,33 +119,36 @@ const MissingRatingsTab = (props: Props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {visibleLastRatings.map((rating) => (
-                    <TableRow key={rating.idea.id}>
-                      <TableCell>
-                        <Link
-                          onClick={() => {
-                            const foundIdea = groupIdeas?.find(
-                              (idea) => idea.id === rating.idea.id
-                            )
-
-                            if (foundIdea) {
-                              openIdea(foundIdea)
-                            }
-                          }}
-                          sx={{
-                            cursor: "pointer",
-                            color: "inherit",
-                          }}
-                        >
-                          {rating.idea.name}
-                        </Link>
-                      </TableCell>
-                      <TableCell align="center">{rating.rating}</TableCell>
-                      <TableCell align="center">
-                        {capitalize(format(rating.updatedAt))}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {visibleLastRatings.map((rating) => {
+                    return (
+                      <TableRow key={rating.idea.id} hover>
+                        <TableCell>
+                          <NextLink
+                            key={rating.idea.id}
+                            href={urls.pages.groupTabIdea(
+                              props.groupId,
+                              rating.idea.tabId,
+                              rating.idea.id
+                            )}
+                          >
+                            <a
+                              style={{
+                                color: "inherit",
+                              }}
+                            >
+                              {rating.idea.name}
+                            </a>
+                          </NextLink>
+                        </TableCell>
+                        <TableCell align="center" width="76px">
+                          {rating.rating}
+                        </TableCell>
+                        <TableCell align="center" width="120px">
+                          {capitalize(format(rating.updatedAt))}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             )}
