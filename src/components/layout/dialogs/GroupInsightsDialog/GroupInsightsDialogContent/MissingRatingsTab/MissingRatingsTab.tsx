@@ -121,7 +121,7 @@ const MissingRatingsTab = (props: Props) => {
                 <TableBody>
                   {visibleLastRatings.map((rating) => {
                     return (
-                      <TableRow key={rating.idea.id} hover>
+                      <TableRow key={rating.idea.id}>
                         <TableCell>
                           <NextLink
                             key={rating.idea.id}
