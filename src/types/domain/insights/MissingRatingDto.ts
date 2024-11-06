@@ -1,5 +1,5 @@
 export interface MissingRatingDto {
-  id: string
+  userId: string
   username: string
   count: number
 }

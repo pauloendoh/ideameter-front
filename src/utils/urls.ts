@@ -79,7 +79,8 @@ const urls = {
       `/groups/${groupId}/insights/interest-similarity`,
     missingRatingsFromGroup: (groupId: string) =>
       `/groups/${groupId}/insights/missing-ratings`,
-
+    groupMembersLastRatings: (groupId: string) =>
+      `/groups/${groupId}/last-ratings`,
     highlightableIdeas: "/highlightable-ideas",
     ideaHighlights: "/idea-highlights",
     toggleIdeaHighlight: (ideaId: string) =>

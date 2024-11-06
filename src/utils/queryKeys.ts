@@ -17,6 +17,9 @@ const queryKeys = {
   notifications: "/notifications",
   interestSimilarity: (groupId: string) =>
     `/groups/${groupId}/insights/interest-similarity`,
+  groupMembersLastRatings: (groupId: string) =>
+    `/groups/${groupId}/last-ratings`,
+
   assignedToMeIdeas: "assigned-to-me",
   highImpactVotedByMe: "high-impact-voted-by-me",
   missingRatingsFromGroup: (groupId: string) =>
