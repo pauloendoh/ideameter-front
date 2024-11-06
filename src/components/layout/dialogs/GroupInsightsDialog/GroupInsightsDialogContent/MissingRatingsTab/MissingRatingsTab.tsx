@@ -122,7 +122,13 @@ const MissingRatingsTab = (props: Props) => {
                   {visibleLastRatings.map((rating) => {
                     return (
                       <TableRow key={rating.idea.id}>
-                        <TableCell>
+                        <TableCell
+                          sx={{
+                            "a:hover": {
+                              textDecoration: "underline !important",
+                            },
+                          }}
+                        >
                           <NextLink
                             key={rating.idea.id}
                             href={urls.pages.groupTabIdea(
@@ -134,6 +140,7 @@ const MissingRatingsTab = (props: Props) => {
                             <a
                               style={{
                                 color: "inherit",
+                                textDecoration: "none",
                               }}
                             >
                               {rating.idea.name}
