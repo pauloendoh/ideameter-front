@@ -78,7 +78,7 @@ const CreatedUpdatedAtIdeaDialog = (props: Props) => {
           />
 
           <Typography>
-            Created <TimeagoSpan createdAt={props.createdAt} />
+            Created <TimeagoSpan dotted date={props.createdAt} />
           </Typography>
         </FlexVCenter>
       </FlexCol>

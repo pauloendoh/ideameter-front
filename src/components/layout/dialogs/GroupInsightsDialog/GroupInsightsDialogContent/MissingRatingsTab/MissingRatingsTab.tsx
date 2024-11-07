@@ -4,9 +4,7 @@ import UserGroupAvatar from "@/components/GroupPage/GroupTabContent/IdeaTable/Us
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
-import useGroupIdeasQuery from "@/hooks/react-query/domain/group/idea/useGroupIdeasQuery"
 import useGroupInsightsDialogStore from "@/hooks/zustand/dialogs/useGroupInsightsDialogStore"
-import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { useGroupMembersLastRatingsQuery } from "@/types/domain/insights/useGroupMembersLastRatingsQuery"
 import useMissingRatingsFromGroupQuery from "@/types/domain/insights/useMissingRatingsFromGroupQuery"
@@ -64,9 +62,6 @@ const MissingRatingsTab = (props: Props) => {
       []
     )
   }, [allLastRatings, selectedUserId])
-
-  const { openDialog: openIdea } = useIdeaDialogStore()
-  const { data: groupIdeas } = useGroupIdeasQuery(props.groupId)
 
   return (
     <FlexCol sx={{ gap: 2 }}>

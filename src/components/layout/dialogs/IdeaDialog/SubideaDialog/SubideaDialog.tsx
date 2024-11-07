@@ -158,7 +158,7 @@ const SubideaDialog = () => {
 
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Typography>
-                        Created <TimeagoSpan createdAt={watch("createdAt")} />
+                        Created <TimeagoSpan dotted date={watch("createdAt")} />
                       </Typography>
                     </div>
                   </>

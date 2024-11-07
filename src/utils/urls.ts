@@ -81,6 +81,9 @@ const urls = {
       `/groups/${groupId}/insights/missing-ratings`,
     groupMembersLastRatings: (groupId: string) =>
       `/groups/${groupId}/last-ratings`,
+    lastCommentsFromGroup: (groupId: string) =>
+      `/groups/${groupId}/last-comments`,
+
     highlightableIdeas: "/highlightable-ideas",
     ideaHighlights: "/idea-highlights",
     toggleIdeaHighlight: (ideaId: string) =>
