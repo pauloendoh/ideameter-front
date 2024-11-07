@@ -49,15 +49,15 @@ export const useCompletedIdeasCountByWeek = (
 
     // return ideaCountPerMonth
 
-    const startingDays: Date[] = [] // starts on mondays
+    const startingDays: Date[] = [] // starts on saturdays
 
-    const lastMonday = new Date()
-    lastMonday.setDate(lastMonday.getDate() - lastMonday.getDay() + 1) // getDay (of week)
+    const lastSaturday = new Date()
+    lastSaturday.setDate(lastSaturday.getDate() - lastSaturday.getDay() - 1) // getDay (of week)
 
     // past 9 weeks + current week
     for (let i = 0; i < 10; i++) {
       const day = new Date()
-      day.setDate(lastMonday.getDate() - i * 7)
+      day.setDate(lastSaturday.getDate() - i * 7)
       day.setHours(0, 0, 0, 0)
       startingDays.push(day)
     }
