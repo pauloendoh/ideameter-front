@@ -51,6 +51,30 @@ export const styles = {
       img: {
         maxHeight: 400,
       },
+      ".ql-indent-1": {
+        marginLeft: "1.5em",
+      },
+      ".ql-indent-2": {
+        marginLeft: "3em",
+      },
+      ".ql-indent-3": {
+        marginLeft: "4.5em",
+      },
+      ".ql-indent-4": {
+        marginLeft: "6em",
+      },
+      ".ql-indent-5": {
+        marginLeft: "7.5em",
+      },
+      ".ql-indent-6": {
+        marginLeft: "9em",
+      },
+      ".ql-indent-7": {
+        marginLeft: "10.5em",
+      },
+      ".ql-indent-8": {
+        marginLeft: "12em",
+      },
     },
     ".ql-tooltip": {
       background: theme.palette.grey[900],
