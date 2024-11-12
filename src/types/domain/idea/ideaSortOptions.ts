@@ -51,13 +51,6 @@ export const ideaSortOptionsDivided: {
       menuText: "Highest Experience",
     },
   ],
-  [
-    {
-      attribute: "irrelevantSince",
-      buttonLabel: "by Irrelevant Since",
-      menuText: "Irrelevant Since",
-    },
-  ],
 ]
 
 export const findSortOptionByAttribute = (attribute: IdeaSortAttributeType) => {
