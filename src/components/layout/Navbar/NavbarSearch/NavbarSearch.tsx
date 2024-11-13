@@ -109,7 +109,7 @@ const NavbarSearch = ({ ...props }: Props) => {
           renderInput={(params) => (
             <MyTextField
               {...params}
-              autoFocus
+              onFocus={(e) => e.currentTarget.select()}
               onBlur={() => setIsActive(false)}
               onChange={(e) => {
                 setSearch(e.target.value)
