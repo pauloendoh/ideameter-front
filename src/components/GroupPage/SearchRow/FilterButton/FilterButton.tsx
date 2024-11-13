@@ -132,7 +132,7 @@ const FilterButton = (props: Props) => {
         <S.MenuItem
           sx={{ display: "flex", justifyContent: "space-between", py: "4px" }}
         >
-          <Typography>Min. average</Typography>
+          <Typography>Min. average rating</Typography>
           <MyTextField
             value={filter.minAvgRating}
             type="number"
@@ -163,7 +163,7 @@ const FilterButton = (props: Props) => {
         <S.MenuItem
           sx={{ display: "flex", justifyContent: "space-between", py: "4px" }}
         >
-          <Typography>Min. count</Typography>
+          <Typography>Min. rating count</Typography>
           <MyTextField
             value={filter.minRatingCount}
             type="number"
