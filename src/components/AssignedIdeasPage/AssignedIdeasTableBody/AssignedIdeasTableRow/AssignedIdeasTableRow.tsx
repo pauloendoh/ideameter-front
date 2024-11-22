@@ -20,6 +20,7 @@ import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToM
 import useHighImpactVotedByMeQuery from "@/hooks/react-query/domain/idea/useHighImpactVotedByMeQuery"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
+import { Flex } from "@mantine/core"
 import NextLink from "next/link"
 import { MdDelete, MdOutlineLowPriority } from "react-icons/md"
 import { PiTabs } from "react-icons/pi"
@@ -105,6 +106,26 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
               {props.ideaAssignment.idea.name}
             </Link>
           </NextLink>
+          {props.ideaAssignment.idea.labels.length > 0 && (
+            <Flex
+              sx={{
+                flexWrap: "wrap",
+              }}
+            >
+              {props.ideaAssignment.idea?.labels.map((label) => (
+                <FlexVCenter
+                  key={label.id}
+                  sx={{
+                    backgroundColor: label.bgColor,
+                    borderRadius: 1,
+                    padding: "2px 8px",
+                  }}
+                >
+                  {label.name}
+                </FlexVCenter>
+              ))}
+            </Flex>
+          )}
           <FlexVCenter justifyContent={"space-between"}>
             <FlexVCenter gap={1}>
               <Box
