@@ -3,6 +3,7 @@ import { calculateIdeaResult } from "@/components/AssignedIdeasPage/AssignedIdea
 import AssignedIdeasTableHead, {
   Header,
 } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
+import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyTextField from "@/components/_common/inputs/MyTextField"
@@ -27,6 +28,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material"
+import { textContainsWords } from "endoh-utils"
 import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
 
@@ -84,6 +86,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [waitingForIdeasFilter, setWaitingForIdeasFilter] = useState<
     "" | "hide ideas waiting ideas" | "waiting for idea" | "being waited for"
   >("hide ideas waiting ideas")
+  const [labelsFilter, setLabelsFilter] = useState("")
 
   const { data: settings } = useUserSettingsQuery()
 
@@ -164,6 +167,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
     }
     if (waitingForIdeasFilter === "being waited for") {
       ideas = ideas.filter((i) => i.idea.beingWaitedFor.length > 0)
+    }
+
+    if (!!labelsFilter) {
+      ideas = ideas.filter((i) =>
+        i.idea.labels.some((l) => textContainsWords(l.name, labelsFilter))
+      )
     }
 
     if (sortBy === "highest-result") {
@@ -357,7 +366,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
                 />
               </FlexVCenter>
             </FlexVCenter>
-            <FlexVCenter>
+            <Flex justifyContent={"space-between"}>
               <FormControl size="small">
                 <InputLabel id="waiting-for-ideas-filter-label">
                   Ideas waiting ideas
@@ -388,7 +397,16 @@ const HighlyRatedIdeasTable = (props: Props) => {
                   </MenuItem>
                 </Select>
               </FormControl>
-            </FlexVCenter>
+
+              <MyTextField
+                label="Labels"
+                value={labelsFilter}
+                onChange={(e) => setLabelsFilter(e.target.value)}
+                sx={{
+                  width: 180,
+                }}
+              />
+            </Flex>
           </FlexCol>
         </TableFooter>
       </FlexVCenter>
