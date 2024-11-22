@@ -110,6 +110,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
             <Flex
               sx={{
                 flexWrap: "wrap",
+                gap: 1,
               }}
             >
               {props.ideaAssignment.idea?.labels.map((label) => (
