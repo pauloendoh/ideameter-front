@@ -11,21 +11,20 @@ import Link from "next/link"
 import { useMemo, useState } from "react"
 import { MdClose, MdSearch } from "react-icons/md"
 
-type Props = {}
-
-const NavbarSearch = ({ ...props }: Props) => {
+// PE 2/3
+const NavbarSearch = () => {
   const [isActive, setIsActive] = useState(false)
 
-  const [search, setSearch] = useState("")
+  const [query, setQuery] = useState("")
 
   const shouldShow = useMemo(
-    () => isActive || search.length > 0,
-    [isActive, search]
+    () => isActive || query.length > 0,
+    [isActive, query]
   )
 
-  const debouncedSearch = useDebounce(search, 500)
+  const debouncedQuery = useDebounce(query, 500)
 
-  const { data } = useSearchGroupTabsQuery(debouncedSearch)
+  const { data } = useSearchGroupTabsQuery(debouncedQuery)
 
   const getOptionLabel = (option: TabGroup) => {
     return `[${option.group.name}] ${option.tab.name}`
@@ -51,7 +50,7 @@ const NavbarSearch = ({ ...props }: Props) => {
           }}
           onChange={(e, option) => {
             if (option && typeof option === "object") {
-              setSearch(getOptionLabel(option))
+              setQuery(getOptionLabel(option))
             }
           }}
           filterOptions={(options, params) => {
@@ -75,7 +74,7 @@ const NavbarSearch = ({ ...props }: Props) => {
                   <span>
                     <span
                       style={{
-                        fontWeight: textContainsWords(option.group.name, search)
+                        fontWeight: textContainsWords(option.group.name, query)
                           ? "bold"
                           : "normal",
                       }}
@@ -85,7 +84,7 @@ const NavbarSearch = ({ ...props }: Props) => {
                     &nbsp;
                     <span
                       style={{
-                        fontWeight: textContainsWords(option.tab.name, search)
+                        fontWeight: textContainsWords(option.tab.name, query)
                           ? "bold"
                           : "normal",
                       }}
@@ -100,7 +99,7 @@ const NavbarSearch = ({ ...props }: Props) => {
           clearIcon={
             <MdClose
               onClick={() => {
-                setSearch("")
+                setQuery("")
                 setIsActive(false)
               }}
             />
@@ -112,13 +111,13 @@ const NavbarSearch = ({ ...props }: Props) => {
               onFocus={(e) => e.currentTarget.select()}
               onBlur={() => setIsActive(false)}
               onChange={(e) => {
-                setSearch(e.target.value)
+                setQuery(e.target.value)
                 setIsActive(true)
               }}
               placeholder="Search groups and tabs"
               onClickClearIcon={() => {
                 console.log("clear")
-                setSearch("")
+                setQuery("")
                 setIsActive(false)
               }}
             />

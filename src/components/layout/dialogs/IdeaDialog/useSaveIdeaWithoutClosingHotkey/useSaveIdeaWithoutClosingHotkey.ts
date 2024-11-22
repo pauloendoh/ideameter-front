@@ -14,7 +14,7 @@ export const useSaveIdeaWithoutClosingHotkey = (params: {
   const { setErrorMessage } = useSnackbarStore()
 
   useHotkeys(
-    "ctrl+s",
+    ["ctrl+s", "meta+s"],
     (e) => {
       if (dialogIsOpen) {
         e.preventDefault()
@@ -30,7 +30,7 @@ export const useSaveIdeaWithoutClosingHotkey = (params: {
       }
     },
     {
-      enableOnTags: ["INPUT", "TEXTAREA", "SELECT"],
+      enableOnFormTags: ["INPUT", "TEXTAREA", "SELECT"],
     },
     [saveWithoutClosing, watch, dialogIsOpen]
   )

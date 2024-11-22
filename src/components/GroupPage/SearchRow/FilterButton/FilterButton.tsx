@@ -21,11 +21,8 @@ import LabelsSelector from "./LabelsSelector/LabelsSelector"
 import VotedHighImpactSelector from "./VotedHighImpactSelector/VotedHighImpactSelector"
 import S from "./styles"
 
-interface Props {
-  test?: string
-}
-
-const FilterButton = (props: Props) => {
+// PE 2/3
+const FilterButton = () => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const routerQuery = useRouterQueryString()
@@ -52,8 +49,6 @@ const FilterButton = (props: Props) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  // const isDisabled = useMemo(() => filter.byText?.length > 0, [filter.byText]);
 
   const sortedLabels = useMemo(() => {
     return labels?.sort((a, b) => (a.position > b.position ? 1 : -1)) || []
