@@ -8,7 +8,7 @@ import textContainsWords from "@/utils/text/textContainsWords"
 import urls from "@/utils/urls"
 import { Autocomplete, IconButton } from "@mui/material"
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { MdClose, MdSearch } from "react-icons/md"
 
 // PE 2/3
@@ -29,6 +29,8 @@ const NavbarSearch = () => {
   const getOptionLabel = (option: TabGroup) => {
     return `[${option.group.name}] ${option.tab.name}`
   }
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   return (
     <div>
@@ -108,7 +110,11 @@ const NavbarSearch = () => {
           renderInput={(params) => (
             <MyTextField
               {...params}
-              onFocus={(e) => e.currentTarget.select()}
+              autoFocus
+              inputRef={inputRef}
+              onClick={() => {
+                inputRef.current?.select()
+              }}
               onBlur={() => setIsActive(false)}
               onChange={(e) => {
                 setQuery(e.target.value)
