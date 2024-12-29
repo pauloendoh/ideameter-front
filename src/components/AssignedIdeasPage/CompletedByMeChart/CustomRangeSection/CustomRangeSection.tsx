@@ -31,6 +31,7 @@ export const CustomRangeSection = ({ ...props }: Props) => {
         return false
       }
       const completedAtDate = new Date(d.idea.completedAt)
+
       if (customInitialDate && completedAtDate < new Date(customInitialDate)) {
         return false
       }
@@ -44,10 +45,6 @@ export const CustomRangeSection = ({ ...props }: Props) => {
   }, [data, customInitialDate, customFinalDate])
 
   const label = useMemo(() => {
-    if (!customInitialDate || !customFinalDate) {
-      return <Typography color="error">Missing date range</Typography>
-    }
-
     if (!completedIdeasInRange.length) {
       return <Typography>No ideas completed</Typography>
     }
@@ -75,7 +72,6 @@ export const CustomRangeSection = ({ ...props }: Props) => {
               sx={{
                 width: 140,
               }}
-              error={!customInitialDate}
             />
           )}
           onChange={(val) => {
@@ -92,7 +88,6 @@ export const CustomRangeSection = ({ ...props }: Props) => {
               sx={{
                 width: 140,
               }}
-              error={!customFinalDate}
             />
           )}
           onChange={(val) => {
