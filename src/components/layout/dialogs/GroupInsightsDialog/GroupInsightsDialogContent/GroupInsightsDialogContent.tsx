@@ -27,19 +27,22 @@ const GroupInsightsDialogContent = (props: Props) => {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Interest similarity" {...a11yProps(0)} />
-          <Tab label="Missing Ratings" {...a11yProps(1)} />
-          <Tab label="Last comments" {...a11yProps(2)} />
+          <Tab label="Missing Ratings" {...a11yProps(0)} />
+          <Tab label="Last comments" {...a11yProps(1)} />
+          <Tab label="Interest similarity" {...a11yProps(2)} />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
-        <InterestSimilarityTab groupId={props.group.id!} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
         <MissingRatingsTab groupId={props.group.id!} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+
+      <TabPanel value={value} index={1}>
         <LastCommentsTab groupId={props.group.id!} />
+      </TabPanel>
+
+      <TabPanel value={value} index={2}>
+        <InterestSimilarityTab groupId={props.group.id!} />
       </TabPanel>
     </Box>
   )
