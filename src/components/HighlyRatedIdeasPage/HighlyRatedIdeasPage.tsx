@@ -1,5 +1,5 @@
 import { Container } from "@mui/material"
-import CompletedByMeChart from "../AssignedIdeasPage/CompletedByMeChart/CompletedByMeChart"
+import { CompletedByMeChart } from "../AssignedIdeasPage/CompletedByMeChart/CompletedByMeChart"
 import FlexCol from "../_common/flexboxes/FlexCol"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import HighlyRatedIdeasTable from "./HighlyRatedIdeasTable/HighlyRatedIdeasTable"

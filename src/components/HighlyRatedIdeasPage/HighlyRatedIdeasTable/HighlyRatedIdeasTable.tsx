@@ -176,7 +176,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     }
 
     if (sortBy === "highest-result") {
-      ideas = ideas
+      ideas = [...ideas]
         .sort((a, b) => {
           const valueA = calculateIdeaResult(a.idea)
           const valueB = calculateIdeaResult(b.idea)

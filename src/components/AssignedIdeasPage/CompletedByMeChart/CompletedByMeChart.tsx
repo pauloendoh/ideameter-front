@@ -1,5 +1,6 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import useAssignedToMeQuery from "@/hooks/react-query/domain/idea/useAssignedToMeQuery"
 import { localStorageKeys } from "@/utils/localStorageKeys"
 import { useLocalStorage } from "@mantine/hooks"
 import {
@@ -21,11 +22,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
+import { CustomRangeSection } from "./CustomRangeSection/CustomRangeSection"
 import { useCompletedIdeasCountByDay } from "./useCompletedIdeasCountByDay/useCompletedIdeasCountByDay"
 import { useCompletedIdeasCountByWeek } from "./useCompletedIdeasCountByWeek/useCompletedIdeasCountByWeek"
 import { useCompletedIdeasCountLastYear } from "./useCompletedIdeasCountLastYear/useCompletedIdeasCountLastYear"
 
-const CompletedByMeChart = () => {
+const ranges = ["day", "week", "month", "custom"] as const
+type RangeType = (typeof ranges)[number]
+
+export const CompletedByMeChart = () => {
   const isLargeScreen = useMediaQuery("(min-width:600px)")
 
   const theme = useTheme()
@@ -33,7 +38,7 @@ const CompletedByMeChart = () => {
   const [selectedType, setSelectedType] = useState<"count" | "complexity">(
     "count"
   )
-  const [range, setRange] = useLocalStorage<"month" | "week" | "day">({
+  const [range, setRange] = useLocalStorage<RangeType>({
     key: localStorageKeys.highlyRatedPage.completedIdeasRange,
     defaultValue: "month",
   })
@@ -44,6 +49,8 @@ const CompletedByMeChart = () => {
   const completedIdeasByWeek = useCompletedIdeasCountByWeek(selectedType)
   const completedIdeasCountByDay = useCompletedIdeasCountByDay(selectedType)
 
+  const { data: ideasAssignedToMe } = useAssignedToMeQuery()
+
   const finalData = useMemo(() => {
     if (range === "day") {
       return completedIdeasCountByDay
@@ -51,8 +58,17 @@ const CompletedByMeChart = () => {
     if (range === "week") {
       return completedIdeasByWeek
     }
-    return completedIdeasCountLastYear
-  }, [range, completedIdeasByWeek, completedIdeasCountLastYear])
+    if (range === "month") {
+      return completedIdeasCountLastYear
+    }
+
+    return []
+  }, [
+    range,
+    completedIdeasByWeek,
+    completedIdeasCountLastYear,
+    ideasAssignedToMe,
+  ])
 
   return (
     <FlexCol height={400} alignItems={"center"}>
@@ -97,46 +113,48 @@ const CompletedByMeChart = () => {
               <MenuItem value={"month"}>Month</MenuItem>
               <MenuItem value={"week"}>Week</MenuItem>
               <MenuItem value={"day"}>Day</MenuItem>
+              <MenuItem value={"custom"}>Custom</MenuItem>
             </Select>
           </FormControl>
         </FlexVCenter>
+        {range === "custom" && <CustomRangeSection />}
       </FlexCol>
 
-      <BarChart
-        key={selectedType}
-        height={300}
-        data={finalData}
-        width={isLargeScreen ? 780 : 480}
-        margin={{
-          top: 32,
-          right: 30,
-          left: 20,
-          bottom: 24,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="key" angle={-45} textAnchor="end" fontSize={12} />
-        <YAxis />
-        <Tooltip />
-
-        <Bar
-          dataKey="count"
-          fill={
-            selectedType === "count"
-              ? theme.palette.primary.main
-              : theme.palette.secondary.main
-          }
+      {range !== "custom" && (
+        <BarChart
+          key={selectedType}
+          height={300}
+          data={finalData}
+          width={isLargeScreen ? 780 : 480}
+          margin={{
+            top: 32,
+            right: 30,
+            left: 20,
+            bottom: 24,
+          }}
         >
-          <LabelList
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="key" angle={-45} textAnchor="end" fontSize={12} />
+          <YAxis />
+          <Tooltip />
+
+          <Bar
             dataKey="count"
-            position="inside"
-            fill="white"
-            fontSize={12}
-          />
-        </Bar>
-      </BarChart>
+            fill={
+              selectedType === "count"
+                ? theme.palette.primary.main
+                : theme.palette.secondary.main
+            }
+          >
+            <LabelList
+              dataKey="count"
+              position="inside"
+              fill="white"
+              fontSize={12}
+            />
+          </Bar>
+        </BarChart>
+      )}
     </FlexCol>
   )
 }
-
-export default CompletedByMeChart

@@ -2,7 +2,7 @@ import { Container } from "@mui/material"
 import FlexCol from "../_common/flexboxes/FlexCol"
 import HomeLayout from "../layout/HomeLayout/HomeLayout"
 import AssignedToMeTable from "./AssignedToMeTable/AssignedToMeTable"
-import CompletedByMeChart from "./CompletedByMeChart/CompletedByMeChart"
+import { CompletedByMeChart } from "./CompletedByMeChart/CompletedByMeChart"
 
 const headers = [
   {
