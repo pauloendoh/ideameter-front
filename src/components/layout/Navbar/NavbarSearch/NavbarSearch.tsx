@@ -50,10 +50,11 @@ const NavbarSearch = () => {
             if (typeof option === "string") return option
             return getOptionLabel(option)
           }}
+          inputValue={query}
           onChange={(e, option) => {
-            if (option && typeof option === "object") {
-              setQuery(getOptionLabel(option))
-            }
+            // if (option && typeof option === "object") {
+            //   setQuery(getOptionLabel(option))
+            // }
           }}
           filterOptions={(options, params) => {
             const filtered = options.filter((option) => {
