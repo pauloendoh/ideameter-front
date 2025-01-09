@@ -33,6 +33,7 @@ const useSelectLabelsDialogStore = create<IStore>((set, get) => ({
     set({
       groupId: initialValue.groupId,
       onChangeSelectedLabels: initialValue.onChangeSelectedLabels,
+      selectedLabels: initialValue.selectedLabels,
       dialogIsOpen: true,
     })
   },

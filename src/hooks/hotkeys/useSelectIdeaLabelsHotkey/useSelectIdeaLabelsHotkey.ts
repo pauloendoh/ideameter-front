@@ -21,9 +21,19 @@ export const useSelectIdeaLabelsHotkey = (ideaId: string | null) => {
         const groupIdeas = queryClient.getQueryData<IdeaDto[]>(
           queryKeys.groupIdeas(groupId)
         )
-        if (!groupIdeas) return
+        if (!groupIdeas) {
+          return
+        }
+
         const idea = groupIdeas.find((i) => i.id === ideaId)
-        if (!idea) return
+
+        if (!idea) {
+          return
+        }
+
+        console.log({
+          selectedLabels: idea.labels,
+        })
 
         openDialog({
           groupId: groupId,
