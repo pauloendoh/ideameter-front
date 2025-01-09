@@ -121,12 +121,19 @@ const SearchBar = (props: Props) => {
     return "Search subidea title"
   }, [selectedSearchType, props.label])
 
+  const noOptionsText = useMemo(() => {
+    if (text.length === 0) return "Start typing to search"
+    if (text.length > 0 && text.length < 3) return "Type at least 3 characters"
+    return "No results found"
+  }, [text])
+
   return (
     <Box onClick={() => refetch()}>
       <FlexVCenter>
         <Autocomplete
           value={selectedIdea}
           onBlur={() => setText("")}
+          noOptionsText={noOptionsText}
           onChange={(e, idea) => {
             if (typeof idea === "string") return
             if (idea?.parentId) {
