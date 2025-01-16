@@ -38,7 +38,7 @@ const urls = {
     labelsToImport: (groupId: string) => `/group/${groupId}/labels-to-import`,
     importLabels: (groupId: string) => `/group/${groupId}/import-labels`,
     labels: `/labels`,
-
+    labelsToIdeas: `/labels-to-ideas`,
     groupIdeas: (groupId: string) => `/group/${groupId}/ideas`,
     ideaChanges: (ideaId: string) => `/idea-changes?ideaId=${ideaId}`,
     ideaComments: (ideaId: string) => `/comments?ideaId=${ideaId}`,

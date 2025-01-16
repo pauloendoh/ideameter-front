@@ -11,6 +11,7 @@ interface Props {
   selectedLabelIds?: string[]
   onChange: (labelIds: string[]) => void
   inputLabel?: string
+  inputRef?: React.RefObject<HTMLInputElement>
 }
 
 const LabelsSelector = (props: Props) => {
@@ -57,6 +58,7 @@ const LabelsSelector = (props: Props) => {
           {...params}
           label={props.inputLabel || "Labels"}
           size="small"
+          inputRef={props.inputRef}
         />
       )}
       renderOption={(liProps, label) => (

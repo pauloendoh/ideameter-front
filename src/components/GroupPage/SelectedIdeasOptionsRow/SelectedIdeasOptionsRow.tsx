@@ -1,12 +1,15 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useCurrentGroup } from "@/hooks/domain/group/useCurrentGroup"
+import { useAddLabelsToIdeasDialogStore } from "@/hooks/zustand/dialogs/useAddLabelsToIdeasDialogStore"
 import useMoveIdeasToTabDialogStore from "@/hooks/zustand/dialogs/useMoveIdeasToTabDialogStore"
 import { Button, IconButton, Typography, useTheme } from "@mui/material"
 import { BsArrowRightCircle } from "react-icons/bs"
-import { MdOutlineClose } from "react-icons/md"
+import { MdLabel, MdOutlineClose } from "react-icons/md"
 import useMultiSelectIdeas from "../GroupTabContent/IdeaTable/useMultiSelectIdeas/useMultiSelectIdeas"
 
 interface Props {
   selectedIdeaIds: string[]
+  tabId: string
 }
 
 const SelectedIdeasOptionsRow = (props: Props) => {
@@ -17,6 +20,14 @@ const SelectedIdeasOptionsRow = (props: Props) => {
     (s) => s.openDialog
   )
 
+  const { openDialog: openAddLabelsDialog } = useAddLabelsToIdeasDialogStore()
+
+  const currentGroup = useCurrentGroup()
+
+  if (!currentGroup) {
+    return null
+  }
+
   return (
     <FlexVCenter
       justifyContent="space-between"
@@ -26,7 +37,20 @@ const SelectedIdeasOptionsRow = (props: Props) => {
     >
       <Typography>{props.selectedIdeaIds.length} selected</Typography>
 
-      <FlexVCenter>
+      <FlexVCenter gap={3}>
+        <Button
+          startIcon={<MdLabel />}
+          color="secondary"
+          onClick={() => {
+            openAddLabelsDialog({
+              selectedIdeaIds: props.selectedIdeaIds,
+              groupId: currentGroup.id!,
+            })
+          }}
+        >
+          Add labels
+        </Button>
+
         <Button
           startIcon={<BsArrowRightCircle />}
           color="secondary"
@@ -34,7 +58,7 @@ const SelectedIdeasOptionsRow = (props: Props) => {
         >
           Move to tab
         </Button>
-        <IconButton onClick={clearSelectedIds}>
+        <IconButton size="small" onClick={clearSelectedIds}>
           <MdOutlineClose />
         </IconButton>
       </FlexVCenter>
