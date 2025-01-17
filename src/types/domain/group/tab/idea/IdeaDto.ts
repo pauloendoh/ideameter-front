@@ -31,6 +31,7 @@ export default interface IdeaDto {
   improvementRate: number | null
   rewarding: number | null
   discomfortZone: number | null
+  hasChangedRewardingOrDiscomfort: boolean
 
   subideaImageUrl: string
 
@@ -58,6 +59,7 @@ export const buildIdeaDto = (partial?: Partial<IdeaDto>): IdeaDto => ({
   improvementRate: null,
   rewarding: null,
   discomfortZone: null,
+  hasChangedRewardingOrDiscomfort: false,
 
   labels: [],
   assignedUsers: [],

@@ -93,6 +93,12 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
       key={props.ideaAssignment.idea.id}
       className="idea-table-row"
       hover
+      style={{
+        backgroundColor:
+          props.ideaAssignment.idea.hasChangedRewardingOrDiscomfort === false
+            ? theme.palette.grey[900]
+            : "transparent",
+      }}
     >
       <TableCell align="center">{props.index + 1}</TableCell>
       <TableCell>
@@ -106,7 +112,7 @@ const AssignedIdeasTableRow = ({ ...props }: Props) => {
               {props.ideaAssignment.idea.name}
             </Link>
           </NextLink>
-          {props.ideaAssignment.idea.labels.length > 0 && (
+          {props.ideaAssignment.idea.labels?.length > 0 && (
             <Flex
               sx={{
                 flexWrap: "wrap",

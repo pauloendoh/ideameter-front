@@ -83,6 +83,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [onlyNoXp, setOnlyNoXp] = useState(false)
+  const [requiresChange, setRequiresChange] = useState(false)
   const [waitingForIdeasFilter, setWaitingForIdeasFilter] = useState<
     "" | "hide ideas waiting ideas" | "waiting for idea" | "being waited for"
   >("hide ideas waiting ideas")
@@ -217,6 +218,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
       })
     }
 
+    if (requiresChange) {
+      ideas = ideas.filter(
+        (i) => i.idea.hasChangedRewardingOrDiscomfort === false
+      )
+    }
+
     return ideas
   }, [
     data,
@@ -304,6 +311,19 @@ const HighlyRatedIdeasTable = (props: Props) => {
                     />
                   }
                   label={<Typography variant="body2">No XP</Typography>}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      defaultChecked={requiresChange}
+                      checked={requiresChange}
+                      onClick={() => setRequiresChange(!requiresChange)}
+                    />
+                  }
+                  label={
+                    <Typography variant="body2">Requires change</Typography>
+                  }
                 />
               </FlexVCenter>
               <FlexVCenter gap={2}>

@@ -70,6 +70,8 @@ const IdeaDialogRightCol = (props: Props) => {
                     return props.setValue("rewarding", null)
                   }
 
+                  props.setValue("hasChangedRewardingOrDiscomfort", true)
+
                   return props.setValue("rewarding", Number(e.target.value))
                 }}
                 inputProps={{
@@ -85,8 +87,11 @@ const IdeaDialogRightCol = (props: Props) => {
                 label="Discomfort Zone"
                 value={props.watch("discomfortZone")}
                 onChange={(e) => {
-                  if (e.target.value === "")
+                  if (e.target.value === "") {
                     return props.setValue("discomfortZone", null)
+                  }
+
+                  props.setValue("hasChangedRewardingOrDiscomfort", true)
 
                   const num = Number(e.target.value)
                   const min = 1
