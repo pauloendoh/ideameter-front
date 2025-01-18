@@ -1,8 +1,6 @@
 import AssignedIdeasTableBody from "@/components/AssignedIdeasPage/AssignedIdeasTableBody/AssignedIdeasTableBody"
 import { calculateIdeaResult } from "@/components/AssignedIdeasPage/AssignedIdeasTableBody/AssignedIdeasTableRow/calculateIdeaResult/calculateIdeaResult"
-import AssignedIdeasTableHead, {
-  Header,
-} from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
+import AssignedIdeasTableHead from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
@@ -10,6 +8,7 @@ import MyTextField from "@/components/_common/inputs/MyTextField"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
+import { useMyRatedIdeasStore } from "@/hooks/zustand/domain/my-rated-ideas/useMyRatedIdeasStore"
 import { localStorageKeys } from "@/utils/localStorageKeys"
 import { useLocalStorage } from "@mantine/hooks"
 import {
@@ -31,46 +30,9 @@ import {
 import { textContainsWords } from "endoh-utils"
 import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
+import { useMyRatedIdeasTableHeaders } from "./useMyRatedIdeasTableHeaders/useMyRatedIdeasTableHeaders"
 
 type Props = {}
-
-const headers: Header[] = [
-  {
-    title: "#",
-    width: 64,
-    align: "center",
-  },
-  {
-    title: "idea",
-    width: 360,
-    align: "left",
-  },
-  {
-    title: "Result (XP)",
-    width: 100,
-    align: "center",
-  },
-  {
-    title: "Reward",
-    width: 100,
-    align: "center",
-  },
-  {
-    title: "Discomfort Zone",
-    width: 100,
-    align: "center",
-  },
-  {
-    title: "Group",
-    width: 200,
-    align: "left",
-  },
-  {
-    title: "Tab",
-    width: 200,
-    align: "left",
-  },
-]
 
 const HighlyRatedIdeasTable = (props: Props) => {
   const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
@@ -93,16 +55,16 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
   const { data: settings } = useUserSettingsQuery()
 
-  const [sortBy, setSortBy] = useLocalStorage<
-    "oldest-rated" | "highest-result"
-  >({
+  const [sortBy, setSortBy] = useLocalStorage<"oldest-rated" | "custom-sort">({
     key: localStorageKeys.sortByHighlyRatedIdeasPage,
-    defaultValue: "highest-result",
+    defaultValue: "custom-sort",
   })
 
   const tabIndex = useMemo(() => {
     return sortBy === "oldest-rated" ? 1 : 0
   }, [sortBy])
+
+  const { sortingBy: customSortingBy } = useMyRatedIdeasStore()
 
   const sortedIdeas = useMemo(() => {
     if (!data) {
@@ -178,19 +140,34 @@ const HighlyRatedIdeasTable = (props: Props) => {
       )
     }
 
-    if (sortBy === "highest-result") {
+    if (sortBy === "custom-sort") {
       ideas = [...ideas]
         .sort((a, b) => {
-          const valueA = calculateIdeaResult(a.idea)
-          const valueB = calculateIdeaResult(b.idea)
+          const rewardingA = a.idea.rewarding ?? 0
+          const rewardingB = b.idea.rewarding ?? 0
+          if (customSortingBy === "result") {
+            const valueA = calculateIdeaResult(a.idea)
+            const valueB = calculateIdeaResult(b.idea)
 
-          if (valueA === valueB) {
-            const rewardingA = a.idea.rewarding ?? 0
-            const rewardingB = b.idea.rewarding ?? 0
+            if (valueA === valueB) {
+              return rewardingA < rewardingB ? 1 : -1
+            }
+
+            return valueA < valueB ? 1 : -1
+          }
+
+          if (customSortingBy === "reward") {
             return rewardingA < rewardingB ? 1 : -1
           }
 
-          return valueA < valueB ? 1 : -1
+          if (customSortingBy === "discomfort") {
+            const discomfortA = a.idea.discomfortZone ?? 0
+            const discomfortB = b.idea.discomfortZone ?? 0
+
+            return discomfortA < discomfortB ? 1 : -1
+          }
+
+          return 0
         })
         .sort((a, b) => {
           const youHighImpactVotedA = a.idea.highImpactVotes.some(
@@ -248,6 +225,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
   const { openDialog } = useHideTabsDialogStore()
 
+  const headers = useMyRatedIdeasTableHeaders()
+
   if (!isSuccess) {
     return null
   }
@@ -263,11 +242,11 @@ const HighlyRatedIdeasTable = (props: Props) => {
           <Tabs
             value={tabIndex}
             onChange={(e, value) => {
-              setSortBy(value === 0 ? "highest-result" : "oldest-rated")
+              setSortBy(value === 0 ? "custom-sort" : "oldest-rated")
             }}
             aria-label="basic tabs example"
           >
-            <Tab label="Highest result" />
+            <Tab label="Custom sort" />
             <Tab label="Oldest rated" />
           </Tabs>
 
@@ -336,13 +315,14 @@ const HighlyRatedIdeasTable = (props: Props) => {
                 <MyTextField
                   label="Min reward"
                   type="number"
-                  value={minReward}
+                  defaultValue={minReward}
                   onChange={(e) => {
                     const value = e.target.value
                     if (value === "") {
                       setMinReward(0)
                     } else {
-                      setMinReward(parseInt(value))
+                      const num = Number(value)
+                      setMinReward(num)
                     }
                   }}
                   sx={{
