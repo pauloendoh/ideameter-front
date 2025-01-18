@@ -217,6 +217,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     showCompleted,
     settings,
     hideRecent,
+    customSortingBy,
   ])
 
   const assignedToMeCount = useMemo(() => {
