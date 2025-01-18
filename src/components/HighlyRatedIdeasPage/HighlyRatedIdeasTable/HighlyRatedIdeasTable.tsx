@@ -83,7 +83,9 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [onlyNoXp, setOnlyNoXp] = useState(false)
-  const [requiresChange, setRequiresChange] = useState(false)
+  const [requiresChangeFilter, setRequiresChangeFilter] = useState<
+    "show all" | "requires change" | "already changed"
+  >("show all")
   const [waitingForIdeasFilter, setWaitingForIdeasFilter] = useState<
     "" | "hide ideas waiting ideas" | "waiting for idea" | "being waited for"
   >("hide ideas waiting ideas")
@@ -218,9 +220,15 @@ const HighlyRatedIdeasTable = (props: Props) => {
       })
     }
 
-    if (requiresChange) {
+    if (requiresChangeFilter === "requires change") {
       ideas = ideas.filter(
         (i) => i.idea.hasChangedRewardingOrDiscomfort === false
+      )
+    }
+
+    if (requiresChangeFilter === "already changed") {
+      ideas = ideas.filter(
+        (i) => i.idea.hasChangedRewardingOrDiscomfort === true
       )
     }
 
@@ -312,19 +320,6 @@ const HighlyRatedIdeasTable = (props: Props) => {
                   }
                   label={<Typography variant="body2">No XP</Typography>}
                 />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      size="small"
-                      defaultChecked={requiresChange}
-                      checked={requiresChange}
-                      onClick={() => setRequiresChange(!requiresChange)}
-                    />
-                  }
-                  label={
-                    <Typography variant="body2">Requires change</Typography>
-                  }
-                />
               </FlexVCenter>
               <FlexVCenter gap={2}>
                 {/* <FormControlLabel
@@ -387,36 +382,59 @@ const HighlyRatedIdeasTable = (props: Props) => {
               </FlexVCenter>
             </FlexVCenter>
             <Flex justifyContent={"space-between"}>
-              <FormControl size="small">
-                <InputLabel id="waiting-for-ideas-filter-label">
-                  Ideas waiting ideas
-                </InputLabel>
-                <Select
-                  size="small"
-                  sx={{
-                    minWidth: 180,
-                  }}
-                  value={waitingForIdeasFilter}
-                  label="Ideas waiting ideas"
-                  labelId="waiting-for-ideas-filter-label"
-                  onChange={(e) =>
-                    setWaitingForIdeasFilter(e.target.value as any)
-                  }
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="hide ideas waiting ideas">
-                    Hide ideas waiting ideas
-                  </MenuItem>
-                  <MenuItem value="waiting for idea">
-                    Show ideas waiting ideas
-                  </MenuItem>
-                  <MenuItem value="being waited for">
-                    Show ideas being waited for
-                  </MenuItem>
-                </Select>
-              </FormControl>
+              <FlexVCenter gap={2}>
+                <FormControl size="small">
+                  <InputLabel id="waiting-for-ideas-filter-label">
+                    Ideas waiting ideas
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    sx={{
+                      minWidth: 180,
+                    }}
+                    value={waitingForIdeasFilter}
+                    label="Ideas waiting ideas"
+                    labelId="waiting-for-ideas-filter-label"
+                    onChange={(e) =>
+                      setWaitingForIdeasFilter(e.target.value as any)
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="hide ideas waiting ideas">
+                      Hide ideas waiting ideas
+                    </MenuItem>
+                    <MenuItem value="waiting for idea">
+                      Show ideas waiting ideas
+                    </MenuItem>
+                    <MenuItem value="being waited for">
+                      Show ideas being waited for
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl size="small">
+                  <InputLabel id="requires-changes-filter-label">
+                    Requires change filter
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    sx={{
+                      minWidth: 180,
+                    }}
+                    value={requiresChangeFilter}
+                    label="Requires change filter"
+                    labelId="requires-changes-filter-label"
+                    onChange={(e) => {
+                      setRequiresChangeFilter(e.target.value as any)
+                    }}
+                  >
+                    <MenuItem value="show all">Show all</MenuItem>
+                    <MenuItem value="requires change">Requires change</MenuItem>
+                    <MenuItem value="already changed">Already changed</MenuItem>
+                  </Select>
+                </FormControl>
+              </FlexVCenter>
 
               <MyTextField
                 label="Labels"
