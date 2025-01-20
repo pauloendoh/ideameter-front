@@ -49,7 +49,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
     "show all" | "requires change" | "already changed"
   >("show all")
   const [waitingForIdeasFilter, setWaitingForIdeasFilter] = useState<
-    "" | "hide ideas waiting ideas" | "waiting for idea" | "being waited for"
+    | "none"
+    | "hide ideas waiting ideas"
+    | "waiting for idea"
+    | "being waited for"
   >("hide ideas waiting ideas")
   const [labelsFilter, setLabelsFilter] = useState("")
 
@@ -391,7 +394,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
                       setWaitingForIdeasFilter(e.target.value as any)
                     }
                   >
-                    <MenuItem value="">
+                    <MenuItem value="none">
                       <em>None</em>
                     </MenuItem>
                     <MenuItem value="hide ideas waiting ideas">
