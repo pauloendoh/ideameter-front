@@ -103,7 +103,7 @@ const IdeaDialogRightCol = (props: Props) => {
                     e.target.value = max.toString()
                   }
 
-                  props.setValue("discomfortZone", Number(e.target.value))
+                  props.setValue("discomfortZone", parseInt(e.target.value))
                 }}
                 sx={{
                   maxWidth: "140px",
