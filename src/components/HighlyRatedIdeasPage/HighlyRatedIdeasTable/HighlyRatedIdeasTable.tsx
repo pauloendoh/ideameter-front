@@ -174,8 +174,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
           if (customSortingBy === "reward") {
             if (rewardingA === rewardingB) {
-              // discomfort desc
-              return discomfortA > discomfortB ? -1 : 1
+              // discomfort asc
+              return discomfortA > discomfortB ? 1 : -1
             }
             return rewardingA < rewardingB ? 1 : -1
           }
