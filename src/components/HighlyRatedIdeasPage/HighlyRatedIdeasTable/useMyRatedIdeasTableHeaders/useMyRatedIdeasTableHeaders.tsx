@@ -1,3 +1,5 @@
+import { ImSortAmountAsc, ImSortAmountDesc } from "react-icons/im"
+
 import { Header } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import { MyRatedIdeasSortingByType } from "@/hooks/zustand/domain/my-rated-ideas/MyRatedIdeasSortingByType/MyRatedIdeasSortingByType"
 import { useMyRatedIdeasStore } from "@/hooks/zustand/domain/my-rated-ideas/useMyRatedIdeasStore"
@@ -68,6 +70,20 @@ const SortableHeaderSpan = (props: {
   children: React.ReactNode
 }) => {
   const { sortingBy, setSortingBy } = useMyRatedIdeasStore()
+  const icon = useMemo(() => {
+    if (sortingBy === props.value) {
+      const style = {
+        position: "relative",
+        top: 2,
+      } as const
+      if (props.value === "discomfort") {
+        // upwards
+        return <ImSortAmountAsc style={style} />
+      }
+
+      return <ImSortAmountDesc style={style} />
+    }
+  }, [sortingBy])
   return (
     <span
       onClick={() => setSortingBy(props.value)}
@@ -75,7 +91,7 @@ const SortableHeaderSpan = (props: {
         cursor: "pointer",
       }}
     >
-      {props.children} {sortingBy === props.value && "↓"}
+      {props.children} {sortingBy === props.value && icon}
     </span>
   )
 }

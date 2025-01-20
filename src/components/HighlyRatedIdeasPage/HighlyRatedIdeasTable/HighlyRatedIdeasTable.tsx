@@ -145,6 +145,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
         .sort((a, b) => {
           const rewardingA = a.idea.rewarding ?? 0
           const rewardingB = b.idea.rewarding ?? 0
+
+          const discomfortA = a.idea.discomfortZone ?? 0
+          const discomfortB = b.idea.discomfortZone ?? 0
+
           if (customSortingBy === "result") {
             const valueA = calculateIdeaResult(a.idea)
             const valueB = calculateIdeaResult(b.idea)
@@ -157,14 +161,21 @@ const HighlyRatedIdeasTable = (props: Props) => {
           }
 
           if (customSortingBy === "reward") {
+            if (rewardingA === rewardingB) {
+              // discomfort desc
+              return discomfortA > discomfortB ? -1 : 1
+            }
             return rewardingA < rewardingB ? 1 : -1
           }
 
           if (customSortingBy === "discomfort") {
-            const discomfortA = a.idea.discomfortZone ?? 0
-            const discomfortB = b.idea.discomfortZone ?? 0
+            if (discomfortA === discomfortB) {
+              // rewarding asc
+              return rewardingA > rewardingB ? 1 : -1
+            }
 
-            return discomfortA < discomfortB ? 1 : -1
+            // discomfort asc
+            return discomfortA > discomfortB ? 1 : -1
           }
 
           return 0
