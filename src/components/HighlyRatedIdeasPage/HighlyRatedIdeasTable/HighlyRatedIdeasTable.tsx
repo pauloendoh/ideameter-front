@@ -416,7 +416,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
                       Only ideas being waited for
                     </MenuItem>
                     <MenuItem value="being waited for and not waiting">
-                      Ideas being waited for and not waiting
+                      Only ideas being waited for and not waiting
                     </MenuItem>
                   </Select>
                 </FormControl>
