@@ -105,9 +105,6 @@ const IdeaDialogRightCol = (props: Props) => {
 
                   props.setValue("discomfortZone", Number(e.target.value))
                 }}
-                inputProps={{
-                  step: 0.1,
-                }}
                 sx={{
                   maxWidth: "140px",
                 }}
