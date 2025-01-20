@@ -53,6 +53,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     | "hide ideas waiting ideas"
     | "waiting for idea"
     | "being waited for"
+    | "being waited for and not waiting"
   >("hide ideas waiting ideas")
   const [labelsFilter, setLabelsFilter] = useState("")
 
@@ -135,6 +136,14 @@ const HighlyRatedIdeasTable = (props: Props) => {
     }
     if (waitingForIdeasFilter === "being waited for") {
       ideas = ideas.filter((i) => i.idea.beingWaitedFor.length > 0)
+    }
+
+    if (waitingForIdeasFilter === "being waited for and not waiting") {
+      ideas = ideas.filter(
+        (i) =>
+          i.idea.beingWaitedFor.length > 0 &&
+          i.idea.waitingIdeas.filter((w) => !w.isDone).length === 0
+      )
     }
 
     if (!!labelsFilter) {
@@ -401,10 +410,13 @@ const HighlyRatedIdeasTable = (props: Props) => {
                       Hide ideas waiting ideas
                     </MenuItem>
                     <MenuItem value="waiting for idea">
-                      Show ideas waiting ideas
+                      Only ideas waiting ideas
                     </MenuItem>
                     <MenuItem value="being waited for">
-                      Show ideas being waited for
+                      Only ideas being waited for
+                    </MenuItem>
+                    <MenuItem value="being waited for and not waiting">
+                      Ideas being waited for and not waiting
                     </MenuItem>
                   </Select>
                 </FormControl>
