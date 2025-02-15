@@ -45,16 +45,29 @@ const HighlyRatedIdeasTable = (props: Props) => {
   const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [onlyNoXp, setOnlyNoXp] = useState(false)
-  const [requiresChangeFilter, setRequiresChangeFilter] = useState<
-    "show all" | "requires change" | "already changed"
-  >("show all")
-  const [waitingForIdeasFilter, setWaitingForIdeasFilter] = useState<
+
+  type RequiresChangeFilterType =
+    | "show all"
+    | "requires change"
+    | "already changed"
+  const [requiresChangeFilter, setRequiresChangeFilter] =
+    useLocalStorage<RequiresChangeFilterType>({
+      key: localStorageKeys.highlyRatedPage.requiresChangeFilter,
+      defaultValue: "show all",
+    })
+
+  type WaitingIdeasFilterType =
     | "none"
     | "hide ideas waiting ideas"
     | "waiting for idea"
     | "being waited for"
     | "being waited for and not waiting"
-  >("hide ideas waiting ideas")
+
+  const [waitingForIdeasFilter, setWaitingForIdeasFilter] =
+    useLocalStorage<WaitingIdeasFilterType>({
+      key: localStorageKeys.highlyRatedPage.ideasWaitingIdeasFilter,
+      defaultValue: "hide ideas waiting ideas",
+    })
   const [labelsFilter, setLabelsFilter] = useState("")
 
   const { data: settings } = useUserSettingsQuery()
@@ -395,6 +408,9 @@ const HighlyRatedIdeasTable = (props: Props) => {
                     size="small"
                     sx={{
                       minWidth: 180,
+                      "& label": {
+                        color: "red",
+                      },
                     }}
                     value={waitingForIdeasFilter}
                     label="Ideas waiting ideas"
