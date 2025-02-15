@@ -25,12 +25,14 @@ export const newGroupDto = (): GroupDto => ({
   description: "",
 
   minRating: 1,
-  maxRating: 3,
+  maxRating: 5,
 
   ratingInputType: "dropdown",
   dropdownValueLabels: [
-    "Not interesting",
+    "Not interesting at all",
+    "Not very interesting",
     "Kinda interesting",
     "Very interesting",
+    "Extremely interesting",
   ],
 })
