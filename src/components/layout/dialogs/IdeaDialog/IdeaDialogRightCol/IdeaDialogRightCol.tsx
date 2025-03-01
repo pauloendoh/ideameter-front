@@ -153,7 +153,6 @@ const IdeaDialogRightCol = (props: Props) => {
           <Typography component="span" color="orange">
             Being waited by{" "}
             <Tooltip
-              open={true}
               arrow
               title={
                 <ul
