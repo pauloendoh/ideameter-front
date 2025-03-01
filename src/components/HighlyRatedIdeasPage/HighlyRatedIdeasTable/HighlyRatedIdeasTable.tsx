@@ -42,7 +42,13 @@ const HighlyRatedIdeasTable = (props: Props) => {
     key: localStorageKeys.highlyRatedPage.minReward,
     defaultValue: 0,
   })
-  const [showAssignedToMeIdeas, setShowAssignedToMeIdeas] = useState(false)
+  const [assignedToMeFilter, setAssignedToMeFilter] = useLocalStorage<
+    "all" | "assigned" | "not-assigned"
+  >({
+    key: localStorageKeys.highlyRatedPage.assignedToMeFilter,
+
+    defaultValue: "all",
+  })
   const [showCompleted, setShowCompleted] = useState(false)
   const [onlyNoXp, setOnlyNoXp] = useState(false)
 
@@ -98,8 +104,15 @@ const HighlyRatedIdeasTable = (props: Props) => {
       )
     }
 
-    if (showAssignedToMeIdeas) {
-      ideas = ideas.filter((i) => i.iAmAssigned)
+    switch (assignedToMeFilter) {
+      case "assigned":
+        ideas = ideas.filter((i) => i.iAmAssigned)
+        break
+      case "not-assigned":
+        ideas = ideas.filter((i) => !i.iAmAssigned)
+        break
+      default:
+        break
     }
 
     if (onlyNoXp) {
@@ -249,7 +262,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
   }, [
     data,
     data?.map((d) => d.myRating),
-    showAssignedToMeIdeas,
+    assignedToMeFilter,
     showCompleted,
     settings,
     hideRecent,
@@ -367,23 +380,34 @@ const HighlyRatedIdeasTable = (props: Props) => {
                   }}
                 />
 
-                <FormControlLabel
-                  control={
-                    <Switch
-                      size="small"
-                      defaultChecked={showAssignedToMeIdeas}
-                      checked={showAssignedToMeIdeas}
-                      onClick={() =>
-                        setShowAssignedToMeIdeas(!showAssignedToMeIdeas)
-                      }
-                    />
-                  }
-                  label={
-                    <Typography variant="body2">
+                <FormControl size="small">
+                  <InputLabel id="assigned-to-me-filter-label">
+                    Assigned to me ({assignedToMeCount})
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    sx={{
+                      minWidth: 180,
+                      "& label": {
+                        color: "red",
+                      },
+                    }}
+                    value={assignedToMeFilter}
+                    label={`Assigned to me (${assignedToMeCount})`}
+                    labelId="assigned-to-me-filter-label"
+                    onChange={(e) =>
+                      setAssignedToMeFilter(e.target.value as any)
+                    }
+                  >
+                    <MenuItem value="all">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value="assigned">
                       Assigned to me ({assignedToMeCount})
-                    </Typography>
-                  }
-                />
+                    </MenuItem>
+                    <MenuItem value="not-assigned">Not assigned to me</MenuItem>
+                  </Select>
+                </FormControl>
 
                 <FormControlLabel
                   control={
