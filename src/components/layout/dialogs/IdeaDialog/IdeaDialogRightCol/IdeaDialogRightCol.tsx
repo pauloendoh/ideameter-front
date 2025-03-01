@@ -5,6 +5,7 @@ import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
+import { pluralize } from "@/utils/text/pluralize"
 import urls from "@/utils/urls"
 import { Box, Grid, Tooltip, Typography } from "@mui/material"
 import { useMemo } from "react"
@@ -188,7 +189,11 @@ const IdeaDialogRightCol = (props: Props) => {
                   cursor: "pointer",
                 }}
               >
-                {props.watch("beingWaitedFor").length} idea
+                {props.watch("beingWaitedFor").length}{" "}
+                {pluralize({
+                  count: props.watch("beingWaitedFor").length,
+                  word: "idea",
+                })}
               </Typography>
             </Tooltip>
           </Typography>
