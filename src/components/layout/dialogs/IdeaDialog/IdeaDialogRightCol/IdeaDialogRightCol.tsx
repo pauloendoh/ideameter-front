@@ -5,7 +5,8 @@ import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
-import { Box, Grid, Typography } from "@mui/material"
+import urls from "@/utils/urls"
+import { Box, Grid, Tooltip, Typography } from "@mui/material"
 import { useMemo } from "react"
 import { UseFormSetValue, UseFormWatch } from "react-hook-form"
 import CreatedUpdatedAtIdeaDialog from "../CreatedUpdatedAtIdeaDialog/CreatedUpdatedAtIdeaDialog"
@@ -148,6 +149,51 @@ const IdeaDialogRightCol = (props: Props) => {
         )}
 
         <Box />
+        {props.watch("beingWaitedFor").length > 0 && (
+          <Typography component="span" color="orange">
+            Being waited by{" "}
+            <Tooltip
+              open={true}
+              arrow
+              title={
+                <ul
+                  style={{
+                    paddingLeft: 16,
+                    paddingRight: 8,
+                  }}
+                >
+                  {props.watch("beingWaitedFor").map((idea) => (
+                    <li key={idea.id}>
+                      <a
+                        href={urls.pages.groupTabIdea(
+                          groupId,
+                          idea.tabId,
+                          idea.id
+                        )}
+                        target="_blank"
+                        style={{
+                          color: "unset",
+                        }}
+                      >
+                        <Typography key={idea.id}>{idea.name}</Typography>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              }
+            >
+              <Typography
+                component="span"
+                style={{
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                {props.watch("beingWaitedFor").length} idea
+              </Typography>
+            </Tooltip>
+          </Typography>
+        )}
         <WaitingIdeasSection setValue={props.setValue} watch={props.watch} />
       </FlexCol>
     </Grid>

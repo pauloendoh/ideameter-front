@@ -65,7 +65,9 @@ const IdeaDialog = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (dialogIsOpen) reset(initialValue)
+    if (dialogIsOpen) {
+      reset(initialValue)
+    }
   }, [initialValue, dialogIsOpen])
 
   useEffect(() => {
