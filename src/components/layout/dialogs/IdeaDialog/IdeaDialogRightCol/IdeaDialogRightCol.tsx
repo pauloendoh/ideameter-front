@@ -173,9 +173,16 @@ const IdeaDialogRightCol = (props: Props) => {
                         target="_blank"
                         style={{
                           color: "unset",
+                          textDecoration: idea.isDone
+                            ? "line-through"
+                            : "unset",
                         }}
                       >
-                        <Typography key={idea.id}>{idea.name}</Typography>
+                        <Typography key={idea.id}>
+                          {idea.name}
+
+                          {idea.isDone}
+                        </Typography>
                       </a>
                     </li>
                   ))}
