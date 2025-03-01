@@ -142,6 +142,19 @@ export const useFilterAndSortIdeaRatings = ({
 
     if (sortingBy.attribute === "rewarding") {
       result = result.sort((a, b) => {
+        const isHighImpactA = a.idea.highImpactVotes?.some(
+          (v) => v.userId === authUserId
+        )
+        const isHighImpactB = b.idea.highImpactVotes?.some(
+          (v) => v.userId === authUserId
+        )
+        if (isHighImpactA && !isHighImpactB) {
+          return -1
+        }
+        if (!isHighImpactA && isHighImpactB) {
+          return 1
+        }
+
         const rewardingA = a.idea.rewarding ?? 0
         const rewardingB = b.idea.rewarding ?? 0
         if (rewardingA === rewardingB) {
