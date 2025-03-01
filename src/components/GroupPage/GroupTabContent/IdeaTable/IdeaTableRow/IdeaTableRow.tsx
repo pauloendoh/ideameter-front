@@ -3,6 +3,7 @@ import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSa
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
+import urls from "@/utils/urls"
 import { Checkbox, TableCell, TableRow, useTheme } from "@mui/material"
 import { useRouter } from "next/router"
 import React, { useMemo, useState } from "react"
@@ -91,6 +92,19 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
           }
 
           openIdeaDialog(props.ideaRating.idea)
+        }}
+        onMouseDown={(e) => {
+          // middle mouse button, open idea in new tab
+          if (e.button === 1) {
+            e.preventDefault()
+            window.open(
+              urls.pages.groupTabIdea(
+                query.groupId,
+                props.ideaRating.idea.tabId!,
+                props.ideaRating.idea.id
+              )
+            )
+          }
         }}
       >
         <TableCell align="center">{props.rowNumber}</TableCell>
