@@ -142,10 +142,16 @@ export const useFilterAndSortIdeaRatings = ({
 
     if (sortingBy.attribute === "rewarding") {
       result = result.sort((a, b) => {
-        const resultA = a.idea.rewarding ?? 0
-        const resultB = b.idea.rewarding ?? 0
+        const rewardingA = a.idea.rewarding ?? 0
+        const rewardingB = b.idea.rewarding ?? 0
+        if (rewardingA === rewardingB) {
+          const discomfortA = a.idea.discomfortZone ?? 0
+          const discomfortB = b.idea.discomfortZone ?? 0
 
-        return resultB - resultA
+          return discomfortA - discomfortB
+        }
+
+        return rewardingB - rewardingA
       })
     }
 
