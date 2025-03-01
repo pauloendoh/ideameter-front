@@ -50,6 +50,11 @@ export const ideaSortOptionsDivided: {
       buttonLabel: "by Experience",
       menuText: "Highest Experience",
     },
+    {
+      attribute: "rewarding",
+      buttonLabel: "by Rewarding",
+      menuText: "Most Rewarding",
+    },
   ],
 ]
 

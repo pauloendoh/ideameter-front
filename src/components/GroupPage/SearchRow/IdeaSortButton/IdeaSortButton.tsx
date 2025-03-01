@@ -101,7 +101,8 @@ const IdeaSortButton = (props: Props) => {
 
             {sortOptions.map((option) => {
               if (
-                option.attribute === "experience" &&
+                (option.attribute === "experience" ||
+                  option.attribute === "rewarding") &&
                 authUser?.username !== "pauloendoh"
               ) {
                 return null

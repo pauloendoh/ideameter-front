@@ -140,6 +140,15 @@ export const useFilterAndSortIdeaRatings = ({
       })
     }
 
+    if (sortingBy.attribute === "rewarding") {
+      result = result.sort((a, b) => {
+        const resultA = a.idea.rewarding ?? 0
+        const resultB = b.idea.rewarding ?? 0
+
+        return resultB - resultA
+      })
+    }
+
     if (sortingBy.attribute === "updatedAt")
       result = result.sort((a, b) =>
         b.idea.updatedAt.localeCompare(a.idea.updatedAt)
