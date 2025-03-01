@@ -114,7 +114,6 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
           <RatingInput
             idea={props.ideaRating.idea}
             groupId={query.groupId}
-            parentId={props.ideaRating.idea.parentId}
             isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
           />
         </TableCell>

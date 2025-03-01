@@ -15,6 +15,7 @@ import IdeaChangesDialog from "../IdeaChangesDialog/IdeaChangesDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
 import MoveIdeasToTabDialog from "../MoveIdeasToTabDialog/MoveIdeasToTabDialog"
+import { RateYourInterestDialog } from "../RateYourInterestDialog/RateYourInterestDialog"
 import SelectLabelsDialog from "../SelectLabelsDialog/SelectLabelsDialog"
 import ShortcutsDialog from "../ShortcutsDialog/ShortcutsDialog"
 import TabDialog from "../TabDialog/TabDialog"
@@ -26,24 +27,32 @@ const GlobalDialogs = () => {
 
   return (
     <>
+      <AddLabelsToIdeasDialog />
+      <ArchivedIdeasDialog />
+
       <ConfirmDialog />
-      <TabDialog />
+
+      <EditLabelDialog />
+      <EditProfileDialog />
 
       <GroupDialog />
       <GroupRatingSettingsDialog />
 
-      <IdeaDialog />
-      <EditLabelDialog />
-
-      <EditProfileDialog />
       <IdeaAssignDialog />
-      <SubideaDialog />
-      <ShortcutsDialog />
+      <IdeaDialog />
+
       <ConfirmDeleteTabDialog />
       <ConfirmDeleteGroupDialog />
 
       <GroupInsightsDialog />
+
+      <HideTabsDialog />
+
+      <IdeaChangesDialog />
+
       <MoveIdeasToTabDialog />
+
+      <RateYourInterestDialog />
 
       <SelectLabelsDialog
         groupId={selectLabelsDialogStore.groupId}
@@ -52,13 +61,11 @@ const GlobalDialogs = () => {
         open={selectLabelsDialogStore.dialogIsOpen}
         onClose={selectLabelsDialogStore.closeDialog}
       />
+      <ShortcutsDialog />
+      <SubideaDialog />
 
+      <TabDialog />
       <TransformToSubideaDialog />
-      <IdeaChangesDialog />
-      <ArchivedIdeasDialog />
-      <HideTabsDialog />
-
-      <AddLabelsToIdeasDialog />
     </>
   )
 }

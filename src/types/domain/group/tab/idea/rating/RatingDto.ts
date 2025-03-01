@@ -14,7 +14,7 @@ export default interface RatingDto {
   position: number | null
 }
 
-export const newRatingDto = (
+export const buildRatingDto = (
   ideaId: string,
   rating: number | null
 ): RatingDto => ({

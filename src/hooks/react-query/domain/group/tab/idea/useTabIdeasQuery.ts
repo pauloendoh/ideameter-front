@@ -12,7 +12,9 @@ const useTabIdeasQuery = ({ tabId, groupId }: Params) => {
   const { data: groupIdeas } = useGroupIdeasQuery(groupId)
 
   const query = useQuery(queryKeys.tabIdeas(tabId), async () => {
-    if (!groupIdeas) return []
+    if (!groupIdeas) {
+      return []
+    }
 
     return groupIdeas.filter((i) => i.tabId === tabId)
   })

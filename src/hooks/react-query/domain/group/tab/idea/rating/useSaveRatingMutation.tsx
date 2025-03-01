@@ -11,11 +11,6 @@ import urls from "@/utils/urls"
 import { Link } from "@mui/material"
 import { useMutation, useQueryClient } from "react-query"
 
-interface ResponseData {
-  savedRating: RatingDto
-  idea: IdeaDto
-}
-
 const useSaveRatingMutation = () => {
   const queryClient = useQueryClient()
   const scrollToIdea = useScrollToIdea()
@@ -25,18 +20,13 @@ const useSaveRatingMutation = () => {
 
   const axios = useAxios()
   return useMutation(
-    ({
-      payload,
-    }: {
-      payload: RatingDto
-      groupId: string
-      parentIdeaId?: string
-    }) =>
+    (input: { groupId: string; ideaId: string; rating: number | null }) =>
       axios
-        .request<ResponseData>({
-          url: urls.api.ideaRating(payload.ideaId),
-          data: payload,
-          method: payload.id ? "PUT" : "POST",
+        .post<{
+          savedRating: RatingDto
+          idea: IdeaDto
+        }>(urls.api.ideaRating(input.ideaId), {
+          rating: input.rating,
         })
         .then((res) => res.data),
     {

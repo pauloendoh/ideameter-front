@@ -5,18 +5,18 @@ import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/us
 import useSaveRatingMutation from "@/hooks/react-query/domain/group/tab/idea/rating/useSaveRatingMutation"
 import useRefreshRatingMutation from "@/hooks/react-query/domain/rating/useRefreshRatingMutation"
 import useSubideasQuery from "@/hooks/react-query/domain/subidea/useSubideasQuery"
+import { useRateYourInterestDialogStore } from "@/hooks/zustand/dialogs/useRateYourInterestDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import IdeaDto from "@/types/domain/group/tab/idea/IdeaDto"
-import { newRatingDto } from "@/types/domain/group/tab/idea/rating/RatingDto"
-import { Badge, NativeSelect } from "@mui/material"
+import { Badge } from "@mui/material"
 import { useMemo } from "react"
 import DisabledRatingsIcon from "./DisabledRatingsIcon/DisabledRatingsIcon"
+import { DropdownRatingInput } from "./DropdownRatingInput/DropdownRatingInput"
+import { NumericRatingInputButton } from "./NumericRatingInputButton/NumericRatingInputButton"
 
 interface Props {
   idea: IdeaDto
   groupId: string
-  parentId?: string
-  hideInput?: boolean
   isDisabled?: boolean
 }
 
@@ -24,8 +24,8 @@ const RatingInput = (props: Props) => {
   const { authUser } = useAuthStore()
   const saveRatingMutation = useSaveRatingMutation()
   const deleteRatingMutation = useDeleteRatingMutation()
-  const { data: groupRatings } = useRatingsQuery(props.groupId)
 
+  const { data: groupRatings } = useRatingsQuery(props.groupId)
   const { data: subideas } = useSubideasQuery(props.groupId)
 
   const isLoading =
@@ -51,10 +51,7 @@ const RatingInput = (props: Props) => {
 
   // I had to use currentRating -1 because MenuItem does not accept value={null}
   const hideBadge =
-    props.idea.isDone ||
-    myCurrentRating >= 0 ||
-    containsSubideas ||
-    props.isDisabled
+    props.idea.isDone || myCurrentRating >= 0 || props.isDisabled
 
   const { mutate: submitRefreshRating } = useRefreshRatingMutation()
   const { data: ratings } = useRatingsQuery(props.groupId)
@@ -79,64 +76,41 @@ const RatingInput = (props: Props) => {
     }
 
     saveRatingMutation.mutate({
-      payload: newRatingDto(props.idea.id, newValue),
       groupId: props.groupId,
-      parentIdeaId: props.idea.parentId,
+      ideaId: props.idea.id,
+      rating: newValue === 0 ? null : newValue,
     })
   }
 
   const currentGroup = useCurrentGroup()
-  const options = useMemo(() => {
-    if (!currentGroup) return []
 
-    const range = currentGroup.maxRating - currentGroup.minRating
+  const { openDialog: openRateYourInterestDialog } =
+    useRateYourInterestDialogStore()
 
-    return Array.from({ length: range + 1 }, (_, i) => {
-      const value = currentGroup.minRating + i
-      return {
-        value: value,
-        label: `${value} - ${currentGroup.dropdownValueLabels?.[i] || ""}`,
-      }
-    }).reverse()
-  }, [currentGroup])
+  if (!currentGroup) {
+    return null
+  }
 
   return (
     <Badge color="error" variant={hideBadge ? "standard" : "dot"}>
-      {props.isDisabled && <DisabledRatingsIcon />}
-
-      {!props.isDisabled && props.hideInput ? (
+      {props.isDisabled ? (
         <FlexVCenter sx={{ width: 64, justifyContent: "center" }}>
-          {myCurrentRating === 0 && "-"}
-          {myCurrentRating > 0 && myCurrentRating}
+          <DisabledRatingsIcon />
         </FlexVCenter>
+      ) : currentGroup.ratingInputType === "dropdown" ? (
+        <DropdownRatingInput
+          handleChange={handleChange}
+          isLoading={isLoading}
+          isDisabled={props.isDisabled}
+          myCurrentRating={myCurrentRating}
+        />
       ) : (
-        <NativeSelect
-          key={myCurrentRating}
-          disabled={isLoading}
-          variant="outlined"
-          size="small"
-          // value={currentRating}
-          sx={{ width: 40, textAlignLast: "right" }}
-          defaultValue={myCurrentRating}
-          onChange={(e) => {
-            handleChange(Number(e.target.value))
-          }}
-          onClick={(e) => {
-            e.stopPropagation()
-          }}
-        >
-          {authUser?.username === "pauloendoh" && (
-            <option value={-2}>Refresh</option>
-          )}
-          {/* invisible character to avoid small height */}
-          <option value={-1}>⠀</option>
-          <option value={0}>-</option>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </NativeSelect>
+        <NumericRatingInputButton
+          groupId={props.groupId}
+          handleChange={handleChange}
+          idea={props.idea}
+          myCurrentRating={myCurrentRating}
+        />
       )}
     </Badge>
   )
