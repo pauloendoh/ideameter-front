@@ -176,6 +176,7 @@ const IdeaDialogRightCol = (props: Props) => {
                           textDecoration: idea.isDone
                             ? "line-through"
                             : "unset",
+                          opacity: idea.isDone ? 0.5 : 1,
                         }}
                       >
                         <Typography key={idea.id}>
