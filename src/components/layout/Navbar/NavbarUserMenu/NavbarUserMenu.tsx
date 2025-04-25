@@ -1,13 +1,14 @@
 import { PiFireSimple } from "react-icons/pi"
 
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import ProfilePicture from "@/components/_common/ProfilePicture/ProfilePicture"
 import { useLogoutAndPushIndex } from "@/hooks/domain/auth/useLogoutAndPushIndex"
 import useEditProfileDialogStore from "@/hooks/zustand/dialogs/useEditProfileDialogStore"
 import useShortcutsDialogStore from "@/hooks/zustand/dialogs/useShortcutsDialogStore"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import {
-  Button,
   Divider,
+  IconButton,
   Link as MUILink,
   Menu,
   MenuItem,
@@ -62,22 +63,13 @@ const NavbarUserMenu = () => {
 
   return (
     <div>
-      <Button onClick={(e) => handleClick(e)}>
-        {authUser?.profile?.pictureUrl ? (
-          <img
-            src={authUser.profile.pictureUrl}
-            alt="Profile picture"
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
-        ) : (
-          authUser?.username
-        )}
-      </Button>
+      <IconButton onClick={(e) => handleClick(e)}>
+        <ProfilePicture
+          pictureUrl={authUser?.profile?.pictureUrl ?? ""}
+          username={authUser?.username ?? ""}
+          size={24}
+        />
+      </IconButton>
       <Menu
         id="navbar-user-menu"
         anchorEl={anchorEl}

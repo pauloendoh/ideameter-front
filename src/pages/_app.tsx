@@ -34,18 +34,11 @@ export default function MyApp(props: MyAppProps) {
     <EmotionCacheProvider value={emotionCache}>
       <QueryClientProvider client={queryClient}>
         <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
+          <meta name="viewport" content="minimum-scale=1" />
         </Head>
         <ThemeProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterLuxon}>
             <IoProvider>
-              <Head>
-                <meta
-                  name="viewport"
-                  content="initial-scale=1, width=device-width"
-                />
-              </Head>
-
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
 

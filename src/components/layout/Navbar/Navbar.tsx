@@ -1,4 +1,5 @@
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useMyMediaQuery } from "@/hooks/utils/useMyMediaQuery"
 import { Typography } from "@mui/material"
 import S from "./Navbar.styles"
 import NavbarSearch from "./NavbarSearch/NavbarSearch"
@@ -6,6 +7,8 @@ import NavbarUserMenu from "./NavbarUserMenu/NavbarUserMenu"
 import NavbarUserNotifications from "./NavbarUserNotifications/NavbarUserNotifications"
 
 const Navbar = () => {
+  const { isMobile } = useMyMediaQuery()
+
   return (
     <S.AppBarRoot
       position="fixed"
