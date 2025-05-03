@@ -94,6 +94,9 @@ const urls = {
     allGroupsAndTabs: "/me/groups/tabs",
     refreshRating: (ratingId: string) => `/rating/${ratingId}/refresh`,
     searchGroupTabs: (query: string) => `/search-group-tabs?q=${query}`,
+    getMyGhostRatings: (groupId: string) => `/groups/${groupId}/ghost-ratings`,
+    saveMyGhostRating: (input: { ideaId: string }) =>
+      `/ideas/${input.ideaId}/ghost-ratings`,
   },
   ws: {
     groupId: (groupId: string) => `${NEXT_PUBLIC_API_URL}/groups/${groupId}`,

@@ -8,6 +8,7 @@ import create from "zustand"
 export interface IFilter {
   labelIds: string[]
   excludeLabelIds: string[]
+  onlyGhostRatings: boolean
   onlyCompletedIdeas: boolean
   users: SimpleUserDto[]
   votedHighImpactBy: string | null
@@ -28,6 +29,7 @@ export interface IStore {
   setFilterLabelIds: (ids: string[], tabId: string) => void
   setExcludeLabelIds: (ids: string[], tabId: string) => void
   toggleOnlyCompletedIdeas: (tabId: string) => void
+  toggleGhostRatings: (tabId: string) => void
   changeFilterUsers: (users: SimpleUserDto[], tabId: string) => void
   toggleRequiresYourRating: (tabId: string) => void
   setMinRatingCount: (count: number, tabId: string) => void
@@ -44,6 +46,7 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
     labelIds: [],
     excludeLabelIds: [],
     users: [],
+    onlyGhostRatings: false,
     onlyHighImpactVoted: false,
     requiresYourRating: false,
     minRatingCount: 0,
@@ -125,6 +128,24 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
 
   labelIdIsInFilter: (id) => {
     return get().filter.labelIds.includes(id)
+  },
+
+  toggleGhostRatings: (tabId) => {
+    const { filter } = get()
+
+    set({
+      filter: {
+        ...filter,
+        onlyGhostRatings: !filter.onlyGhostRatings,
+      },
+    })
+
+    const state = get()
+    nookies.set(
+      null,
+      cookieKeys.groupTabIdeasFilter(tabId),
+      JSON.stringify(state)
+    )
   },
 
   toggleOnlyCompletedIdeas: (tabId) => {
