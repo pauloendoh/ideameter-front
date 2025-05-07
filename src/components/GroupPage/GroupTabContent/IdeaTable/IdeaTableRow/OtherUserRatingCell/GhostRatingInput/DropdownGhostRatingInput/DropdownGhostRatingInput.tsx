@@ -50,7 +50,7 @@ export const DropdownGhostRatingInput = ({ ...props }: Props) => {
       sx={{
         width: 40,
         textAlignLast: "right",
-        color: theme.palette.primary.main,
+        background: theme.palette.primary.main,
       }}
       defaultValue={props.myCurrentRating}
       onChange={(e) => {
