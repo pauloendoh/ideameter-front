@@ -61,14 +61,5 @@ export const GhostRatingInput = ({ ...props }: Props) => {
     )
   }, [currentGroup, value])
 
-  return (
-    <Box
-      className={`GhostRatingInput`}
-      sx={{
-        opacity: 0.66,
-      }}
-    >
-      {content}
-    </Box>
-  )
+  return <Box className={`GhostRatingInput`}>{content}</Box>
 }

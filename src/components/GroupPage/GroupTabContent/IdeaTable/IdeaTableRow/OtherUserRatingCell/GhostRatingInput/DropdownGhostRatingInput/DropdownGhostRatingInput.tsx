@@ -1,7 +1,6 @@
 import { useCurrentGroup } from "@/hooks/domain/group/useCurrentGroup"
 import { useSaveGhostRatingMutation } from "@/hooks/react-query/domain/group/ghost-rating/useSaveGhostRatingMutation"
 import { useMuiTheme } from "@/hooks/utils/useMuiTheme"
-import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { NativeSelect } from "@mui/material"
 import { useMemo } from "react"
 
@@ -13,8 +12,6 @@ type Props = {
 }
 
 export const DropdownGhostRatingInput = ({ ...props }: Props) => {
-  const { authUser } = useAuthStore()
-
   const currentGroup = useCurrentGroup()
 
   const options = useMemo(() => {
@@ -50,7 +47,7 @@ export const DropdownGhostRatingInput = ({ ...props }: Props) => {
       sx={{
         width: 40,
         textAlignLast: "right",
-        background: theme.palette.primary.main,
+        borderBottom: `0.5px solid ${theme.palette.primary.main}`,
       }}
       defaultValue={props.myCurrentRating}
       onChange={(e) => {
