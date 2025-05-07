@@ -15,6 +15,7 @@ import IdeaChangesDialog from "../IdeaChangesDialog/IdeaChangesDialog"
 import IdeaDialog from "../IdeaDialog/IdeaDialog"
 import SubideaDialog from "../IdeaDialog/SubideaDialog/SubideaDialog"
 import MoveIdeasToTabDialog from "../MoveIdeasToTabDialog/MoveIdeasToTabDialog"
+import { NumericGhostRatingDialog } from "../NumericGhostRatingDialog/NumericGhostRatingDialog"
 import { RateYourInterestDialog } from "../RateYourInterestDialog/RateYourInterestDialog"
 import SelectLabelsDialog from "../SelectLabelsDialog/SelectLabelsDialog"
 import ShortcutsDialog from "../ShortcutsDialog/ShortcutsDialog"
@@ -53,6 +54,7 @@ const GlobalDialogs = () => {
       <MoveIdeasToTabDialog />
 
       <RateYourInterestDialog />
+      <NumericGhostRatingDialog />
 
       <SelectLabelsDialog
         groupId={selectLabelsDialogStore.groupId}

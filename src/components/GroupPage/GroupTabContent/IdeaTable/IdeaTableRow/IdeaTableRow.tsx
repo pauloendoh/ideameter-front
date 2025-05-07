@@ -10,11 +10,11 @@ import React, { useMemo, useState } from "react"
 import { ItemProps } from "react-virtuoso"
 import { useAssignMeHotkey } from "../../../../../hooks/hotkeys/useAssignMeHotkey/useAssignMeHotkey"
 import { useToggleVoteHotkey } from "../../../../../hooks/hotkeys/useToggleVoteHotkey/useToggleVoteHotkey"
-import DisabledRatingsIcon from "../RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
 import RatingInput from "../RatingInput/RatingInput"
 import useMultiSelectIdeas from "../useMultiSelectIdeas/useMultiSelectIdeas"
 import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell"
 import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell"
+import { OtherUserRatingCell } from "./OtherUserRatingCell/OtherUserRatingCell"
 interface Props {
   ideaRating: IdeaRating
   rowNumber: number
@@ -41,11 +41,6 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
     const isSubidea = useMemo(
       () => !!props.ideaRating.idea.parentId,
       [props.ideaRating]
-    )
-
-    const hasSubideas = useMemo(
-      () => props.ideaRating.subideas?.length > 0,
-      [props.ideaRating.subideas]
     )
 
     const { idIsSelected } = useMultiSelectIdeas()
@@ -133,15 +128,11 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
         </TableCell>
         {props.ideaRating.otherUserGroupRatings.map(
           (userGroupRating, index) => (
-            <TableCell key={JSON.stringify(userGroupRating)} align="center">
-              {props.ideaRating.idea.ratingsAreEnabled === false ? (
-                <DisabledRatingsIcon />
-              ) : hasSubideas && !userGroupRating.rating ? (
-                "-"
-              ) : (
-                userGroupRating.rating
-              )}
-            </TableCell>
+            <OtherUserRatingCell
+              ideaRating={props.ideaRating}
+              theirRating={userGroupRating}
+              key={JSON.stringify(userGroupRating) + index}
+            />
           )
         )}
 

@@ -1,9 +1,12 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import UserGroupDto from "@/types/domain/group/UserGroupDto"
 import IdeaDto, { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
 import { useCallback, useMemo } from "react"
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils"
 import useSubideasQuery from "../subidea/useSubideasQuery"
+import { useMyGhostRatingsQuery } from "./ghost-rating/useMyGhostRatingsQuery"
 import useRatingsQuery from "./tab/idea/rating/useRatingsQuery"
 import useTabIdeasQuery from "./tab/idea/useTabIdeasQuery"
 
@@ -25,11 +28,46 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const otherMembers = useOtherMembersQueryUtils(groupId)
   const { data: groupRatings } = useRatingsQuery(groupId)
   const { data: tabIdeas } = useTabIdeasQuery({ groupId, tabId })
+  const { data: myGhostRatings } = useMyGhostRatingsQuery({ groupId })
+  const filter = useGroupFilterStore((s) => s.filter)
+
+  const groupRatingsWithGhosts = useMemo(() => {
+    if (!groupRatings) return []
+
+    if (!filter.onlyGhostRatings) {
+      return [...groupRatings]
+    }
+
+    const newGroupRatings = (myGhostRatings ?? [])
+      .filter((ghostRating) => {
+        const userRatingAlreadyExists = groupRatings.find(
+          (gr) =>
+            gr.ideaId === ghostRating.ideaId &&
+            gr.userId === ghostRating.targetUserId
+        )
+
+        return !userRatingAlreadyExists
+      })
+      .map(
+        (gr) =>
+          ({
+            userId: gr.targetUserId,
+            ideaId: gr.ideaId,
+            rating: gr.rating,
+          } as RatingDto)
+      )
+
+    return [...groupRatings, ...newGroupRatings]
+  }, [groupRatings, filter.onlyGhostRatings, myGhostRatings])
 
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {
-      if (!groupRatings) return null
-      const ideaRatings = groupRatings.filter((r) => r.ideaId === ideaId)
+      if (!groupRatingsWithGhosts) {
+        return null
+      }
+      const ideaRatings = groupRatingsWithGhosts.filter(
+        (r) => r.ideaId === ideaId
+      )
       if (ideaRatings.length === 0) return null
 
       const validRatings = ideaRatings.filter((r) => r.rating && r.rating > 0)
@@ -41,7 +79,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       if (sum === 0) return null
       return sum / validRatings.length
     },
-    [groupRatings]
+    [groupRatingsWithGhosts]
   )
 
   const ideaRatings = useMemo(() => {

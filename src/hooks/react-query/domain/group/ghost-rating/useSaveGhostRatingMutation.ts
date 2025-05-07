@@ -12,12 +12,18 @@ export const useSaveGhostRatingMutation = () => {
   const axios = useAxios()
 
   return useMutation(
-    (input: { ideaId: string; groupId: string; rating: number | null }) =>
+    (input: {
+      ideaId: string
+      groupId: string
+      rating: number | null
+      targetUserId: string
+    }) =>
       axios
         .post<GhostRatingDto>(
           urls.api.saveMyGhostRating({ ideaId: input.ideaId }),
           {
             rating: input.rating,
+            targetUserId: input.targetUserId,
           }
         )
         .then((res) => res.data),

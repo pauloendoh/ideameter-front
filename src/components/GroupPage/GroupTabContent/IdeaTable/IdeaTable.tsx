@@ -1,4 +1,3 @@
-import { useMyGhostRatingsQuery } from "@/hooks/react-query/domain/group/ghost-rating/useMyGhostRatingsQuery"
 import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
 import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
@@ -58,8 +57,6 @@ const IdeaTable = ({ ...props }: Props) => {
   const { onCtrlClick, onShiftClick } = useMultiSelectIdeas()
 
   const ref = useRef<TableVirtuosoHandle>(null)
-
-  const { data: ghostRatings } = useMyGhostRatingsQuery({ groupId })
 
   const tableComponents = useMemo<TableComponents<IdeaRating, any>>(() => {
     return {
