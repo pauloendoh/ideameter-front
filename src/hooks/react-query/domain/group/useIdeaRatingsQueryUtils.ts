@@ -80,6 +80,7 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
     subideas,
     otherMembers,
     groupRatings,
+    groupRatingsWithGhosts,
   ])
 
   return ideaRatings

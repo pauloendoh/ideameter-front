@@ -64,7 +64,7 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
     }))
 
     return results
-  }, [authUser, subideas, otherMembers, ratings])
+  }, [authUser, subideas, otherMembers, ratings, groupRatingsWithGhosts])
 
   return { data: ideaRatings, isLoading }
 }
