@@ -1,6 +1,7 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { useCallback, useMemo } from "react"
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils"
+import { useGroupRatingsWithGhostQueryUtils } from "../group/ghost-rating/useGroupRatingsWithGhostsQueryUtils"
 import useRatingsQuery from "../group/tab/idea/rating/useRatingsQuery"
 import { IdeaRating } from "../group/useIdeaRatingsQueryUtils"
 import useSubideasQueryUtils from "../subidea/useSubideasQueryUtils"
@@ -18,13 +19,19 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
 
   const isLoading = loadingSubideas || loadingRatings
 
+  const groupRatingsWithGhosts = useGroupRatingsWithGhostQueryUtils(groupId)
+
   const getAvgIdeaRating = useCallback(
     (subideaId: string) => {
-      if (!ratings) return null
-      const ideaRatings = ratings.filter((r) => r.ideaId === subideaId)
-      if (ideaRatings.length === 0) return null
+      if (!groupRatingsWithGhosts) return null
+      const subideaRatings = groupRatingsWithGhosts.filter(
+        (r) => r.ideaId === subideaId
+      )
+      if (subideaRatings.length === 0) return null
 
-      const validRatings = ideaRatings.filter((r) => r.rating && r.rating > 0)
+      const validRatings = subideaRatings.filter(
+        (r) => r.rating && r.rating > 0
+      )
       const sum = validRatings.reduce(
         (partialSum, r) => partialSum + (r.rating || 0),
         0
@@ -33,7 +40,7 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
       if (sum === 0) return null
       return sum / validRatings.length
     },
-    [ratings]
+    [groupRatingsWithGhosts]
   )
 
   const ideaRatings = useMemo(() => {

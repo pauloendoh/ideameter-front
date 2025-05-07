@@ -1,12 +1,10 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import UserGroupDto from "@/types/domain/group/UserGroupDto"
 import IdeaDto, { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
-import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
 import { useCallback, useMemo } from "react"
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils"
 import useSubideasQuery from "../subidea/useSubideasQuery"
-import { useMyGhostRatingsQuery } from "./ghost-rating/useMyGhostRatingsQuery"
+import { useGroupRatingsWithGhostQueryUtils } from "./ghost-rating/useGroupRatingsWithGhostsQueryUtils"
 import useRatingsQuery from "./tab/idea/rating/useRatingsQuery"
 import useTabIdeasQuery from "./tab/idea/useTabIdeasQuery"
 
@@ -28,37 +26,8 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   const otherMembers = useOtherMembersQueryUtils(groupId)
   const { data: groupRatings } = useRatingsQuery(groupId)
   const { data: tabIdeas } = useTabIdeasQuery({ groupId, tabId })
-  const { data: myGhostRatings } = useMyGhostRatingsQuery({ groupId })
-  const filter = useGroupFilterStore((s) => s.filter)
 
-  const groupRatingsWithGhosts = useMemo(() => {
-    if (!groupRatings) return []
-
-    if (!filter.onlyGhostRatings) {
-      return [...groupRatings]
-    }
-
-    const newGroupRatings = (myGhostRatings ?? [])
-      .filter((ghostRating) => {
-        const userRatingAlreadyExists = groupRatings.find(
-          (gr) =>
-            gr.ideaId === ghostRating.ideaId &&
-            gr.userId === ghostRating.targetUserId
-        )
-
-        return !userRatingAlreadyExists
-      })
-      .map(
-        (gr) =>
-          ({
-            userId: gr.targetUserId,
-            ideaId: gr.ideaId,
-            rating: gr.rating,
-          } as RatingDto)
-      )
-
-    return [...groupRatings, ...newGroupRatings]
-  }, [groupRatings, filter.onlyGhostRatings, myGhostRatings])
+  const groupRatingsWithGhosts = useGroupRatingsWithGhostQueryUtils(groupId)
 
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {
