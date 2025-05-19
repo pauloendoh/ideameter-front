@@ -2,7 +2,8 @@ import { ImSortAmountAsc, ImSortAmountDesc } from "react-icons/im"
 
 import { Header } from "@/components/AssignedIdeasPage/AssignedIdeasTableHead/AssignedIdeasTableHead"
 import { MyRatedIdeasSortingByType } from "@/hooks/zustand/domain/my-rated-ideas/MyRatedIdeasSortingByType/MyRatedIdeasSortingByType"
-import { useMyRatedIdeasStore } from "@/hooks/zustand/domain/my-rated-ideas/useMyRatedIdeasStore"
+import { localStorageKeys } from "@/utils/localStorageKeys"
+import { useLocalStorage } from "@mantine/hooks"
 import React, { useMemo } from "react"
 
 const headers = [
@@ -69,7 +70,13 @@ const SortableHeaderSpan = (props: {
   value: MyRatedIdeasSortingByType
   children: React.ReactNode
 }) => {
-  const { sortingBy, setSortingBy } = useMyRatedIdeasStore()
+  const [sortingBy, setSortingBy] = useLocalStorage<
+    "result" | "reward" | "discomfort"
+  >({
+    key: localStorageKeys.highlyRatedPage.customSortingBy,
+    defaultValue: "reward",
+  })
+
   const icon = useMemo(() => {
     if (sortingBy === props.value) {
       const style = {

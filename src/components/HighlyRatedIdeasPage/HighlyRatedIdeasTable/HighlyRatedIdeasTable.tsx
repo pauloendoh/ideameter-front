@@ -8,7 +8,6 @@ import MyTextField from "@/components/_common/inputs/MyTextField"
 import useHighlyRatedIdeasByMeQuery from "@/hooks/react-query/domain/idea/useHighlyRatedIdeasByMeQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
-import { useMyRatedIdeasStore } from "@/hooks/zustand/domain/my-rated-ideas/useMyRatedIdeasStore"
 import { localStorageKeys } from "@/utils/localStorageKeys"
 import { useLocalStorage } from "@mantine/hooks"
 import {
@@ -87,7 +86,12 @@ const HighlyRatedIdeasTable = (props: Props) => {
     return sortBy === "oldest-rated" ? 1 : 0
   }, [sortBy])
 
-  const { sortingBy: customSortingBy } = useMyRatedIdeasStore()
+  const [customSortingBy] = useLocalStorage<"result" | "reward" | "discomfort">(
+    {
+      key: localStorageKeys.highlyRatedPage.customSortingBy,
+      defaultValue: "reward",
+    }
+  )
 
   const sortedIdeas = useMemo(() => {
     if (!data) {

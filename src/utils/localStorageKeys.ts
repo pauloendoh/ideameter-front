@@ -10,5 +10,6 @@ export const localStorageKeys = {
     ideasWaitingIdeasFilter: "ideas-waiting-ideas-filter",
     requiresChangeFilter: "requires-change-filter",
     assignedToMeFilter: "/highly-rated-page/assigned-to-me-filter",
+    customSortingBy: "/highly-rated-page/custom-sorting-by",
   },
 } as const

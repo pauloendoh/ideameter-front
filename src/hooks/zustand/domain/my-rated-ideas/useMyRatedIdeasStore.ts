@@ -7,6 +7,6 @@ interface IStore {
 }
 
 export const useMyRatedIdeasStore = create<IStore>((set, get) => ({
-  sortingBy: "result",
+  sortingBy: "reward",
   setSortingBy: (sortingBy) => set({ sortingBy }),
 }))
