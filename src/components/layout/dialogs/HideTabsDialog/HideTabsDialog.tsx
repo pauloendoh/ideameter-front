@@ -1,19 +1,17 @@
-import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import MyTextField from "@/components/_common/inputs/MyTextField"
 import useGroupsQuery from "@/hooks/react-query/domain/group/useGroupsQuery"
 import useUserSettingsQuery from "@/hooks/react-query/domain/user-settings/useIdeaChangesQuery"
 import useUpdateHiddenTabsIdsMutation from "@/hooks/react-query/domain/user-settings/useUpdateHiddenTabsIdsMutation"
 import useHideTabsDialogStore from "@/hooks/zustand/dialogs/useHideTabsDialogStore"
 import { LoadingButton } from "@mui/lab"
 import {
+  Autocomplete,
   Box,
   Dialog,
   DialogContent,
   DialogTitle,
   Divider,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
 } from "@mui/material"
 import { useEffect, useMemo, useState } from "react"
 import HiddenTabsSection from "./HiddenTabsSection/HiddenTabsSection"
@@ -72,60 +70,49 @@ const HideTabsDialog = () => {
       <DialogTitle>Hide tabs</DialogTitle>
       <DialogContent>
         <FormControl sx={{ mt: 1 }} fullWidth size="small">
-          <InputLabel id={"group-selector-label"}>Group</InputLabel>
-          <Select
-            labelId={"group-selector-label"}
+          <Autocomplete
             id={"group-selector-select"}
-            label="Tab"
-            size="small"
-            value={selectedGroupId}
-            onChange={(e) => {
-              setSelectedGroupId(e.target.value as string)
+            options={groupsWithTabs}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, group) => {
+              if (group === null || group.id === undefined) {
+                setSelectedGroupId("")
+                return
+              }
+              setSelectedGroupId(group.id)
             }}
-          >
-            {groupsWithTabs?.map((group) => (
-              <MenuItem key={group.id} value={group.id}>
-                {group.name}
-              </MenuItem>
-            ))}
-          </Select>
+            renderInput={(params) => (
+              <MyTextField
+                {...params}
+                label="Group"
+                size="small"
+                inputRef={null}
+              />
+            )}
+          />
         </FormControl>
 
-        <FormControl sx={{ mt: 1 }} fullWidth size="small">
-          <InputLabel id={ariaLabel + "-label"}>Tab</InputLabel>
-          <Select
-            labelId={ariaLabel + "-label"}
-            id={ariaLabel + "-select"}
-            label="Tab"
-            size="small"
-            value={selectedTabId}
-            onChange={(e) => {
-              setSelectedTabId(e.target.value as string)
+        <FormControl sx={{ mt: 2 }} fullWidth size="small">
+          <Autocomplete
+            id={"tab-selector-select"}
+            options={visibleTabs}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, tab) => {
+              if (tab === null || tab.id === undefined) {
+                setSelectedTabId("")
+                return
+              }
+              setSelectedTabId(tab.id)
             }}
-          >
-            {visibleTabs?.map((tab) => (
-              <MenuItem key={tab.id} value={tab.id}>
-                <FlexVCenter
-                  justifyContent={"space-between"}
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <span>{tab.name}</span>
-                  {settings?.hiddenTabsIds.includes(tab.id) && (
-                    <span
-                      style={{
-                        fontSize: "0.8rem",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      Already hidden
-                    </span>
-                  )}
-                </FlexVCenter>
-              </MenuItem>
-            ))}
-          </Select>
+            renderInput={(params) => (
+              <MyTextField
+                {...params}
+                label="Tab"
+                size="small"
+                inputRef={null}
+              />
+            )}
+          />
         </FormControl>
 
         <LoadingButton
