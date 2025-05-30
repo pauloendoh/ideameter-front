@@ -58,20 +58,18 @@ const GroupTabContent = (props: Props) => {
         </Button>
 
         <FlexVCenter gap={2}>
-          {authUser?.username === "pauloendoh" && (
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch
-                    defaultChecked={filter.onlyGhostRatings}
-                    checked={filter.onlyGhostRatings}
-                    onClick={() => toggleGhostRatings(props.tabId)}
-                  />
-                }
-                label={`Ghost ratings`}
-              />
-            </FormGroup>
-          )}
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={filter.onlyGhostRatings}
+                  checked={filter.onlyGhostRatings}
+                  onClick={() => toggleGhostRatings(props.tabId)}
+                />
+              }
+              label={`Ghost ratings`}
+            />
+          </FormGroup>
 
           <FormGroup>
             <FormControlLabel
