@@ -78,7 +78,7 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
       count++
     }
 
-    if (onlyShowRatingsByMemberIds.length > 0) {
+    if (onlyShowRatingsByMemberIds?.length) {
       count++
     }
 
