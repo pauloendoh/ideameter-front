@@ -84,13 +84,14 @@ const GroupPageContent = (props: Props) => {
     if (tabId) {
       const cookieStr = nookies.get(null)[cookieKeys.groupTabIdeasFilter(tabId)]
       if (cookieStr) {
-        const filterStore: IStore = JSON.parse(cookieStr)
+        const cached: IStore = JSON.parse(cookieStr)
         if (
           // you need to add here when you create new filters, so the cookie doesn't mess it up
-          filterStore.filter.onlyCompletedIdeas !== undefined &&
-          filterStore.filter.requiresYourRating !== undefined
+          cached.filter.onlyCompletedIdeas &&
+          cached.filter.requiresYourRating &&
+          cached.filter.onlyShowRatingsByMemberIds
         ) {
-          useGroupFilterStore.setState(filterStore)
+          useGroupFilterStore.setState(cached)
           return
         }
       }
