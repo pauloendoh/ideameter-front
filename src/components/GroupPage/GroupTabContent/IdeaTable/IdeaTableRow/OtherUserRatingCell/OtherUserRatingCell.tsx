@@ -1,7 +1,7 @@
 import {
-  IdeaRating,
+  IdeaTableItem,
   OtherUserGroupRating,
-} from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+} from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import { TableCell } from "@mui/material"
 import { useMemo } from "react"
@@ -9,7 +9,7 @@ import DisabledRatingsIcon from "../../RatingInput/DisabledRatingsIcon/DisabledR
 import { GhostRatingInput } from "./GhostRatingInput/GhostRatingInput"
 
 type Props = {
-  ideaRating: IdeaRating
+  ideaRating: IdeaTableItem
   theirRating: OtherUserGroupRating
 }
 

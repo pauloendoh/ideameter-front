@@ -1,14 +1,16 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import { useCallback, useMemo } from "react"
 import useOtherMembersQueryUtils from "../group-members/useOtherMembersQueryUtils"
 import { useGroupRatingsWithGhostQueryUtils } from "../group/ghost-rating/useGroupRatingsWithGhostsQueryUtils"
 import useRatingsQuery from "../group/tab/idea/rating/useRatingsQuery"
-import { IdeaRating } from "../group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "../group/useIdeaTableItemsQueryUtils"
 import useSubideasQueryUtils from "../subidea/useSubideasQueryUtils"
 
 const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
   const { authUser } = useAuthStore()
   const { data: ratings, isLoading: loadingRatings } = useRatingsQuery(groupId)
+  const filter = useGroupFilterStore((s) => s.filter)
 
   const otherMembers = useOtherMembersQueryUtils(groupId)
 
@@ -23,30 +25,41 @@ const useSubideaRatingsQueryUtils = (parentId: string, groupId: string) => {
 
   const getAvgIdeaRating = useCallback(
     (subideaId: string) => {
-      if (!groupRatingsWithGhosts) return null
+      if (!groupRatingsWithGhosts) {
+        return null
+      }
       const subideaRatings = groupRatingsWithGhosts.filter(
         (r) => r.ideaId === subideaId
       )
-      if (subideaRatings.length === 0) return null
+      if (subideaRatings.length === 0) {
+        return null
+      }
 
-      const validRatings = subideaRatings.filter(
-        (r) => r.rating && r.rating > 0
-      )
+      const validRatings = subideaRatings
+        .filter((r) => r.rating && r.rating > 0)
+        .filter(
+          (r) =>
+            filter.onlyShowRatingsByMemberIds.length === 0 ||
+            filter.onlyShowRatingsByMemberIds.includes(r.userId)
+        )
+
       const sum = validRatings.reduce(
-        (partialSum, r) => partialSum + (r.rating || 0),
+        (partialSum, r) => partialSum + (r.rating ?? 0),
         0
       )
 
-      if (sum === 0) return null
+      if (sum === 0) {
+        return null
+      }
       return sum / validRatings.length
     },
-    [groupRatingsWithGhosts]
+    [groupRatingsWithGhosts, filter]
   )
 
   const ideaRatings = useMemo(() => {
     if (!subideas || !ratings || !authUser) return []
 
-    const results: IdeaRating[] = subideas.map((idea) => ({
+    const results: IdeaTableItem[] = subideas.map((idea) => ({
       idea,
       subideas: [],
       yourRating: ratings.find(

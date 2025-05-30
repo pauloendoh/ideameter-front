@@ -1,42 +1,41 @@
 import { cookieKeys } from "@/utils/cookieKeys"
 import nookies from "nookies"
 import AuthUserGetDto from "types/domain/auth/AuthUserGetDto"
-import create, { GetState } from "zustand"
-import { NamedSet } from "zustand/middleware"
+import create from "zustand"
 
 interface IAuthStore {
   authUser: AuthUserGetDto | null
   setAuthUser: (authUser: AuthUserGetDto) => void
 
-  getUserId: () => string
+  authUserId: string
+  getAuthUserId: () => string
 }
 
-const useAuthStore = create<IAuthStore>(
-  (set: NamedSet<IAuthStore>, get: GetState<IAuthStore>) => ({
-    authUser: null,
-    setAuthUser: (authUser) => {
-      const expiresAt = new Date(authUser.expiresAt)
+const useAuthStore = create<IAuthStore>((set, get) => ({
+  authUser: null,
+  authUserId: "",
+  setAuthUser: (authUser) => {
+    const expiresAt = new Date(authUser.expiresAt)
 
-      nookies.set(null, cookieKeys.user, JSON.stringify(authUser), {
-        secure: true,
+    nookies.set(null, cookieKeys.user, JSON.stringify(authUser), {
+      secure: true,
 
-        path: "/",
-        maxAge: 365 * 24 * 60 * 60, // 1 year
-      })
-      // localStorage.setItem("user", JSON.stringify(authUser));
+      path: "/",
+      maxAge: 365 * 24 * 60 * 60, // 1 year
+    })
+    // localStorage.setItem("user", JSON.stringify(authUser));
 
-      // Refresh logout timeout
-      setTimeout(() => {
-        return resetAuthStore()
-      }, expiresAt.getTime() - new Date().getTime())
+    // Refresh logout timeout
+    setTimeout(() => {
+      return resetAuthStore()
+    }, expiresAt.getTime() - new Date().getTime())
 
-      set({ authUser })
-    },
-    getUserId() {
-      return get().authUser?.id ?? ""
-    },
-  })
-)
+    set({ authUser, authUserId: authUser.id })
+  },
+  getAuthUserId() {
+    return get().authUser?.id ?? ""
+  },
+}))
 const initialState = useAuthStore.getState()
 export const resetAuthStore = () => {
   nookies.destroy(null, cookieKeys.user)

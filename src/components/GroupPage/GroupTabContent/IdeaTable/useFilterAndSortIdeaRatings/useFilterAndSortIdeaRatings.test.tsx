@@ -1,4 +1,4 @@
-import { buildIdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { buildIdeaRating } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { buildLabelDto } from "@/types/domain/label/LabelDto"
 import { cleanup, render, screen } from "@testing-library/react"
@@ -25,7 +25,7 @@ describe("useFilterAndSortIdeaRatings", () => {
             users: [],
             minRatingCount: 0,
             minAvgRating: 0,
-
+            onlyShowRatingsByMemberIds: [],
             onlyGhostRatings: false,
           },
           ideaRatings: [
@@ -66,6 +66,7 @@ describe("useFilterAndSortIdeaRatings", () => {
             minRatingCount: 0,
             minAvgRating: 0,
             onlyGhostRatings: false,
+            onlyShowRatingsByMemberIds: [],
           },
           ideaRatings: [
             buildIdeaRating({

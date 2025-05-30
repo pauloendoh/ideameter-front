@@ -32,7 +32,7 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
 
   const { data: subideaRatings, isLoading } = useSubideaRatingsQueryUtils(
     props.ideaId,
-    groupId!
+    groupId
   )
 
   const [showCompleted, setShowCompleted] = useState(false)
@@ -85,7 +85,7 @@ const IdeaDialogSubideasAccordion = (props: Props) => {
       <AccordionDetails sx={{ px: 0, pb: 0 }}>
         <SubideasTable
           isLoading={isLoading}
-          subideaRatings={visibleSubideaRatings}
+          subideasTableItems={visibleSubideaRatings}
         />
 
         <FlexVCenter justifyContent={"space-between"}>

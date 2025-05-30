@@ -53,7 +53,7 @@ const HighImpactVotedTable = (props: Props) => {
 
   const { data: userSettings } = useUserSettingsQuery()
 
-  const { getUserId } = useAuthStore()
+  const { getAuthUserId: getUserId } = useAuthStore()
 
   const { openDialog } = useHideTabsDialogStore()
 

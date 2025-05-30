@@ -9,7 +9,7 @@ import useAutoScrollStore from "@/hooks/zustand/useAutoScrollStore"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { Box, Button, FormControlLabel, FormGroup, Switch } from "@mui/material"
 import { useRouter } from "next/router"
-import useIdeaRatingsQueryUtils from "../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import useIdeaTableItemsQueryUtils from "../../../hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import IdeaTable from "./IdeaTable/IdeaTable"
 
 interface Props {
@@ -24,7 +24,7 @@ const GroupTabContent = (props: Props) => {
     groupId: props.groupId,
   })
 
-  const ideaRatings = useIdeaRatingsQueryUtils(query.groupId, props.tabId)
+  const ideaRatings = useIdeaTableItemsQueryUtils(query.groupId, props.tabId)
 
   const { openDialog } = useIdeaDialogStore()
 

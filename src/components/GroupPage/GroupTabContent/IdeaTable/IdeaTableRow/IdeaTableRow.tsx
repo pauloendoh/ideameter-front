@@ -1,8 +1,9 @@
 import { useSelectIdeaLabelsHotkey } from "@/hooks/hotkeys/useSelectIdeaLabelsHotkey/useSelectIdeaLabelsHotkey"
 import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSaveIdeaMutation"
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useSubideaDialogStore from "@/hooks/zustand/dialogs/useSubideaDialogStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import urls from "@/utils/urls"
 import { Checkbox, TableCell, TableRow, useTheme } from "@mui/material"
 import { useRouter } from "next/router"
@@ -16,11 +17,12 @@ import AvgRatingTableCell from "./AvgRatingTableCell/AvgRatingTableCell"
 import IdeaNameTableCell from "./IdeaNameTableCell/IdeaNameTableCell"
 import { OtherUserRatingCell } from "./OtherUserRatingCell/OtherUserRatingCell"
 interface Props {
-  ideaRating: IdeaRating
+  ideaRating: IdeaTableItem
   rowNumber: number
   onCtrlClick: () => void
   onShiftClick: () => void
-  virtuosoProps?: ItemProps<IdeaRating>
+  virtuosoProps?: ItemProps<IdeaTableItem>
+  shouldShowYourRating: boolean
 }
 
 const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
@@ -32,11 +34,11 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
 
     const { mutate: submitSaveIdea } = useSaveIdeaMutation()
 
-    const [isHoveringIdeaId, setHoveringIdeaId] = useState<string | null>(null)
+    const [hoveringIdeaId, setHoveringIdeaId] = useState<string | null>(null)
 
-    useAssignMeHotkey(isHoveringIdeaId)
-    useToggleVoteHotkey(isHoveringIdeaId)
-    useSelectIdeaLabelsHotkey(isHoveringIdeaId)
+    useAssignMeHotkey(hoveringIdeaId)
+    useToggleVoteHotkey(hoveringIdeaId)
+    useSelectIdeaLabelsHotkey(hoveringIdeaId)
 
     const isSubidea = useMemo(
       () => !!props.ideaRating.idea.parentId,
@@ -45,6 +47,21 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
 
     const { idIsSelected } = useMultiSelectIdeas()
     const theme = useTheme()
+
+    const filter = useGroupFilterStore((s) => s.filter)
+
+    const otherUserGroupRatings = useMemo(() => {
+      if (filter.onlyShowRatingsByMemberIds.length === 0) {
+        return props.ideaRating.otherUserGroupRatings
+      }
+
+      return props.ideaRating.otherUserGroupRatings.filter((rating) =>
+        filter.onlyShowRatingsByMemberIds.includes(rating.userGroup.userId)
+      )
+    }, [
+      props.ideaRating.otherUserGroupRatings,
+      filter.onlyShowRatingsByMemberIds,
+    ])
 
     return (
       <TableRow
@@ -119,22 +136,24 @@ const IdeaTableRow = React.forwardRef<HTMLTableRowElement, Props>(
           />
         </TableCell>
         <AvgRatingTableCell ideaRating={props.ideaRating} />
-        <TableCell align="center">
-          <RatingInput
-            idea={props.ideaRating.idea}
-            groupId={query.groupId}
-            isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
-          />
-        </TableCell>
-        {props.ideaRating.otherUserGroupRatings.map(
-          (userGroupRating, index) => (
-            <OtherUserRatingCell
-              ideaRating={props.ideaRating}
-              theirRating={userGroupRating}
-              key={JSON.stringify(userGroupRating) + index}
+
+        {props.shouldShowYourRating && (
+          <TableCell align="center">
+            <RatingInput
+              idea={props.ideaRating.idea}
+              groupId={query.groupId}
+              isDisabled={props.ideaRating.idea.ratingsAreEnabled === false}
             />
-          )
+          </TableCell>
         )}
+
+        {otherUserGroupRatings.map((userGroupRating, index) => (
+          <OtherUserRatingCell
+            ideaRating={props.ideaRating}
+            theirRating={userGroupRating}
+            key={JSON.stringify(userGroupRating) + index}
+          />
+        ))}
 
         {/* Empty cell to avoid bigger width on the last cell */}
         <TableCell></TableCell>

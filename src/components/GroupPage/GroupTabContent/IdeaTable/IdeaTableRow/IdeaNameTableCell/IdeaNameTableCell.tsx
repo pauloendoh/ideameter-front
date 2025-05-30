@@ -2,7 +2,7 @@ import Flex from "@/components/_common/flexboxes/Flex"
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import MyReactLinkify from "@/components/_common/text/MyReactLinkify/MyReactLinkify"
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import useSubideaRatingsQueryUtils from "@/hooks/react-query/domain/rating/useSubideaRatingsQueryUtils"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import { Badge, Box, TableCell, Tooltip, Typography } from "@mui/material"
@@ -13,7 +13,7 @@ import UserGroupAvatar from "../../UserTableCell/UserGroupAvatar/UserGroupAvatar
 import HighImpactVoteButtonWithTooltip from "./HighImpactVoteButtonWithTooltip/HighImpactVoteButtonWithTooltip"
 
 interface Props {
-  ideaRating: IdeaRating
+  ideaRating: IdeaTableItem
 }
 
 const IdeaNameTableCell = (props: Props) => {

@@ -1,4 +1,5 @@
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import UserGroupDto from "@/types/domain/group/UserGroupDto"
 import IdeaDto, { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { useCallback, useMemo } from "react"
@@ -12,7 +13,7 @@ export interface OtherUserGroupRating {
   userGroup: UserGroupDto
   rating: number | null
 }
-export interface IdeaRating {
+export interface IdeaTableItem {
   idea: IdeaDto
   subideas: IdeaDto[]
   avgRating: number | null
@@ -20,14 +21,15 @@ export interface IdeaRating {
   otherUserGroupRatings: OtherUserGroupRating[]
 }
 
-const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
-  const { authUser } = useAuthStore()
+const useIdeaTableItemsQueryUtils = (groupId: string, tabId: string) => {
+  const authUserId = useAuthStore((s) => s.authUserId)
   const { data: subideas } = useSubideasQuery(groupId)
   const otherMembers = useOtherMembersQueryUtils(groupId)
   const { data: groupRatings } = useRatingsQuery(groupId)
   const { data: tabIdeas } = useTabIdeasQuery({ groupId, tabId })
 
   const groupRatingsWithGhosts = useGroupRatingsWithGhostQueryUtils(groupId)
+  const filter = useGroupFilterStore((s) => s.filter)
 
   const getAvgIdeaRating = useCallback(
     (ideaId: string) => {
@@ -39,28 +41,37 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
       )
       if (ideaRatings.length === 0) return null
 
-      const validRatings = ideaRatings.filter((r) => r.rating && r.rating > 0)
+      const validRatings = ideaRatings
+        .filter((r) => r.rating && r.rating > 0)
+        .filter(
+          (r) =>
+            filter.onlyShowRatingsByMemberIds.length === 0 ||
+            filter.onlyShowRatingsByMemberIds.includes(r.userId)
+        )
+
       const sum = validRatings.reduce(
-        (partialSum, r) => partialSum + (r.rating || 0),
+        (partialSum, r) => partialSum + (r.rating ?? 0),
         0
       )
 
-      if (sum === 0) return null
+      if (sum === 0) {
+        return null
+      }
       return sum / validRatings.length
     },
-    [groupRatingsWithGhosts]
+    [groupRatingsWithGhosts, filter]
   )
 
   const ideaRatings = useMemo(() => {
-    if (!tabIdeas || !groupRatings || !authUser) return []
+    if (!tabIdeas || !groupRatings || !authUserId) return []
 
-    let results: IdeaRating[] = tabIdeas.map((idea) => ({
+    let results: IdeaTableItem[] = tabIdeas.map((idea) => ({
       idea,
       subideas: subideas?.filter((s) => s.parentId === idea.id) || [],
       yourRating:
         groupRatings.find(
-          (gr) => gr.userId === authUser.id && gr.ideaId === idea.id
-        )?.rating || null,
+          (gr) => gr.userId === authUserId && gr.ideaId === idea.id
+        )?.rating ?? null,
       avgRating: getAvgIdeaRating(idea.id),
       otherUserGroupRatings: otherMembers.map((member) => ({
         userGroup: member,
@@ -68,13 +79,13 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
           groupRatings.find(
             (rating) =>
               rating.userId === member.user?.id && rating.ideaId === idea.id
-          )?.rating || null,
+          )?.rating ?? null,
       })),
     }))
 
     return results
   }, [
-    authUser,
+    authUserId,
     tabIdeas,
     tabIdeas?.map((i) => i.highImpactVotes),
     subideas,
@@ -86,9 +97,9 @@ const useIdeaRatingsQueryUtils = (groupId: string, tabId: string) => {
   return ideaRatings
 }
 
-export default useIdeaRatingsQueryUtils
+export default useIdeaTableItemsQueryUtils
 
-export const buildIdeaRating = (p?: Partial<IdeaRating>): IdeaRating => ({
+export const buildIdeaRating = (p?: Partial<IdeaTableItem>): IdeaTableItem => ({
   idea: buildIdeaDto(),
   subideas: [],
   avgRating: null,

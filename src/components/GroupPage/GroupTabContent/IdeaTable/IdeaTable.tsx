@@ -1,5 +1,5 @@
 import useRatingsQuery from "@/hooks/react-query/domain/group/tab/idea/rating/useRatingsQuery"
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import { useRouterQueryString } from "@/hooks/utils/useRouterQueryString"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
@@ -27,29 +27,33 @@ import { useIdeaRequiresYourRating } from "./useIdeaRequiresYourRating"
 import useMultiSelectIdeas from "./useMultiSelectIdeas/useMultiSelectIdeas"
 
 interface Props {
-  ideaRatings: IdeaRating[]
+  ideaRatings: IdeaTableItem[]
   isSubideasTable?: boolean
 }
 
+// PE 1/3 -- It's chaos
 const IdeaTable = ({ ...props }: Props) => {
-  const authUser = useAuthStore((s) => s.authUser)
+  const authUserId = useAuthStore((s) => s.authUserId)
 
   const { groupId } = useRouterQueryString()
-  const { data: ratings } = useRatingsQuery(groupId!)
+  const { data: ratings } = useRatingsQuery(groupId)
 
   const ideaRequiresYourRating = useIdeaRequiresYourRating(
     props.ideaRatings,
     ratings
   )
 
-  const { filter, sortingBy } = useGroupFilterStore()
+  const [filter, sortingBy] = useGroupFilterStore((s) => [
+    s.filter,
+    s.sortingBy,
+  ])
 
   const visibleIdeaRatings = useFilterAndSortIdeaRatings({
     ratings,
     ideaRatings: props.ideaRatings,
     sortingBy,
     ideaRequiresYourRating,
-    authUserId: authUser!.id,
+    authUserId: authUserId,
     filter,
     isSubideasTable: props.isSubideasTable,
   })
@@ -58,7 +62,24 @@ const IdeaTable = ({ ...props }: Props) => {
 
   const ref = useRef<TableVirtuosoHandle>(null)
 
-  const tableComponents = useMemo<TableComponents<IdeaRating, any>>(() => {
+  const shouldShowYourRating = useMemo(() => {
+    return (
+      filter.onlyShowRatingsByMemberIds.length === 0 ||
+      filter.onlyShowRatingsByMemberIds.includes(authUserId)
+    )
+  }, [filter.onlyShowRatingsByMemberIds, authUserId])
+
+  const otherUserGroupRatings = useMemo(() => {
+    if (filter.onlyShowRatingsByMemberIds.length === 0) {
+      return props.ideaRatings[0]?.otherUserGroupRatings || []
+    }
+
+    return props.ideaRatings[0]?.otherUserGroupRatings.filter((rating) =>
+      filter.onlyShowRatingsByMemberIds.includes(rating.userGroup.userId)
+    )
+  }, [props.ideaRatings, filter.onlyShowRatingsByMemberIds])
+
+  const tableComponents = useMemo<TableComponents<IdeaTableItem, any>>(() => {
     return {
       Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
         <TableContainer {...props} ref={ref} />
@@ -68,7 +89,7 @@ const IdeaTable = ({ ...props }: Props) => {
       TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
         <TableBody {...props} ref={ref} />
       )),
-      TableRow: React.forwardRef<HTMLTableRowElement, ItemProps<IdeaRating>>(
+      TableRow: React.forwardRef<HTMLTableRowElement, ItemProps<IdeaTableItem>>(
         (itemProps, ref) => (
           <IdeaTableRow
             key={itemProps.item.idea.id + itemProps.item.idea.updatedAt}
@@ -85,15 +106,18 @@ const IdeaTable = ({ ...props }: Props) => {
             }
             virtuosoProps={itemProps}
             ref={ref}
+            shouldShowYourRating={shouldShowYourRating}
           />
         )
       ),
     }
-  }, [])
+  }, [shouldShowYourRating])
 
-  if (props.ideaRatings.length === 0) return <div></div>
+  if (props.ideaRatings.length === 0) {
+    return <div></div>
+  }
 
-  if (!props.isSubideasTable && visibleIdeaRatings.length > 5)
+  if (!props.isSubideasTable && visibleIdeaRatings.length > 5) {
     return (
       <Box
         sx={{
@@ -122,8 +146,8 @@ const IdeaTable = ({ ...props }: Props) => {
               <TableCell align="center" width="64px">
                 Avg
               </TableCell>
-              <UserTableCell userId={authUser!.id} />
-              {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
+              {shouldShowYourRating && <UserTableCell userId={authUserId} />}
+              {otherUserGroupRatings.map((otherRating) => (
                 <UserTableCell
                   key={JSON.stringify(otherRating)}
                   userId={otherRating.userGroup.userId}
@@ -136,6 +160,7 @@ const IdeaTable = ({ ...props }: Props) => {
         />
       </Box>
     )
+  }
 
   return (
     <TableContainer>
@@ -159,8 +184,9 @@ const IdeaTable = ({ ...props }: Props) => {
             <TableCell align="center" width="64px">
               Avg
             </TableCell>
-            <UserTableCell userId={authUser!.id} />
-            {props.ideaRatings[0].otherUserGroupRatings.map((otherRating) => (
+            {shouldShowYourRating && <UserTableCell userId={authUserId} />}
+
+            {otherUserGroupRatings.map((otherRating) => (
               <UserTableCell
                 key={JSON.stringify(otherRating)}
                 userId={otherRating.userGroup.userId}
@@ -179,6 +205,7 @@ const IdeaTable = ({ ...props }: Props) => {
               onCtrlClick={() => {
                 onCtrlClick(ideaRating.idea.id)
               }}
+              shouldShowYourRating={shouldShowYourRating}
               onShiftClick={() =>
                 onShiftClick(
                   visibleIdeaRatings.map((r) => r.idea.id),

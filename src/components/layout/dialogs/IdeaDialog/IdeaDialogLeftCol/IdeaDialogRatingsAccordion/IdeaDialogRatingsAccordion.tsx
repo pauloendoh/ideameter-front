@@ -3,6 +3,7 @@ import RatingInput from "@/components/GroupPage/GroupTabContent/IdeaTable/Rating
 import UserTableCell from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserTableCell"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
+import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import {
   AccordionDetails,
   AccordionSummary,
@@ -18,7 +19,7 @@ import {
 import { upToNDecimals } from "endoh-utils"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { MdExpandMore } from "react-icons/md"
-import useIdeaRatingsQueryUtils from "../../../../../../hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import useIdeaTableItemsQueryUtils from "../../../../../../hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import S from "./IdeaDialogRatingsAccordion.styles"
 
 interface Props {
@@ -33,36 +34,36 @@ interface Props {
 const ariaLabel = `ratings-accordion`
 
 const IdeaDialogRatingsAccordion = (props: Props) => {
-  const tabRatings = useIdeaRatingsQueryUtils(props.groupId, props.tabId)
+  const allTableItems = useIdeaTableItemsQueryUtils(props.groupId, props.tabId)
 
   const [expanded, setExpanded] = useState(props.initialRatingsAreEnabled)
   useEffect(() => {
     setExpanded(props.initialRatingsAreEnabled)
   }, [props.initialRatingsAreEnabled])
 
-  const authUser = useAuthStore((s) => s.authUser)
+  const authUserId = useAuthStore((s) => s.authUserId)
 
-  const ideaRatings = useMemo(() => {
-    const ideaRating = tabRatings.find((r) => r.idea.id === props.ideaId)
-
-    return ideaRating
-  }, [tabRatings, props.ideaId])
+  const tableItem = useMemo(() => {
+    return allTableItems.find((r) => r.idea.id === props.ideaId)
+  }, [allTableItems, props.ideaId])
 
   const theme = useTheme()
 
   // It was not re-rendering when the props.ideaId was changing!
   const LocalRatingInput = useCallback(() => {
-    if (!ideaRatings) return null
+    if (!tableItem) {
+      return null
+    }
     return (
       <RatingInput
-        idea={ideaRatings.idea}
+        idea={tableItem.idea}
         groupId={props.groupId}
         isDisabled={!props.ratingsAreEnabled}
       />
     )
   }, [
     props.ideaId,
-    ideaRatings?.idea,
+    tableItem?.idea,
     props.groupId,
     props.initialRatingsAreEnabled,
   ])
@@ -71,25 +72,57 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
     const initialEnabled = props.initialRatingsAreEnabled
     const currentEnabled = props.ratingsAreEnabled
 
-    if (initialEnabled && currentEnabled) return "Clear and disable ratings"
-    if (initialEnabled && !currentEnabled)
+    if (initialEnabled && currentEnabled) {
+      return "Clear and disable ratings"
+    }
+    if (initialEnabled && !currentEnabled) {
       return "Ratings will be cleared and disabled after saving. Click to undo."
+    }
 
-    if (!initialEnabled && !currentEnabled)
+    if (!initialEnabled && !currentEnabled) {
       return "Ratings are disabled. Click to re-enable"
-    if (!initialEnabled && currentEnabled)
+    }
+
+    if (!initialEnabled && currentEnabled) {
       return "Ratings will be enabled after saving. Click to undo."
+    }
   }, [props.ratingsAreEnabled, props.initialRatingsAreEnabled])
 
   const titleLabel = useMemo(() => {
-    if (props.ratingsAreEnabled && ideaRatings) {
-      return `Ratings - Avg ${upToNDecimals(Number(ideaRatings.avgRating), 1)}`
+    if (props.ratingsAreEnabled && tableItem) {
+      return `Ratings - Avg ${upToNDecimals(Number(tableItem.avgRating), 1)}`
     }
 
     return "Ratings disabled"
-  }, [props.ratingsAreEnabled, ideaRatings])
+  }, [props.ratingsAreEnabled, tableItem])
 
-  if (!ideaRatings) return null
+  const filter = useGroupFilterStore((s) => s.filter)
+  const otherUserGroupRatings = useMemo(() => {
+    if (!tableItem) {
+      return []
+    }
+    if (filter.onlyShowRatingsByMemberIds.length === 0) {
+      return tableItem.otherUserGroupRatings
+    }
+
+    return tableItem.otherUserGroupRatings.filter((r) =>
+      filter.onlyShowRatingsByMemberIds.includes(r.userGroup.userId)
+    )
+  }, [tableItem, filter.onlyShowRatingsByMemberIds])
+
+  const shouldShowYourRating = useMemo(() => {
+    if (!tableItem) {
+      return false
+    }
+    if (filter.onlyShowRatingsByMemberIds.length === 0) {
+      return true
+    }
+    return filter.onlyShowRatingsByMemberIds.includes(authUserId)
+  }, [tableItem, filter.onlyShowRatingsByMemberIds, authUserId])
+
+  if (!tableItem) {
+    return null
+  }
 
   return (
     <S.Accordion
@@ -143,8 +176,11 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <UserTableCell userId={authUser!.id} isYou />
-              {ideaRatings.otherUserGroupRatings.map((gr) => (
+              {shouldShowYourRating && (
+                <UserTableCell userId={authUserId} isYou />
+              )}
+
+              {otherUserGroupRatings.map((gr) => (
                 <UserTableCell
                   key={gr.userGroup.userId}
                   userId={gr.userGroup.userId}
@@ -157,10 +193,13 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell align="center">
-                <LocalRatingInput />
-              </TableCell>
-              {ideaRatings.otherUserGroupRatings.map((userGroupRating) => (
+              {shouldShowYourRating && (
+                <TableCell align="center">
+                  <LocalRatingInput />
+                </TableCell>
+              )}
+
+              {otherUserGroupRatings.map((userGroupRating) => (
                 <TableCell key={JSON.stringify(userGroupRating)} align="center">
                   {!props.initialRatingsAreEnabled ? (
                     <DisabledRatingsIcon />

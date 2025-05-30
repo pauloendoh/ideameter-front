@@ -1,5 +1,5 @@
 import { calculateIdeaResult } from "@/components/AssignedIdeasPage/AssignedIdeasTableBody/AssignedIdeasTableRow/calculateIdeaResult/calculateIdeaResult"
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import { IFilter } from "@/hooks/zustand/domain/group/useGroupFilterStore"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
 import { ISortOption } from "@/types/domain/idea/IdeaSortingTypes"
@@ -8,7 +8,7 @@ import { sortByAvgRatingDesc } from "./sortByAvgRatingDesc/sortByAvgRatingDesc"
 
 type Params = {
   ratings: RatingDto[] | undefined
-  ideaRatings: IdeaRating[]
+  ideaRatings: IdeaTableItem[]
   sortingBy: ISortOption
   ideaRequiresYourRating: (ideaId: string) => boolean
   authUserId: string
@@ -16,6 +16,7 @@ type Params = {
   isSubideasTable?: boolean
 }
 
+// PE 1/3 - Oh my fking god
 export const useFilterAndSortIdeaRatings = ({
   ratings,
   ideaRatings,
@@ -68,11 +69,11 @@ export const useFilterAndSortIdeaRatings = ({
       result =
         votedHighImpactBy === "any"
           ? result.filter(
-              (r) => r.idea.parentId || r.idea.highImpactVotes?.length > 0
+              (r) => r.idea.parentId ?? r.idea.highImpactVotes?.length > 0
             )
           : result.filter(
               (r) =>
-                r.idea.parentId ||
+                r.idea.parentId ??
                 r.idea.highImpactVotes?.some(
                   (v) => v.userId === votedHighImpactBy
                 )
@@ -114,8 +115,8 @@ export const useFilterAndSortIdeaRatings = ({
     }
 
     if (minAvgRating > 0) {
-      result = result.filter((ideaRating) => {
-        return ideaRating.avgRating && ideaRating.avgRating >= minAvgRating
+      result = result.filter((tableItem) => {
+        return tableItem.avgRating && tableItem.avgRating >= minAvgRating
       })
     }
 

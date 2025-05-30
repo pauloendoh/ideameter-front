@@ -1,6 +1,6 @@
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 
-export const sortByAvgRatingDesc = (ideaRatings: IdeaRating[]) => {
+export const sortByAvgRatingDesc = (ideaRatings: IdeaTableItem[]) => {
   return ideaRatings.sort((a, b) => {
     const numRatingA = Number(a.avgRating)
     const numRatingB = Number(b.avgRating)

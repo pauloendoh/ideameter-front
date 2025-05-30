@@ -18,6 +18,7 @@ import { useMemo, useState } from "react"
 import { MdFilterAlt } from "react-icons/md"
 import { useTabRateCount } from "../../GroupTabs/GroupTabItem/useTabRateCount/useTabRateCount"
 import LabelsSelector from "./LabelsSelector/LabelsSelector"
+import MembersMultiSelector from "./MembersMultiSelector/MembersMultiSelector"
 import VotedHighImpactSelector from "./VotedHighImpactSelector/VotedHighImpactSelector"
 import S from "./styles"
 
@@ -40,6 +41,7 @@ const FilterButton = () => {
     setMinAvgRating,
     setExcludeLabelIds: setFilterOutLabelIds,
     setVotedHighImpactBy,
+    setOnlyShowRatingsByMemberIds,
   } = useGroupFilterStore()
 
   const handleClick = (event: any) => {
@@ -207,6 +209,14 @@ const FilterButton = () => {
               setFilterOutLabelIds(labelsIds, routerQuery.tabId)
             }
             inputLabel="Exclude labels"
+          />
+
+          <MembersMultiSelector
+            onChange={(memberIds) => {
+              setOnlyShowRatingsByMemberIds(memberIds, routerQuery.tabId)
+            }}
+            selectedMemberIds={filter.onlyShowRatingsByMemberIds}
+            inputLabel="Only show ratings by"
           />
         </FlexCol>
       </Menu>

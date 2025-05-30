@@ -38,7 +38,7 @@ type Props = {
 }
 
 const AssignedIdeasTableRow = ({ ...props }: Props) => {
-  const { getUserId } = useAuthStore()
+  const { getAuthUserId: getUserId } = useAuthStore()
 
   const ideaUrl = urls.pages.groupTabIdea(
     props.ideaAssignment.group.groupId,

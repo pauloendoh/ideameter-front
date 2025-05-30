@@ -1,6 +1,6 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import { Tooltip, Typography } from "@mui/material"
 import { useMemo } from "react"
@@ -9,7 +9,7 @@ import HighImpactVoteButton from "./HighImpactVoteButton/HighImpactVoteButton"
 import { useToggleHighImpactVote } from "./useToggleHighImpactVote/useToggleHighImpactVote"
 
 type Props = {
-  ideaRating: IdeaRating
+  ideaRating: IdeaTableItem
   groupId: string
 }
 

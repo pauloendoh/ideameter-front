@@ -31,7 +31,7 @@ const SearchBarIdeaOption = ({
     [idea.isDone, idea.isArchived]
   )
 
-  const { getUserId } = useAuthStore()
+  const { getAuthUserId: getUserId } = useAuthStore()
   const hasYourHighImpact = useMemo(
     () => Boolean(idea.highImpactVotes?.find((v) => v.userId === getUserId())),
     [idea.highImpactVotes, getUserId()]

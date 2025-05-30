@@ -1,10 +1,10 @@
-import { IdeaRating } from "@/hooks/react-query/domain/group/useIdeaRatingsQueryUtils"
+import { IdeaTableItem } from "@/hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
 import RatingDto from "@/types/domain/group/tab/idea/rating/RatingDto"
 import { useCallback } from "react"
 
 export const useIdeaRequiresYourRating = (
-  ideaRatings: IdeaRating[],
+  ideaRatings: IdeaTableItem[],
   groupRatings?: RatingDto[]
 ) => {
   const authUser = useAuthStore((s) => s.authUser)

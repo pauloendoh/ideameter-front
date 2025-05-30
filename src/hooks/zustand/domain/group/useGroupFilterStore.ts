@@ -15,6 +15,8 @@ export interface IFilter {
   requiresYourRating: boolean
   minRatingCount: number
   minAvgRating: number
+
+  onlyShowRatingsByMemberIds: string[]
 }
 
 export interface IStore {
@@ -38,6 +40,8 @@ export interface IStore {
 
   sortingBy: ISortOption
   setSortingBy: (sortingBy: ISortOption, tabId: string) => void
+
+  setOnlyShowRatingsByMemberIds: (ids: string[], tabId: string) => void
 }
 
 const useGroupFilterStore = create<IStore>((set, get) => ({
@@ -48,6 +52,7 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
     users: [],
     onlyGhostRatings: false,
     onlyHighImpactVoted: false,
+    onlyShowRatingsByMemberIds: [],
     requiresYourRating: false,
     minRatingCount: 0,
     minAvgRating: 0,
@@ -62,13 +67,20 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
       requiresYourRating,
       minRatingCount,
       minAvgRating,
+      onlyShowRatingsByMemberIds,
     } = get().filter
     let count = labelIds?.length + excludeLabelIds?.length
 
     if (requiresYourRating) count++
     if (minRatingCount > 0) count++
     if (minAvgRating > 0) count++
-    if (votedHighImpactBy) count++
+    if (votedHighImpactBy) {
+      count++
+    }
+
+    if (onlyShowRatingsByMemberIds.length > 0) {
+      count++
+    }
 
     return count
   },
@@ -253,6 +265,22 @@ const useGroupFilterStore = create<IStore>((set, get) => ({
   },
   setSortingBy: (sortingBy, tabId) => {
     set({ sortingBy })
+    const state = get()
+    nookies.set(
+      null,
+      cookieKeys.groupTabIdeasFilter(tabId),
+      JSON.stringify(state)
+    )
+  },
+
+  setOnlyShowRatingsByMemberIds(ids, tabId) {
+    set((curr) => ({
+      filter: {
+        ...curr.filter,
+        onlyShowRatingsByMemberIds: ids,
+      },
+    }))
+
     const state = get()
     nookies.set(
       null,
