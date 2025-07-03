@@ -274,8 +274,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
   ])
 
   const assignedToMeCount = useMemo(() => {
-    return sortedIdeas.filter((i) => i.iAmAssigned).length
-  }, [sortedIdeas])
+    return data?.filter((i) => i.iAmAssigned && !i.idea.completedAt).length
+  }, [data])
 
   const { openDialog } = useHideTabsDialogStore()
 
