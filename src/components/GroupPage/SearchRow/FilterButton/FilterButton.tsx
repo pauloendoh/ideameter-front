@@ -192,25 +192,38 @@ const FilterButton = () => {
           />
         </FlexCol>
 
-        {sortedLabels.length > 0 && <Divider />}
+        {sortedLabels.length > 0 && (
+          <>
+            <Divider />
+            <FlexCol px={1} mt={1} gap={1}>
+              <LabelsSelector
+                selectedLabelIds={filter.labelIds}
+                onChange={(labelsIds) =>
+                  setFilterLabelIds(labelsIds, routerQuery.tabId)
+                }
+                inputLabel="Include labels"
+              />
+
+              <LabelsSelector
+                selectedLabelIds={filter.excludeLabelIds}
+                onChange={(labelsIds) =>
+                  setFilterOutLabelIds(labelsIds, routerQuery.tabId)
+                }
+                inputLabel="Exclude labels"
+              />
+
+              <MembersMultiSelector
+                onChange={(memberIds) => {
+                  setOnlyShowRatingsByMemberIds(memberIds, routerQuery.tabId)
+                }}
+                selectedMemberIds={filter.onlyShowRatingsByMemberIds}
+                inputLabel="Only show ratings by"
+              />
+            </FlexCol>
+          </>
+        )}
 
         <FlexCol px={1} mt={1} gap={1}>
-          <LabelsSelector
-            selectedLabelIds={filter.labelIds}
-            onChange={(labelsIds) =>
-              setFilterLabelIds(labelsIds, routerQuery.tabId)
-            }
-            inputLabel="Include labels"
-          />
-
-          <LabelsSelector
-            selectedLabelIds={filter.excludeLabelIds}
-            onChange={(labelsIds) =>
-              setFilterOutLabelIds(labelsIds, routerQuery.tabId)
-            }
-            inputLabel="Exclude labels"
-          />
-
           <MembersMultiSelector
             onChange={(memberIds) => {
               setOnlyShowRatingsByMemberIds(memberIds, routerQuery.tabId)
