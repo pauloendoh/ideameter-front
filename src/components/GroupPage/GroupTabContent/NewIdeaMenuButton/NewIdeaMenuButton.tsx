@@ -5,6 +5,7 @@ import useSaveIdeaMutation from "@/hooks/react-query/domain/group/tab/idea/useSa
 import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
 import { Button, Menu } from "@mui/material"
+import { valueIsOneOf } from "endoh-utils"
 import React, { useEffect } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
@@ -99,6 +100,11 @@ export const NewIdeaMenuButton = ({ ...props }: Props) => {
               label="Idea title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => {
+                if (valueIsOneOf(e.key, ["Home", "End"])) {
+                  e.stopPropagation()
+                }
+              }}
             />
             <SaveCancelButtons
               disabled={!title.trim()}
