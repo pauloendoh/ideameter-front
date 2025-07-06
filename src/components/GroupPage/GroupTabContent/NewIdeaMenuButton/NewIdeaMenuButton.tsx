@@ -93,6 +93,7 @@ export const NewIdeaMenuButton = ({ ...props }: Props) => {
         >
           <FlexCol gap={1} p={1}>
             <MyTextField
+              multiline
               inputRef={inputRef}
               fullWidth
               label="Idea title"
