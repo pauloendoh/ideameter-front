@@ -88,12 +88,14 @@ const SearchBar = (props: Props) => {
     if (!ideas) return []
 
     const result = ideas
-      .filter(
-        (i) =>
-          textContainsWords(i.name, debouncedText) ||
-          i.id.includes(debouncedText) ||
-          textContainsWords(i.description, debouncedText)
-      )
+      .filter((i) => {
+        const ideaTab = getTab(i.tabId)
+        const fullText = `${i.name} ${i.id} ${i.description} ${
+          ideaTab?.name ?? ""
+        }`.toLowerCase()
+
+        return textContainsWords(fullText, debouncedText.toLowerCase())
+      })
       .filter((i) => {
         if (props.ignoreIdeaIds) {
           return !valueIsOneOf(i.id, props.ignoreIdeaIds)
