@@ -1,12 +1,14 @@
 import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
+import { useNewIdeaHotkey } from "@/hooks/hotkeys/useNewIdeaHotkey/useNewIdeaHotkey"
 import useTabIdeasQuery from "@/hooks/react-query/domain/group/tab/idea/useTabIdeasQuery"
+import useIdeaDialogStore from "@/hooks/zustand/dialogs/useIdeaDialogStore"
 import useGroupFilterStore from "@/hooks/zustand/domain/group/useGroupFilterStore"
-import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material"
+import { buildIdeaDto } from "@/types/domain/group/tab/idea/IdeaDto"
+import { Box, Button, FormControlLabel, FormGroup, Switch } from "@mui/material"
 import { useRouter } from "next/router"
 import useIdeaTableItemsQueryUtils from "../../../hooks/react-query/domain/group/useIdeaTableItemsQueryUtils"
 import IdeaTable from "./IdeaTable/IdeaTable"
-import { NewIdeaMenuButton } from "./NewIdeaMenuButton/NewIdeaMenuButton"
 
 interface Props {
   tabId: string
@@ -21,6 +23,7 @@ const GroupTabContent = (props: Props) => {
   })
 
   const ideaRatings = useIdeaTableItemsQueryUtils(query.groupId, props.tabId)
+  const { openDialog } = useIdeaDialogStore()
 
   const [filter, toggleOnlyCompletedIdeas, toggleGhostRatings] =
     useGroupFilterStore((s) => [
@@ -29,12 +32,22 @@ const GroupTabContent = (props: Props) => {
       s.toggleGhostRatings,
     ])
 
+  useNewIdeaHotkey(props.tabId)
+
   return (
     <FlexCol gap={2}>
       <Box>{ideas && <IdeaTable ideaRatings={ideaRatings} />}</Box>
 
       <FlexVCenter ml={2} mb={1} justifyContent="space-between">
-        <NewIdeaMenuButton tabId={props.tabId} />
+        {/* <NewIdeaMenuButton tabId={props.tabId} /> */}
+
+        <Button
+          onClick={() => openDialog(buildIdeaDto({ tabId: props.tabId }))}
+          color="primary"
+          variant="contained"
+        >
+          + New idea (q)
+        </Button>
 
         <FlexVCenter gap={2}>
           <FormGroup>
