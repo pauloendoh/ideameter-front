@@ -211,18 +211,10 @@ const FilterButton = () => {
                 }
                 inputLabel="Exclude labels"
               />
-
-              <MembersMultiSelector
-                onChange={(memberIds) => {
-                  setOnlyShowRatingsByMemberIds(memberIds, routerQuery.tabId)
-                }}
-                selectedMemberIds={filter.onlyShowRatingsByMemberIds}
-                inputLabel="Only show ratings by"
-              />
             </FlexCol>
           </>
         )}
-
+        <Divider />
         <FlexCol px={1} mt={1} gap={1}>
           <MembersMultiSelector
             onChange={(memberIds) => {
