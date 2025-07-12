@@ -34,7 +34,7 @@ import { useMyRatedIdeasTableHeaders } from "./useMyRatedIdeasTableHeaders/useMy
 type Props = {}
 
 const HighlyRatedIdeasTable = (props: Props) => {
-  const { data, isSuccess } = useHighlyRatedIdeasByMeQuery()
+  const { data: allIdeas, isSuccess } = useHighlyRatedIdeasByMeQuery()
 
   const [hideRecent, setHideRecent] = useState(false)
   const [minReward, setMinReward] = useLocalStorage<number>({
@@ -93,14 +93,14 @@ const HighlyRatedIdeasTable = (props: Props) => {
     }
   )
 
-  const sortedIdeas = useMemo(() => {
-    if (!data) {
+  const visibleIdeas = useMemo(() => {
+    if (!allIdeas) {
       return []
     }
 
     let ideas = completedOnly
-      ? data.filter((i) => i.idea.isDone)
-      : data.filter((i) => !i.idea.isDone)
+      ? allIdeas.filter((i) => i.idea.isDone)
+      : allIdeas.filter((i) => !i.idea.isDone)
 
     if (settings?.hiddenTabsIds) {
       ideas = ideas.filter(
@@ -264,8 +264,8 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
     return ideas
   }, [
-    data,
-    data?.map((d) => d.myRating),
+    allIdeas,
+    allIdeas?.map((d) => d.myRating),
     assignedToMeFilter,
     completedOnly,
     settings,
@@ -274,17 +274,21 @@ const HighlyRatedIdeasTable = (props: Props) => {
   ])
 
   const assignedToMeCount = useMemo(() => {
-    if (!data) {
+    if (!allIdeas) {
       return 0
     }
 
-    return data.filter((idea) => {
+    return allIdeas.filter((idea) => {
       if (!idea.iAmAssigned) {
         return false
       }
 
+      if (!idea.idea.completedAt) {
+        return true
+      }
+
       if (
-        settings?.hiddenTabsIds &&
+        settings?.hiddenTabsIds?.length &&
         valueIsOneOf(idea.tab.tabId, settings?.hiddenTabsIds)
       ) {
         return false
@@ -292,7 +296,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
       return true
     }).length
-  }, [data, settings])
+  }, [allIdeas, settings])
 
   const { openDialog } = useHideTabsDialogStore()
 
@@ -307,7 +311,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
       <FlexVCenter flexDirection={"column"} alignItems={"start"} sx={{ pt: 1 }}>
         <FlexVCenter justifyContent={"space-between"} width="100%">
           <Typography marginLeft={"15px"} pt="10px" pb="15px" fontWeight="bold">
-            Highly rated ideas ({sortedIdeas.length}/{data.length})
+            Highly rated ideas ({visibleIdeas.length}/{allIdeas.length})
           </Typography>
 
           <Tabs
@@ -327,7 +331,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
           <Table stickyHeader>
             <AssignedIdeasTableHead headers={headers} />
             <AssignedIdeasTableBody
-              ideas={sortedIdeas}
+              ideas={visibleIdeas}
               showCompleted={completedOnly}
               showVotedAt
               isHighlyRatedIdeasPage
