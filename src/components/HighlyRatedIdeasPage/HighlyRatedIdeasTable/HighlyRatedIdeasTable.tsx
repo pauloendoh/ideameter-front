@@ -26,9 +26,10 @@ import {
   Tabs,
   Typography,
 } from "@mui/material"
-import { textContainsWords, valueIsOneOf } from "endoh-utils"
+import { textContainsWords } from "endoh-utils"
 import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
+import { useAssignedToMeCount } from "./useAssignedToMeCount/useAssignedToMeCount"
 import { useMyRatedIdeasTableHeaders } from "./useMyRatedIdeasTableHeaders/useMyRatedIdeasTableHeaders"
 
 type Props = {}
@@ -93,6 +94,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
     }
   )
 
+  // PE 1/3 - put in separated file
   const visibleIdeas = useMemo(() => {
     if (!allIdeas) {
       return []
@@ -273,30 +275,10 @@ const HighlyRatedIdeasTable = (props: Props) => {
     customSortingBy,
   ])
 
-  const assignedToMeCount = useMemo(() => {
-    if (!allIdeas) {
-      return 0
-    }
-
-    return allIdeas.filter((idea) => {
-      if (!idea.iAmAssigned) {
-        return false
-      }
-
-      if (!idea.idea.completedAt) {
-        return true
-      }
-
-      if (
-        settings?.hiddenTabsIds?.length &&
-        valueIsOneOf(idea.tab.tabId, settings?.hiddenTabsIds)
-      ) {
-        return false
-      }
-
-      return true
-    }).length
-  }, [allIdeas, settings])
+  const assignedToMeCount = useAssignedToMeCount({
+    ratedIdeas: allIdeas ?? [],
+    hiddenTabsIds: settings?.hiddenTabsIds ?? [],
+  })
 
   const { openDialog } = useHideTabsDialogStore()
 
