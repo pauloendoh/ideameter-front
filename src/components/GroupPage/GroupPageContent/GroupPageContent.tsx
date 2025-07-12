@@ -157,10 +157,7 @@ const GroupPageContent = (props: Props) => {
               </FlexVCenter>
 
               {selectedIdeaIds.length > 0 ? (
-                <SelectedIdeasOptionsRow
-                  selectedIdeaIds={selectedIdeaIds}
-                  tabId={tabId}
-                />
+                <SelectedIdeasOptionsRow selectedIdeaIds={selectedIdeaIds} />
               ) : (
                 <SearchRow />
               )}

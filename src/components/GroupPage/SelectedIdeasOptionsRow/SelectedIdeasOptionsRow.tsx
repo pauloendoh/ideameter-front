@@ -6,10 +6,10 @@ import { Button, IconButton, Typography, useTheme } from "@mui/material"
 import { BsArrowRightCircle } from "react-icons/bs"
 import { MdLabel, MdOutlineClose } from "react-icons/md"
 import useMultiSelectIdeas from "../GroupTabContent/IdeaTable/useMultiSelectIdeas/useMultiSelectIdeas"
+import { SelectedIdeasRowMoreMenu } from "./SelectedIdeasRowMoreMenu/SelectedIdeasRowMoreMenu"
 
 interface Props {
   selectedIdeaIds: string[]
-  tabId: string
 }
 
 const SelectedIdeasOptionsRow = (props: Props) => {
@@ -58,6 +58,7 @@ const SelectedIdeasOptionsRow = (props: Props) => {
         >
           Move to tab
         </Button>
+        <SelectedIdeasRowMoreMenu />
         <IconButton size="small" onClick={clearSelectedIds}>
           <MdOutlineClose />
         </IconButton>

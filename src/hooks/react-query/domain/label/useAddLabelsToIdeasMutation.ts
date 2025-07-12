@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "react-query"
 
 export const useAddLabelsToIdeasMutation = () => {
   const queryClient = useQueryClient()
-  const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
+  const { setSuccessMessage } = useSnackbarStore()
 
   const axios = useAxios()
 

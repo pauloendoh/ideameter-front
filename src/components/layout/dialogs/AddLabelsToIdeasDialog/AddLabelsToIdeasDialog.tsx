@@ -23,7 +23,8 @@ export const AddLabelsToIdeasDialog = () => {
   const { initialValue, dialogIsOpen, closeDialog } =
     useAddLabelsToIdeasDialogStore()
 
-  const { isLoading, mutate: submitAddLabels } = useAddLabelsToIdeasMutation()
+  const { isLoading, mutate: submitAddLabelsToMany } =
+    useAddLabelsToIdeasMutation()
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -38,7 +39,7 @@ export const AddLabelsToIdeasDialog = () => {
   }, [dialogIsOpen])
 
   const handleSubmit = () => {
-    submitAddLabels(
+    submitAddLabelsToMany(
       {
         ideaIds: initialValue.selectedIdeaIds,
         labelIds: values,
