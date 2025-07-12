@@ -26,7 +26,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material"
-import { textContainsWords } from "endoh-utils"
+import { textContainsWords, valueIsOneOf } from "endoh-utils"
 import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
 import { useMyRatedIdeasTableHeaders } from "./useMyRatedIdeasTableHeaders/useMyRatedIdeasTableHeaders"
@@ -48,7 +48,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
 
     defaultValue: "all",
   })
-  const [showCompleted, setShowCompleted] = useState(false)
+  const [completedOnly, setCompletedOnly] = useState(false)
   const [onlyNoXp, setOnlyNoXp] = useState(false)
 
   type RequiresChangeFilterType =
@@ -98,7 +98,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
       return []
     }
 
-    let ideas = showCompleted
+    let ideas = completedOnly
       ? data.filter((i) => i.idea.isDone)
       : data.filter((i) => !i.idea.isDone)
 
@@ -237,7 +237,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
         })
     }
 
-    if (showCompleted) {
+    if (completedOnly) {
       // desc
       ideas = ideas.sort((a, b) => {
         const valueA = a.idea.completedAt
@@ -267,21 +267,31 @@ const HighlyRatedIdeasTable = (props: Props) => {
     data,
     data?.map((d) => d.myRating),
     assignedToMeFilter,
-    showCompleted,
+    completedOnly,
     settings,
     hideRecent,
     customSortingBy,
   ])
 
   const assignedToMeCount = useMemo(() => {
-    let ideas = (data ?? []).filter((i) => i.iAmAssigned && !i.idea.completedAt)
-    if (settings?.hiddenTabsIds) {
-      ideas = ideas.filter(
-        (i) => !settings.hiddenTabsIds.includes(String(i.tab.tabId))
-      )
+    if (!data) {
+      return 0
     }
 
-    return ideas.length
+    return data.filter((idea) => {
+      if (!idea.iAmAssigned) {
+        return false
+      }
+
+      if (
+        settings?.hiddenTabsIds &&
+        valueIsOneOf(idea.tab.tabId, settings?.hiddenTabsIds)
+      ) {
+        return false
+      }
+
+      return true
+    }).length
   }, [data, settings])
 
   const { openDialog } = useHideTabsDialogStore()
@@ -318,7 +328,7 @@ const HighlyRatedIdeasTable = (props: Props) => {
             <AssignedIdeasTableHead headers={headers} />
             <AssignedIdeasTableBody
               ideas={sortedIdeas}
-              showCompleted={showCompleted}
+              showCompleted={completedOnly}
               showVotedAt
               isHighlyRatedIdeasPage
             />
@@ -424,9 +434,9 @@ const HighlyRatedIdeasTable = (props: Props) => {
                   control={
                     <Switch
                       size="small"
-                      defaultChecked={showCompleted}
-                      checked={showCompleted}
-                      onClick={() => setShowCompleted(!showCompleted)}
+                      defaultChecked={completedOnly}
+                      checked={completedOnly}
+                      onClick={() => setCompletedOnly(!completedOnly)}
                     />
                   }
                   label={<Typography variant="body2">Completed</Typography>}
