@@ -13,21 +13,27 @@ export function useAssignedToMeCount(input: {
       return 0
     }
 
-    return assignedIdeas.filter((idea) => {
-      if (!idea.iAmAssigned) {
+    const assignedToMe = assignedIdeas.filter((aIdea) => {
+      if (!aIdea.iAmAssigned) {
         return false
       }
 
-      if (idea.idea.completedAt) {
+      if (aIdea.idea.completedAt) {
         return false
       }
 
-      if (valueIsOneOf(idea.tab.tabId, hiddenTabsIds)) {
+      if (valueIsOneOf(aIdea.tab.tabId, hiddenTabsIds)) {
         return false
       }
 
       return true
-    }).length
+    })
+
+    console.log({
+      assignedToMe,
+    })
+
+    return assignedToMe.length
   }, [assignedIdeas])
 
   return assignedToMeCount
