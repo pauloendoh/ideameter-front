@@ -18,7 +18,7 @@ export function useAssignedToMeCount(input: {
         return false
       }
 
-      if (aIdea.idea.completedAt) {
+      if (aIdea.idea.completedAt || aIdea.idea.isDone) {
         return false
       }
 
