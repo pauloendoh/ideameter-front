@@ -17,6 +17,7 @@ import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
 import { buildTabDto } from "@/types/domain/group/tab/TabDto"
 import { useAxios } from "@/utils/axios/useAxios"
 import { cookieKeys } from "@/utils/cookieKeys"
+import { objectHasKeys } from "@/utils/object/keysInObject"
 import urls from "@/utils/urls"
 import {
   Box,
@@ -86,10 +87,11 @@ const GroupPageContent = (props: Props) => {
       if (cookieStr) {
         const cached: IStore = JSON.parse(cookieStr)
         if (
-          // you need to add here when you create new filters, so the cookie doesn't mess it up
-          cached.filter.onlyCompletedIdeas &&
-          cached.filter.requiresYourRating &&
-          cached.filter.onlyShowRatingsByMemberIds
+          objectHasKeys(cached.filter, [
+            "onlyCompletedIdeas",
+            "requiresYourRating",
+            "onlyShowRatingsByMemberIds",
+          ])
         ) {
           useGroupFilterStore.setState(cached)
           return
