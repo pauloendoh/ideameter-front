@@ -26,7 +26,9 @@ export const useTabRateCount = (params: { tabId: string; groupId: string }) => {
   }, [subideas])
 
   const tabRateCount = useMemo(() => {
-    if (!groupRatings || !tabIdeas) return 0
+    if (!groupRatings || !tabIdeas) {
+      return 0
+    }
 
     const userRatedIdeaIds = groupRatings
       .filter((rating) => rating.userId === authUser?.id)
@@ -39,9 +41,8 @@ export const useTabRateCount = (params: { tabId: string; groupId: string }) => {
     const ideasUserMustRate = ideasWithoutSubideas
       .filter((i) => !userRatedIdeaIds.includes(i.id))
       .filter((i) => !i.isDone)
+      .filter((i) => !i.isArchived)
       .filter((i) => i.ratingsAreEnabled)
-
-    // =====
 
     const tabIdeasIds = tabIdeas.filter((i) => !i.isDone).map((i) => i.id)
     const tabSubideas =
