@@ -1,3 +1,4 @@
+import { OtherUserRatingCell } from "@/components/GroupPage/GroupTabContent/IdeaTable/IdeaTableRow/OtherUserRatingCell/OtherUserRatingCell"
 import DisabledRatingsIcon from "@/components/GroupPage/GroupTabContent/IdeaTable/RatingInput/DisabledRatingsIcon/DisabledRatingsIcon"
 import RatingInput from "@/components/GroupPage/GroupTabContent/IdeaTable/RatingInput/RatingInput"
 import UserTableCell from "@/components/GroupPage/GroupTabContent/IdeaTable/UserTableCell/UserTableCell"
@@ -199,15 +200,21 @@ const IdeaDialogRatingsAccordion = (props: Props) => {
                 </TableCell>
               )}
 
-              {otherUserGroupRatings.map((userGroupRating) => (
-                <TableCell key={JSON.stringify(userGroupRating)} align="center">
-                  {!props.initialRatingsAreEnabled ? (
-                    <DisabledRatingsIcon />
-                  ) : (
-                    userGroupRating.rating
-                  )}
-                </TableCell>
-              ))}
+              {otherUserGroupRatings.map((otherUserRating) => {
+                if (props.initialRatingsAreEnabled) {
+                  return (
+                    <OtherUserRatingCell
+                      ideaRating={tableItem}
+                      theirRating={otherUserRating}
+                      key={`${OtherUserRatingCell.name}-${tableItem.idea.id}-${otherUserRating.userGroup.userId}`}
+                    />
+                  )
+                }
+
+                return (
+                  <DisabledRatingsIcon key={JSON.stringify(otherUserRating)} />
+                )
+              })}
 
               <TableCell />
             </TableRow>

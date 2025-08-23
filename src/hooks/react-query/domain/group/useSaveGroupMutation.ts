@@ -1,15 +1,16 @@
-import useSnackbarStore from "@/hooks/zustand/useSnackbarStore";
-import GroupDto from "@/types/domain/group/GroupDto";
-import pushOrReplace from "@/utils/array/pushOrReplace";
-import myAxios from "@/utils/axios/myAxios";
-import queryKeys from "@/utils/queryKeys";
-import urls from "@/utils/urls";
-import { useMutation, useQueryClient } from "react-query";
+import useSnackbarStore from "@/hooks/zustand/useSnackbarStore"
+import GroupDto from "@/types/domain/group/GroupDto"
+import pushOrReplace from "@/utils/array/pushOrReplace"
+import myAxios from "@/utils/axios/myAxios"
+import queryKeys from "@/utils/queryKeys"
+import urls from "@/utils/urls"
+import { isAxiosError } from "axios"
+import { useMutation, useQueryClient } from "react-query"
 
 const useSaveGroupMutation = () => {
-  const { setSuccessMessage, setErrorMessage } = useSnackbarStore();
+  const { setSuccessMessage, setErrorMessage } = useSnackbarStore()
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation(
     (payload: GroupDto) =>
@@ -22,18 +23,22 @@ const useSaveGroupMutation = () => {
         .then((res) => res.data),
     {
       onSuccess: (saved) => {
-        const groups = queryClient.getQueryData<GroupDto[]>(queryKeys.groups);
+        const groups = queryClient.getQueryData<GroupDto[]>(queryKeys.groups)
 
-        const newGroups = pushOrReplace(groups, saved, "id");
+        const newGroups = pushOrReplace(groups, saved, "id")
 
-        queryClient.setQueryData(queryKeys.groups, newGroups);
-        setSuccessMessage("Group saved!");
+        queryClient.setQueryData(queryKeys.groups, newGroups)
+        setSuccessMessage("Group saved!")
       },
       onError: (err) => {
-        setErrorMessage(JSON.stringify(err));
+        if (isAxiosError(err)) {
+          setErrorMessage(
+            err.response?.data?.message || err.message || "An error occurred"
+          )
+        }
       },
     }
-  );
-};
+  )
+}
 
-export default useSaveGroupMutation;
+export default useSaveGroupMutation
