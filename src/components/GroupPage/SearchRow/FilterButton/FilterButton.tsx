@@ -195,7 +195,7 @@ const FilterButton = () => {
         {sortedLabels.length > 0 && (
           <>
             <Divider />
-            <FlexCol px={1} mt={1} gap={1}>
+            <FlexCol px={1} my={1} gap={1}>
               <LabelsSelector
                 selectedLabelIds={filter.labelIds}
                 onChange={(labelsIds) =>
