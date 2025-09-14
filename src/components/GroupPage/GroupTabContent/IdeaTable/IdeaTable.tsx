@@ -58,6 +58,9 @@ const IdeaTable = ({ ...props }: Props) => {
     isSubideasTable: props.isSubideasTable,
   })
 
+  const visibleIdeaRatingsRef = useRef(visibleIdeaRatings)
+  visibleIdeaRatingsRef.current = visibleIdeaRatings
+
   const { onCtrlClick, onShiftClick } = useMultiSelectIdeas()
 
   const ref = useRef<TableVirtuosoHandle>(null)
@@ -79,6 +82,7 @@ const IdeaTable = ({ ...props }: Props) => {
     )
   }, [props.ideaRatings, filter.onlyShowRatingsByMemberIds])
 
+  // PE 1/3 - split in another file
   const tableComponents = useMemo<TableComponents<IdeaTableItem, any>>(() => {
     return {
       Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
@@ -100,7 +104,7 @@ const IdeaTable = ({ ...props }: Props) => {
             }}
             onShiftClick={() =>
               onShiftClick(
-                visibleIdeaRatings.map((r) => r.idea.id),
+                visibleIdeaRatingsRef.current.map((r) => r.idea.id),
                 itemProps.item.idea.id
               )
             }
