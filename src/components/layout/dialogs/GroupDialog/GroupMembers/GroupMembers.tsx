@@ -2,7 +2,13 @@ import FlexCol from "@/components/_common/flexboxes/FlexCol"
 import FlexVCenter from "@/components/_common/flexboxes/FlexVCenter"
 import useGroupMembersQuery from "@/hooks/react-query/domain/group-members/useGroupMembersQuery"
 import useAuthStore from "@/hooks/zustand/domain/auth/useAuthStore"
-import { DialogContent, List, Typography, useTheme } from "@mui/material"
+import {
+  CircularProgress,
+  DialogContent,
+  List,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import AddMemberButton from "./AddMemberButton/AddMemberButton"
 import GroupDialogMemberItem from "./GroupDialogMemberItem/GroupDialogMemberItem"
 
@@ -24,14 +30,19 @@ const GroupMembers = (props: Props) => {
         <AddMemberButton groupId={props.groupId} />
 
         <List>
-          {members &&
-            members.map((userGroup) => (
-              <GroupDialogMemberItem
-                key={userGroup.userId}
-                groupId={props.groupId}
-                userGroup={userGroup}
-              />
-            ))}
+          {!members ? (
+            <CircularProgress />
+          ) : (
+            <>
+              {members.map((userGroup) => (
+                <GroupDialogMemberItem
+                  key={userGroup.userId}
+                  groupId={props.groupId}
+                  userGroup={userGroup}
+                />
+              ))}
+            </>
+          )}
         </List>
       </FlexCol>
     </DialogContent>

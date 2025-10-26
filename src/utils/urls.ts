@@ -95,6 +95,7 @@ const urls = {
     refreshRating: (ratingId: string) => `/rating/${ratingId}/refresh`,
     searchGroupTabs: (query: string) => `/search-group-tabs?q=${query}`,
     getMyGhostRatings: (groupId: string) => `/groups/${groupId}/ghost-ratings`,
+    canRateForMe: (groupId: string) => `/groups/${groupId}/can-rate-for-me`,
     saveMyGhostRating: (input: { ideaId: string }) =>
       `/ideas/${input.ideaId}/ghost-ratings`,
   },
