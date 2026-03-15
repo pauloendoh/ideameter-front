@@ -64,7 +64,7 @@ const GroupPageContent = (props: Props) => {
   // oldest first
   const sortedGroupTabs = useMemo(
     () => groupTabs?.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1)) || [],
-    [groupTabs]
+    [groupTabs],
   )
 
   const axios = useAxios()
@@ -102,15 +102,15 @@ const GroupPageContent = (props: Props) => {
   }, [tabId])
 
   const openGroupInsightsDialog = useGroupInsightsDialogStore(
-    (s) => s.openDialog
+    (s) => s.openDialog,
   )
 
   const selectedIdeaIds = useSelectedIdeasStore((s) => s.selectedIdeaIds)
 
   const htmlTitle = useMemo(() => {
     if (selectedGroup && selectedTab)
-      return `${selectedGroup.name} - ${selectedTab.name} - Ideameter`
-    if (selectedGroup) return `${selectedGroup.name} - Ideameter`
+      return `${selectedTab.name} (${selectedGroup.name})`
+    if (selectedGroup) return `${selectedGroup.name}`
     return "Ideameter"
   }, [selectedGroup, selectedTab])
 
